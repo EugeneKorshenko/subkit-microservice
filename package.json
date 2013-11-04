@@ -10,7 +10,8 @@
     "storage-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/storage-module.git",
     "underscore": "*",
     "commander": "~2.0.0",
-    "aws-sdk": "git://github.com/aws/aws-sdk-js.git#master"
+    "aws-sdk": "git://github.com/aws/aws-sdk-js.git#master",
+    "procstreams": "~0.3.0"
   },
   "devDependencies": {
     "mocha": "*",

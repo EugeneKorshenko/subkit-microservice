@@ -8,10 +8,10 @@
     "swagger-doc": "*",
     "messaging-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/messaging-module.git",
     "storage-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/storage-module.git",
-    "underscore": "*",
-    "commander": "~2.0.0",
     "aws-sdk": "git://github.com/aws/aws-sdk-js.git#master",
-    "procstreams": "~0.3.0"
+    "underscore": "*",
+    "commander": "*",
+    "procstreams": "*"
   },
   "devDependencies": {
     "mocha": "*",

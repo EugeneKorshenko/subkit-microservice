@@ -8,7 +8,8 @@
     "swagger-doc": "*",
     "messaging-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/messaging-module.git",
     "storage-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/storage-module.git",
-    "underscore": "*"
+    "underscore": "*",
+    "commander": "~2.0.0"
   },
   "devDependencies": {
     "mocha": "*",

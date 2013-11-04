@@ -1,19 +1,18 @@
 #!/usr/bin/env node
-//ssh -2 -i subkit.pem ubuntu@ec2-54-228-188-160.eu-west-1.compute.amazonaws.com
 
 var fs = require('fs')
-	,program = require('commander')
-  ,AWS = require('aws-sdk')
-	,util = require('util')
-	,events = require('events')
-  ,$p = require('procstreams');
+    ,program = require('commander')
+    ,uuid = require('node-uuid')
+    ,AWS = require('aws-sdk');
 
 var hostsFile = "hosts.json";
 var proxyFile = "proxy.json";
 var serverFile = "server.json";
+var defaultsFile = "defaults.json";
 
 AWS.config.loadFromPath(__dirname + '/awsoptions.json');
-var ec2 = new AWS.EC2.Client(),
+var version = JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version,
+    ec2 = new AWS.EC2.Client(),
     dns = new AWS.Route53.Client();
 
 function saveServerConfig(data){
@@ -25,6 +24,9 @@ function saveProxy(data){
 function saveHosts(data){
   fs.writeFileSync(__dirname + "/" + hostsFile, JSON.stringify(data), 'utf8');
 }
+function saveAppConfig(name, data){
+  fs.writeFileSync(__dirname + "/" + name + ".json", JSON.stringify(data), 'utf8');
+}
 
 function acquireHost(){
   var resources = require("./" + hostsFile);
@@ -33,16 +35,14 @@ function acquireHost(){
   saveHosts(resources);
   return result;
 }
-
 function registerProxyHost(host, port){
   var serverConfig = require("./" + serverFile);
   var proxy = require("./" + proxyFile);
   var dnsHostName = host + "." + serverConfig.proxyDomain;
-  proxy.router[dnsHostName] = serverConfig.ip + ":" + port;
+  proxy.router[dnsHostName] = "127.0.0.1" + ":" + port; //serverConfig.ip
   saveProxy(proxy);
   return dnsHostName;
 }
-
 function registerDNSHost(host, done){
   var serverConfig = require("./" + serverFile),
       zoneInfo = {
@@ -66,8 +66,109 @@ function registerDNSHost(host, done){
     done(null, result);
   });
 }
+function copyProxyConfig(done){
+  var serverConfig = require("./" + serverFile);
+  var loginInfo = "ubuntu@" + serverConfig.ip;
+  var $p = require('procstreams');
+  
+  $p('scp -2 -r -p -i' + serverConfig.pem + ' ' + './'+proxyFile + ' ' + loginInfo + ':~/proxy/proxy.json')
+  .out()
+  .on('error', function(err) {
+    console.log(err);
+    done(err);
+  })
+  .on('exit', function() {
+    console.log("new proxy config copied");
+    done(null, "ok");
+  });
+}
+function restartProxy(done){
+  var serverConfig = require("./" + serverFile);
+  var loginInfo = "ubuntu@" + serverConfig.ip;
+  var $p = require('procstreams');
+  
+  $p('ssh -2 -i ' + serverConfig.pem + ' ' + loginInfo + ' ' + "sudo forever restart ~/proxy/server.js")
+  .out()
+  .on('error', function(err) {
+    console.log(err);
+    done(err);
+  })
+  .on('exit', function() {
+    console.log("proxy process restarted");
+    done(null, "ok");
+  });
+}
+function appInstall(name, done){
+  var serverConfig = require("./" + serverFile);
+  var loginInfo = "ubuntu@" + serverConfig.ip;
+  var $p = require('procstreams');
+  var path = serverConfig.basePath + "/" + name;
+  console.log("cp -r " + serverConfig.basePath + "/lite " + path);
+  $p('ssh -2 -i ' + serverConfig.pem + ' ' + loginInfo + ' ' + "cp -r " + serverConfig.basePath + "/lite " + path)
+  .out()
+  .on('error', function(err) {
+    console.log(err);
+    done(err);
+  })
+  .on('exit', function() {
+    console.log("SubKit Lite install successful");
+    done(null, "ok");
+  });
+}
+function copyAppConfig(name, port, done){
+  var serverConfig = require("./" + serverFile);
+  var loginInfo = "ubuntu@" + serverConfig.ip;
+  var $p = require('procstreams');
+  var path = serverConfig.basePath + "/" + name;
+  var defaultsConfig = require("./" + defaultsFile);
+  
+  defaultsConfig.api.apiKey = uuid.v4();
+  defaultsConfig.api.url = "http://" + name + "." + serverConfig.proxyDomain + ":" + port;
+  defaultsConfig.app.id = uuid.v4();
+  defaultsConfig.app.port = port;
+  defaultsConfig.storageModule.dbPath = "./db";
 
-var version = JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version;
+  saveAppConfig(name, defaultsConfig);
+  
+  $p('scp -2 -r -p -i' + serverConfig.pem + ' ' + './'+name+'.json ' + loginInfo + ':'+path+'/config.json')
+  .out()
+  .on('error', function(err) {
+    console.log(err);
+    done(err);
+  })
+  .on('exit', function() {
+    console.log("config for " + name + ":" + port + " copied");
+    done(null, "ok");
+  });
+}
+function startApp(name, done){
+  var serverConfig = require("./" + serverFile);
+  var loginInfo = "ubuntu@" + serverConfig.ip;
+  var $p = require('procstreams');
+  var path = serverConfig.basePath + "/" + name;
+
+  $p('ssh -2 -i ' + serverConfig.pem + ' ' + loginInfo + ' ' + "sudo forever start --sourceDir " + path + " -p "+ path +" server.js")
+  .out()
+  .on('error', function(err) {
+    console.log(err);
+    done(err);
+  })
+  .on('exit', function() {
+    console.log("App " + name + " started!");
+    done(null, "ok");
+  });
+}
+
+
+
+  // .then('ssh -2 -i ' + serverConfig.pem + ' ' + loginInfo + ' ' + "cd " + serverConfig.basePath + "; npm install git+ssh://git@github.com:SubKit/" + appType + ".git")
+  // .out()
+  // .then('scp -2 -r -p -i' + serverConfig.pem + ' ' + resourceFilePath + ' ' + loginInfo + ':~/apps/' + appId + "/node_modules/" + appType + "/config.json")
+  // .out()
+  // .then('ssh -2 -i ' + serverConfig.pem + ' ' + loginInfo + ' ' + "sudo forever start ~/apps/" + appId + "/node_modules/" + appType + "/server.js; exit;")
+  // .out()
+
+
 program
   .version(version)
   .usage('[options] <url>')
@@ -83,7 +184,17 @@ if (program.create) {
       console.log(err);
       process.exit(-1)
     }
-    process.exit(0);
+    copyProxyConfig(function(err, data){
+      restartProxy(function(err, data){
+        appInstall(host.host, function(err, data){
+          copyAppConfig(host.host, host.port, function(err, data){
+            startApp(host.host, function(err, data){
+              process.exit(0);
+            });
+          });
+        });
+      });
+    });
   });
 
   (function loop() {

@@ -8,44 +8,62 @@ var fs = require('fs')
 	,events = require('events')
   ,$p = require('procstreams');
 
+var hostsFile = "hosts.json";
+var proxyFile = "proxy.json";
+var serverFile = "server.json";
+
 AWS.config.loadFromPath(__dirname + '/awsoptions.json');
 var ec2 = new AWS.EC2.Client(),
     dns = new AWS.Route53.Client();
 
-function saveServerConfig(){
-  fs.writeFileSync("./server.json", JSON.stringify(options), 'utf8', function (err) {
-    if (err) throw err;
-  });
+function saveServerConfig(data){
+  fs.writeFileSync(__dirname + "/" + serverFile, JSON.stringify(data), 'utf8');
+}
+function saveProxy(data){
+  fs.writeFileSync(__dirname + "/" + proxyFile, JSON.stringify(data), 'utf8');
+}
+function saveHosts(data){
+  fs.writeFileSync(__dirname + "/" + hostsFile, JSON.stringify(data), 'utf8');
 }
 
-function createDNSEntry(){
-  var resources = require("./resources.json"),
-      serverConfig = require("./server.json"),
+function acquireHost(){
+  var resources = require("./" + hostsFile);
+  var result = resources[0];
+  resources.splice(0, 1);
+  saveHosts(resources);
+  return result;
+}
+
+function registerProxyHost(host, port){
+  var serverConfig = require("./" + serverFile);
+  var proxy = require("./" + proxyFile);
+  var dnsHostName = host + "." + serverConfig.proxyDomain;
+  proxy.router[dnsHostName] = serverConfig.ip + ":" + port;
+  saveProxy(proxy);
+  return dnsHostName;
+}
+
+function registerDNSHost(host, done){
+  var serverConfig = require("./" + serverFile),
       zoneInfo = {
         HostedZoneId: serverConfig.dnsZoneId,
         ChangeBatch: { Changes: [] }
       };
-
-  for(var index in resources){
-    var resource = resources[index],
-        hostName = resource.host + "." + serverConfig.proxyDomain + ".";
-
+    var dnsHostName = host + "." + serverConfig.proxyDomain + ".";
     zoneInfo.ChangeBatch.Changes.push({
       Action: "CREATE",
       ResourceRecordSet: {
         ResourceRecords: [{
           Value: serverConfig.ip
         }],
-        Name: hostName,
+        Name: dnsHostName,
         Type: "A",
         TTL: 300,
       }
     });
-  }
-
   dns.changeResourceRecordSets(zoneInfo, function(err, result){
-    if(err !== null) return complete(error);
-    complete("created");
+    if(err !== null) return done(error);
+    done(null, result);
   });
 }
 
@@ -53,20 +71,22 @@ var version = JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')
 program
   .version(version)
   .usage('[options] <url>')
-  .option('-v, --version', 'show current version')
-  .option('-l, --listen <port>', 'listen on port')
-  .option('-c, --connect <url>', 'connect to a websocket server')
-  .option('-p, --protocol <version>', 'optional protocol version')
-  .option('-o, --origin <origin>', 'optional origin')
-  .option('--host <host>', 'optional host')
-  .option('-s, --subprotocol <protocol>', 'optional subprotocol')
+  .option('-c, --create', 'create new app')
+  .option('-p, --protocol <data>', 'optional ...')
   .parse(process.argv);
 
-if (program.listen && program.connect) {
-	process.exit(-1);
+if (program.create) {
+  var host = acquireHost();
+  console.log(host);
+  var proxyEntry = registerProxyHost(host.host, host.port);
+  console.log(proxyEntry);
+  registerDNSHost(proxyEntry, function(err, data){
+    console.log(err);
+    console.log(data);
+  });
 }
-else if (program.listen) {
-	wsConsole.pause();
+if (program.protocol) {
+  console.log(program.protocol);
 }
 else {
 	process.exit(-1);

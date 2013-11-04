@@ -334,12 +334,12 @@ describe('service: storage', function(){
   });
 });
 
-describe('service: messaging', function(){
-  describe('on messaging', function(){
-    it('should be ...', function(done){
-    })
-    ,it('should be more ...', function(done){
-    });
-  });
-});
+// describe('service: messaging', function(){
+//   describe('on messaging', function(){
+//     it('should be ...', function(done){
+//     })
+//     ,it('should be more ...', function(done){
+//     });
+//   });
+// });
 

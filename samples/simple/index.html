@@ -1,8 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title></title>
-</head>
-<body>
-</body>
+	<head>
+		<script src="subkit.js"></script>
+	</head>
+	<body>
+		<script>
+			var subkit = new SubKit({
+				baseUrl: "http://localhost:8080",
+				apiKey: "6654edc5-82a3-4006-967f-97d5817d7fe2"
+			});
+			// pubsub.on("heartbeat", function(data){
+			// 	console.log(data);
+			// });
+
+
+			// pubsub.on("demos", function(data){
+			// 	console.log(data);
+			// });
+			subkit.on("demos/thats", function(data){
+				console.log(data);
+			});
+			// pubsub.on("demos_demo1", function(data){
+			// 	console.log(data);
+			// });
+			// pubsub.on("demos_demo2", function(data){
+			// 	console.log(data);
+			// });
+			// pubsub.on("demos_thats_demo1", function(data){
+			// 	console.log(data);
+			// });
+			
+		</script>
+	</body>
 </html>

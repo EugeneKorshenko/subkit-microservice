@@ -175,5 +175,4 @@ require('./doc').configure(server, {
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
 require("./lib/tasks.js").init(server, storage, storageModule, helper);
-// require("./lib/pubsub.js").init(server);
-
+require("./lib/pubsub.js").init(server, pubsub, storage, helper);

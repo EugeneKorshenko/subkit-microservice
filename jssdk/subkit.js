@@ -1,4 +1,4 @@
-var PubSub = function(config){
+var SubKit = function(config){
 	var self = this;
 
 	var UUID = function () {
@@ -254,11 +254,16 @@ var PubSub = function(config){
 		return clientId;
 	};
 	self.clientId = config.clientId || _init();
-	self.baseUrl = config.baseUrl;
-	self.apiKey = config.apiKey;
+	self.baseUrl = config.baseUrl || "http://try.subkit.io";
+    self.options = { 
+    	apiKey: config.apiKey || "",
+    	username: config.username || "",
+    	password: config.password || ""
+    };
 
 	var statusListeners = [];
 	self.subscribed = {};
+	
 	var changeStatus = function(status){
 		console.log(status);
 		statusListeners.forEach(function(listener){
@@ -266,7 +271,19 @@ var PubSub = function(config){
 		});
 	};
 
+	self.set = function(key, value, callback){
+		var url = self.baseUrl + "/";
+		httpRequest.post(url, { headers: { 'content-type': 'application/json' }, data: question }, function(status, result){
+			if(status!==200) {
+				changeStatus("error");
+			}else{
+				callback(result.json());
+			}
+		});
+	};
+
 	self.on = function(channel, callback) {
+		channel = channel.replace("/", "_");
 		self.subscribed[channel] = true;
 		changeStatus("subscribed to " + channel);
 		_poll(channel, self.clientId, callback);
@@ -274,15 +291,15 @@ var PubSub = function(config){
 
 	var _poll = function(channel, clientId, callback) {
 		var subscribeUrl = self.baseUrl + "/subscribe/" + channel + "/" + clientId;
-		httpRequest.get(subscribeUrl, { apiKey: self.apiKey }, function(status, result){
+		httpRequest.get(subscribeUrl, self.options, function(status, result){
 			if(status !== 200) {
 				callback({error:"subscription error - retry"});
-				setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 90);
+				setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 1000);
 			}else{
 				result.json().forEach(function(item){
 					callback(item.data);
 				});
-				setTimeout(function(){ if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 30);	
+				setTimeout(function(){ if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 0);	
 			}
 		});
 	};

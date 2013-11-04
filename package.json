@@ -9,7 +9,8 @@
     "messaging-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/messaging-module.git",
     "storage-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/storage-module.git",
     "underscore": "*",
-    "commander": "~2.0.0"
+    "commander": "~2.0.0",
+    "aws-sdk": "git://github.com/aws/aws-sdk-js.git#master"
   },
   "devDependencies": {
     "mocha": "*",

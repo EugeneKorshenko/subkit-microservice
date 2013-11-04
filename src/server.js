@@ -5,7 +5,8 @@ var restify = require('restify'),
 	nconf = require('nconf'),
 	_ = require('underscore'),
 	uuid = require("node-uuid"),
-	crypto = require("crypto");	
+	crypto = require("crypto"),
+	helper = require("./lib/helper.js");
 
 //config
 nconf
@@ -60,20 +61,13 @@ server.use(restify.queryParser());
 server.use(restify.gzipResponse());
 
 //etag
-var setNewETag = function(req, res, next){
-	var now = new Date().toString();
-	var md5 = crypto.createHash('md5');
-	etag = md5.update(now).digest('hex');
-	lastModified = now;
-	if(next) return next();
-};
 server.use(function (req, res, next) {
 	res.header('ETag', etag);
 	res.header('Last-Modified', lastModified);
 	return next();
 });
 server.use(restify.conditionalRequest());
-setNewETag();
+helper.setNewETag();
 
 //custom before / after code 
 server.use(function customHandler(req, res, next) {
@@ -119,13 +113,6 @@ server.use(function customHandler(req, res, next) {
 	if(!fail) next();
 });
 
-//JSON doc
-require('./doc').configure(server, {
-	discoveryUrl: "/docs",
-	version:      "1.2",
-	basePath:     "http://" + api.url
-});
-
 //CORS
 server.opts(/\.*/, function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -164,13 +151,13 @@ server.on("after", function (req, res, route, err) {
 });
 
 //handle error
-server.on("uncaughtException", function (req, res, route, err) {
-	console.log("A uncought exception was thrown: " + route + " -> " + err.message);
-	res.send(500, err.message);
-});
-process.on('uncaughtException', function(err){
-	console.log("A uncought exception was thrown: " + err.message);
-});
+// server.on("uncaughtException", function (req, res, route, err) {
+// 	console.log("A uncought exception was thrown: " + route + " -> " + err.message);
+// 	res.send(500, err.message);
+// });
+// process.on('uncaughtException', function(err){
+// 	console.log("A uncought exception was thrown: " + err.message);
+// });
 
 //start web server
 server.listen(app.port, function(){
@@ -178,4 +165,14 @@ server.listen(app.port, function(){
 	http.globalAgent.maxSockets = 50000;
 });
 
+//JSON doc
+require('./doc').configure(server, {
+	discoveryUrl: "/docs",
+	version:      "1.2",
+	basePath:     "http://" + api.url
+});
+require("./lib/manage.js").init(server);
+require("./lib/tasks.js").init(server);
+require("./lib/store.js").init(server);
+require("./lib/pubsub.js").init(server);
 

@@ -1,3 +1,5 @@
+var crypto = require("crypto");
+
 //auth helper
 function apiAuth(req, res, next){
 	var resource = req.params[0],
@@ -13,4 +15,18 @@ function userAuth(req, res, next){
 	if(req.username === "anonymous" || req.username !== admin.username || req.authorization.basic.password !== admin.password)
 		return res.send(401);
 	return next();		
+}
+
+var setNewETag = function(req, res, next){
+	var now = new Date().toString();
+	var md5 = crypto.createHash('md5');
+	etag = md5.update(now).digest('hex');
+	lastModified = now;
+	if(next) return next();
+};
+
+module.exports = {
+	apiAuth: apiAuth,
+	userAuth: userAuth,
+	setNewETag: setNewETag
 }

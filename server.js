@@ -157,6 +157,12 @@ server.opts(/\.*/, function (req, res, next) {
 // 	console.log("A uncought exception was thrown: " + err.message);
 // });
 
+
+//static public
+server.get(/subkit[-0-9.a-z]*.js/, restify.serveStatic({
+	directory: './jssdk'
+}));
+
 //start web server
 server.listen(app.port, function(){
 	console.log("subkit lite service listen on: " + server.address().port);

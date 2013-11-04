@@ -2,9 +2,12 @@
   "name": "subkitlite",
   "version": "0.0.1",
   "dependencies": {
-    "restify": "~2.6.0",
-    "node-uuid": "~1.4.1",
-    "level": "~0.17.0-1"
+    "restify": "*",
+    "node-uuid": "*",
+    "nconf": "*",
+    "swagger-doc": "*",
+    "messaging-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/messaging-module.git",
+    "storage-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/storage-module.git"
   },
   "devDependencies": {
     "mocha": "1.12.0",
@@ -17,12 +20,13 @@
     "node": ">0.8.0"
   },
   "scripts": {
-    "test": "mocha tests/spec.js"
+    "start": "node server",
+    "test": "mocha -R spec --globals buffertools,SlowBuffer,events,util"
   },
   "author": "Mike Bild",
   "repository": {
     "type": "git",
-    "url": "git@github.com:MikeBild/qotify.git"
+    "url": "git@github.com:MikeBild/subkitlite.git"
   },
   "licenses": [
     {

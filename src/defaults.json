@@ -1,0 +1,31 @@
+{
+  "api": {
+    "url": "localhost:8080",
+    "apiKey": "6654edc5-82a3-4006-967f-97d5817d7fe2"
+  },
+  "admin": {
+    "username": "subkit",
+    "password": "subkit"
+  },
+  "app": {
+    "id": "713172f6-fd0e-498c-a7f7-0a1afcbf423d",
+    "version": "0.1.0",
+    "type": "lite",
+    "domain": "subkit.io",
+    "ip": "127.0.0.1",
+    "port": 8080
+  },
+  "hooks": {
+    "error":{
+      "url": "http://localhost:8080",
+      "version": "*",
+      "headers": {"api_key":"6654edc5-82a3-4006-967f-97d5817d7fe2"}
+    }
+  },
+  "storageModule": {
+      "dbPath":"./testdb",
+      "rightsPath":"./rights.json",
+      "tasksPath":"./tasks",
+      "backupPath":"./backups"
+  }
+}

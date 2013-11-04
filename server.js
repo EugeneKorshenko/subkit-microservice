@@ -5,8 +5,7 @@ var restify = require('restify'),
 	nconf = require('nconf'),
 	_ = require('underscore'),
 	uuid = require("node-uuid"),
-	crypto = require("crypto"),
-	helper = require("./lib/helper.js");
+	crypto = require("crypto");
 
 //config
 nconf
@@ -18,12 +17,12 @@ nconf
 var admin = nconf.get("admin"),
 	app = nconf.get("app"),
 	api = nconf.get("api"),
-	storageModule = nconf.get("storageModule"),
-	hooks = nconf.get("hooks"),
 	etag = null,
 	lastModified = null;
 
 //correct root path
+var storageModule = nconf.get("storageModule");
+var hooks = nconf.get("hooks");
 storageModule.dbPath = path.join(__dirname, storageModule.dbPath);
 storageModule.rightsPath = path.join(__dirname, storageModule.rightsPath);
 storageModule.tasksPath = path.join(__dirname, storageModule.tasksPath);
@@ -67,7 +66,6 @@ server.use(function (req, res, next) {
 	return next();
 });
 server.use(restify.conditionalRequest());
-helper.setNewETag();
 
 //custom before / after code 
 server.use(function customHandler(req, res, next) {
@@ -123,32 +121,32 @@ server.opts(/\.*/, function (req, res, next) {
 });
 
 //logging tracing
-var trackingData = [];
-server.on("after", function (req, res, route, err) {
-	var latency = res.get('Response-Time');
-	if (typeof (latency) !== 'number') latency = Date.now() - req._time;
-	 var obj = {
-	 		url:req.url,
-			remoteAddress: req.connection.remoteAddress,
-			remotePort: req.connection.remotePort,
-			req_id: req.getId(),
-			requestHeaders: req.headers,
-			statusCode: res.statusCode,
-			method:req.route.method,
-			versions:req.route.versions,
-			err: err,
-			inBytes: req.connection.bytesRead,
-			outBytes: req.connection.bytesWritten,
-			latency: latency,
-			secure: req.secure
-	};
-	if(trackingData.length < 100){
-		trackingData.push(obj)
-	}else{
-		storage.run("track", trackingData, function(error, data){});
-		trackingData = [];
-	}
-});
+// var trackingData = [];
+// server.on("after", function (req, res, route, err) {
+// 	var latency = res.get('Response-Time');
+// 	if (typeof (latency) !== 'number') latency = Date.now() - req._time;
+// 	 var obj = {
+// 	 		url:req.url,
+// 			remoteAddress: req.connection.remoteAddress,
+// 			remotePort: req.connection.remotePort,
+// 			req_id: req.getId(),
+// 			requestHeaders: req.headers,
+// 			statusCode: res.statusCode,
+// 			method:req.route.method,
+// 			versions:req.route.versions,
+// 			err: err,
+// 			inBytes: req.connection.bytesRead,
+// 			outBytes: req.connection.bytesWritten,
+// 			latency: latency,
+// 			secure: req.secure
+// 	};
+// 	if(trackingData.length < 100){
+// 		trackingData.push(obj)
+// 	}else{
+// 		storage.run("track", trackingData, function(error, data){});
+// 		trackingData = [];
+// 	}
+// });
 
 //handle error
 // server.on("uncaughtException", function (req, res, route, err) {
@@ -165,14 +163,17 @@ server.listen(app.port, function(){
 	http.globalAgent.maxSockets = 50000;
 });
 
+var helper = require("./lib/helper.js").init(admin, api, etag, lastModified, storage);
+helper.setNewETag();
+
 //JSON doc
 require('./doc').configure(server, {
 	discoveryUrl: "/docs",
 	version:      "1.2",
 	basePath:     "http://" + api.url
 });
-require("./lib/manage.js").init(server);
-require("./lib/tasks.js").init(server);
-require("./lib/store.js").init(server);
-require("./lib/pubsub.js").init(server);
+require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
+require("./lib/store.js").init(server, storage, helper);
+require("./lib/tasks.js").init(server, storage, storageModule, helper);
+// require("./lib/pubsub.js").init(server);
 

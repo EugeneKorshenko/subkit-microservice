@@ -176,7 +176,7 @@ helper.setNewETag();
 require('./doc').configure(server, {
 	discoveryUrl: "/docs",
 	version:      "1.2",
-	basePath:     "http://" + api.url
+	basePath:     api.url
 });
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);

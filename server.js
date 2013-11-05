@@ -11,8 +11,8 @@ var restify = require('restify'),
 nconf
 	.argv()
 	.env()
-	.file('config', 'config.json')
-  	.file('defaults', 'defaults.json');
+	.file('config', path.join(__dirname, 'config.json'))
+  	.file('defaults', path.join(__dirname, 'defaults.json'));
 
 var admin = nconf.get("admin"),
 	app = nconf.get("app"),
@@ -40,15 +40,15 @@ var	server = restify.createServer(options);
 
 //conf reload
 var reloadConf = function(curr, prev){
-	nconf.file('config', 'config.json')
-  	nconf.file('defaults', 'defaults.json');
+	nconf.file('config', path.join(__dirname, 'config.json'));
+  	nconf.file('defaults', path.join(__dirname, 'defaults.json'));
 	admin = nconf.get("admin");
 	app = nconf.get("app");
 	api = nconf.get("api");
 	hooks = nconf.get("hooks");
 }
-fs.watchFile("config.json", reloadConf);
-fs.watchFile("defaults.json", reloadConf);
+fs.watchFile(path.join(__dirname, "config.json"), reloadConf);
+fs.watchFile(path.join(__dirname, "defaults.json"), reloadConf);
 
 //server middleware
 server.use(restify.acceptParser(server.acceptable));

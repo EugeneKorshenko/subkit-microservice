@@ -122,7 +122,7 @@ function copyAppConfig(name, port, done){
   var defaultsConfig = require("./" + defaultsFile);
   
   defaultsConfig.api.apiKey = uuid.v4();
-  defaultsConfig.api.url = "http://" + name + "." + serverConfig.proxyDomain + ":" + port;
+  defaultsConfig.api.url = "http://" + name + "." + serverConfig.proxyDomain;
   defaultsConfig.app.id = uuid.v4();
   defaultsConfig.app.port = port;
   defaultsConfig.storageModule.dbPath = "./db";

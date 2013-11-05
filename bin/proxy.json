@@ -1,1 +1,10 @@
-{"hostnameOnly":true,"changeOrigin":true,"router":{"holiapp.subkit.io":"127.0.0.1:50005","drawsample.subkit.io":"127.0.0.1:50077","website.subkit.io":"127.0.0.1:50010","api.qotify.com":"127.0.0.1:50100","29f52e63-8933-4de3-9ac4-b3016b9428f4.subkit.io":"127.0.0.1:50080","ee99a3b3-2260-40f6-8977-4899486fb84b.subkit.io":"127.0.0.1:50081"}}
+{
+    "hostnameOnly": true,
+    "changeOrigin": true,
+    "router": {
+        "holiapp.subkit.io": "127.0.0.1:50005",
+        "drawsample.subkit.io": "127.0.0.1:50077",
+        "website.subkit.io":"127.0.0.1:50010",
+        "api.qotify.com":"127.0.0.1:50100"
+    }
+}

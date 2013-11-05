@@ -7,7 +7,7 @@ var fs = require('fs')
 
 var hostsFile = "hosts.json";
 var proxyFile = "proxy.json";
-var serverFile = "server.json";
+var serverFile = "sk.json";
 var defaultsFile = "defaults.json";
 
 AWS.config.loadFromPath(__dirname + '/awsoptions.json');
@@ -98,13 +98,12 @@ function restartProxy(done){
     done(null, "ok");
   });
 }
-function appInstall(name, done){
+function appCopyInstall(name, done){
   var serverConfig = require("./" + serverFile);
   var loginInfo = "ubuntu@" + serverConfig.ip;
   var $p = require('procstreams');
   var path = serverConfig.basePath + "/" + name;
-  console.log("cp -r " + serverConfig.basePath + "/lite " + path);
-  $p('ssh -2 -i ' + serverConfig.pem + ' ' + loginInfo + ' ' + "cp -r " + serverConfig.basePath + "/lite " + path)
+  $p('ssh -2 -i ' + serverConfig.pem + ' ' + loginInfo + ' ' + "cp -r ~/lite " + path)
   .out()
   .on('error', function(err) {
     console.log(err);
@@ -147,7 +146,7 @@ function startApp(name, done){
   var $p = require('procstreams');
   var path = serverConfig.basePath + "/" + name;
 
-  $p('ssh -2 -i ' + serverConfig.pem + ' ' + loginInfo + ' ' + "sudo forever start --sourceDir " + path + " -p "+ path +" server.js")
+  $p('ssh -2 -i ' + serverConfig.pem + ' ' + loginInfo + ' ' + "sudo forever start --sourceDir " + path + " -p "+ path + " server.js")
   .out()
   .on('error', function(err) {
     console.log(err);
@@ -186,7 +185,7 @@ if (program.create) {
     }
     copyProxyConfig(function(err, data){
       restartProxy(function(err, data){
-        appInstall(host.host, function(err, data){
+        appCopyInstall(host.host, function(err, data){
           copyAppConfig(host.host, host.port, function(err, data){
             startApp(host.host, function(err, data){
               process.exit(0);

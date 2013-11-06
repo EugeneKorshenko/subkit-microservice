@@ -246,10 +246,10 @@ var Subkit = function(config){
 	};
 
 	var _init = function(clientId){
-		var clientId = localStorage.getItem("clientId");
+		var clientId = sessionStorage.getItem("clientId");
 		if(!clientId) {
 			clientId = self.UUID();
-			localStorage.setItem("clientId", clientId);
+			sessionStorage.setItem("clientId", clientId);
 		}
 		return clientId;
 	};

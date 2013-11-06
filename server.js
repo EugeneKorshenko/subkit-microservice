@@ -160,7 +160,7 @@ server.opts(/\.*/, function (req, res, next) {
 
 //static public
 server.get(/subkit[-0-9.a-z]*.js/, restify.serveStatic({
-	directory: './jssdk'
+	directory: path.join(__dirname, 'jssdk')
 }));
 
 //start web server

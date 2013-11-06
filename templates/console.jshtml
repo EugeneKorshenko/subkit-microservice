@@ -5,15 +5,41 @@
 		<script src="subkit.js"></script>
 	</head>
 	<body>
+		<section>
+			<button id="heartbeatSubscribe">Heartbeat Subscribe</button>
+			<label id="heartbeatSubscribeOutput"></label>
+		</section>
+		<br>
+		<section>
+			<button id="simpleSetSubscribe">Simple 'names' Subscribe</button>
+			<label id="simpleSetOutput">empty</label>
+			<div>
+				<input type="text" id="simpleNameInput">
+				<button id="simpleSet">Simple set into 'names'</button>
+			</div>
+		</section>
 		<script>
+			var $ = function(e){ return document.getElementById(e); };
 			var subkit = new SubKit({
 				baseUrl: "@locals.url",
 				apiKey: "@locals.apiKey"
 			});
 
-			subkit.on("heartbeat", function(data){
-				console.log(data);
-			});			
+			$("heartbeatSubscribe").addEventListener("click", function(){
+				subkit.on("heartbeat", function(data){
+					$("heartbeatSubscribeOutput").innerText = data;
+				});
+			});
+
+			$("simpleSetSubscribe").addEventListener("click", function(){
+				subkit.on("names", function(data){
+					$("simpleSetOutput").innerText = data.value.name;
+				});
+			});
+			$("simpleSet").addEventListener("click", function(){
+				var value = $("simpleNameInput").value;
+				subkit.set("names/1", {name: value});
+			});
 		</script>
 	</body>
 </html>

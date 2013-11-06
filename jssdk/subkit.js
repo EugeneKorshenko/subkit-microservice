@@ -272,15 +272,32 @@ var SubKit = function(config){
 	};
 
 	self.set = function(key, value, callback){
-		var url = self.baseUrl + "/";
-		httpRequest.post(url, { headers: { 'content-type': 'application/json' }, data: question }, function(status, result){
+		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
+		var url = self.baseUrl + "/store/" + key;
+		var msg = self.options;
+		msg["data"] = value;
+		httpRequest.post(url, self.options, function(status, result){
 			if(status!==200) {
-				changeStatus("error");
+				if(callback) changeStatus(result);
 			}else{
-				callback(result.json());
+				if(callback) callback(null, result.json());
 			}
 		});
 	};
+
+	self.get = function(key, callback){
+		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
+		var url = self.baseUrl + "/store/" + key;
+		httpRequest.get(url, self.options, function(status, result){
+			if(status !== 200) {
+				callback(result);
+			}else{
+				result.json().forEach(function(item){
+					callback(item.data);
+				});
+			}
+		});
+	}
 
 	self.on = function(channel, callback) {
 		channel = channel.replace("/", "_");

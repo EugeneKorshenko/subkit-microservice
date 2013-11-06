@@ -31,7 +31,7 @@ storageModule.tasksPath = path.join(__dirname, storageModule.tasksPath);
 storageModule.hooks = hooks;
 
 //init
-var	pubsub = require("messaging-module").init({pollingInterval: 10});
+var	pubsub = require("messaging-module").init({pollInterval: 1});
 var storage = require('storage-module').init(storageModule);
 var options = { name: "SubKit" };
 

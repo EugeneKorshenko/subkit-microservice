@@ -168,14 +168,12 @@ var consoleTemplate = require("./lib/template.js").init({
 	templatesPath: path.join(__dirname, "templates")
 });
 server.get("/console", function(req, res, next){
-	req.accepts('text/html');
 	consoleData = {
 		url: api.url,
 		apiKey: api.apiKey
 	};
 	consoleTemplate.render("console", consoleData, function(err, html){
 		res.contentType = 'text/html';
-		res.header('Content-Type', 'text/html');
 		res.write(html);
 		res.end();
 	})

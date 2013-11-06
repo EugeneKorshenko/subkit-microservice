@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Subkit Angular Console</title>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
+		<script src="/subkit.js"></script>
+		<script src="/angularsubkit.js"></script>
+	</head>
+	<body>
+		<div class="well" data-ng-app="chat" data-ng-controller="Chat">
+		  <form class="form-inline">
+		    Your name: <input type="text" data-ng-model="username">
+		  </form>
+		  <div data-ng-cloak data-ng-repeat="message in messages">
+		    <em>{{message.from}}: </em>{{message.content}}
+		  </div><br/>
+		  <form class="form-inline" data-ng-submit="addMessage()">
+		    <input type="text" data-ng-model="message" placeholder="Message...">
+		    <button class="btn" type="submit">
+		      <i class="icon-reply"> Send</i>
+		    </button>
+		  </form>
+		</div>
+
+		<script>
+		 	angular.module('chat', ['subkit']).controller('Chat', ['$scope', 'angularSubkit', function($scope, angularSubkit) {
+			    var subkit = new Subkit({
+					baseUrl: "@locals.url",
+					apiKey: "@locals.apiKey"
+				});
+				angularSubkit(subkit, $scope, "messages", []);
+				$scope.username = 'Guest' + Math.floor(Math.random()*101);
+				$scope.addMessage = function() {
+					subkit.set("messages/"+$scope.username, {
+						from: $scope.username,
+						content: $scope.message
+					});
+					$scope.message = "";
+				}
+			}]);
+		</script>
+	</body>
+</html>

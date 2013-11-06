@@ -20,7 +20,7 @@
 		</section>
 		<script>
 			var $ = function(e){ return document.getElementById(e); };
-			var subkit = new SubKit({
+			var subkit = new Subkit({
 				baseUrl: "@locals.url",
 				apiKey: "@locals.apiKey"
 			});

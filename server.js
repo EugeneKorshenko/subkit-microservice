@@ -1,3 +1,5 @@
+'use strict';
+
 var restify = require('restify'),
 	http = require('http'),
 	fs = require('fs'),
@@ -164,20 +166,34 @@ server.get(/subkit[-0-9.a-z]*.js/, restify.serveStatic({
 }));
 
 //public console
-var consoleTemplate = require("./lib/template.js").init({
+var renderer = require("./lib/template.js").init({
 	templatesPath: path.join(__dirname, "templates")
 });
 server.get("/console", function(req, res, next){
-	consoleData = {
+	var consoleData = {
 		url: api.url,
 		apiKey: api.apiKey
 	};
-	consoleTemplate.render("console", consoleData, function(err, html){
+	renderer.render("console", consoleData, function(err, html){
 		res.contentType = 'text/html';
 		res.write(html);
 		res.end();
-	})
+	});
 });
+
+server.get("/www/:name", function(req, res, next){
+	var templateName = req.params.name;
+	var consoleData = {
+		url: api.url,
+		apiKey: api.apiKey
+	};
+	renderer.render(templateName, consoleData, function(err, html){
+		res.contentType = 'text/html';
+		res.write(html);
+		res.end();
+	});
+});
+
 
 //start web server
 server.listen(app.port, function(){

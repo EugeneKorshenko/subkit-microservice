@@ -1,7 +1,7 @@
-var SubKit = function(config){
+var Subkit = function(config){
 	var self = this;
 
-	var UUID = function () {
+	self.UUID = function () {
 		// http://www.ietf.org/rfc/rfc4122.txt
 		var s = [];
 		var hexDigits = "0123456789abcdef";
@@ -274,9 +274,9 @@ var SubKit = function(config){
 	self.set = function(key, value, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 		var url = self.baseUrl + "/store/" + key;
-		var msg = self.options;
+		var msg = JSON.parse(JSON.stringify(self.options));
 		msg["data"] = value;
-		httpRequest.post(url, self.options, function(status, result){
+		httpRequest.post(url, msg, function(status, result){
 			if(status!==200) {
 				if(callback) changeStatus(result);
 			}else{
@@ -306,12 +306,16 @@ var SubKit = function(config){
 		_poll(channel, self.clientId, callback);
 	};
 
+	self.off = function(channel){
+		delete self.subscribed[channel];
+	}
+
 	var _poll = function(channel, clientId, callback) {
 		var subscribeUrl = self.baseUrl + "/subscribe/" + channel + "/" + clientId;
 		httpRequest.get(subscribeUrl, self.options, function(status, result){
 			if(status !== 200) {
 				callback({error:"subscription error - retry"});
-				setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 1000);
+				setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 250);
 			}else{
 				result.json().forEach(function(item){
 					callback(item.data);

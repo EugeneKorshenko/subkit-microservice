@@ -7,7 +7,7 @@
 	<body>
 		<script>
 			var subkit = new SubKit({
-				baseUrl: "http://@locals.url",
+				baseUrl: "https://@locals.url",
 				apiKey: "@locals.apiKey"
 			});
 

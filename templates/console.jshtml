@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Subkit Console</title>
+		<script src="subkit.js"></script>
+	</head>
+	<body>
+		<script>
+			var subkit = new SubKit({
+				baseUrl: "http://@locals.url",
+				apiKey: "@locals.apiKey"
+			});
+
+			subkit.on("heartbeat", function(data){
+				console.log(data);
+			});			
+		</script>
+	</body>
+</html>

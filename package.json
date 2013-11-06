@@ -12,7 +12,8 @@
     "underscore": "*",
     "commander": "*",
     "procstreams": "*",
-    "randomstring": "~1.0.2"
+    "randomstring": "~1.0.2",
+    "jshtml-express": "0.0.1"
   },
   "devDependencies": {
     "mocha": "*",

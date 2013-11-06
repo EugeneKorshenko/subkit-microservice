@@ -248,7 +248,7 @@ var Subkit = function(config){
 	var _init = function(clientId){
 		var clientId = localStorage.getItem("clientId");
 		if(!clientId) {
-			clientId = UUID();
+			clientId = self.UUID();
 			localStorage.setItem("clientId", clientId);
 		}
 		return clientId;

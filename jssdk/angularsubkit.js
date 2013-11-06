@@ -7,8 +7,8 @@ angular.module("subkit", []).value("Subkit", Subkit);
 angular.module("subkit").factory("angularSubkit", ["$q", "$parse", "$timeout",
   function($q, $parse, $timeout) {
     return function(ref, scope, name, initial) {
-      var af = new AngularSubkit($q, $parse, $timeout, ref);
-      return af.associate(scope, name, initial);
+      var ask = new AngularSubkit($q, $parse, $timeout, ref);
+      return ask.associate(scope, name, initial);
     };
   }
 ]);

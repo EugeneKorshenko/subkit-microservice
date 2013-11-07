@@ -24,16 +24,17 @@ var admin = nconf.get("admin"),
 
 //correct root path
 var storageModule = nconf.get("storageModule");
+var hooks = nconf.get("hooks");
 storageModule.dbPath = path.join(__dirname, storageModule.dbPath);
 storageModule.rightsPath = path.join(__dirname, storageModule.rightsPath);
 storageModule.tasksPath = path.join(__dirname, storageModule.tasksPath);
-
-var hooks = nconf.get("hooks");
 storageModule.hooks = hooks;
 
 var filesModule = nconf.get("filesModule");
 filesModule.filePath = path.join(__dirname, filesModule.filesPath);
 
+var s3Module = nconf.get("s3Module");
+var schedulerModule = nconf.get("schedulerModule");
 
 //init
 var	pubsub = require("messaging-module").init({pollInterval: 1});
@@ -64,7 +65,7 @@ server.use(restify.fullResponse());
 server.use(restify.authorizationParser());
 server.use(restify.dateParser());
 server.use(restify.queryParser());
-server.use(restify.gzipResponse());
+// server.use(restify.gzipResponse());
 
 //etag
 server.use(function (req, res, next) {
@@ -208,3 +209,4 @@ require("./lib/store.js").init(server, storage, helper);
 require("./lib/tasks.js").init(server, storage, storageModule, helper);
 require("./lib/pubsub.js").init(server, pubsub, storage, helper);
 require("./lib/file.js").init(server, filesModule, helper);
+require("./lib/s3.js").init(server, s3Module, helper);

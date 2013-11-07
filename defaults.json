@@ -23,17 +23,18 @@
     }
   },
   "storageModule": {
-      "dbPath":"./testdb",
-      "rightsPath":"./rights.json",
-      "tasksPath":"./tasks",
-      "backupPath":"./backups"
+    "dbPath":"./testdb",
+    "rightsPath":"./rights.json",
+    "tasksPath":"./tasks",
+    "backupPath":"./backups"
   },
   "filesModule": {
-      "filesPath":"./files"
+    "filesPath":"./files"
   },
-  "awsModule": {
-      "key":"",
-      "secret":""
+  "s3Module": {
+    "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",
+    "secretAccessKey": "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",
+    "region": "eu-west-1"
   },
   "schedulerModule": {
 

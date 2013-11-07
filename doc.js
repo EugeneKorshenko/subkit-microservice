@@ -445,4 +445,90 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
+
+	var files_doc = swagger.createResource("/docs/files",  {description: "Files distribution."});
+	files_doc.models.Value = {
+	};
+	files_doc.get("/files", "Receive a list of files.", {
+	    nickname: "getFiles",
+		responseClass: "List[string]",
+		parameters: [],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+
+	var file_doc = swagger.createResource("/docs/file",  {description: "File distribution."});
+	file_doc.models.Value = {
+	};
+	file_doc.post("/file/upload", "upload a file", {
+	    nickname: "uploadFile",
+		responseClass: "",
+		parameters: [],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	file_doc.post("/file/upload/{name}", "upload a file", {
+	    nickname: "uploadFile",
+		responseClass: "",
+		supportedContentTypes: ["application/octed-stream"],
+		parameters: [
+			{name: "name", description: "file name", required:true, dataType: "string", paramType: "path"},
+			{name: "data", description: "data", required:true, dataType: "string", paramType: "body"}
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	file_doc.put("/file/upload/{name}", "upload a file", {
+	    nickname: "uploadFile",
+		responseClass: "",
+		supportedContentTypes: ["application/octed-stream"],
+		parameters: [
+			{name: "name", description: "file name", required:true, dataType: "string", paramType: "path"},
+			{name: "data", description: "data", required:true, dataType: "string", paramType: "body"}
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	file_doc.get("/file/download/{name}", "download a file", {
+	    nickname: "downloadFile",
+		responseClass: "",
+		parameters: [
+			{name: "name", description: "file name", required:true, dataType: "string", paramType: "path"}
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	file_doc.delete("/file/{name}", "delete a file", {
+	    nickname: "deleteFile",
+		responseClass: "",
+		parameters: [
+			{name: "name", description: "file name", required:true, dataType: "string", paramType: "path"}
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
 }

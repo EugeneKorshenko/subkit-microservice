@@ -299,6 +299,19 @@ var Subkit = function(config){
 		});
 	}
 
+	self.push = function(channel, value, callback){
+		var url = self.baseUrl + "/channel/publish/" + channel;
+		var msg = JSON.parse(JSON.stringify(self.options));
+		msg["data"] = value;
+		httpRequest.post(url, msg, function(status, result){
+			if(status!==200) {
+				if(callback) changeStatus(result);
+			}else{
+				if(callback) callback(null, result.json());
+			}
+		});
+	}
+
 	self.on = function(channel, callback) {
 		channel = channel.replace("/", "_");
 		self.subscribed[channel] = true;
@@ -310,6 +323,9 @@ var Subkit = function(config){
 			},
 			set: function(key, value, callback){
 				self.set(channel+"/"+key, value, callback);
+			},
+			push: function(value, callback){
+				self.push(channel, value, callback);
 			}
 		}
 	};

@@ -5,11 +5,13 @@
 		<script src="/subkit.js"></script>
 	</head>
 	<body>
+		<h2>Subscribe to Backend Heartbeat</h2>
 		<section>
 			<button id="heartbeatSubscribe">Heartbeat Subscribe</button>
 			<label id="heartbeatSubscribeOutput"></label>
 		</section>
 		<br>
+		<h2>Real-Time Storage</h2>
 		<section>
 			<button id="simpleSetSubscribe">Simple 'names' Subscribe</button>
 			<label id="simpleSetOutput">empty</label>
@@ -18,19 +20,28 @@
 				<button id="simpleSet">Simple set into 'names'</button>
 			</div>
 		</section>
+		<h2>Pub/Sub</h2>
+		<section>
+			<button id="simplePubSubSubscribe">Subscribe</button>
+			<label id="simplePubSubOutput">empty</label>
+			<div>
+				<input type="text" id="simplePubSubInput">
+				<button id="simplePubSubPush">Push Data</button>
+			</div>
+		</section>
 		<script>
 			var $ = function(e){ return document.getElementById(e); };
 			var subkit = new Subkit({
 				baseUrl: "@locals.url",
 				apiKey: "@locals.apiKey"
 			});
-
+			//Subscribe to Backend Heartbeat
 			$("heartbeatSubscribe").addEventListener("click", function(){
 				subkit.on("heartbeat", function(data){
 					$("heartbeatSubscribeOutput").innerText = data;
 				});
 			});
-
+			//Real-Time Storage
 			$("simpleSetSubscribe").addEventListener("click", function(){
 				subkit.on("names", function(data){
 					$("simpleSetOutput").innerText = data.value.name;
@@ -39,6 +50,16 @@
 			$("simpleSet").addEventListener("click", function(){
 				var value = $("simpleNameInput").value;
 				subkit.set("names/1", {name: value});
+			});
+			//Pub/Sub
+			$("simplePubSubSubscribe").addEventListener("click", function(){
+				subkit.on("pubsub", function(data){
+					$("simplePubSubOutput").innerText = data.value;
+				});
+			});
+			$("simplePubSubPush").addEventListener("click", function(){
+				var value = $("simplePubSubInput").value;
+				subkit.push("pubsub", {value: value});
 			});
 		</script>
 	</body>

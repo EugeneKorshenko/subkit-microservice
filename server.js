@@ -24,11 +24,16 @@ var admin = nconf.get("admin"),
 
 //correct root path
 var storageModule = nconf.get("storageModule");
-var hooks = nconf.get("hooks");
 storageModule.dbPath = path.join(__dirname, storageModule.dbPath);
 storageModule.rightsPath = path.join(__dirname, storageModule.rightsPath);
 storageModule.tasksPath = path.join(__dirname, storageModule.tasksPath);
+
+var hooks = nconf.get("hooks");
 storageModule.hooks = hooks;
+
+var filesModule = nconf.get("filesModule");
+filesModule.filePath = path.join(__dirname, filesModule.filesPath);
+
 
 //init
 var	pubsub = require("messaging-module").init({pollInterval: 1});
@@ -202,3 +207,4 @@ require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
 require("./lib/tasks.js").init(server, storage, storageModule, helper);
 require("./lib/pubsub.js").init(server, pubsub, storage, helper);
+require("./lib/file.js").init(server, filesModule, helper);

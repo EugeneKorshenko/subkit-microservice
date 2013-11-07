@@ -13,20 +13,20 @@
 		<br>
 		<h2>Real-Time Storage</h2>
 		<section>
-			<button id="simpleSetSubscribe">Simple 'names' Subscribe</button>
+			<button id="simpleSetSubscribe">Subscribe to 'names' store</button>
 			<label id="simpleSetOutput">empty</label>
 			<div>
 				<input type="text" id="simpleNameInput">
-				<button id="simpleSet">Simple set into 'names'</button>
+				<button id="simpleSet">Set value in 'names' store</button>
 			</div>
 		</section>
 		<h2>Pub/Sub</h2>
 		<section>
-			<button id="simplePubSubSubscribe">Subscribe</button>
+			<button id="simplePubSubSubscribe">Subscribe to Channel</button>
 			<label id="simplePubSubOutput">empty</label>
 			<div>
 				<input type="text" id="simplePubSubInput">
-				<button id="simplePubSubPush">Push Data</button>
+				<button id="simplePubSubPush">Push Data to Channel</button>
 			</div>
 		</section>
 		<script>

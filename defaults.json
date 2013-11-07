@@ -15,9 +15,6 @@
     "ip": "127.0.0.1",
     "port": 8080
   },
-  "schedule": {
-
-  },
   "hooks": {
     "error":{
       "url": "http://localhost:8080",
@@ -30,5 +27,15 @@
       "rightsPath":"./rights.json",
       "tasksPath":"./tasks",
       "backupPath":"./backups"
+  },
+  "filesModule": {
+      "filesPath":"./files"
+  },
+  "awsModule": {
+      "key":"",
+      "secret":""
+  },
+  "schedulerModule": {
+
   }
 }

@@ -28,10 +28,11 @@
 					baseUrl: "@locals.url",
 					apiKey: "@locals.apiKey"
 				});
-				angularSubkit(subkit, $scope, "messages", []);
+				var $messages = angularSubkit(subkit, $scope, "messages", []);
+				console.log($messages);
 				$scope.username = 'Guest' + Math.floor(Math.random()*101);
 				$scope.addMessage = function() {
-					subkit.set("messages/"+$scope.username, {
+					$messages.set($scope.username, {
 						from: $scope.username,
 						content: $scope.message
 					});

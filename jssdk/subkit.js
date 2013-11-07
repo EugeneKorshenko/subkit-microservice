@@ -303,25 +303,36 @@ var Subkit = function(config){
 		channel = channel.replace("/", "_");
 		self.subscribed[channel] = true;
 		changeStatus("subscribed to " + channel);
-		_poll(channel, self.clientId, callback);
+		var pollingRef = _poll(channel, self.clientId, callback);
+		return {
+			off: function(){
+				self.off(channel, pollingRef);
+			},
+			set: function(key, value, callback){
+				self.set(channel+"/"+key, value, callback);
+			}
+		}
 	};
 
-	self.off = function(channel){
+	self.off = function(channel, pollingRef){
 		delete self.subscribed[channel];
+		clearTimeout(pollingRef);
 	}
 
 	var _poll = function(channel, clientId, callback) {
+		var intervalRef = null;
 		var subscribeUrl = self.baseUrl + "/subscribe/" + channel + "/" + clientId;
 		httpRequest.get(subscribeUrl, self.options, function(status, result){
 			if(status !== 200) {
 				callback({error:"subscription error - retry"});
-				setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 250);
+				intervalRef = setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 250);
 			}else{
 				result.json().forEach(function(item){
 					callback(item.data);
 				});
-				setTimeout(function(){ if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 0);	
+				intervalRef = setTimeout(function(){ if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 0);	
 			}
 		});
+		return intervalRef;
 	};
 }

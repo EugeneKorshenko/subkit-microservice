@@ -31,7 +31,7 @@ AngularSubkit.prototype = {
     var deferred = this._q.defer();
     if(!$scope[name]) $scope[name] = initial;
 
-    this._fRef.on(name, function(data) {
+    return this._fRef.on(name, function(data) {
       if(initial instanceof Array) $scope[name].push(data.value);
       else if(initial instanceof Object) $scope[name] = data.value;
       $scope.$apply();

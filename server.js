@@ -169,18 +169,6 @@ server.get(/subkit[-0-9.a-z]*.js/, restify.serveStatic({
 var renderer = require("./lib/template.js").init({
 	templatesPath: path.join(__dirname, "templates")
 });
-server.get("/console", function(req, res, next){
-	var consoleData = {
-		url: api.url,
-		apiKey: api.apiKey
-	};
-	renderer.render("console", consoleData, function(err, html){
-		res.contentType = 'text/html';
-		res.write(html);
-		res.end();
-	});
-});
-
 server.get("/www/:name", function(req, res, next){
 	var templateName = req.params.name;
 	var consoleData = {

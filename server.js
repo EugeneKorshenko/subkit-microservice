@@ -76,48 +76,48 @@ server.use(function (req, res, next) {
 server.use(restify.conditionalRequest());
 
 //custom before / after code 
-server.use(function customHandler(req, res, next) {
-	if(req.route.method === "OPTIONS") return next();
+// server.use(function customHandler(req, res, next) {
+// 	if(req.route.method === "OPTIONS") return next();
 
-	var ctx = function(statusCode, body) {
-		return {
-			url:req.url,
-			params: req.params,
-			contentType:req.headers["content-type"],
-			method:req.route.method,
-			versions:req.route.versions,
-			userAgent:req.headers["user-agent"],
-			authorization: req.headers["authorization"] || "None",
-			contentLength:req.headers["content-length"] || "0",
-			remoteAddress: req.connection.remoteAddress,
-			username: req.username,
-			statusCode: statusCode || null,
-			body: body || null
-		}
-	}
-    var send = res.send;
-    res.send = function(statusCode, body, headers){
-    	res.send = send;
-   		var obj = ctx(statusCode, body);
-		var task = storage.task("after", obj, function(error){
-			if(error)
-				obj.body = JSON.stringify(error.toString());
-		});
-		task();
-		res.send(obj.statusCode || 500 , obj.body, headers);
-    }
+// 	var ctx = function(statusCode, body) {
+// 		return {
+// 			url:req.url,
+// 			params: req.params,
+// 			contentType:req.headers["content-type"],
+// 			method:req.route.method,
+// 			versions:req.route.versions,
+// 			userAgent:req.headers["user-agent"],
+// 			authorization: req.headers["authorization"] || "None",
+// 			contentLength:req.headers["content-length"] || "0",
+// 			remoteAddress: req.connection.remoteAddress,
+// 			username: req.username,
+// 			statusCode: statusCode || null,
+// 			body: body || null
+// 		}
+// 	}
+//     var send = res.send;
+//     res.send = function(statusCode, body, headers){
+//     	res.send = send;
+//    		var obj = ctx(statusCode, body);
+// 		var task = storage.task("after", obj, function(error){
+// 			if(error)
+// 				obj.body = JSON.stringify(error.toString());
+// 		});
+// 		task();
+// 		res.send(obj.statusCode || 500 , obj.body, headers);
+//     }
 
-	var obj = ctx();
-	var fail;
-	var task = storage.task("before", obj, function(error){
-		if(error) {
-			fail = error;
-			res.send(obj.statusCode || 500, JSON.stringify(error.toString()));
-		};
-	});
-	task();
-	if(!fail) next();
-});
+// 	var obj = ctx();
+// 	var fail;
+// 	var task = storage.task("before", obj, function(error){
+// 		if(error) {
+// 			fail = error;
+// 			res.send(obj.statusCode || 500, JSON.stringify(error.toString()));
+// 		};
+// 	});
+// 	task();
+// 	if(!fail) next();
+// });
 
 //CORS
 server.opts(/\.*/, function (req, res, next) {

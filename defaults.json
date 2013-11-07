@@ -29,7 +29,9 @@
     "backupPath":"./backups"
   },
   "filesModule": {
-    "filesPath":"./files"
+    "rightsPath":"./rights.json",
+    "filesPath":"./files",
+    "backupPath":"./backups"
   },
   "s3Module": {
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",
@@ -37,6 +39,20 @@
     "region": "eu-west-1"
   },
   "schedulerModule": {
+
+  },
+  "tasksModule":{
+    "rightsPath":"./rights.json",
+    "tasksPath":"./tasks",
+    "backupPath":"./backups"
+  },
+  "emailModule": {
+
+  },
+  "pushModule": {
+
+  },
+  "geolocationModule": {
 
   }
 }

@@ -23,22 +23,23 @@ var admin = nconf.get("admin"),
 	lastModified = null;
 
 //correct root path
-var storageModule = nconf.get("storageModule");
+var storageConfig = nconf.get("storageModule");
 var hooks = nconf.get("hooks");
-storageModule.dbPath = path.join(__dirname, storageModule.dbPath);
-storageModule.rightsPath = path.join(__dirname, storageModule.rightsPath);
-storageModule.tasksPath = path.join(__dirname, storageModule.tasksPath);
-storageModule.hooks = hooks;
+storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
+storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
+storageConfig.tasksPath = path.join(__dirname, storageConfig.tasksPath);
+storageConfig.hooks = hooks;
 
-var filesModule = nconf.get("filesModule");
-filesModule.filePath = path.join(__dirname, filesModule.filesPath);
+var filesConfig = nconf.get("filesModule");
+filesConfig.filePath = path.join(__dirname, filesConfig.filesPath);
 
-var s3Module = nconf.get("s3Module");
-var schedulerModule = nconf.get("schedulerModule");
+var s3Config = nconf.get("s3Module");
+var schedulerConfig = nconf.get("schedulerModule");
 
 //init
 var	pubsub = require("messaging-module").init({pollInterval: 1});
-var storage = require('storage-module').init(storageModule);
+var storage = require('storage-module').init(storageConfig);
+var es = require('./lib/eventsource-module.js').init(storage, pubsub);
 var options = { name: "SubKit" };
 
 //configure HTTPS/SSL
@@ -206,7 +207,8 @@ require('./doc').configure(server, {
 });
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
-require("./lib/tasks.js").init(server, storage, storageModule, helper);
-require("./lib/pubsub.js").init(server, pubsub, storage, helper);
-require("./lib/file.js").init(server, filesModule, helper);
-require("./lib/s3.js").init(server, s3Module, helper);
+require("./lib/tasks.js").init(server, storage, storageConfig, helper);
+require("./lib/pubsub.js").init(server, pubsub, storage, es, helper);
+require("./lib/file.js").init(server, filesConfig, helper);
+require("./lib/s3.js").init(server, s3Config, helper);
+require("./lib/eventsource.js").init(server, es, helper);

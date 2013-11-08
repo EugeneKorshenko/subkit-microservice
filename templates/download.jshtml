@@ -3,7 +3,7 @@
 <head>
 </head>
 <body>
-	<a href="itms-services://?action=download-manifest&url=http://try.subkit.io/file/download/ePortrait.plist?apiKey=540b16c1-f056-41f4-9a94-eeaf274d8c92">
+	<a href="itms-services://?action=download-manifest&url=http://try.subkit.io/file/download/ePortrait.plist">
   	Download ePortrait
 	</a>
 </body>

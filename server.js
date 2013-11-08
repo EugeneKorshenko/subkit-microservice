@@ -66,7 +66,7 @@ server.use(restify.fullResponse());
 server.use(restify.authorizationParser());
 server.use(restify.dateParser());
 server.use(restify.queryParser());
-// server.use(restify.gzipResponse());
+server.use(restify.gzipResponse());
 
 //etag
 server.use(function (req, res, next) {

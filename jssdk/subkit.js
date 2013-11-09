@@ -294,12 +294,24 @@ var Subkit = function(config){
 		var url = self.baseUrl + "/" + key;
 		httpRequest.get(url, self.options, function(status, result){
 			if(status !== 200) {
-				callback(result);
+				if(callback) callback(result);
 			}else{
-				callback(null, result.json());
+				if(callback) callback(null, result.json());
 			}
 		});
-	}
+	};
+
+	self.remove = function(key, callback){
+		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
+		var url = self.baseUrl + "/" + key;
+		httpRequest.del(url, self.options, function(status, result){
+			if(status !== 200) {
+				if(callback) callback(result);
+			}else{
+				if(callback) callback(null, result.json());
+			}
+		});
+	};
 
 	self.push = function(channel, value, callback){
 		var url = self.baseUrl + "/channel/publish/" + channel;
@@ -312,7 +324,7 @@ var Subkit = function(config){
 				if(callback) callback(null, result.json());
 			}
 		});
-	}
+	};
 
 	self.on = function(channel, callback) {
 		channel = channel.replace("/", "_");

@@ -11,7 +11,7 @@
 		  <h2>Files</h2>
 		  <button data-ng-click="getFiles()"><i>Refresh</i></button>
 		  <div data-ng-cloak data-ng-repeat="file in files">
-		    <em>{{file}}</em>
+		    <a href="@locals.url/file/download/{{file}}?apiKey=@locals.apiKey" target="_blank"><em>{{file}}</em></a><button data-ng-click="deleteFile(file)"><i>del</i></button>
 		  </div>
 		  <br/>
 		  <form data-ng-submit="uploadFile">
@@ -34,6 +34,10 @@
 						$scope.files = data;
 						$scope.$apply();
 					});
+				};
+				$scope.deleteFile = function(file){
+					subkit.remove("file/" + file);
+					$scope.getFiles();
 				};
 			}]);
 		</script>

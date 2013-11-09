@@ -339,10 +339,10 @@ var Subkit = function(config){
 		msg["data"] = file;
 		var url = self.baseUrl + "/file/upload/" + file.name;
 		httpRequest.post(url, msg, function(status, result){
-			if(status!==200) {
+			if(status!==201) {
 				if(callback) changeStatus(result);
 			}else{
-				if(callback) callback(null, result.json());
+				if(callback) callback();
 			}
 		});
 

@@ -33,6 +33,7 @@ storageConfig.hooks = hooks;
 
 var filesConfig = nconf.get("filesModule");
 filesConfig.filesPath = path.join(__dirname, filesConfig.filesPath);
+filesConfig.rightsPath = path.join(__dirname, filesConfig.rightsPath);
 
 var s3Config = nconf.get("s3Module");
 var schedulerConfig = nconf.get("schedulerModule");

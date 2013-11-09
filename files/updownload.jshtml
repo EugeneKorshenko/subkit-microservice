@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Subkit Angular Files</title>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
+		<script src="/subkit.js"></script>
+		<script src="/angularsubkit.js"></script>
+	</head>
+<body>
+		<div data-ng-app="files" data-ng-controller="Files">
+		  <h2>Up- / Download Files</h2>
+		  <button data-ng-click="getFiles()"><i>Refresh</i></button>
+		  <div data-ng-cloak data-ng-repeat="file in files">
+		    <a href="@locals.url/file/download/{{file}}?apiKey=@locals.apiKey" target="_blank"><em>{{file}}</em></a><button data-ng-click="deleteFile(file)"><i>del</i></button>
+		  </div>
+		  <br/>
+		  <input type="file" multiple>
+		</div>
+
+		<script>
+			var subkit = new Subkit({ baseUrl: "@locals.url", apiKey: "@locals.apiKey" });
+			$('input[type="file"]').on('change', function(e) {
+				for (var i = 0; i < this.files.length; i++) {
+					console.log(this.files[i]);
+					subkit.upload(this.files[i], function(err, data){});
+				};
+			});
+
+		 	angular.module('files', ['subkit']).controller('Files', ['$scope', 'angularSubkit', function($scope, angularSubkit) {
+			    
+				$scope.getFiles = function() {
+					subkit.get("files", function(err, data){
+						$scope.files = data;
+						$scope.$apply();
+					});
+				};
+				$scope.deleteFile = function(file){
+					subkit.remove("file/" + file);
+					$scope.getFiles();
+				};
+			}]);
+		</script>
+</body>
+</html>

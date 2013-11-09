@@ -179,7 +179,7 @@ server.get(/subkit[-0-9.a-z]*.js/, restify.serveStatic({
 
 //public console
 var renderer = require("./lib/template.js").init({
-	templatesPath: path.join(__dirname, "templates")
+	templatesPath: path.join(__dirname, "files")
 });
 server.get("/www/:name", function(req, res, next){
 	var templateName = req.params.name;

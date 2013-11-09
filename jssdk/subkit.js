@@ -333,7 +333,7 @@ var Subkit = function(config){
 	self.upload = function(file, callback){
 		var msg = JSON.parse(JSON.stringify(self.options));
 		msg.headers = {
-		  'Content-Type': 'application/octed-stream; charset=utf-8',
+		  'Content-Type': 'application/octed-stream',
 		  apiKey: config.apiKey
 		};
 		msg["data"] = file;

@@ -9,7 +9,7 @@
 	</head>
 <body>
 		<div data-ng-app="files" data-ng-controller="Files">
-		  <h2>Files</h2>
+		  <h2>Up- / Download Files</h2>
 		  <button data-ng-click="getFiles()"><i>Refresh</i></button>
 		  <div data-ng-cloak data-ng-repeat="file in files">
 		    <a href="@locals.url/file/download/{{file}}?apiKey=@locals.apiKey" target="_blank"><em>{{file}}</em></a><button data-ng-click="deleteFile(file)"><i>del</i></button>

@@ -326,6 +326,22 @@ var Subkit = function(config){
 		});
 	};
 
+	self.upload = function(file, callback){
+		var msg = JSON.parse(JSON.stringify(self.options));
+		var formData = new FormData();
+		formData.append("file", file);
+		msg["data"] = formData;
+		var url = self.baseUrl + "/file/upload/" + file.name;
+		httpRequest.post(url, msg, function(status, result){
+			if(status!==200) {
+				if(callback) changeStatus(result);
+			}else{
+				if(callback) callback(null, result.json());
+			}
+		});
+
+	};
+
 	self.on = function(channel, callback) {
 		channel = channel.replace("/", "_");
 		self.subscribed[channel] = true;

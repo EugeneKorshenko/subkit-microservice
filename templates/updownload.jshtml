@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Subkit Angular Files</title>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
 		<script src="/subkit.js"></script>
 		<script src="/angularsubkit.js"></script>
@@ -14,21 +15,23 @@
 		    <a href="@locals.url/file/download/{{file}}?apiKey=@locals.apiKey" target="_blank"><em>{{file}}</em></a><button data-ng-click="deleteFile(file)"><i>del</i></button>
 		  </div>
 		  <br/>
-		  <form data-ng-submit="uploadFile">
-		    <input type="file">
-		    <button type="submit"><i>Send</i></button>
-		  </form>
+		  <input type="file">
 		</div>
 
 		<script>
-		 	angular.module('files', ['subkit']).controller('Files', ['$scope', 'angularSubkit', function($scope, angularSubkit) {
-			    var subkit = new Subkit({
-					baseUrl: "@locals.url",
-					apiKey: "@locals.apiKey"
+			var subkit = new Subkit({ baseUrl: "@locals.url", apiKey: "@locals.apiKey" });
+
+			$('input[type="file"]').on('change', function(e) {
+				var file = this.files[0];
+				subkit.upload(file, function(err, data){
+					console.log(err);
+					console.log(data);
 				});
+			});
+
+		 	angular.module('files', ['subkit']).controller('Files', ['$scope', 'angularSubkit', function($scope, angularSubkit) {
+			    
 				// var files = angularSubkit(subkit, $scope, "files", []);
-				$scope.uploadFile = function() {
-				};
 				$scope.getFiles = function() {
 					subkit.get("files", function(err, data){
 						$scope.files = data;
@@ -41,10 +44,5 @@
 				};
 			}]);
 		</script>
-
-
-	<a href="itms-services://?action=download-manifest&url=http://try.subkit.io/file/download/ePortrait.plist">
-  	Download plist
-	</a>
 </body>
 </html>

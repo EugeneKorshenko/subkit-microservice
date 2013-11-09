@@ -38,7 +38,7 @@
 			//Subscribe to Backend Heartbeat
 			$("heartbeatSubscribe").addEventListener("click", function(){
 				subkit.on("heartbeat", function(data){
-					$("heartbeatSubscribeOutput").innerText = data;
+					$("heartbeatSubscribeOutput").innerText = data.value;
 				});
 			});
 			//Real-Time Storage

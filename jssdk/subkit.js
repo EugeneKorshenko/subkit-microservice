@@ -1,3 +1,4 @@
+'use strict';
 var Subkit = function(config){
 	var self = this;
 
@@ -258,7 +259,10 @@ var Subkit = function(config){
     self.options = { 
     	apiKey: config.apiKey || "",
     	username: config.username || "",
-    	password: config.password || ""
+    	password: config.password || "",
+    	headers : {
+    		'content-type': 'application/json'
+    	}
     };
 
 	var statusListeners = [];

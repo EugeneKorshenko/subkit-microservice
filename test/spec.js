@@ -126,7 +126,7 @@ describe('service: storage', function(){
         client.get('/stores', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
-          assert.equal(data.length, 6);
+          assert.equal(data.length, 7);
 
           done();
         });
@@ -300,7 +300,7 @@ describe('service: storage', function(){
       client.get('/manage/export', function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 200);
-        assert.equal(data.length, 18);
+        assert.equal(data.length, 38);
         done();
       });
     });

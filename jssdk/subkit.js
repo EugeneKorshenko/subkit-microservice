@@ -117,7 +117,6 @@ var Subkit = function(config){
 		  options = {};
 		}
 		options.cache = options.cache || false;
-		options.data = options.data || {};
 		options.headers = options.headers || {};
 		options.jsonp = options.jsonp || false;
 
@@ -127,11 +126,13 @@ var Subkit = function(config){
 		  'apiKey': options.apiKey,
 		}, ajax.headers, options.headers);
 
-		var payload;
-		if (headers['content-type'] === 'application/json') {
-		  payload = JSON.stringify(options.data);
-		} else {
-		  payload = encodeUsingUrlEncoding(options.data);      
+		if(options.data) {
+			var payload;
+			if (headers['content-type'] === 'application/json') {
+			  payload = JSON.stringify(options.data);
+			} else {
+			  payload = encodeUsingUrlEncoding(options.data);      
+			}
 		}
 
 		if(method === 'GET') {
@@ -264,7 +265,6 @@ var Subkit = function(config){
     		'content-type': 'application/json'
     	}
     };
-
 	var statusListeners = [];
 	self.subscribed = {};
 	
@@ -291,14 +291,12 @@ var Subkit = function(config){
 
 	self.get = function(key, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/store/" + key;
+		var url = self.baseUrl + "/" + key;
 		httpRequest.get(url, self.options, function(status, result){
 			if(status !== 200) {
 				callback(result);
 			}else{
-				result.json().forEach(function(item){
-					callback(item.data);
-				});
+				callback(null, result.json());
 			}
 		});
 	}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Subkit Angular Files</title>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
+		<script src="/subkit.js"></script>
+		<script src="/angularsubkit.js"></script>
+	</head>
+<body>
+		<div data-ng-app="files" data-ng-controller="Files">
+		  <h2>Files</h2>
+		  <button data-ng-click="getFiles()"><i>Refresh</i></button>
+		  <div data-ng-cloak data-ng-repeat="file in files">
+		    <em>{{file}}</em>
+		  </div>
+		  <br/>
+		  <form data-ng-submit="uploadFile">
+		    <input type="file">
+		    <button type="submit"><i>Send</i></button>
+		  </form>
+		</div>
+
+		<script>
+		 	angular.module('files', ['subkit']).controller('Files', ['$scope', 'angularSubkit', function($scope, angularSubkit) {
+			    var subkit = new Subkit({
+					baseUrl: "@locals.url",
+					apiKey: "@locals.apiKey"
+				});
+				// var files = angularSubkit(subkit, $scope, "files", []);
+				$scope.uploadFile = function() {
+				};
+				$scope.getFiles = function() {
+					subkit.get("files", function(err, data){
+						$scope.files = data;
+						$scope.$apply();
+					});
+				};
+			}]);
+		</script>
+
+
+	<a href="itms-services://?action=download-manifest&url=http://try.subkit.io/file/download/ePortrait.plist">
+  	Download plist
+	</a>
+</body>
+</html>

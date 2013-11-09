@@ -22,6 +22,7 @@ var admin = nconf.get("admin"),
 	etag = null,
 	lastModified = null;
 
+
 //correct root path
 var storageConfig = nconf.get("storageModule");
 var hooks = nconf.get("hooks");
@@ -37,6 +38,8 @@ var s3Config = nconf.get("s3Module");
 var schedulerConfig = nconf.get("schedulerModule");
 
 //init
+if(!fs.existsSync(storageConfig.rightsPath))
+	fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');
 var	pubsub = require("messaging-module").init({pollInterval: 1});
 var storage = require('storage-module').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);

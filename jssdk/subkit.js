@@ -122,15 +122,19 @@ var Subkit = function(config){
 
 		var headers = mergeHeaders({
 		  'accept': '*/*',
-		  'content-type': 'application/x-www-form-urlencoded;charset=UTF-8',
+		  'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
 		  'apiKey': options.apiKey,
 		}, ajax.headers, options.headers);
 
 		if(options.data) {
 			var payload;
-			if (headers['content-type'] === 'application/json') {
+			if (headers['Content-Type'] === 'application/json') {
 			  payload = JSON.stringify(options.data);
-			} else {
+			} 
+			else if(headers['Content-Type'].indexOf('application/octed-stream') !== -1){
+			  payload = options.data;
+			}
+			else {
 			  payload = encodeUsingUrlEncoding(options.data);      
 			}
 		}
@@ -262,7 +266,7 @@ var Subkit = function(config){
     	username: config.username || "",
     	password: config.password || "",
     	headers : {
-    		'content-type': 'application/json'
+    		'Content-Type': 'application/json'
     	}
     };
 	var statusListeners = [];
@@ -328,9 +332,11 @@ var Subkit = function(config){
 
 	self.upload = function(file, callback){
 		var msg = JSON.parse(JSON.stringify(self.options));
-		var formData = new FormData();
-		formData.append("file", file);
-		msg["data"] = formData;
+		msg.headers = {
+		  'Content-Type': 'application/octed-stream; charset=utf-8',
+		  apiKey: config.apiKey
+		};
+		msg["data"] = file;
 		var url = self.baseUrl + "/file/upload/" + file.name;
 		httpRequest.post(url, msg, function(status, result){
 			if(status!==200) {

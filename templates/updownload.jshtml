@@ -15,18 +15,16 @@
 		    <a href="@locals.url/file/download/{{file}}?apiKey=@locals.apiKey" target="_blank"><em>{{file}}</em></a><button data-ng-click="deleteFile(file)"><i>del</i></button>
 		  </div>
 		  <br/>
-		  <input type="file">
+		  <input type="file" multiple>
 		</div>
 
 		<script>
 			var subkit = new Subkit({ baseUrl: "@locals.url", apiKey: "@locals.apiKey" });
 
 			$('input[type="file"]').on('change', function(e) {
-				var file = this.files[0];
-				subkit.upload(file, function(err, data){
-					console.log(err);
-					console.log(data);
-				});
+				for (var i = 0; i < this.files.length; i++) {
+					subkit.upload(this.files[i], function(err, data){});
+				};
 			});
 
 		 	angular.module('files', ['subkit']).controller('Files', ['$scope', 'angularSubkit', function($scope, angularSubkit) {

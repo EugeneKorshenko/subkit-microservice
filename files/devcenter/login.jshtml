@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html data-ng-app="login">
+	<head>
+		<title>Subkit Login</title>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
+		<script src="/subkit.js"></script>
+		<script src="/angularsubkit.js"></script>
+	</head>
+	<body data-ng-controller="Login">
+		<input type="text" data-ng-model="username">
+		<input type="text" data-ng-model="password">
+		<div data-ng-bind="errorMsg"></div>
+		<button data-ng-click="login()">login</button>
+		<script>
+		 	angular.module('login', ['subkit']).controller('Login', ['$scope', 'angularSubkit', function($scope, angularSubkit) {
+			    $scope.login = function(){
+			    	var subkit = new Subkit({ baseUrl: "@locals.url", username: $scope.username, password: $scope.password });
+			    	subkit.login(function(error, data){
+			    		if(error){
+			    			$scope.errorMsg = error;
+			    			$scope.$apply();
+			    		}
+			    		if(!error) window.location.href = data.devCenterUrl;
+			    		
+			    	});
+			    };
+			}]);
+		</script>
+</body>
+</html>

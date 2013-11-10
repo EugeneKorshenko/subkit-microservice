@@ -279,6 +279,27 @@ var Subkit = function(config){
 		});
 	};
 
+	self.login = function(callback){
+		var url = self.baseUrl + "/manage/login";
+		httpRequest.authBasic(self.options.username, self.options.password);
+		httpRequest.post(url, self.options, function(status, result){
+			if(status !== 200){
+				if(callback) callback("auth error");
+			}
+			else {
+				self.options.apiKey = result.json().api.apiKey;
+				var result = {
+					apiKey: self.options.apiKey,
+					username: self.options.username,
+					password: self.options.password,
+					baseUrl: self.baseUrl,
+					devCenterUrl: self.baseUrl + "/devcenter/index"
+				}
+				if(callback) callback(null, result);
+			}
+		});
+	};
+
 	self.set = function(key, value, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 		var url = self.baseUrl + "/store/" + key;
@@ -345,7 +366,6 @@ var Subkit = function(config){
 				if(callback) callback();
 			}
 		});
-
 	};
 
 	self.on = function(channel, callback) {

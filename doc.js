@@ -48,12 +48,12 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	var mr_doc = swagger.createResource("/docs/run",  {description: "Run task operations"});
+	var mr_doc = swagger.createResource("/docs/job",  {description: "Run task operations"});
 	mr_doc.models.Value = {
 		id: "Value",
 		properties: {}
 	};
-	mr_doc.get("/run/schema", "Load JSON schema for specified store name.", {
+	mr_doc.get("/job/schema", "Load JSON schema for specified store name.", {
 	    nickname: "getSchema",
 		responseClass: "Value",
 		parameters: [
@@ -66,7 +66,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	mr_doc.get("/run/{name}", "Execute task script by name.", {
+	mr_doc.get("/job/{name}", "Execute task script by name.", {
 	    nickname: "run",
 	    responseClass: "Value",
 		parameters: [
@@ -79,7 +79,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	mr_doc.post("/run/{name}", "Execute task script by name.", {
+	mr_doc.post("/job/{name}", "Execute task script by name.", {
 	    nickname: "run",
 	    responseClass: "Value",
 		parameters: [

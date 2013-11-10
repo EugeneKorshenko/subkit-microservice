@@ -25,7 +25,7 @@
   "storageModule": {
     "dbPath":"./testdb",
     "rightsPath":"./rights.json",
-    "filesPath":"./files/plugins",
+    "filesPath":"./files/jobs",
     "backupPath":"./backups"
   },
   "filesModule": {

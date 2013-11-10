@@ -46,7 +46,6 @@ tasksConfig.filesPath = path.join(__dirname, tasksConfig.filesPath);
 tasksConfig.rightsPath = path.join(__dirname, tasksConfig.rightsPath);
 tasksConfig.hooks = hooks;
 
-
 var s3Config = nconf.get("s3Module");
 var schedulerConfig = nconf.get("schedulerModule");
 
@@ -57,7 +56,7 @@ var	pubsub = require("messaging-module").init({pollInterval: 1});
 var storage = require('storage-module').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
 var file = require('./lib/file-module.js').init(filesConfig, storage, pubsub);
-var plugin = require('./lib/task-module.js').init(storageConfig, storage, pubsub);
+var job = require('./lib/task-module.js').init(storageConfig, storage, pubsub);
 var task = require('./lib/task-module.js').init(tasksConfig, storage, pubsub);
 
 var options = { name: "SubKit" };
@@ -263,7 +262,7 @@ require('./doc').configure(server, {
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
 require("./lib/tasks.js").init(server, storage, tasksConfig, file, task, helper);
-require("./lib/plugins.js").init(server, plugin, helper);
+require("./lib/jobs.js").init(server, job, helper);
 require("./lib/pubsub.js").init(server, pubsub, storage, es, helper);
 require("./lib/file.js").init(server, filesConfig, file, helper);
 require("./lib/s3.js").init(server, s3Config, helper);

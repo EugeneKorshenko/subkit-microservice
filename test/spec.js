@@ -215,7 +215,7 @@ describe('service: storage', function(){
   }),
   describe('on plugins', function(){
     it('should run the "schema" plugin per GET', function(done){
-      client.get('/plugin/run/schema?store=bdemob', function(err, req, res, data) {
+      client.get('/job/schema?store=bdemob', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
           assert.equal(data.test, "");
@@ -223,7 +223,7 @@ describe('service: storage', function(){
         });
     }),
     it('should run the "schema" plugin per POST', function(done){
-      client.post('/plugin/run/schema', { store: "bdemob"}, function(err, req, res, data) {
+      client.post('/job/schema', { store: "bdemob"}, function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
           assert.equal(data.test, "");
@@ -231,7 +231,7 @@ describe('service: storage', function(){
         });
     }),
     it('should run the "error" plugin per POST', function(done){
-      client.post('/plugin/run/error', { log: "test" }, function(err, req, res, data) {
+      client.post('/job/error', { log: "test" }, function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
           assert.equal(data.status, "created");

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Subkit Developer</title>
+	</head>
+<body>
+	<h1>Subkit Developer Center</h1>
+	<a href="chat">Chat</a>
+	<a href="editor">Editor</a>
+	<a href="console">Console</a>
+	<a href="template">Template</a>
+	<a href="updownload">Up-/Download</a>
+</body>
+</html>

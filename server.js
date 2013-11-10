@@ -177,11 +177,20 @@ server.get(/subkit[-0-9.a-z]*.js/, restify.serveStatic({
 	directory: path.join(__dirname, 'jssdk')
 }));
 
+//public libs
+server.get(/devcenter\/lib\/([a-zA-Z0-9_\.~-]+.*)/, function(req, res, next){
+	var filePath = path.join(__dirname, 'files/devcenter/lib', req.params[0]);
+	fs.readFile(filePath, 'utf8', function(error, data){
+		res.setHeader('Content-Type', 'application/octet-stream');
+		if(error) return next(error);
+		res.send(data);
+	});
+});
 //public console
 var renderer = require("./lib/template.js").init({
-	templatesPath: path.join(__dirname, "files")
+	templatesPath: path.join(__dirname, 'files/devcenter')
 });
-server.get("/www/:name", function(req, res, next){
+server.get("/devcenter/:name", function(req, res, next){
 	var templateName = req.params.name;
 	var consoleData = {
 		url: api.url,

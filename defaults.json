@@ -30,7 +30,7 @@
   },
   "filesModule": {
     "rightsPath":"./rights.json",
-    "filesPath":"./files",
+    "filesPath":"./files/static",
     "backupPath":"./backups"
   },
   "s3Module": {

@@ -193,7 +193,7 @@ server.get(/devcenter\/public\/([a-zA-Z0-9_\.~-]+.*)/, function(req, res, next){
 	});
 });
 //public console
-var renderer = require("./lib/template.js").init({
+var rendererDevCenter = require("./lib/template.js").init({
 	templatesPath: path.join(__dirname, 'files/devcenter')
 });
 server.get("/devcenter/:name", function(req, res, next){
@@ -204,7 +204,25 @@ server.get("/devcenter/:name", function(req, res, next){
 		username: admin.username,
 		password: admin.password
 	};
-	renderer.render(templateName, consoleData, function(err, html){
+	rendererDevCenter.render(templateName, consoleData, function(err, html){
+		res.contentType = 'text/html';
+		res.write(html);
+		res.end();
+	});
+});
+//custom templates
+var rendererStatics = require("./lib/template.js").init({
+	templatesPath: path.join(__dirname, 'files/static')
+});
+server.get("/static/:name", function(req, res, next){
+	var templateName = req.params.name;
+	var consoleData = {
+		url: api.url,
+		apiKey: api.apiKey,
+		username: admin.username,
+		password: admin.password
+	};
+	rendererStatics.render(templateName, consoleData, function(err, html){
 		res.contentType = 'text/html';
 		res.write(html);
 		res.end();

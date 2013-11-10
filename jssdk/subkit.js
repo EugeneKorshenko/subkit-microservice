@@ -368,6 +368,17 @@ var Subkit = function(config){
 		});
 	};
 
+	self.download = function(file, callback){
+		var url = self.baseUrl + "/file/download/" + file;
+		httpRequest.get(url, self.options, function(status, result){
+			if(status!==200) {
+				if(callback) changeStatus(result);
+			}else{
+				if(callback) callback(null, result.text());
+			}
+		});
+	};
+
 	self.on = function(channel, callback) {
 		channel = channel.replace("/", "_");
 		self.subscribed[channel] = true;

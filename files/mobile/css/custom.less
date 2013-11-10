@@ -1,0 +1,170 @@
+.rotateButton {
+	width: 30px;
+	height: 30px;
+	box-shadow: 0px 2px 0px rgba(0,0,0,0.15);
+	border: 1px solid rgba(255,255,255,1);
+	color: white;
+	border-radius: 300px !important;
+	outline: none;
+	transition: 0.2s;
+	background-color: rgba(255,255,255,0.0);
+}
+.rotateButton:hover {
+	-webkit-transform: rotateZ(360deg);
+	background-color: #dd615e;
+	box-shadow: 0px 0px 0px rgba(0,0,0,0.1);
+}
+
+.flatButton {
+	width: 100%;
+	height: 100%;
+	box-shadow: 0px 2px 0px rgba(0,0,0,0.15);
+	color: white;
+	font-size: 34px !important;
+	font-weight: 100 !important;
+	outline: none;
+	background-color: @highlight-color;
+	border-radius: 0px !important;
+}
+
+.row {
+	height: 60px;
+	border-bottom: 1px solid white;
+}
+
+.row .rotateButton {
+	position: relative;
+	top: 15px;
+	/* left: 40px; */
+}
+
+
+.submenu{
+	position:fixed; 
+	top: 40px;
+	width: 100%;
+	height: 66px;
+	background-color: rgba(241, 65, 3, 0.95);
+}
+
+.info {
+	background-color: transparent !important;
+	background-image: url(../img/info.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+}
+
+.back {
+	background-color: transparent !important;
+	background-image: url(../img/back.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 10px 16px;
+}
+
+.float {
+	display: inline-block;
+	max-width: 380px;
+	margin-bottom: 30px;
+	font-size: 24px;
+}
+.content {
+	line-height: 1em;
+	margin-top: @header-height + 10px !important;
+	font-weight: 200;
+    background-color: @content-container-background-color;
+    color: @content-container-color;
+    border: 1px solid @highlight-color;
+}
+.content button {
+	border-radius: 6px;
+	font-weight: 200;
+	font-size: 18px;
+    -webkit-tap-highlight-color: transparent;
+}
+.content button:active {
+	opacity: 0.3;
+}
+.content ul {
+	padding-top: 1px;
+}
+
+.input:hover {
+	padding-left: 25px;
+}
+
+.input {
+	width: 430px;
+	height: 100%;
+	position: relative;
+	float: left;
+	background-color: rgba(255,255,255,0.0);
+	border: 0px;
+	font-style: italic;
+	text-shadow: 0px 0px 6px rgba(0,0,0,0.2);
+	font-weight: 100;
+	font-size: 1.5em;
+	color: white;
+	padding-left: 20px;
+	top: 0;
+	transition: 0.3s;
+	outline: none;
+}
+
+.shares {
+	text-align: center;
+	padding: 30px;
+	color: white;
+	vertical-align: bottom;
+}
+.shares a {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 30px 30px;
+	-webkit-tap-highlight-color: transparent;
+	width: 30px;
+	display: inline-block;
+	height: 30px;
+}
+.mail {
+	background-image: url(../img/mail.png);
+}
+.twitter {
+	background-image: url(../img/twitter.png);
+}
+.facebook{
+	background-image: url(../img/facebook.png);	
+}
+.link {
+	background-image: url(../img/link.png);
+}
+.gplus{
+	background-image: url(../img/gplus.png);
+}
+.xing{
+	background-image: url(../img/xing.png);
+}
+.linkedin{
+	background-image: url(../img/linkedin.png);
+}
+
+.imprint {
+	padding-top: 70px;	
+	text-align: center;
+	max-width: 480px;
+	margin: auto auto;
+}
+.imprint p {
+	text-align: justify;
+}
+
+.help {
+	padding-top: 30px;
+	text-align: center;
+	max-width: 480px;
+	margin: auto auto;
+}
+.help p {
+	text-align: justify;
+}

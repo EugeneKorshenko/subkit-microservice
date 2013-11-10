@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html data-ng-app="MobileUI" data-ng-csp>
+	<head>
+		<title>UI Beta</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="description" content="">
+
+		<meta property="og:description" content=""/>
+		<meta property="og:image" content="http://image.png"/>
+		<meta property="og:title" content=""/>
+
+		<meta name="apple-mobile-web-app-title" content="UI Beta">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+
+		<link rel="apple-touch-icon" href="img/touch-icon-iphone.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="img/touch-icon-ipad.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="img/touch-icon-iphone-retina.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="img/touch-icon-ipad-retina.png">
+		<link rel="apple-touch-startup-image" href="img/touch-startup-image.png" />
+		<link rel="icon" type="image/png" href="img/favicon.png" />
+
+		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+		
+		<script defer src="libs/fastclick.js"></script>
+		<script defer src="libs/angular.min.js"></script>
+		<script defer src="libs/add2home.js"></script>
+		<!-- // <script defer src="libs/ga.js"></script> -->
+		<script defer src="js/nav.js"></script>
+		<script defer src="js/api.js"></script>
+		<script defer src="js/app.js"></script>
+	</head>
+	<body class="flat">
+		<views style="width: 100%;">
+			<view data-content="home" next="info" nexttext="&hellip;" headertext="Administration">
+				<div class="row">
+					<input type="text" class="input" placeholder="domain">
+				</div>
+				<div class="row">
+					<input type="text" class="input" placeholder="username">
+				</div>
+				<div class="row">
+					<input type="text" class="input" placeholder="password">
+				</div>
+				<div class="row">
+					<button class="flatButton">Login</button>
+				</div>
+				<div class="row">
+					<button class="rotateButton">+</button>
+				</div>
+				<p>
+	                <div class="shares">
+						<a class="link" href="http://subkit.io" data-name="subkitapp" target="_blank"></a>
+						<a class="mail" href="mailto:go@subkit.io" data-name="mailapp"></a>
+						<a class="twitter" href="https://twitter.com/subkit" data-name="twitterapp" target="_blank"></a>
+						<a class="facebook" href="https://www.facebook.com/subkit" data-name="facebookapp" target="_blank"></a>
+						<a class="gplus" href="https://plus.google.com/communities/106679532612202656243?hl=de" data-name="gplusapp" target="_blank"></a>
+					</div>
+				</p>
+			</view>
+			<view data-content="info" class="hidden" next="welcome" back="home" backtext="back" nexttext="next" headertext="Info">
+				<p>
+					<back data-view="home">Back</back>
+					<go data-view="welcome">Go Welcome</back>
+	                <div class="shares">
+						<a class="link" href="http://subkit.io" data-name="subkitapp" target="_blank"></a>
+						<a class="mail" href="mailto:go@subkit.io" data-name="mailapp"></a>
+						<a class="twitter" href="https://twitter.com/subkit" data-name="twitterapp" target="_blank"></a>
+						<a class="facebook" href="https://www.facebook.com/subkit" data-name="facebookapp" target="_blank"></a>
+						<a class="gplus" href="https://plus.google.com/communities/106679532612202656243?hl=de" data-name="gplusapp" target="_blank"></a>
+					</div>
+				</p>
+			</view>
+			<view data-content="welcome" class="hidden" back="info" backtext="back" nexttext="next" headertext="Welcome">
+				<h2>SubKit</h2>
+				<p>
+					<back data-view="info">Back</back>
+	                <div class="shares">
+						<a class="link" href="http://subkit.io" data-name="subkitapp" target="_blank"></a>
+						<a class="mail" href="mailto:go@subkit.io" data-name="mailapp"></a>
+						<a class="twitter" href="https://twitter.com/subkit" data-name="twitterapp" target="_blank"></a>
+						<a class="facebook" href="https://www.facebook.com/subkit" data-name="facebookapp" target="_blank"></a>
+						<a class="gplus" href="https://plus.google.com/communities/106679532612202656243?hl=de" data-name="gplusapp" target="_blank"></a>
+					</div>
+				</p>
+			</view>
+		</views>
+	</body>
+</html>

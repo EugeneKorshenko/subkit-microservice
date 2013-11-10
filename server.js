@@ -40,6 +40,12 @@ var templateConfig = nconf.get("templateConfig");
 templateConfig.filesPath = path.join(__dirname, templateConfig.filesPath);
 templateConfig.rightsPath = path.join(__dirname, templateConfig.rightsPath);
 templateConfig.hooks = hooks;
+templateConfig.templateData = {
+	url: api.url,
+	apiKey: api.apiKey,
+	username: admin.username,
+	password: admin.password
+};
 
 var taskConfig = nconf.get("taskConfig");
 taskConfig.filesPath = path.join(__dirname, taskConfig.filesPath);
@@ -223,25 +229,6 @@ server.get("/devcenter/:name", function(req, res, next){
 		res.end();
 	});
 });
-//custom templates
-var rendererStatics = require("./lib/template-module.js").init({
-	templatesPath: path.join(__dirname, 'files/static')
-});
-server.get("/static/:name", function(req, res, next){
-	var templateName = req.params.name;
-	var consoleData = {
-		url: api.url,
-		apiKey: api.apiKey,
-		username: admin.username,
-		password: admin.password
-	};
-	rendererStatics.render(templateName, consoleData, function(err, html){
-		res.contentType = 'text/html';
-		res.write(html);
-		res.end();
-	});
-});
-
 
 //start web server
 server.listen(app.port, function(){
@@ -258,6 +245,7 @@ require('./doc').configure(server, {
 	version:      "1.2",
 	basePath:     api.url
 });
+
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
 require("./lib/jobs.js").init(server, job, helper);

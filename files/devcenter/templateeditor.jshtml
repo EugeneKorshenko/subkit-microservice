@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Static Editor</title>
+  <title>Template Editor</title>
   <style type="text/css" media="screen">
     body {
         overflow: hidden;
@@ -34,7 +34,7 @@
 </head>
 <body style="background-color:black;">
 <div data-ng-app="editor" data-ng-controller="Editor">
-  <span style="color:white;">Static Editor</span>
+  <span style="color:white;">Template Editor</span>
   <input type="text" data-ng-model="name">
   <button data-ng-click="openTemplate()"><i>open</i></button>
   <button data-ng-click="saveTemplate()"><i>save</i></button>
@@ -53,23 +53,23 @@
       $scope.saveTemplate = function(){
         var file = new Blob([editor.getValue()]);
         file.name = $scope.name;
-        subkit.upload(file, "file", function(err, data){});
+        subkit.upload(file, "template", function(err, data){});
       };
       $scope.openTemplate = function(){
-        subkit.download($scope.name, "file", function(err, data){
+        subkit.download($scope.name, "template", function(err, data){
           editor.setValue(data);        
         });
       };
       $scope.runTemplate = function() {
-          $scope.template = '/static/' + $scope.name.replace(".jshtml","?"+new Date().getTime());
+          $scope.template = '/template/' + $scope.name.replace(".jshtml","?"+new Date().getTime());
       };
       $scope.deleteTemplate = function(){
-        subkit.delete($scope.name, "file");
+        subkit.delete($scope.name, "template");
         $scope.getTemplates();
       };
       $scope.getTemplates = function() {
-        subkit.get("files", function(err, data){
-          $scope.files = data;
+        subkit.get("templates", function(err, data){
+          $scope.templates = data;
           $scope.$apply();
         });
       };

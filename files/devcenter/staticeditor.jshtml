@@ -36,11 +36,11 @@
 <div data-ng-app="editor" data-ng-controller="Editor">
   <span style="color:white;">Static Editor</span>
   <input type="text" data-ng-model="name">
-  <button data-ng-click="openTemplate()"><i>open</i></button>
-  <button data-ng-click="saveTemplate()"><i>save</i></button>
-  <button data-ng-click="deleteTemplate()"><i>del</i></button>
-  <button data-ng-click="runTemplate()"><i>run</i></button>
-  <div class="preview" data-ng-include="template"></div>
+  <button data-ng-click="openStatic()"><i>open</i></button>
+  <button data-ng-click="saveStatic()"><i>save</i></button>
+  <button data-ng-click="deleteStatic()"><i>del</i></button>
+  <button data-ng-click="runStatic()"><i>run</i></button>
+  <div class="preview" data-ng-include="static"></div>
 </div>
 <pre id="editor"></pre>
 <script>
@@ -50,26 +50,26 @@
   angular.module('editor', ['subkit']).controller('Editor', ['$scope', 'angularSubkit', function($scope, angularSubkit) {
       var subkit = new Subkit({ baseUrl: "@locals.url", apiKey: "@locals.apiKey" });
 
-      $scope.saveTemplate = function(){
+      $scope.saveStatic = function(){
         var file = new Blob([editor.getValue()]);
         file.name = $scope.name;
-        subkit.upload(file, "file", function(err, data){});
+        subkit.upload(file, "static", function(err, data){});
       };
-      $scope.openTemplate = function(){
-        subkit.download($scope.name, "file", function(err, data){
+      $scope.openStatic = function(){
+        subkit.download($scope.name, "static", function(err, data){
           editor.setValue(data);        
         });
       };
-      $scope.runTemplate = function() {
-          $scope.template = '/static/' + $scope.name.replace(".jshtml","?"+new Date().getTime());
+      $scope.runStatic = function() {
+          $scope.static = '/static/' + $scope.name +"?"+new Date().getTime();
       };
-      $scope.deleteTemplate = function(){
-        subkit.delete($scope.name, "file");
-        $scope.getTemplates();
+      $scope.deleteStatic = function(){
+        subkit.delete($scope.name, "static");
+        $scope.getStatics();
       };
-      $scope.getTemplates = function() {
-        subkit.get("files", function(err, data){
-          $scope.files = data;
+      $scope.getStatics = function() {
+        subkit.get("statics", function(err, data){
+          $scope.statics = data;
           $scope.$apply();
         });
       };

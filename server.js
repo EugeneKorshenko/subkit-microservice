@@ -178,12 +178,18 @@ server.get(/subkit[-0-9.a-z]*.js/, restify.serveStatic({
 }));
 
 //public libs
-server.get(/devcenter\/lib\/([a-zA-Z0-9_\.~-]+.*)/, function(req, res, next){
-	var filePath = path.join(__dirname, 'files/devcenter/lib', req.params[0]);
+server.get(/devcenter\/public\/([a-zA-Z0-9_\.~-]+.*)/, function(req, res, next){
+	var filePath = path.join(__dirname, 'files/devcenter', req.params[0]);
 	fs.readFile(filePath, 'utf8', function(error, data){
-		res.setHeader('Content-Type', 'application/octet-stream');
+		if(filePath.indexOf('.css') !== -1)
+			res.setHeader('Content-Type', 'text/css');
+		else if(filePath.indexOf('.js') !== -1)
+			res.setHeader('Content-Type', 'text/javascript');
+		else
+			res.setHeader('Content-Type', 'application/octet-stream');
 		if(error) return next(error);
-		res.send(data);
+		res.write(data);
+		res.end();
 	});
 });
 //public console

@@ -24,30 +24,30 @@ var admin = nconf.get("admin"),
 
 
 //correct root path
-var storageConfig = nconf.get("storageModule");
+var storageConfig = nconf.get("storageConfig");
 var hooks = nconf.get("hooks");
 storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
 storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
 storageConfig.filesPath = path.join(__dirname, storageConfig.filesPath);
 storageConfig.hooks = hooks;
 
-var filesConfig = nconf.get("filesModule");
-filesConfig.filesPath = path.join(__dirname, filesConfig.filesPath);
-filesConfig.rightsPath = path.join(__dirname, filesConfig.rightsPath);
-filesConfig.hooks = hooks;
+var staticConfig = nconf.get("staticConfig");
+staticConfig.filesPath = path.join(__dirname, staticConfig.filesPath);
+staticConfig.rightsPath = path.join(__dirname, staticConfig.rightsPath);
+staticConfig.hooks = hooks;
 
-var templatesConfig = nconf.get("templatesModule");
-templatesConfig.filesPath = path.join(__dirname, templatesConfig.filesPath);
-templatesConfig.rightsPath = path.join(__dirname, templatesConfig.rightsPath);
-templatesConfig.hooks = hooks;
+var templateConfig = nconf.get("templateConfig");
+templateConfig.filesPath = path.join(__dirname, templateConfig.filesPath);
+templateConfig.rightsPath = path.join(__dirname, templateConfig.rightsPath);
+templateConfig.hooks = hooks;
 
-var tasksConfig = nconf.get("tasksModule");
-tasksConfig.filesPath = path.join(__dirname, tasksConfig.filesPath);
-tasksConfig.rightsPath = path.join(__dirname, tasksConfig.rightsPath);
-tasksConfig.hooks = hooks;
+var taskConfig = nconf.get("taskConfig");
+taskConfig.filesPath = path.join(__dirname, taskConfig.filesPath);
+taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
+taskConfig.hooks = hooks;
 
-var s3Config = nconf.get("s3Module");
-var schedulerConfig = nconf.get("schedulerModule");
+var s3Config = nconf.get("s3Config");
+var schedulerConfig = nconf.get("schedulerConfig");
 
 //init
 if(!fs.existsSync(storageConfig.rightsPath))
@@ -55,9 +55,8 @@ if(!fs.existsSync(storageConfig.rightsPath))
 var	pubsub = require("messaging-module").init({pollInterval: 1});
 var storage = require('storage-module').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
-var file = require('./lib/file-module.js').init(filesConfig, storage, pubsub);
 var job = require('./lib/task-module.js').init(storageConfig, storage, pubsub);
-var task = require('./lib/task-module.js').init(tasksConfig, storage, pubsub);
+var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub);
 
 var options = { name: "SubKit" };
 
@@ -207,7 +206,7 @@ server.get(/devcenter\/public\/([a-zA-Z0-9_\.~-]+.*)/, function(req, res, next){
 	});
 });
 //public console
-var rendererDevCenter = require("./lib/template.js").init({
+var rendererDevCenter = require("./lib/template-module.js").init({
 	templatesPath: path.join(__dirname, 'files/devcenter')
 });
 server.get("/devcenter/:name", function(req, res, next){
@@ -225,7 +224,7 @@ server.get("/devcenter/:name", function(req, res, next){
 	});
 });
 //custom templates
-var rendererStatics = require("./lib/template.js").init({
+var rendererStatics = require("./lib/template-module.js").init({
 	templatesPath: path.join(__dirname, 'files/static')
 });
 server.get("/static/:name", function(req, res, next){
@@ -261,9 +260,10 @@ require('./doc').configure(server, {
 });
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
-require("./lib/tasks.js").init(server, storage, tasksConfig, file, task, helper);
 require("./lib/jobs.js").init(server, job, helper);
 require("./lib/pubsub.js").init(server, pubsub, storage, es, helper);
-require("./lib/file.js").init(server, filesConfig, file, helper);
-require("./lib/s3.js").init(server, s3Config, helper);
+require("./lib/static.js").init(server, staticConfig, helper);
+require("./lib/template.js").init(server, templateConfig, helper);
+require("./lib/task.js").init(server, storage, taskConfig, task, helper);
 require("./lib/eventsource.js").init(server, es, helper);
+require("./lib/s3.js").init(server, s3Config, helper);

@@ -22,42 +22,42 @@
       "headers": {"api_key":"6654edc5-82a3-4006-967f-97d5817d7fe2"}
     }
   },
-  "storageModule": {
+  "storageConfig": {
     "dbPath":"./testdb",
     "rightsPath":"./rights.json",
     "filesPath":"./files/jobs",
     "backupPath":"./backups"
   },
-  "filesModule": {
+  "staticConfig": {
     "rightsPath":"./rights.json",
     "filesPath":"./files/static",
     "backupPath":"./backups"
   },
-  "templatesModule": {
+  "templateConfig": {
     "rightsPath":"./rights.json",
     "filesPath":"./files/template",
     "backupPath":"./backups"
   },
-  "tasksModule": {
+  "taskConfig": {
     "rightsPath":"./rights.json",
     "filesPath":"./files/task",
     "backupPath":"./backups"
   },
-  "s3Module": {
+  "s3Config": {
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",
     "secretAccessKey": "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",
     "region": "eu-west-1"
   },
-  "schedulerModule": {
+  "schedulerConfig": {
 
   },
-  "emailModule": {
+  "emailConfig": {
 
   },
-  "pushModule": {
+  "pushConfig": {
 
   },
-  "geolocationModule": {
+  "geolocationConfig": {
 
   }
 }

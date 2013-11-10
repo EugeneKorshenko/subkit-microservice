@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Template Editor</title>
+  <title>Static Editor</title>
   <style type="text/css" media="screen">
     body {
         overflow: hidden;
@@ -12,10 +12,19 @@
     #editor { 
         margin: 0;
         position: absolute;
-        top: 0;
+        width:50%;
+        top: 40px;
         bottom: 0;
         left: 0;
         right: 0;
+    }
+    .preview {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      background-color: white;
     }
   </style>
   <script src="public/lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -25,13 +34,15 @@
 </head>
 <body style="background-color:black;">
 <div data-ng-app="editor" data-ng-controller="Editor">
-  <span style="color:white;">Template Editor</span>
+  <span style="color:white;">Static Editor</span>
   <input type="text" data-ng-model="name">
   <button data-ng-click="openTemplate()"><i>open</i></button>
   <button data-ng-click="saveTemplate()"><i>save</i></button>
+  <button data-ng-click="deleteTemplate()"><i>del</i></button>
   <button data-ng-click="runTemplate()"><i>run</i></button>
+  <div class="preview" data-ng-include="template"></div>
 </div>
-<pre id="editor" style="top: 40px;"></pre>
+<pre id="editor"></pre>
 <script>
   var editor = ace.edit("editor");
   editor.setTheme("ace/theme/twilight");
@@ -42,22 +53,25 @@
       $scope.saveTemplate = function(){
         var file = new Blob([editor.getValue()]);
         file.name = $scope.name;
-        subkit.upload(file, function(err, data){});
+        subkit.upload(file, "file", function(err, data){});
       };
       $scope.openTemplate = function(){
-        subkit.download($scope.name, function(err, data){
+        subkit.download($scope.name, "file", function(err, data){
           editor.setValue(data);        
         });
       };
-      $scope.getFiles = function() {
+      $scope.runTemplate = function() {
+          $scope.template = '/static/' + $scope.name.replace(".jshtml","?"+new Date().getTime());
+      };
+      $scope.deleteTemplate = function(){
+        subkit.delete($scope.name, "file");
+        $scope.getTemplates();
+      };
+      $scope.getTemplates = function() {
         subkit.get("files", function(err, data){
           $scope.files = data;
           $scope.$apply();
         });
-      };
-      $scope.deleteFile = function(file){
-        subkit.remove("file/" + file);
-        $scope.getFiles();
       };
   }]);
 </script>

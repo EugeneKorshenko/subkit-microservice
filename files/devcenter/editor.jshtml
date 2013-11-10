@@ -25,13 +25,14 @@
 <body style="background-color:black;">
 <div data-ng-app="editor" data-ng-controller="Editor">
   <input type="text" data-ng-model="name">
-  <button data-ng-click="saveTemplate()"><i>save as static</i></button>
+  <button data-ng-click="openTemplate()"><i>open</i></button>
+  <button data-ng-click="saveTemplate()"><i>save</i></button>
+<!--   <button data-ng-click="saveTemplate()"><i>save as static</i></button>
   <button data-ng-click="saveTemplate()"><i>save as JS template</i></button>
   <button data-ng-click="saveTemplate()"><i>save as Markdown template</i></button>
   <button data-ng-click="saveTemplate()"><i>save as JSON</i></button>
   <button data-ng-click="saveTemplate()"><i>save as JS Task</i></button>
-  <button data-ng-click="runTemplate()"><i>run</i></button>
-  <button data-ng-click="openTemplate()"><i>open</i></button>
+  <button data-ng-click="runTemplate()"><i>run</i></button> -->
 </div>
 <pre id="editor" style="top: 40px;">&nbsp;</pre>
 <script src="public/lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>

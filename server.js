@@ -28,20 +28,23 @@ var storageConfig = nconf.get("storageModule");
 var hooks = nconf.get("hooks");
 storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
 storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
-storageConfig.tasksPath = path.join(__dirname, storageConfig.tasksPath);
+storageConfig.filesPath = path.join(__dirname, storageConfig.filesPath);
 storageConfig.hooks = hooks;
 
 var filesConfig = nconf.get("filesModule");
 filesConfig.filesPath = path.join(__dirname, filesConfig.filesPath);
 filesConfig.rightsPath = path.join(__dirname, filesConfig.rightsPath);
+filesConfig.hooks = hooks;
 
 var templatesConfig = nconf.get("templatesModule");
 templatesConfig.filesPath = path.join(__dirname, templatesConfig.filesPath);
 templatesConfig.rightsPath = path.join(__dirname, templatesConfig.rightsPath);
+templatesConfig.hooks = hooks;
 
 var tasksConfig = nconf.get("tasksModule");
 tasksConfig.filesPath = path.join(__dirname, tasksConfig.filesPath);
 tasksConfig.rightsPath = path.join(__dirname, tasksConfig.rightsPath);
+tasksConfig.hooks = hooks;
 
 
 var s3Config = nconf.get("s3Module");
@@ -53,7 +56,10 @@ if(!fs.existsSync(storageConfig.rightsPath))
 var	pubsub = require("messaging-module").init({pollInterval: 1});
 var storage = require('storage-module').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
-var file = require('./lib/file-module.js').init(filesConfig);
+var file = require('./lib/file-module.js').init(filesConfig, storage, pubsub);
+var plugin = require('./lib/task-module.js').init(storageConfig, storage, pubsub);
+var task = require('./lib/task-module.js').init(tasksConfig, storage, pubsub);
+
 var options = { name: "SubKit" };
 
 //configure HTTPS/SSL
@@ -256,7 +262,8 @@ require('./doc').configure(server, {
 });
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
-require("./lib/tasks.js").init(server, storage, tasksConfig, helper);
+require("./lib/tasks.js").init(server, storage, tasksConfig, file, task, helper);
+require("./lib/plugins.js").init(server, plugin, helper);
 require("./lib/pubsub.js").init(server, pubsub, storage, es, helper);
 require("./lib/file.js").init(server, filesConfig, file, helper);
 require("./lib/s3.js").init(server, s3Config, helper);

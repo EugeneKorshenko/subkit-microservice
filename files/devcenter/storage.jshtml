@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Subkit Console</title>
+		<script src="/subkit.js"></script>
+	</head>
+	<body>
+		<h2>Real-Time Storage</h2>
+		<section>
+			<div>
+				<label>Store Name</label>
+				<input type="text" id="storeNameInput">
+			</div>
+			<div>
+				<button id="simpleSetSubscribe">Subscribe to store changes</button>
+				<label id="simpleSetOutput">empty</label>
+			<div>
+			<div>
+				<input type="text" id="simpleNameInput">
+				<button id="simpleSet">Set value in store</button>
+			</div>
+			</div>
+				<button id="simpleGet">Get store data</button>
+				<ul id="storeData">
+					<li>empty</li>
+				</ul>
+			</div>
+
+		</section>
+		<script>			
+			var $ = function(e){ return document.getElementById(e); };
+			var listView = $("storeData");
+			var storeName = function(){ return $("storeNameInput").value || "names"};
+			var subkit = new Subkit({
+				baseUrl: "@locals.url",
+				apiKey: "@locals.apiKey"
+			});
+
+
+			//Real-Time Storage
+			$("simpleSetSubscribe").addEventListener("click", function(){
+				//subscribe to store changes
+				subkit.on(storeName(), function(data){
+					$("simpleSetOutput").innerText = data.value.name;
+				});
+			});
+			$("simpleSet").addEventListener("click", function(){
+				var value = $("simpleNameInput").value;
+				//set a value into store
+				subkit.set(storeName() + "/1", {name: value});
+			});
+			$("simpleGet").addEventListener("click", function(){
+				var value = $("simpleNameInput").value;
+				//get values from store
+				subkit.get("store/" + storeName(),function(err, data){
+					listView.innerHTML = '';
+					
+					for (var i = 0; i < data.length; i++) {
+						_addElement(listView, data[i].value.name);
+					};
+				});
+			});
+
+			function _addElement (element, value) {
+				var newLi = document.createElement("li");
+				var text = document.createTextNode(value);
+
+				newLi.appendChild(text);
+				element.appendChild(newLi);
+			};
+		</script>
+	</body>
+</html>

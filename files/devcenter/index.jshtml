@@ -5,10 +5,12 @@
 	</head>
 <body>
 	<h1>Subkit Developer Center</h1>
+	<a href="doc">API Doc</a>
 	<a href="chat">Chat</a>
 	<a href="editor">Editor</a>
 	<a href="console">Console</a>
 	<a href="template">Template</a>
 	<a href="updownload">Up-/Download</a>
+	<a href="log">ES Log</a>
 </body>
 </html>

@@ -16,11 +16,21 @@
 		<a href="taskeditor" target="_blank">Task Editor</a>
 		<a href="templateeditor" target="_blank">Template Editor</a>
 		<a href="log" target="_blank">Log</a>
+		<a href="email" target="_blank">EMail Subscriptions</a>
+		<a href="mobilepush" target="_blank">Mobile Push Notifications</a>
 		<a href="s3" target="_blank">S3</a>
 		<h2>Examples</h2>
-		<a href="console" target="_blank">Console</a>
 		<a href="chat" target="_blank">Chat</a>
+		<a href="todo" target="_blank">Todo</a>
+		<a href="gallery" target="_blank">Gallery</a>
+		<a href="tictactoe" target="_blank">Tic Tac Toe</a>
+		<a href="feed" target="_blank">Feed</a>
+		<a href="editor" target="_blank">Editor</a>
+		<a href="calculator" target="_blank">Calculator</a>	
+		<a href="leaderboard" target="_blank">Leaderboard</a>	
+		<a href="presence" target="_blank">Presence</a>	
 		<h2>Temp</h2>
+		<a href="console" target="_blank">Console</a>
 		<a href="template" target="_blank">Template</a>
 		<a href="updownload" target="_blank">Up-/Download</a>
 		<a href="scheduler" target="_blank">Scheduler</a>

@@ -33,6 +33,16 @@
     "filesPath":"./files/static",
     "backupPath":"./backups"
   },
+  "templatesModule": {
+    "rightsPath":"./rights.json",
+    "filesPath":"./files/template",
+    "backupPath":"./backups"
+  },
+  "tasksModule": {
+    "rightsPath":"./rights.json",
+    "filesPath":"./files/task",
+    "backupPath":"./backups"
+  },
   "s3Module": {
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",
     "secretAccessKey": "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",
@@ -40,11 +50,6 @@
   },
   "schedulerModule": {
 
-  },
-  "tasksModule":{
-    "rightsPath":"./rights.json",
-    "tasksPath":"./files/plugins",
-    "backupPath":"./backups"
   },
   "emailModule": {
 

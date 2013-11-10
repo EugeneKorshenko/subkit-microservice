@@ -35,6 +35,15 @@ var filesConfig = nconf.get("filesModule");
 filesConfig.filesPath = path.join(__dirname, filesConfig.filesPath);
 filesConfig.rightsPath = path.join(__dirname, filesConfig.rightsPath);
 
+var templatesConfig = nconf.get("templatesModule");
+templatesConfig.filesPath = path.join(__dirname, templatesConfig.filesPath);
+templatesConfig.rightsPath = path.join(__dirname, templatesConfig.rightsPath);
+
+var tasksConfig = nconf.get("tasksModule");
+tasksConfig.filesPath = path.join(__dirname, tasksConfig.filesPath);
+tasksConfig.rightsPath = path.join(__dirname, tasksConfig.rightsPath);
+
+
 var s3Config = nconf.get("s3Module");
 var schedulerConfig = nconf.get("schedulerModule");
 
@@ -247,7 +256,7 @@ require('./doc').configure(server, {
 });
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
-require("./lib/tasks.js").init(server, storage, storageConfig, helper);
+require("./lib/tasks.js").init(server, storage, tasksConfig, helper);
 require("./lib/pubsub.js").init(server, pubsub, storage, es, helper);
 require("./lib/file.js").init(server, filesConfig, file, helper);
 require("./lib/s3.js").init(server, s3Config, helper);

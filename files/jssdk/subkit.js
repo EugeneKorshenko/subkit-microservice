@@ -316,7 +316,7 @@ var Subkit = function(config){
 
 	self.get = function(key, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/" + key;
+		var url = self.baseUrl + "/store/" + key;
 		httpRequest.get(url, self.options, function(status, result){
 			if(status !== 200) {
 				if(callback) callback(result);
@@ -328,7 +328,7 @@ var Subkit = function(config){
 
 	self.remove = function(key, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/" + key;
+		var url = self.baseUrl + "/store/" + key;
 		httpRequest.del(url, self.options, function(status, result){
 			if(status !== 200) {
 				if(callback) callback(result);
@@ -351,14 +351,14 @@ var Subkit = function(config){
 		});
 	};
 
-	self.upload = function(file, callback){
+	self.upload = function(file, type, callback){
 		var msg = JSON.parse(JSON.stringify(self.options));
 		msg.headers = {
 		  'Content-Type': 'application/octed-stream',
 		  apiKey: config.apiKey
 		};
 		msg["data"] = file;
-		var url = self.baseUrl + "/file/upload/" + file.name;
+		var url = self.baseUrl + "/" + type + "/upload/" + file.name;
 		httpRequest.post(url, msg, function(status, result){
 			if(status!==201) {
 				if(callback) changeStatus(result);
@@ -368,9 +368,20 @@ var Subkit = function(config){
 		});
 	};
 
-	self.download = function(file, callback){
-		var url = self.baseUrl + "/file/download/" + file;
+	self.download = function(file, type, callback){
+		var url = self.baseUrl + "/" + type + "/download/" + file;
 		httpRequest.get(url, self.options, function(status, result){
+			if(status!==200) {
+				if(callback) changeStatus(result);
+			}else{
+				if(callback) callback(null, result.text());
+			}
+		});
+	};
+
+	self.delete = function(file, type, callback){
+		var url = self.baseUrl + "/" + type + "/" + file;
+		httpRequest.del(url, self.options, function(status, result){
 			if(status!==200) {
 				if(callback) changeStatus(result);
 			}else{

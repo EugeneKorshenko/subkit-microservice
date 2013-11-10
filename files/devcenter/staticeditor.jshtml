@@ -61,7 +61,7 @@
         });
       };
       $scope.runStatic = function() {
-          $scope.static = '/static/' + $scope.name +"?"+new Date().getTime();
+          $scope.static = '/static/' + $scope.name +"?"+new Date().getTime()+"&apiKey="+"@locals.apiKey";
       };
       $scope.deleteStatic = function(){
         subkit.delete($scope.name, "static");

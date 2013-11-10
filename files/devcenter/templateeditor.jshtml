@@ -8,7 +8,6 @@
     body {
         overflow: hidden;
     }
-
     #editor { 
         margin: 0;
         position: absolute;
@@ -61,7 +60,7 @@
         });
       };
       $scope.runTemplate = function() {
-          $scope.template = '/template/' + $scope.name.replace(".jshtml","?"+new Date().getTime());
+          $scope.template = '/template/' + $scope.name+"?"+new Date().getTime()+"&apiKey="+"@locals.apiKey";
       };
       $scope.deleteTemplate = function(){
         subkit.delete($scope.name, "template");

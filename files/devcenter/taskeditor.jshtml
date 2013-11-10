@@ -8,7 +8,6 @@
     body {
         overflow: hidden;
     }
-
     #editor { 
         margin: 0;
         position: absolute;
@@ -16,6 +15,14 @@
         bottom: 0;
         left: 0;
         right: 0;
+    }
+    .preview {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      width: 50%;
+      height: 100%;
+      background-color: white;
     }
   </style>
   <script src="public/lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -31,6 +38,7 @@
   <button data-ng-click="saveTask()"><i>save</i></button>
   <button data-ng-click="deleteTask()"><i>del</i></button>
   <button data-ng-click="runTask()"><i>run</i></button>
+  <div class="preview" data-ng-include="task"></div>
 </div>
 <pre id="editor" style="top: 40px;"></pre>
 <script>
@@ -56,6 +64,9 @@
           console.log(data);
           $scope.$apply();
         });
+      };
+      $scope.runTask = function() {
+          $scope.task = '/task/run/' + $scope.name+"?"+new Date().getTime()+"&apiKey="+"@locals.apiKey";
       };
       $scope.deleteTask = function(){
         subkit.delete($scope.name, "task");

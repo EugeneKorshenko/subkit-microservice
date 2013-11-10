@@ -31,6 +31,7 @@
   <button data-ng-click="saveTemplate()"><i>save</i></button>
   <button data-ng-click="deleteTemplate()"><i>del</i></button>
   <button data-ng-click="runTemplate()"><i>run</i></button>
+  <dev class="preview" data-ng-include="template" style="position: absolute; top:40px; left:42%; width: 400px; height:400px; background-color:white; z-index:100000"></div>
 </div>
 <pre id="editor" style="top: 40px;"></pre>
 <script>
@@ -50,15 +51,18 @@
           editor.setValue(data);        
         });
       };
+      $scope.runTemplate = function() {
+          $scope.template = '/static/' + $scope.name.replace(".jshtml","?"+new Date().getTime());
+      };
+      $scope.deleteTemplate = function(){
+        subkit.delete($scope.name, "file");
+        $scope.getTemplates();
+      };
       $scope.getTemplates = function() {
         subkit.get("files", function(err, data){
           $scope.files = data;
           $scope.$apply();
         });
-      };
-      $scope.deleteTemplate = function(){
-        subkit.delete($scope.name, "file");
-        $scope.getTemplates();
       };
   }]);
 </script>

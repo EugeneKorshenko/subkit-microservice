@@ -200,7 +200,9 @@ server.get("/devcenter/:name", function(req, res, next){
 	var templateName = req.params.name;
 	var consoleData = {
 		url: api.url,
-		apiKey: api.apiKey
+		apiKey: api.apiKey,
+		username: admin.username,
+		password: admin.password
 	};
 	renderer.render(templateName, consoleData, function(err, html){
 		res.contentType = 'text/html';

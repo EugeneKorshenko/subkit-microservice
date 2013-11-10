@@ -19,7 +19,7 @@
   <script type="text/javascript">
     $(function () {
       window.swaggerUi = new SwaggerUi({
-      url: "http://",
+      url: "@locals.url"+"/docs",
       dom_id: "swagger-ui-container",
       supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
       onComplete: function(swaggerApi, swaggerUi){
@@ -37,50 +37,16 @@
       docExpansion: "none"
     });
 
-    $('#input_apiKey').change(function() {
-      var key = $('#input_apiKey')[0].value;
-      console.log("key: " + key);
-      if(key && key.trim() != "") {
-        console.log("added key " + key);
-            window.authorizations.add("key", new ApiKeyAuthorization("api_key", key, "header"));
-      }
-    })
-    $('#input_username, #input_password').change(function() {
-      var username = $('#input_username')[0].value;
-      var password = $('#input_password')[0].value;
-      console.log("username: " + username);
-      console.log("password: " + password);
-      if(username && username.trim() != "" && password && password.trim() != "" ) {
-        window.authorizations.add("basic", new BasicAuthorization(username, password));
-      }
-    })
-
-    // window.swaggerUi.load();
+    window.authorizations.add("key", new ApiKeyAuthorization("api_key", "@locals.apiKey", "header"));
+    window.authorizations.add("basic", new BasicAuthorization("@locals.username", "@locals.password"));
+    window.swaggerUi.load();
   });
 
   </script>
 </head>
 
 <body>
-<div id='header'>
-  <div class="swagger-ui-wrap">
-    <a id="logo" href="http://subkit.io">SubKit</a>
-    <form id='api_selector'>
-      <div class='input'><input placeholder="" id="input_baseUrl" name="baseUrl" type="text"/></div>
-      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
-      <div class='input'><input placeholder="username" id="input_username" name="username" type="text"/></div>
-      <div class='input'><input placeholder="password" id="input_password" name="password" type="text"/></div>
-      <div class='input'><a id="explore" href="#">Explore</a></div>
-    </form>
-  </div>
-</div>
-
-<div id="message-bar" class="swagger-ui-wrap">
-  &nbsp;
-</div>
-
-<div id="swagger-ui-container" class="swagger-ui-wrap">
-</div>
-
+  <div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
+  <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
 </body>
 </html>

@@ -5,12 +5,15 @@
 	</head>
 <body>
 	<h1>Subkit Developer Center</h1>
-	<a href="doc" target="_blank">API Doc</a>
-	<a href="chat" target="_blank">Chat</a>
-	<a href="editor" target="_blank">Editor</a>
-	<a href="console" target="_blank">Console</a>
-	<a href="template" target="_blank">Template</a>
-	<a href="updownload" target="_blank">Up-/Download</a>
-	<a href="log" target="_blank">ES Log</a>
+	<a href="login">Logout</a>
+	<div>
+		<a href="doc" target="_blank">API Doc</a>
+		<a href="chat" target="_blank">Chat</a>
+		<a href="editor" target="_blank">Editor</a>
+		<a href="console" target="_blank">Console</a>
+		<a href="template" target="_blank">Template</a>
+		<a href="updownload" target="_blank">Up-/Download</a>
+		<a href="log" target="_blank">ES Log</a>
+	</div>
 </body>
 </html>

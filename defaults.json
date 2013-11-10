@@ -25,7 +25,7 @@
   "storageModule": {
     "dbPath":"./testdb",
     "rightsPath":"./rights.json",
-    "tasksPath":"./tasks",
+    "tasksPath":"./files/plugins",
     "backupPath":"./backups"
   },
   "filesModule": {
@@ -43,7 +43,7 @@
   },
   "tasksModule":{
     "rightsPath":"./rights.json",
-    "tasksPath":"./tasks",
+    "tasksPath":"./files/plugins",
     "backupPath":"./backups"
   },
   "emailModule": {

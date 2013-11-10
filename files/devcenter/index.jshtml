@@ -6,14 +6,26 @@
 <body>
 	<h1>Subkit Developer Center</h1>
 	<a href="login">Logout</a>
+	<a href="doc" target="_blank">API Doc</a>
+	<a href="devcon" target="_blank">Developer Console</a>
 	<div>
-		<a href="doc" target="_blank">API Doc</a>
-		<a href="chat" target="_blank">Chat</a>
-		<a href="editor" target="_blank">Editor</a>
+		<h2>Admin</h2>
+		<a href="storage" target="_blank">Storage</a>
+		<a href="pubsub" target="_blank">Pub/Sub</a>
+		<a href="staticeditor" target="_blank">Static Editor</a>
+		<a href="taskeditor" target="_blank">Task Editor</a>
+		<a href="templateeditor" target="_blank">Template Editor</a>
+		<a href="log" target="_blank">Log</a>
+		<a href="s3" target="_blank">S3</a>
+		<h2>Examples</h2>
 		<a href="console" target="_blank">Console</a>
+		<a href="chat" target="_blank">Chat</a>
+		<h2>Temp</h2>
 		<a href="template" target="_blank">Template</a>
 		<a href="updownload" target="_blank">Up-/Download</a>
-		<a href="log" target="_blank">ES Log</a>
+		<a href="scheduler" target="_blank">Scheduler</a>
+		<a href="hooks" target="_blank">Hooks</a>
+		<a href="rights" target="_blank">Rights</a>
 	</div>
 </body>
 </html>

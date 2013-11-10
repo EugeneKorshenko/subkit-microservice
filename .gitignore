@@ -5,3 +5,5 @@ backups
 testdb
 rights.json
 files/static/
+files/task/
+files/template/

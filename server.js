@@ -1,5 +1,5 @@
 'use strict';
-
+var agent = require('webkit-devtools-agent');
 var restify = require('restify'),
 	http = require('http'),
 	fs = require('fs'),
@@ -233,6 +233,7 @@ server.get("/devcenter/:name", function(req, res, next){
 //start web server
 server.listen(app.port, function(){
 	console.log("subkit lite service listen on: " + server.address().port);
+	console.log(process.pid);
 	http.globalAgent.maxSockets = 50000;
 });
 

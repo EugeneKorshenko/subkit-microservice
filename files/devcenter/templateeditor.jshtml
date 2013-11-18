@@ -27,7 +27,7 @@
     }
   </style>
   <script src="public/lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
+  <script src="public/lib/angularjs/angular.min.js" type="text/javascript" charset="utf-8"></script>
   <script src="/subkit.js"></script>
   <script src="/angularsubkit.js"></script>
 </head>

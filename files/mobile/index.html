@@ -51,6 +51,9 @@
 						<button class="flatButton" data-ng-click="login()">Login</button>
 					</div>
 					<div class="row">
+						<span class="error" data-ng-bind="error"></span>
+					</div>
+					<div class="row">
 						<button class="rotateButton">+</button>
 					</div>
 				</div>
@@ -80,7 +83,7 @@
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="store in stores">
-							<go data-view="storage" data-ng-bind="store" data-ng-click="next(store)"></go>
+							<button data-view="storage" data-ng-bind="store" data-ng-click="next(store)"></button>
 						</li>
 					</ul>
 				</div>

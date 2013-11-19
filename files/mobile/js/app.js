@@ -16,40 +16,55 @@ angular.module('mobilecenter', ['app', 'subkit'])
 	$scope.username = "";
 	$scope.password = "";
 	$scope.domain = "";
+	$scope.error = "";
 	var nav = new Navigation();
 	$scope.login = function(){
-		shared.username = $scope.username;
-		shared.password = $scope.password;
-		shared.domain = $scope.domain;
-
+		shared.username = $scope.username || "subkit";
+		shared.password = $scope.password || "subkit";
+		shared.domain = $scope.domain || "http://localhost:8080";
+nav.go("center");
 		var subkit = new Subkit({ baseUrl: shared.domain, username: shared.username, password: shared.password });
 		subkit.login(function(err, data){
-			if(err) return;
+			if(err) { $scope.error = err; $scope.$apply(); return; }
 			shared.apiKey = data.apiKey;
 			nav.go("center");
 		});
 	};
 }])
-.controller("StorageCtrl",['$scope', 'angularSubkit', 'shared', function StorageCtrl($scope, angularSubkit, shared) {
-	$scope.stores = ["a", "b", "c", "1", "2", "3", "4", "5"];
-	var previews = [];
-	$scope.next = function(key){
-			console.log(shared);
-	// var subkit = new Subkit({ baseUrl: "@locals.url", apiKey: "@locals.apiKey" });
+.controller("StorageCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function StorageCtrl($scope, angularSubkit, Navigation, shared) {
+	var previews = ["store"];
+	var nav = new Navigation();
+	var key = "stores";
+	var load = function(){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		if(previews.length > 1){
+			key = previews.join('/');
+		}
+		else { 
+			key = "stores";
+		}
+		subkit.lookup(key, function(err, data){
+			if(err) throw new Error(err);
 
+			$scope.stores = [];
+			angular.forEach(data, function(item, key){
+				console.log(item);
+				console.log(key)
+				$scope.stores.push(item.name || item.key || key);
+			});
+			$scope.$apply();
+		});
+	};
+	nav.onChanged(function(name){
+		if(name === "storage") load();
+	});
+	$scope.next = function(key){
 		previews.push(key);
-		if(key === "a") $scope.stores = ["d", "e", "f"];
-		if(key === "d") $scope.stores = ["g", "h", "i"];
-		if(key === "g") $scope.stores = ["j", "k", "l"];
+		load();
 	};
 	$scope.preview = function(){
-			console.log(shared);
-	// var subkit = new Subkit({ baseUrl: "@locals.url", apiKey: "@locals.apiKey" });
-
-		var preview = previews.pop();
-		if(preview === "a") $scope.stores = ["a", "b", "c"];
-		if(preview === "d") $scope.stores = ["d", "e", "f"];
-		if(preview === "g") $scope.stores = ["g", "h", "i"];
+		previews.pop();
+		load();
 	};
 }]);
 

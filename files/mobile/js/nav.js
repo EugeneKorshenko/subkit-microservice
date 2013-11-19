@@ -31,17 +31,28 @@ var app = angular
     .factory('Navigation', function() {
       var views = {},
           lasts = [],
+          listener = [],
           current = "";
       return function($rootScope) {
+        var changed = function(name){
+          for (var i = 0; i < listener.length; i++) {
+            listener[i](name);
+          };
+        };
+        this.onChanged = function(callback){
+          listener.push(callback);
+        };
         this.go = function(name) {
             Slide('sl', name, current);
             lasts.push(current);
             current = name;
+            changed(current);
         };
         this.back = function(name) {
             if(name === "undefined") name = lasts.pop();
             Slide('sr', name, current);
             current = name;
+            changed(current);
         };
         this.addView = function(name, view) {
             view.name = name;

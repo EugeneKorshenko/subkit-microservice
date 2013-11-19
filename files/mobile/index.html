@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-ng-app="MobileUI" data-ng-csp>
+<html data-ng-app="app">
 	<head>
 		<title>UI Beta</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -26,29 +26,31 @@
 		
 		<script defer src="libs/fastclick.js"></script>
 		<script defer src="libs/angular.min.js"></script>
+		<script defer src="libs/angular-sanitize.min.js"></script>
 		<script defer src="libs/add2home.js"></script>
-		<!-- // <script defer src="libs/ga.js"></script> -->
 		<script defer src="js/nav.js"></script>
 		<script defer src="js/api.js"></script>
 		<script defer src="js/app.js"></script>
 	</head>
 	<body class="flat">
 		<views style="width: 100%;">
-			<view data-content="home" next="info" nexttext="&hellip;" headertext="Administration">
-				<div class="row">
-					<input type="text" class="input" placeholder="domain">
-				</div>
-				<div class="row">
-					<input type="text" class="input" placeholder="username">
-				</div>
-				<div class="row">
-					<input type="text" class="input" placeholder="password">
-				</div>
-				<div class="row">
-					<button class="flatButton">Login</button>
-				</div>
-				<div class="row">
-					<button class="rotateButton">+</button>
+			<view data-content="login" next="center" nexttext="&hellip;" headertext="SubKit">
+				<div data-ng-controller="LoginCtrl">
+					<div class="row">
+						<input type="text" class="input" placeholder="domain" data-ng-model="domain">
+					</div>
+					<div class="row">
+						<input type="text" class="input" placeholder="username" data-ng-model="username">
+					</div>
+					<div class="row">
+						<input type="password" class="input" placeholder="password" data-ng-model="password">
+					</div>
+					<div class="row">
+						<button class="flatButton" data-ng-click="login()">Login</button>
+					</div>
+					<div class="row">
+						<button class="rotateButton">+</button>
+					</div>
 				</div>
 				<p>
 	                <div class="shares">
@@ -60,31 +62,47 @@
 					</div>
 				</p>
 			</view>
-			<view data-content="info" class="hidden" next="welcome" back="home" backtext="back" nexttext="next" headertext="Info">
-				<p>
-					<back data-view="home">Back</back>
-					<go data-view="welcome">Go Welcome</back>
-	                <div class="shares">
-						<a class="link" href="http://subkit.io" data-name="subkitapp" target="_blank"></a>
-						<a class="mail" href="mailto:go@subkit.io" data-name="mailapp"></a>
-						<a class="twitter" href="https://twitter.com/subkit" data-name="twitterapp" target="_blank"></a>
-						<a class="facebook" href="https://www.facebook.com/subkit" data-name="facebookapp" target="_blank"></a>
-						<a class="gplus" href="https://plus.google.com/communities/106679532612202656243?hl=de" data-name="gplusapp" target="_blank"></a>
-					</div>
-				</p>
+			<view data-content="center" class="hidden" back="account" backtext="account" nexttext="&hellip;" next="settings" headertext="center">
+				<go data-view="storage" class="roundButton">store</go>
+				<go data-view="messaging" class="roundButton">pubsub</go>
+				<go data-view="statistics" class="roundButton">stats</go>
 			</view>
-			<view data-content="welcome" class="hidden" back="info" backtext="back" nexttext="next" headertext="Welcome">
-				<h2>SubKit</h2>
-				<p>
-					<back data-view="info">Back</back>
-	                <div class="shares">
-						<a class="link" href="http://subkit.io" data-name="subkitapp" target="_blank"></a>
-						<a class="mail" href="mailto:go@subkit.io" data-name="mailapp"></a>
-						<a class="twitter" href="https://twitter.com/subkit" data-name="twitterapp" target="_blank"></a>
-						<a class="facebook" href="https://www.facebook.com/subkit" data-name="facebookapp" target="_blank"></a>
-						<a class="gplus" href="https://plus.google.com/communities/106679532612202656243?hl=de" data-name="gplusapp" target="_blank"></a>
+			<view data-content="storage" class="hidden" backtext="back" headertext="storage">
+				<div data-ng-controller="StorageCtrl">
+					<div class="row">
+						<input type="text" class="input" placeholder="new">
+						<button class="rotateButton">+</button>
 					</div>
-				</p>
+					<ul class="arrowlist">
+						<li data-ng-repeat="store in stores">
+							<go data-view="storage2" data-ng-bind="store"></go>
+						</li>
+					</ul>
+				</div>
+			</view>
+			<view data-content="storage2" class="hidden" backtext="back" headertext="storage">
+				<ul class="arrowlist">
+					<li><go data-view="storage3">second</go></li>
+					<li><go data-view="storage3">second</go></li>
+					<li><go data-view="storage3">second</go></li>
+					<li><go data-view="storage3">second</go></li>
+				</ul>
+			</view>
+			<view data-content="storage3" class="hidden" backtext="back" headertext="storage">
+				<ul class="arrowlist">
+					<li><go data-view="storage">third</go></li>
+					<li><go data-view="storage">third</go></li>
+					<li><go data-view="storage">third</go></li>
+					<li><go data-view="storage">third</go></li>
+				</ul>
+			</view>
+			<view data-content="messaging" class="hidden" back="center" backtext="center" headertext="messaging">
+			</view>
+			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
+			</view>			
+			<view data-content="settings" class="hidden" back="center" backtext="back" headertext="settings">
+			</view>
+			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">
 			</view>
 		</views>
 	</body>

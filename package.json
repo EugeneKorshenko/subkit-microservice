@@ -20,14 +20,16 @@
     "apn": "~1.4.2",
     "c2dm": "~1.2.1",
     "node-gcm": "~0.9.7",
-    "mpns": "~2.0.1"
+    "mpns": "~2.0.1",
+    "aws-sign": "~0.3.0"
   },
   "devDependencies": {
     "mocha": "*",
     "grunt-cli": "*",
     "grunt": "*",
     "grunt-mocha-test": "*",
-    "webkit-devtools-agent": "~0.1.2"
+    "webkit-devtools-agent": "~0.1.2",
+    "grunt-contrib-less": "~0.8.2"
   },
   "main": "src/server.js",
   "engines": {

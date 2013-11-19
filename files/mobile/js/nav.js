@@ -25,20 +25,23 @@ var Slide = function (slideType, vin, vout, callback) {
     vOut.classList.add(slideOpts[slideType][1]);
 };
 
-var mobileUi = angular.module('MobileUI', [])
+var app = angular.module('app', ['ngSanitize'])
     .directive('views', function() {
         return {
             restrict: 'E',
             transclude: true,
-            scope: {},
+            scope:{},
             controller: function($rootScope) {
                 var views = $rootScope.views = {},
+                    lasts = [],
                     current = "";
                 $rootScope.go = function(name) {
                     Slide('sl', name, current);
+                    lasts.push(current);
                     current = name;
                 };
                 $rootScope.back = function(name) {
+                    if(name === "undefined") name = lasts.pop();
                     Slide('sr', name, current);
                     current = name;
                 };
@@ -56,13 +59,13 @@ var mobileUi = angular.module('MobileUI', [])
           require: '^views',
           restrict: 'E',
           transclude: true,
-          scope: {},
+          scope:{},
           link: function(scope, element, attrs, viewsCtrl) {
             viewsCtrl.addView(attrs.content, scope);
           },
           template: function(element, attrs){
-            var backTarget = attrs.back,
-                backText = attrs.backtext || "&nbsp;",
+            var backTarget = attrs.back || undefined,
+                backText = attrs.backtext,
                 nextTarget = attrs.next,
                 nextText = attrs.nexttext || "&nbsp;",
                 headerText = attrs.headertext || "&nbsp;",
@@ -70,8 +73,8 @@ var mobileUi = angular.module('MobileUI', [])
                 backElement = "";
 
             element[0].id = attrs.content;
-            if(backTarget) backElement = '<back data-view="'+backTarget+'" class="left">'+backText+'</back>';
-            if(nextTarget) nextElement = '<go data-view="'+nextTarget+'" class="right">'+nextText+'</go>';
+            if(backText) backElement = '<back data-view="'+backTarget+'" class="left">'+backText+'</back>';
+            if(nextText) nextElement = '<go data-view="'+nextTarget+'" class="right">'+nextText+'</go>';
             return '<section><header><h1>'+headerText+'</h1>'+backElement+nextElement+'</header><div class="scrollMask"></div><div class="scrollWrap"><div class="scroll"><div class="content center" data-ng-transclude></div></div></div></section>';
           }
         };
@@ -79,7 +82,6 @@ var mobileUi = angular.module('MobileUI', [])
     .directive('go', function($rootScope) {
         return {
           restrict: 'E',
-          scope: {},
           replace: true,
           link: function(scope, element, attrs, viewsCtrl) {
             element.bind('click', function(){
@@ -94,7 +96,6 @@ var mobileUi = angular.module('MobileUI', [])
     .directive('back', function($rootScope) {
         return {
           restrict: 'E',
-          scope: {},
           replace: true,
           link: function(scope, element, attrs, viewsCtrl) {
             element.bind('click', function(){
@@ -105,9 +106,45 @@ var mobileUi = angular.module('MobileUI', [])
             return "<button>" + element[0].innerHTML + "</button>";
           }
         };
+    })
+    .directive('contenteditable', function() {
+      return {
+        restrict: 'A',
+        require: '?ngModel',
+        scope: {
+          ngModel: '='
+        },
+        link: function(scope, element, attrs, ngModel) {
+          if(!ngModel) return;
+          // Specify how UI should be updated
+          ngModel.$render = function() {
+            console.log("render");
+            console.log(ngModel.$modelValue);
+            element.html(ngModel.$viewValue || '');
+          };
+
+          // Listen for change events to enable binding
+          element.on('blur keyup change', function() {
+            scope.$modelValue = element.html();
+            ngModel.$setViewValue(element.html());
+            scope.$apply();
+            // scope.$apply(read);
+          });
+          read();
+          
+          // Write data to the model
+          function read() {
+            var html = element.html();
+            if(attrs.stripBr && html == '<br>') {
+              html = '';
+            }
+            ngModel.$setViewValue(html);
+          };
+        }
+      };
     });
 
-mobileUi.config(['$httpProvider', function($httpProvider) {
+app.config(['$httpProvider', function($httpProvider) {
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
     }

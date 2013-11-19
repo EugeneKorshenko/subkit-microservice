@@ -9,51 +9,61 @@ var Slide = function (slideType, vin, vout, callback) {
     var vIn = document.getElementById(vin),
         vOut = document.getElementById(vout),
         onAnimationEnd = function () {
-            vOut.classList.add('hidden');
-            vIn.classList.remove(slideOpts[slideType][0]);
-            vOut.classList.remove(slideOpts[slideType][1]);
+            if(vin !== vout) vOut.classList.add('hidden');
+            if(vin !== vout) vIn.classList.remove(slideOpts[slideType][0]);
+            if(vin !== vout) vOut.classList.remove(slideOpts[slideType][1]);
             vOut.removeEventListener('webkitAnimationEnd', onAnimationEnd, false);
             vOut.removeEventListener('animationend',       onAnimationEnd);
         };
+
     vOut.addEventListener('webkitAnimationEnd', onAnimationEnd, false);
     vOut.addEventListener('animationend',       onAnimationEnd);
     if (callback && typeof(callback) === 'function') {
         callback();
     }
     vIn.classList.remove('hidden');
-    vIn.classList.add(slideOpts[slideType][0]);
-    vOut.classList.add(slideOpts[slideType][1]);
+    if(vin !== vout) vIn.classList.add(slideOpts[slideType][0]);
+    if(vin !== vout) vOut.classList.add(slideOpts[slideType][1]);
 };
 
-var app = angular.module('app', ['ngSanitize'])
-    .directive('views', function() {
+var app = angular
+    .module('app', ['ngSanitize'])
+    .factory('Navigation', function() {
+      var views = {},
+          lasts = [],
+          current = "";
+      return function($rootScope) {
+        this.go = function(name) {
+            Slide('sl', name, current);
+            lasts.push(current);
+            current = name;
+        };
+        this.back = function(name) {
+            if(name === "undefined") name = lasts.pop();
+            Slide('sr', name, current);
+            current = name;
+        };
+        this.addView = function(name, view) {
+            view.name = name;
+            views[name] = view;
+            if(Object.keys(views).length===1) current = name;
+        };
+        if($rootScope) {
+          $rootScope.views = views;
+          $rootScope.go = this.go;
+          $rootScope.back = this.back;
+        }
+      };
+    })
+    .directive('views', ["Navigation", function(Navigation) {
         return {
             restrict: 'E',
             transclude: true,
             scope:{},
-            controller: function($rootScope) {
-                var views = $rootScope.views = {},
-                    lasts = [],
-                    current = "";
-                $rootScope.go = function(name) {
-                    Slide('sl', name, current);
-                    lasts.push(current);
-                    current = name;
-                };
-                $rootScope.back = function(name) {
-                    if(name === "undefined") name = lasts.pop();
-                    Slide('sr', name, current);
-                    current = name;
-                };
-                this.addView = function(name, view) {
-                    view.name = name;
-                    views[name] = view;
-                    if(Object.keys(views).length===1) current = name;
-                };
-              },
+            controller: Navigation,
             template: '<div ng-transclude></div>'
         };
-    })
+    }])
     .directive('view', function() {
         return {
           require: '^views',
@@ -78,6 +88,13 @@ var app = angular.module('app', ['ngSanitize'])
             return '<section><header><h1>'+headerText+'</h1>'+backElement+nextElement+'</header><div class="scrollMask"></div><div class="scrollWrap"><div class="scroll"><div class="content center" data-ng-transclude></div></div></div></section>';
           }
         };
+    })
+    .directive('preventDefault', function() {
+      return function(scope, element, attrs) {
+        $(element).click(function(event) {
+            event.preventDefault();
+        });
+      }
     })
     .directive('go', function($rootScope) {
         return {

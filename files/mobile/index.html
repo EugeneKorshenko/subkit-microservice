@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-ng-app="app">
+<html data-ng-app="mobilecenter">
 	<head>
 		<title>UI Beta</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -23,10 +23,12 @@
 		<link rel="icon" type="image/png" href="img/favicon.png" />
 
 		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-		
+
 		<script defer src="libs/fastclick.js"></script>
 		<script defer src="libs/angular.min.js"></script>
 		<script defer src="libs/angular-sanitize.min.js"></script>
+		<script defer src="../jssdk/subkit.js"></script>
+		<script defer src="../jssdk/angularsubkit.js"></script>
 		<script defer src="libs/add2home.js"></script>
 		<script defer src="js/nav.js"></script>
 		<script defer src="js/api.js"></script>
@@ -34,7 +36,7 @@
 	</head>
 	<body class="flat">
 		<views style="width: 100%;">
-			<view data-content="login" next="center" nexttext="&hellip;" headertext="SubKit">
+			<view data-content="login" next="center" nexttext="&hellip;" headertext="subkit">
 				<div data-ng-controller="LoginCtrl">
 					<div class="row">
 						<input type="text" class="input" placeholder="domain" data-ng-model="domain">
@@ -73,9 +75,12 @@
 						<input type="text" class="input" placeholder="new">
 						<button class="rotateButton">+</button>
 					</div>
+					<div class="row">
+						<button data-ng-click="preview()" class="arrow">preview</button>
+					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="store in stores">
-							<go data-view="storage2" data-ng-bind="store"></go>
+							<go data-view="storage" data-ng-bind="store" data-ng-click="next(store)"></go>
 						</li>
 					</ul>
 				</div>

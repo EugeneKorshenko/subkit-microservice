@@ -71,6 +71,7 @@ nav.go("center");
 
 				obj = data;
 				$scope.stores = [];
+
 				angular.forEach(data, function(item, key){
 					var value = "";
 					if(typeof item !== "object") value = item;
@@ -83,8 +84,11 @@ nav.go("center");
 
 			var forObjProperty = previews[previews.length-1];
 			obj = obj[forObjProperty];
+
 			angular.forEach(obj, function(item, key){
-				$scope.stores.push({key: key, value: item});
+				var value = "";
+				if(typeof item !== "object") value = item;
+				$scope.stores.push({key: key, value: value});
 			});
 		}
 	};

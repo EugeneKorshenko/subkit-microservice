@@ -84,7 +84,7 @@
 					<ul class="arrowlist">
 						<li data-ng-repeat="store in stores">
 							<button data-view="storage" data-ng-bind="store.key" data-ng-click="next(store.key)"></button>
-							<input data-ng-bind="store.value" data-ng-show="store.value">
+							<input data-ng-model="store.value" data-ng-show="store.value">
 						</li>
 					</ul>
 				</div>

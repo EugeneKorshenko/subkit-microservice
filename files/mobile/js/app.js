@@ -52,38 +52,48 @@ nav.go("center");
 	};
 }])
 .controller("StorageCtrl", ['$scope', 'angularSubkit', 'Navigation', 'shared', function StorageCtrl($scope, angularSubkit, Navigation, shared) {
-	var previews = ["store"];
+	var previews = ["stores"];
 	var nav = new Navigation();
-	var key = "stores";
 
 	nav.onChanged(function(name){
 		if(name === "storage") load();
 	});
+	var obj = [];
+	var prop = "";
+	
 	var load = function(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		if(previews.length > 1){
-			key = previews.join('/');
-		}
-		else { 
-			key = "stores";
-		}
-		subkit.lookup(key, function(err, data){
-			if(err) statusCtrl.show("network error");
+		var key = previews.join('/');
 
-			$scope.stores = [];
-			angular.forEach(data, function(item, key){
-				console.log(item);
-				console.log(key)
-				$scope.stores.push(item.name || item.key || key);
+		if(obj instanceof Array) {
+			subkit.lookup(key, function(err, data){
+				if(err) statusCtrl.show("network error");
+
+				obj = data;
+				$scope.stores = [];
+				angular.forEach(data, function(item, key){
+					var value = "";
+					if(typeof item !== "object") value = item;
+					$scope.stores.push({key: item.name || item.key || key, value: value});
+				});
+				$scope.$apply();
 			});
-			$scope.$apply();
-		});
+		} else if(obj instanceof Object) {
+			$scope.stores = [];
+
+			var forObjProperty = previews[previews.length-1];
+			obj = obj[forObjProperty];
+			angular.forEach(obj, function(item, key){
+				$scope.stores.push({key: key, value: item});
+			});
+		}
 	};
 	$scope.next = function(key){
 		previews.push(key);
 		load();
 	};
 	$scope.preview = function(){
+		obj = [];
 		previews.pop();
 		load();
 	};

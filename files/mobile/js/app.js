@@ -1,5 +1,6 @@
 'use strict';
-angular.module('mobilecenter', ['app', 'subkit'])
+angular
+.module('mobilecenter', ['app', 'subkit'])
 .service('shared', function () {
 	var _username,
 		_password,

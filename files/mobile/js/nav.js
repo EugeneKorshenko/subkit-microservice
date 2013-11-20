@@ -103,13 +103,6 @@ var app = angular
           }
         };
     })
-    .directive('preventDefault', function() {
-      return function(scope, element, attrs) {
-        $(element).click(function(event) {
-            event.preventDefault();
-        });
-      }
-    })
     .directive('go', function($rootScope) {
         return {
           restrict: 'E',

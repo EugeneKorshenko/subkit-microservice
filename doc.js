@@ -25,29 +25,6 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-
-	var stores_doc = swagger.createResource("/docs/stores",  {description: "Store operations"});
-	stores_doc.models.Info = {
-		id: "Info",
-		properties: {
-			grant:{
-				type: "bool"
-			},
-			name:{
-				type: "string"
-			}
-		}
-	};
-	stores_doc.get("/stores", "Gets all stores", {
-		nickname: "ReadStores",
-		responseClass: "List[Info]",
-		"errorResponses":[
-			{
-				"code": 401,
-				"reason": "Unauthorized request."
-			}
-		]
-	});
 	var mr_doc = swagger.createResource("/docs/job",  {description: "Run task operations"});
 	mr_doc.models.Value = {
 		id: "Value",
@@ -94,13 +71,33 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	var store_doc = swagger.createResource("/docs/store",  {description: "Store operations"});
-	store_doc.models.Value = {
+	var stores_doc = swagger.createResource("/docs/store",  {description: "Store operations"});
+	stores_doc.models.Value = {
 		id: "Value",
 		properties: {}
 	};
-
-	store_doc.get("/store/{name}", "Read all items by store name.", {
+	stores_doc.models.Info = {
+		id: "Info",
+		properties: {
+			grant:{
+				type: "bool"
+			},
+			name:{
+				type: "string"
+			}
+		}
+	};
+	stores_doc.get("/stores", "Gets all stores", {
+		nickname: "ReadStores",
+		responseClass: "List[Info]",
+		"errorResponses":[
+			{
+				"code": 401,
+				"reason": "Unauthorized request."
+			}
+		]
+	});
+	stores_doc.get("/stores/{name}", "Read all items by store name.", {
 	    nickname: "FindAll",
 		responseClass: "List[Value]",
 	    parameters: [
@@ -126,7 +123,7 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	store_doc.get("/store/{name}/{key}", "Gets an item in store.", {
+	stores_doc.get("/stores/{name}/{key}", "Gets an item in store.", {
 	    nickname: "Find",
 		responseClass: "Value",
 		parameters: [
@@ -149,7 +146,7 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	store_doc.post('/store/{name}/{key}', "Create an item in store.", {
+	stores_doc.post('/stores/{name}/{key}', "Create an item in store.", {
 		nickname: "Create",
 		responseClass: "void",
 		parameters: [
@@ -173,7 +170,7 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	store_doc.put('/store/{name}/{key}', "Update an item in store.", {
+	stores_doc.put('/stores/{name}/{key}', "Update an item in store.", {
 		nickname: "Update",
 		responseClass: "void",
 		parameters: [
@@ -197,7 +194,7 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	store_doc.delete('/store/{name}/{key}', "Delete an item in store.", {
+	stores_doc.delete('/stores/{name}/{key}', "Delete an item in store.", {
 		nickname: "Delete",
 		responseClass: "void",
 		parameters: [
@@ -220,7 +217,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	store_doc.post("/store/{name}/grant", "Grant public access to a store.", {
+	stores_doc.post("/stores/{name}/grant", "Grant public access to a store.", {
 		nickname: "Grant",
 		responseClass: "void",
 		parameters: [
@@ -242,7 +239,7 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	store_doc.delete("/store/{name}/grant", "Revoke public access to a store.", {
+	stores_doc.delete("/stores/{name}/grant", "Revoke public access to a store.", {
 		nickname: "Revoke",
 		responseClass: "void",
 	    parameters: [

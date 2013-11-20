@@ -22,7 +22,7 @@ after(function(done){
 describe('service: storage', function(){
   describe('on grant access', function(){
     before(function(done){
-      client.post("/store/grant_test/1",{ test: "my grant demo item 1"}, function(err, req, res, data) {
+      client.post("/stores/grant_test/1",{ test: "my grant demo item 1"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
       });
@@ -37,7 +37,7 @@ describe('service: storage', function(){
       });
     });
     after(function(done){
-      client.del("/store/grant_test/1", function(err, req, res, data) {
+      client.del("/stores/grant_test/1", function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 202);
         done();
@@ -45,7 +45,7 @@ describe('service: storage', function(){
     }),
     it('should grant access to a store', function(done){
       client.basicAuth("subkit","subkit");
-      client.post('/store/grant_test/grant', function(err, req, res, data) {
+      client.post('/stores/grant_test/grant', function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
         assert.equal(data.grant, true);
@@ -54,7 +54,7 @@ describe('service: storage', function(){
     }),
     it('should revoke access to a store', function(done){
       client.basicAuth("subkit","subkit");
-      client.del('/store/grant_test/grant', function(err, req, res, data) {
+      client.del('/stores/grant_test/grant', function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 202);
         assert.equal(data.grant, false);
@@ -84,39 +84,39 @@ describe('service: storage', function(){
   }),
   describe('on read', function(){
     before(function(done){
-      client.post("/store/ademo/1",{ test: "my ademo item 1"}, function(err, req, res, data) {
+      client.post("/stores/ademo/1",{ test: "my ademo item 1"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
       });
-      client.post("/store/bdemoa/1",{ test: "my bdemoa item 1"}, function(err, req, res, data) {
+      client.post("/stores/bdemoa/1",{ test: "my bdemoa item 1"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
       });
-      client.post("/store/bdemob/1",{ test: "my bdemob item 1"}, function(err, req, res, data) {
+      client.post("/stores/bdemob/1",{ test: "my bdemob item 1"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
       });
-      client.post("/store/bdemoc/1",{ test: "my bdemoc item 1"}, function(err, req, res, data) {
+      client.post("/stores/bdemoc/1",{ test: "my bdemoc item 1"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
       });
-      client.post("/store/bdemoc/2",{ test: "my bdemoc item 2"}, function(err, req, res, data) {
+      client.post("/stores/bdemoc/2",{ test: "my bdemoc item 2"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
       });
-      client.post("/store/bdemoc/3",{ test: "my bdemoc item 3"}, function(err, req, res, data) {
+      client.post("/stores/bdemoc/3",{ test: "my bdemoc item 3"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
       });
-      client.post("/store/bdemoc/4",{ test: "my bdemoc item 4"}, function(err, req, res, data) {
+      client.post("/stores/bdemoc/4",{ test: "my bdemoc item 4"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
       });
-      client.post("/store/bdemod/1",{ test: "my bdemod item 1"}, function(err, req, res, data) {
+      client.post("/stores/bdemod/1",{ test: "my bdemod item 1"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
       });
-      client.post("/store/cdemo/1",{ test: "my cdemo item 1"}, function(err, req, res, data) {
+      client.post("/stores/cdemo/1",{ test: "my cdemo item 1"}, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
         done();
@@ -132,7 +132,7 @@ describe('service: storage', function(){
         });
     }),
     it('name and key should return a single item', function(done){
-        client.get('/store/ademo/1', function(err, req, res, data) {
+        client.get('/stores/ademo/1', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
 
@@ -142,7 +142,7 @@ describe('service: storage', function(){
         });
     }),
     it('name "bde" match should return 7 items', function(done){
-        client.get('/store/bde', function(err, req, res, data) {
+        client.get('/stores/bde', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
 
@@ -152,7 +152,7 @@ describe('service: storage', function(){
         });
     }),
     it('name "bdemoc" match should return 4 items', function(done){
-        client.get('/store/bdemoc', function(err, req, res, data) {
+        client.get('/stores/bdemoc', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
 
@@ -162,7 +162,7 @@ describe('service: storage', function(){
         });
     }),
     it('name "nomatch" match should return 0 items', function(done){
-        client.get('/store/nomatch', function(err, req, res, data) {
+        client.get('/stores/nomatch', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
 
@@ -172,7 +172,7 @@ describe('service: storage', function(){
         });
     }),
     it('name "bde" match with limit 2 should return 2 items', function(done){
-        client.get('/store/bde?limit=2', function(err, req, res, data) {
+        client.get('/stores/bde?limit=2', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
 
@@ -182,7 +182,7 @@ describe('service: storage', function(){
         });
     }),
     it('name "bdemoc" match with key from "2" and limit 2 should return 2 items ["2","3"]', function(done){
-        client.get('/store/bdemoc?from=2&limit=2', function(err, req, res, data) {
+        client.get('/stores/bdemoc?from=2&limit=2', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
 
@@ -194,7 +194,7 @@ describe('service: storage', function(){
         });
     }),
     it('name "bdemo" match with keysOnly should return 7 items', function(done){
-        client.get('/store/bdemo?keysOnly=true', function(err, req, res, data) {
+        client.get('/stores/bdemo?keysOnly=true', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
 
@@ -204,7 +204,7 @@ describe('service: storage', function(){
         });
     }),
     it('name "bdemo" match with key from "2", limit 2 and keysOnly should return 2 items', function(done){
-        client.get('/store/bdemoc?from=2&limit=2&keysOnly=true', function(err, req, res, data) {
+        client.get('/stores/bdemoc?from=2&limit=2&keysOnly=true', function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 200);
           assert.equal(data[0].value, undefined);
@@ -229,15 +229,15 @@ describe('service: storage', function(){
           assert.equal(data.test, "");
           done();
         });
-    }),
-    it('should run the "error" plugin per POST', function(done){
-      client.post('/job/error', { log: "test" }, function(err, req, res, data) {
-          assert.equal(err, undefined);
-          assert.equal(res.statusCode, 200);
-          assert.equal(data.status, "created");
-          done();
-        });
-    });
+    })
+    // it('should run the "error" plugin per POST', function(done){
+    //   client.post('/job/error', { log: "test" }, function(err, req, res, data) {
+    //       assert.equal(err, undefined);
+    //       assert.equal(res.statusCode, 200);
+    //       assert.equal(data.status, "created");
+    //       done();
+    //     });
+    // });
   }),
   describe('on import/export', function(){
     it('should import values to "demoimport" store', function(done){
@@ -251,7 +251,7 @@ describe('service: storage', function(){
       client.post('/manage/import/demoimport',data, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
-        client.get('/store/demoimport',function(err, req, res, data) {
+        client.get('/stores/demoimport',function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.notEqual(data, undefined);
           assert.equal(res.statusCode, 200);
@@ -271,13 +271,13 @@ describe('service: storage', function(){
       client.post('/manage/import',data, function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 201);
-        client.get('/store/demoimport1',function(err, req, res, data) {
+        client.get('/stores/demoimport1',function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.notEqual(data, undefined);
           assert.equal(res.statusCode, 200);
           assert.equal(data.length, 1);
         });
-        client.get('/store/demoimport2',function(err, req, res, data) {
+        client.get('/stores/demoimport2',function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.notEqual(data, undefined);
           assert.equal(res.statusCode, 200);
@@ -300,7 +300,7 @@ describe('service: storage', function(){
       client.get('/manage/export', function(err, req, res, data) {
         assert.equal(err, undefined);
         assert.equal(res.statusCode, 200);
-        assert.equal(data.length, 38);
+        assert.equal(data.length, 36);
         done();
       });
     });
@@ -314,7 +314,7 @@ describe('service: storage', function(){
         assert.notEqual(data, undefined);
         assert.equal(res.statusCode, 202);
         
-        client.post("/store/importdemo/100",{test: ""}, function(err, req, res, data) {
+        client.post("/stores/importdemo/100",{test: ""}, function(err, req, res, data) {
           assert.equal(err, undefined);
           assert.equal(res.statusCode, 201);
        
@@ -322,7 +322,7 @@ describe('service: storage', function(){
             assert.equal(err, undefined);
             assert.notEqual(data, undefined);
             assert.equal(res.statusCode, 202);
-            client.get("/store/importdemo/100",function(err, req, res, data) {
+            client.get("/stores/importdemo/100",function(err, req, res, data) {
               assert.notEqual(err, undefined);
               done();      
             });

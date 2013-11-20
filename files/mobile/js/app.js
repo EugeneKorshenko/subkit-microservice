@@ -55,6 +55,10 @@ nav.go("center");
 	var previews = ["store"];
 	var nav = new Navigation();
 	var key = "stores";
+
+	nav.onChanged(function(name){
+		if(name === "storage") load();
+	});
 	var load = function(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		if(previews.length > 1){
@@ -75,9 +79,6 @@ nav.go("center");
 			$scope.$apply();
 		});
 	};
-	nav.onChanged(function(name){
-		if(name === "storage") load();
-	});
 	$scope.next = function(key){
 		previews.push(key);
 		load();

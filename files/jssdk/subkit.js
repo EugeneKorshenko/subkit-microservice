@@ -314,7 +314,7 @@ var Subkit = function(config){
 
 	self.set = function(key, value, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/store/" + key;
+		var url = self.baseUrl + "/stores/" + key;
 		var msg = JSON.parse(JSON.stringify(self.options));
 		msg["data"] = value;
 		httpRequest.post(url, msg, function(status, result){
@@ -328,7 +328,7 @@ var Subkit = function(config){
 
 	self.get = function(key, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/store/" + key;
+		var url = self.baseUrl + "/stores/" + key;
 		httpRequest.get(url, self.options, function(status, result){
 			if(status !== 200) {
 				if(callback) callback(result);
@@ -340,7 +340,7 @@ var Subkit = function(config){
 
 	self.remove = function(key, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/store/" + key;
+		var url = self.baseUrl + "/stores/" + key;
 		httpRequest.del(url, self.options, function(status, result){
 			if(status !== 200) {
 				if(callback) callback(result);

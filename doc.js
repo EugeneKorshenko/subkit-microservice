@@ -71,7 +71,7 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	var stores_doc = swagger.createResource("/docs/store",  {description: "Store operations"});
+	var stores_doc = swagger.createResource("/docs/stores",  {description: "Store operations"});
 	stores_doc.models.Value = {
 		id: "Value",
 		properties: {}

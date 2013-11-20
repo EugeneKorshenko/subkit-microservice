@@ -130,42 +130,6 @@ var app = angular
             return "<button>" + element[0].innerHTML + "</button>";
           }
         };
-    })
-    .directive('contenteditable', function() {
-      return {
-        restrict: 'A',
-        require: '?ngModel',
-        scope: {
-          ngModel: '='
-        },
-        link: function(scope, element, attrs, ngModel) {
-          if(!ngModel) return;
-          // Specify how UI should be updated
-          ngModel.$render = function() {
-            console.log("render");
-            console.log(ngModel.$modelValue);
-            element.html(ngModel.$viewValue || '');
-          };
-
-          // Listen for change events to enable binding
-          element.on('blur keyup change', function() {
-            scope.$modelValue = element.html();
-            ngModel.$setViewValue(element.html());
-            scope.$apply();
-            // scope.$apply(read);
-          });
-          read();
-          
-          // Write data to the model
-          function read() {
-            var html = element.html();
-            if(attrs.stripBr && html == '<br>') {
-              html = '';
-            }
-            ngModel.$setViewValue(html);
-          };
-        }
-      };
     });
 
 app.config(['$httpProvider', function($httpProvider) {

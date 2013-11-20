@@ -99,6 +99,7 @@ server.use(function (req, res, next) {
 	return next();
 });
 server.use(restify.conditionalRequest());
+server.pre(restify.pre.userAgentConnection());
 
 //custom before / after code 
 // server.use(function customHandler(req, res, next) {
@@ -256,3 +257,4 @@ require("./lib/template.js").init(server, templateConfig, helper);
 require("./lib/task.js").init(server, storage, taskConfig, task, helper);
 require("./lib/eventsource.js").init(server, es, helper);
 require("./lib/s3.js").init(server, s3Config, helper);
+require("./lib/statistics.js").init(server, helper);

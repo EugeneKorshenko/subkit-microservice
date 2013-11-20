@@ -107,10 +107,25 @@
 			<view data-content="messaging" class="hidden" back="center" backtext="center" headertext="messaging">
 			</view>
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
+				<div data-ng-controller="StatisticsCtrl">
+					<div class="row">
+						<span>Concurrent Connections</span>
+						<span data-ng-bind="connections"></span>
+					</div>
+					<div class="row">
+						<span>Bytes</span>
+						<span data-ng-bind="totalBytes"></span>
+					</div>
+				</div>
 			</view>			
 			<view data-content="settings" class="hidden" back="center" backtext="back" headertext="settings">
 			</view>
 			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">
+			</view>
+			<view data-content="message" class="hidden" headertext="Notification" nexttext="close" next="center">
+				<div data-ng-controller="StatusCtrl">
+					<h1 data-ng-bind="error">Message</h1>
+				</div>
 			</view>
 		</views>
 	</body>

@@ -42,6 +42,9 @@ var app = angular
         this.onChanged = function(callback){
           listener.push(callback);
         };
+        this.show = function(){
+            Slide('popin', "message", current);
+        };
         this.go = function(name) {
             Slide('sl', name, current);
             lasts.push(current);

@@ -4,14 +4,33 @@ angular.module('mobilecenter', ['app', 'subkit'])
 	var _username,
 		_password,
 		_apiKey,
-		_domain;
+		_domain,
+		_errorMsg;
     return {
         username: _username,
         password: _password,
         domain: _domain,
-        apiKey: _apiKey
+        apiKey: _apiKey,
+        errorMsg: _errorMsg
    };
 })
+.controller("StatisticsCtrl", ['$scope', function($scope){
+	$scope.connections = 0;
+	$scope.totalBytes = 0;
+}])
+.controller("StatusCtrl", ['$scope', 'Navigation', 'shared', function($scope, Navigation, shared){
+	var nav = new Navigation();
+	this.show = function(errorMsg){
+		$scope.error = shared.errorMsg;
+		$scope.$apply();
+		nav.show();
+	};
+	this.close = function(){
+		$scope.error = "";
+		$scope.$apply();
+		nav.close();
+	}
+}])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";
 	$scope.password = "";
@@ -31,7 +50,7 @@ nav.go("center");
 		});
 	};
 }])
-.controller("StorageCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function StorageCtrl($scope, angularSubkit, Navigation, shared) {
+.controller("StorageCtrl", ['$scope', 'angularSubkit', 'Navigation', 'shared', function StorageCtrl($scope, angularSubkit, Navigation, shared) {
 	var previews = ["store"];
 	var nav = new Navigation();
 	var key = "stores";
@@ -44,7 +63,7 @@ nav.go("center");
 			key = "stores";
 		}
 		subkit.lookup(key, function(err, data){
-			if(err) throw new Error(err);
+			if(err) statusCtrl.show("network error");
 
 			$scope.stores = [];
 			angular.forEach(data, function(item, key){

@@ -75,10 +75,10 @@ nav.go("center");
 		if(shared.rawObj && segment) {
 			segments[key] = segment;
 			obj = segment;
-			angular.forEach(obj, function(item, key){
+			angular.forEach(obj, function(item, itemKey){
 				var value = "";
 				if(!angular.isObject(item)) value = item;
-				$scope.stores.push({key: key, value: value});
+				$scope.stores.push({key: itemKey, value: value, dataKey: key+"/"+itemKey});
 			});
 		} else {
 			subkit.lookup(key, function(err, data){
@@ -88,10 +88,10 @@ nav.go("center");
 				obj = data;
 				shared.rawObj = angular.isObject(data) ? data : null;
 
-				angular.forEach(data, function(item, key){
+				angular.forEach(data, function(item, itemKey){
 					var value = "";
 					if(!angular.isObject(item)) value = item;
-					$scope.stores.push({key: item.name || item.key || key, value: value});
+					$scope.stores.push({key: item.name || item.key || itemKey, value: value, dataKey: key+"/"+itemKey});
 				});
 				$scope.$apply();
 			});
@@ -106,9 +106,48 @@ nav.go("center");
 	$scope.json = function(){
 		nav.go("jsoneditor");
 	};
+		var c=0;
+	function _search(path, obj, segPath){
+		c++;
+		console.log(c);
+		for(var itm in obj){
+			var fullPath = [];
+			for(var p in path){
+				fullPath.push(path[p]);
+				if(path[p] === itm){
+					if(angular.isObject(obj[itm])){
+						var key = fullPath.join('/');
+						if(key === segPath){
+							return obj[itm];
+						console.log("obj");
+						console.log(key);
+						console.log(segPath);
+						}
+					} else {
+						fullPath.pop();
+						var key = fullPath.join('/');
+						if(key === segPath)
+							return obj;
+					}
+					return _search(path, obj[itm], segPath);
+				}
+			}
+		}
+	};
 	$scope.edit = function(key){
-		console.log("edit");
-		console.log(key);
+		var keys = key.split('/');
+		var prop = keys[keys.length-1];
+
+		var segPath = key.split('/');
+		segPath.pop();
+		segPath = segPath.join('/');
+
+		var dataSegment = _search(keys, shared.rawObj, segPath);
+		console.log(dataSegment);
+		if(dataSegment && dataSegment[prop]){
+			dataSegment[prop] = "kkk";
+		}
+		console.log(shared.rawObj);
 	};
 	$scope.save = function(){
 		console.log("save");

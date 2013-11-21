@@ -79,12 +79,15 @@
 						<button class="rotateButton">+</button>
 					</div>
 					<div class="row">
-						<button data-ng-click="preview()" class="arrow">preview</button>
+						<button data-ng-click="previous()" data-ng-show="hasParent()">previous</button>
+						<button data-ng-click="json(key)" data-ng-show="isJSON()">json</button>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="store in stores">
-							<button data-view="storage" data-ng-bind="store.key" data-ng-click="next(store.key)"></button>
-							<input data-ng-model="store.value" data-ng-show="store.value">
+							<div class="{{(!store.value) ? 'arrow' : ''}}">
+								<button data-ng-show="!store.value" data-ng-bind="store.key" data-ng-click="next(store.key)"></button>
+								<button data-ng-show="store.value" data-ng-bind="store.key" data-ng-click="edit(store.key)"></button>
+							</div>
 						</li>
 					</ul>
 				</div>
@@ -110,6 +113,14 @@
 			<view data-content="notify" class="hidden" headertext="Notification" nexttext="close" next="center">
 				<div data-ng-controller="StatusCtrl">
 					<h1 data-ng-bind="error">Message</h1>
+				</div>
+			</view>
+			<view data-content="jsoneditor" class="hidden" headertext="JSON" backtext="cancel">
+				<div data-ng-controller="StorageCtrl">
+					<div class="row">
+						<button class="flatButton" data-ng-click="save()">Save</button>
+					</div>
+					<textarea data-ng-model="dataObj" style="width:100%; height:auto; resize: none;" rows="20"></textarea>
 				</div>
 			</view>
 		</views>

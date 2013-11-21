@@ -7,6 +7,7 @@ angular
 		_apiKey,
 		_domain,
 		_errorMsg;
+
     return {
         username: _username,
         password: _password,
@@ -52,53 +53,73 @@ nav.go("center");
 	};
 }])
 .controller("StorageCtrl", ['$scope', 'angularSubkit', 'Navigation', 'shared', function StorageCtrl($scope, angularSubkit, Navigation, shared) {
-	var previews = ["stores"];
+	var previous = ["stores"];
 	var nav = new Navigation();
 
 	nav.onChanged(function(name){
 		if(name === "storage") load();
+		if(name === "jsoneditor") $scope.dataObj = JSON.stringify(shared.rawObj, null, 4);
 	});
-	var obj = [];
-	var prop = "";
-	
-	var load = function(){
-		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		var key = previews.join('/');
 
-		if(obj instanceof Array) {
+	var obj = [];
+	var segments = {};
+
+	var load = function(){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+		var key = previous.join('/');
+		$scope.key = key;
+		$scope.stores = [];
+
+		var segment = obj[previous[previous.length-1]] || segments[key];
+
+		if(shared.rawObj && segment) {
+			segments[key] = segment;
+			obj = segment;
+			angular.forEach(obj, function(item, key){
+				var value = "";
+				if(!angular.isObject(item)) value = item;
+				$scope.stores.push({key: key, value: value});
+			});
+		} else {
 			subkit.lookup(key, function(err, data){
 				if(err) statusCtrl.show("network error");
-
+				
+				segments = {};
 				obj = data;
-				$scope.stores = [];
+				shared.rawObj = angular.isObject(data) ? data : null;
 
 				angular.forEach(data, function(item, key){
 					var value = "";
-					if(typeof item !== "object") value = item;
+					if(!angular.isObject(item)) value = item;
 					$scope.stores.push({key: item.name || item.key || key, value: value});
 				});
 				$scope.$apply();
 			});
-		} else if(obj instanceof Object) {
-			$scope.stores = [];
-
-			var forObjProperty = previews[previews.length-1];
-			obj = obj[forObjProperty];
-
-			angular.forEach(obj, function(item, key){
-				var value = "";
-				if(typeof item !== "object") value = item;
-				$scope.stores.push({key: key, value: value});
-			});
 		}
 	};
+	$scope.isJSON= function(){
+		return !angular.isArray(shared.rawObj);
+	};
+	$scope.hasParent = function(){
+		return previous.length>1;
+	};
+	$scope.json = function(){
+		nav.go("jsoneditor");
+	};
+	$scope.edit = function(key){
+		console.log("edit");
+		console.log(key);
+	};
+	$scope.save = function(){
+		console.log("save");
+		console.log($scope.dataObj);
+	};
 	$scope.next = function(key){
-		previews.push(key);
+		previous.push(key);
 		load();
 	};
-	$scope.preview = function(){
-		obj = [];
-		previews.pop();
+	$scope.previous = function(){
+		previous.pop();
 		load();
 	};
 }]);

@@ -78,7 +78,7 @@ var app = angular
             template: '<div ng-transclude></div>'
         };
     }])
-    .directive('view', function() {
+    .directive('view', function($rootScope) {
         return {
           require: '^views',
           restrict: 'E',

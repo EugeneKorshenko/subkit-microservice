@@ -75,8 +75,8 @@
 			<div data-ng-controller="StorageCtrl">
 				<view data-content="storage" class="hidden" backtext="center" headertext="storage">
 					<div class="row">
-						<input type="text" class="input" placeholder="new">
-						<button class="rotateButton">+</button>
+						<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName">
+						<button class="rotateButton" data-ng-click="create(itemName)">+</button>
 					</div>
 					<div class="row">
 						<button data-ng-click="previous()" data-ng-show="hasParent()">previous</button>

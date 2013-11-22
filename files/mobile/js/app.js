@@ -94,6 +94,7 @@ nav.go("center");
 				$scope.$apply();
 			});
 		}
+
 	};
 	function _search(path, obj, segPath){
 		for(var itm in obj){
@@ -155,6 +156,43 @@ nav.go("center");
 			if(err) statusCtrl.show("network error");
 			nav.back("storage");
 		});
+	};
+	$scope.create = function(itemName){
+		//new new store item key
+		if(previous.length <= 1){
+			$scope.stores.push({
+				dataKey: "/-1",
+				key: itemName,
+				value: ""
+			});
+			var newKey = previous.concat(
+				$scope.stores
+				.filter(function(itm){
+					return itm.dataKey === "/-1";
+				})
+				.map(function(itm){
+					return itm.key;
+				})
+			);
+			shared.rawKey = newKey.join('/');
+			if(newKey.length === 2){
+				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+				subkit.set(shared.rawKey, {}, function(err, data){
+					if(err) statusCtrl.show("network error");
+				});
+			}
+		}
+
+		if(previous.length > 1){
+			$scope.stores.push({
+				dataKey: shared.rawKey + "/" + itemName,
+				key: itemName,
+				value: "-"
+			});
+			shared.rawObj[itemName] = "";
+		}
+
+		$scope.itemName = "";
 	};
 	$scope.next = function(key){
 		previous.push(key);

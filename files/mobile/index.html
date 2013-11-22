@@ -73,7 +73,7 @@
 				<go data-view="statistics" class="roundButton">stats</go>
 			</view>
 			<div data-ng-controller="StorageCtrl">
-				<view data-content="storage" class="hidden" backtext="back" headertext="storage">
+				<view data-content="storage" class="hidden" backtext="center" headertext="storage">
 					<div class="row">
 						<input type="text" class="input" placeholder="new">
 						<button class="rotateButton">+</button>
@@ -91,14 +91,14 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="valueeditor" class="hidden" headertext="value" backtext="cancel">
+				<view data-content="valueeditor" class="hidden" headertext="value" backtext="storage">
 					<div class="row">
 						<button class="flatButton" data-ng-click="saveValue()">Save</button>
 					</div>
 					<div data-ng-bind="keyData" style="color:black"></div>
 					<textarea data-ng-model="valueData[keyData]" style="width:100%; height:auto; resize: none;" rows="20"></textarea>
 				</view>
-				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="cancel">
+				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="storage">
 					<div class="row">
 						<button class="flatButton" data-ng-click="saveJson()">Save</button>
 					</div>

@@ -300,18 +300,6 @@ var Subkit = function(config){
 		});
 	};
 
-	self.lookup = function(key, callback){
-		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/" + key;
-		httpRequest.get(url, self.options, function(status, result){
-			if(status !== 200) {
-				if(callback) callback(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
-		});
-	};
-
 	self.set = function(key, value, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 		var url = self.baseUrl + "/stores/" + key;

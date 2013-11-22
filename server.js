@@ -99,6 +99,7 @@ server.use(function (req, res, next) {
 	return next();
 });
 server.use(restify.conditionalRequest());
+server.pre(restify.pre.sanitizePath());
 server.pre(restify.pre.userAgentConnection());
 
 //custom before / after code 

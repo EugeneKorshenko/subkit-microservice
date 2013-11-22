@@ -53,7 +53,7 @@ nav.go("center");
 	};
 }])
 .controller("StorageCtrl", ['$scope', 'angularSubkit', 'Navigation', 'shared', function StorageCtrl($scope, angularSubkit, Navigation, shared) {
-	var previous = ["stores"];
+	var previous = [];
 	var nav = new Navigation();
 	var obj = [];
 	var segments = {};
@@ -79,11 +79,12 @@ nav.go("center");
 				$scope.stores.push({key: itemKey, value: value, dataKey: key+"/"+itemKey});
 			});
 		} else {
-			subkit.lookup(key, function(err, data){
+			subkit.get(key, function(err, data){
 				if(err) statusCtrl.show("network error");
 				segments = {};
 				obj = data;
 				shared.rawObj = angular.isObject(data) ? data : null;
+				shared.rawKey = key;
 
 				angular.forEach(data, function(item, itemKey){
 					var value = "";
@@ -117,7 +118,7 @@ nav.go("center");
 		return !angular.isArray(shared.rawObj);
 	};
 	$scope.hasParent = function(){
-		return previous.length>1;
+		return previous.length !== 0;
 	};
 	$scope.json = function(){
 		$scope.jsonData = JSON.stringify(shared.rawObj, null, 4);
@@ -142,12 +143,15 @@ nav.go("center");
 	};
 	$scope.saveJson = function(){
 		console.log("save JSON");
-		console.log($scope.jsonData);
 		shared.rawObj = JSON.parse($scope.jsonData);
+
+		console.log(shared.rawKey);
 		console.log(shared.rawObj);
 	};
 	$scope.saveValue = function(){
 		console.log("save Value");
+
+		console.log(shared.rawKey);
 		console.log(shared.rawObj);
 	};
 	$scope.next = function(key){

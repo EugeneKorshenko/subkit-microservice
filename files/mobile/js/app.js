@@ -59,7 +59,6 @@ nav.go("center");
 	var segments = {};
 
 	nav.onChanged(function(name){
-		console.log(name);
 		if(name === "storage") _load();
 	});
 
@@ -82,7 +81,6 @@ nav.go("center");
 		} else {
 			subkit.lookup(key, function(err, data){
 				if(err) statusCtrl.show("network error");
-				console.log("load");
 				segments = {};
 				obj = data;
 				shared.rawObj = angular.isObject(data) ? data : null;
@@ -126,7 +124,6 @@ nav.go("center");
 		nav.go("jsoneditor");
 	};
 	$scope.edit = function(key){
-		console.log("EDIT");
 		var keys = key.split('/');
 		var objectPropertyName = keys[keys.length-1];
 

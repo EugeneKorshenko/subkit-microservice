@@ -75,12 +75,12 @@
 			<div data-ng-controller="StorageCtrl">
 				<view data-content="storage" class="hidden" backtext="center" headertext="storage">
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName">
-						<button class="rotateButton" data-ng-click="create(itemName)">+</button>
+						<button data-ng-click="previous()" data-ng-show="hasParent()" class="roundButton">previous</button>
+						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="roundButton">json</button>
 					</div>
 					<div class="row">
-						<button data-ng-click="previous()" data-ng-show="hasParent()">previous</button>
-						<button data-ng-click="json(key)" data-ng-show="isJSON()">json</button>
+						<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName">
+						<button class="rotateButton" data-ng-click="create(itemName)">+</button>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="store in stores">
@@ -109,21 +109,17 @@
 			</view>
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
 				<div data-ng-controller="StatisticsCtrl" style="color: black">
-					<div class="row">
-						<span>Update Timestamp</span>
-						<span data-ng-bind="lastUpdate"></span>
+					<div class="tileButton">
+						<span class="light">Connections</span>
+						<div class="big" data-ng-bind="connections"></div>
 					</div>
-					<div class="row">
-						<span>Concurrent Connections</span>
-						<span data-ng-bind="connections"></span>
+					<div class="tileButton">
+						<span class="light">Transfer</span>
+						<div class="big" data-ng-bind="totaKBytes"></div>
 					</div>
-					<div class="row">
-						<span>Transfer in KBytes</span>
-						<span data-ng-bind="totaKBytes"></span>
-					</div>
-					<div class="row">
-						<span>Number of Requests</span>
-						<span data-ng-bind="requestNumber"></span>
+					<div class="tileButton">
+						<span class="light">Requests</span>
+						<div class="big" data-ng-bind="requestNumber"></div>
 					</div>
 				</div>
 			</view>			

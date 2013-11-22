@@ -142,17 +142,19 @@ nav.go("center");
 		nav.go("valueeditor");
 	};
 	$scope.saveJson = function(){
-		console.log("save JSON");
 		shared.rawObj = JSON.parse($scope.jsonData);
-
-		console.log(shared.rawKey);
-		console.log(shared.rawObj);
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+		subkit.set(shared.rawKey, shared.rawObj, function(err, data){
+			if(err) statusCtrl.show("network error");
+			nav.back("storage");
+		});
 	};
 	$scope.saveValue = function(){
-		console.log("save Value");
-
-		console.log(shared.rawKey);
-		console.log(shared.rawObj);
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+		subkit.set(shared.rawKey, shared.rawObj, function(err, data){
+			if(err) statusCtrl.show("network error");
+			nav.back("storage");
+		});
 	};
 	$scope.next = function(key){
 		previous.push(key);

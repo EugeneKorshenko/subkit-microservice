@@ -72,8 +72,8 @@
 				<go data-view="messaging" class="roundButton">pubsub</go>
 				<go data-view="statistics" class="roundButton">stats</go>
 			</view>
-			<view data-content="storage" class="hidden" backtext="back" headertext="storage">
-				<div data-ng-controller="StorageCtrl">
+			<div data-ng-controller="StorageCtrl">
+				<view data-content="storage" class="hidden" backtext="back" headertext="storage">
 					<div class="row">
 						<input type="text" class="input" placeholder="new">
 						<button class="rotateButton">+</button>
@@ -90,8 +90,21 @@
 							</div>
 						</li>
 					</ul>
-				</div>
-			</view>
+				</view>
+				<view data-content="valueeditor" class="hidden" headertext="value" backtext="cancel">
+					<div class="row">
+						<button class="flatButton" data-ng-click="saveValue()">Save</button>
+					</div>
+					<div data-ng-bind="keyData" style="color:black"></div>
+					<textarea data-ng-model="valueData[keyData]" style="width:100%; height:auto; resize: none;" rows="20"></textarea>
+				</view>
+				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="cancel">
+					<div class="row">
+						<button class="flatButton" data-ng-click="saveJson()">Save</button>
+					</div>
+					<textarea data-ng-model="$parent.jsonData" style="width:100%; height:auto; resize: none;" rows="20"></textarea>
+				</view>
+			</div>
 			<view data-content="messaging" class="hidden" back="center" backtext="center" headertext="messaging">
 			</view>
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
@@ -113,14 +126,6 @@
 			<view data-content="notify" class="hidden" headertext="Notification" nexttext="close" next="center">
 				<div data-ng-controller="StatusCtrl">
 					<h1 data-ng-bind="error">Message</h1>
-				</div>
-			</view>
-			<view data-content="jsoneditor" class="hidden" headertext="JSON" backtext="cancel">
-				<div data-ng-controller="StorageCtrl">
-					<div class="row">
-						<button class="flatButton" data-ng-click="save()">Save</button>
-					</div>
-					<textarea data-ng-model="dataObj" style="width:100%; height:auto; resize: none;" rows="20"></textarea>
 				</div>
 			</view>
 		</views>

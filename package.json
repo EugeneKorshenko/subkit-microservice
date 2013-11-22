@@ -28,7 +28,6 @@
     "grunt-cli": "*",
     "grunt": "*",
     "grunt-mocha-test": "*",
-    "webkit-devtools-agent": "~0.1.2",
     "grunt-contrib-less": "~0.8.2"
   },
   "main": "src/server.js",

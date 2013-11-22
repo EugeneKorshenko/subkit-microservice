@@ -29,9 +29,27 @@ angular
         apiKey: _apiKey
    };
 }])
-.controller("StatisticsCtrl", ['$scope', function($scope){
-	$scope.connections = 0;
-	$scope.totalBytes = 0;
+.controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "statistics") {
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.statistics(function(err, data){
+				if(err) {
+					$rootScope.error = "network error";
+					nav.show("notify");
+				}
+
+				$scope.lastUpdate = data.timestamp;
+				$scope.connections = data.connections;
+				$scope.requestNumber = data.transfer.count;
+				$scope.totaKBytes = data.transfer.totalKBytes;
+
+				$scope.$apply();
+			});
+		}
+	});
+
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";

@@ -108,14 +108,22 @@
 			<view data-content="messaging" class="hidden" back="center" backtext="center" headertext="messaging">
 			</view>
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
-				<div data-ng-controller="StatisticsCtrl">
+				<div data-ng-controller="StatisticsCtrl" style="color: black">
+					<div class="row">
+						<span>Update Timestamp</span>
+						<span data-ng-bind="lastUpdate"></span>
+					</div>
 					<div class="row">
 						<span>Concurrent Connections</span>
 						<span data-ng-bind="connections"></span>
 					</div>
 					<div class="row">
-						<span>Bytes</span>
-						<span data-ng-bind="totalBytes"></span>
+						<span>Transfer in KBytes</span>
+						<span data-ng-bind="totaKBytes"></span>
+					</div>
+					<div class="row">
+						<span>Number of Requests</span>
+						<span data-ng-bind="requestNumber"></span>
 					</div>
 				</div>
 			</view>			

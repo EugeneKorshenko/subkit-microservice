@@ -326,6 +326,17 @@ var Subkit = function(config){
 		});
 	};
 
+	self.statistics = function(callback){
+		var url = self.baseUrl + "/statistics/usage";
+		httpRequest.get(url, self.options, function(status, result){
+			if(status !== 200) {
+				if(callback) callback(result);
+			}else{
+				if(callback) callback(null, result.json());
+			}
+		});
+	};
+
 	self.remove = function(key, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 		var url = self.baseUrl + "/stores/" + key;

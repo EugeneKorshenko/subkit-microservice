@@ -1,37 +1,37 @@
 'use strict';
 angular
 .module('mobilecenter', ['app', 'subkit'])
-.service('shared', function () {
+.service('shared', ['$rootScope', function ($rootScope) {
 	var _username,
 		_password,
 		_apiKey,
-		_domain,
-		_errorMsg;
+		_domain;
+
+	var _EDIT_DATA_ = '_EDIT_DATA_';
+
+    // publish edit data notification
+    var editData = function (item) {
+        $rootScope.$broadcast(_EDIT_DATA_, {item: item});
+    };
+    //subscribe to edit data notification
+    var onEditData = function($scope, handler) {
+        $scope.$on(_EDIT_DATA_, function(event, args) {
+           handler(args.item);
+        });
+    };
 
     return {
+    	editData: editData,
+        onEditData: onEditData,
         username: _username,
         password: _password,
         domain: _domain,
-        apiKey: _apiKey,
-        errorMsg: _errorMsg
+        apiKey: _apiKey
    };
-})
+}])
 .controller("StatisticsCtrl", ['$scope', function($scope){
 	$scope.connections = 0;
 	$scope.totalBytes = 0;
-}])
-.controller("StatusCtrl", ['$scope', 'Navigation', 'shared', function($scope, Navigation, shared){
-	var nav = new Navigation();
-	this.show = function(errorMsg){
-		$scope.error = shared.errorMsg;
-		$scope.$apply();
-		nav.show();
-	};
-	this.close = function(){
-		$scope.error = "";
-		$scope.$apply();
-		nav.close();
-	}
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";
@@ -52,7 +52,7 @@ nav.go("center");
 		});
 	};
 }])
-.controller("StorageCtrl", ['$scope', 'angularSubkit', 'Navigation', 'shared', function StorageCtrl($scope, angularSubkit, Navigation, shared) {
+.controller("StorageCtrl", ['$scope','$rootScope', 'angularSubkit', 'Navigation', 'shared', function StorageCtrl($scope, $rootScope, angularSubkit, Navigation, shared) {
 	var previous = [];
 	var nav = new Navigation();
 	var obj = [];
@@ -68,7 +68,7 @@ nav.go("center");
 		$scope.key = key;
 		$scope.stores = [];
 
-		var segment = obj[previous[previous.length-1]] || segments[key];
+		var segment = (obj && obj[previous[previous.length-1]]) || segments[key];
 
 		if(shared.rawObj && segment) {
 			segments[key] = segment;
@@ -80,7 +80,10 @@ nav.go("center");
 			});
 		} else {
 			subkit.get(key, function(err, data){
-				if(err) statusCtrl.show("network error");
+				if(err) {
+					$rootScope.error = "network error";
+					nav.show("notify");
+				}
 				segments = {};
 				obj = data;
 				shared.rawObj = angular.isObject(data) ? data : null;

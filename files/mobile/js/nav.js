@@ -43,7 +43,9 @@ var app = angular
           listener.push(callback);
         };
         this.show = function(){
-            Slide('popin', "message", current);
+            Slide('popin', "notify", current);
+            current = "notify";
+            changed(current);
         };
         this.go = function(name) {
             Slide('sl', name, current);

@@ -380,7 +380,7 @@ var Subkit = function(config){
 	self.delete = function(fileName, type, callback){
 		var url = self.baseUrl + "/" + type + "/" + fileName;
 		httpRequest.del(url, self.options, function(status, result){
-			if(status!==200) {
+			if(status!==200 && status!==202) {
 				if(callback) changeStatus(result);
 			}else{
 				if(callback) callback(null, result.text());

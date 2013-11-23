@@ -54,16 +54,17 @@ angular
 .controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
-		if(name === "files") {
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.list("statics", function(err, data){
-				if(err) { $scope.error = err; $scope.$apply(); return; }
-				$scope.files = data;
-				$scope.$apply();
-			});
-
-		}
+		if(name === "files") _load();
 	});
+
+	function _load(){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.list("statics", function(err, data){
+			if(err) { $scope.error = err; $scope.$apply(); return; }
+			$scope.files = data;
+			$scope.$apply();
+		});
+	}
 
 	$scope.show = function(fileName){
 		console.log(fileName);
@@ -79,6 +80,20 @@ angular
 	$scope.save = function(){
 		console.log($scope.valueData);
 		console.log($scope.keyData);
+	};
+
+	$scope.upload = function(elementId){
+		var fileInput = document.getElementById(elementId);
+		fileInput.addEventListener('change', function(e) {
+			var files = fileInput.files;
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			for (var i = 0; i < files.length; i++) {
+				subkit.upload(files[i], "statics", function(err, data){
+					_load();
+				});
+			};
+		});
+		fileInput.click();
 	};
 
 }])

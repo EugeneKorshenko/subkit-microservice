@@ -15,29 +15,42 @@
 		    <a href="@locals.url/file/download/{{file}}?apiKey=@locals.apiKey" target="_blank"><em>{{file}}</em></a><button data-ng-click="deleteFile(file)"><i>del</i></button>
 		  </div>
 		  <br/>
-		  <input type="file" multiple>
+		  <input type="file" multiple id="fileUpload">
 		</div>
 
 		<script>
 			var subkit = new Subkit({ baseUrl: "@locals.url", apiKey: "@locals.apiKey" });
-			$('input[type="file"]').on('change', function(e) {
-				for (var i = 0; i < this.files.length; i++) {
-					console.log(this.files[i]);
-					subkit.upload(this.files[i], function(err, data){});
+			
+			// $('input[type="file"]').on('change', function(e) {
+			// 	for (var i = 0; i < this.files.length; i++) {
+			// 		console.log(this.files[i]);
+			// 		subkit.upload(this.files[i],"statics", function(err, data){});
+			// 	};
+			// });
+
+			var fileInput = document.getElementById('fileUpload');
+			fileInput.addEventListener('change', function(e) {
+				var files = fileInput.files;
+				for (var i = 0; i < files.length; i++) {
+					subkit.upload(files[i], "statics", function(err, data){});
 				};
 			});
+			
 
 		 	angular.module('files', ['subkit']).controller('Files', ['$scope', 'angularSubkit', function($scope, angularSubkit) {
 			    
 				$scope.getFiles = function() {
-					subkit.get("files", function(err, data){
+					subkit.list("statics", function(err, data){
 						$scope.files = data;
 						$scope.$apply();
 					});
 				};
 				$scope.deleteFile = function(file){
-					subkit.remove("file/" + file);
-					$scope.getFiles();
+					subkit.delete(file, "statics", function(err, data){
+						console.log(err);
+						console.log(data);
+						$scope.getFiles();						
+					});
 				};
 			}]);
 		</script>

@@ -137,7 +137,8 @@
 			<div data-ng-controller="FilesCtrl">
 				<view data-content="files" class="hidden" back="center" backtext="back" headertext="files">
 					<div class="menu">
-						<button data-ng-click="upload()" class="tileButton">upload</button>
+						<input type="file" multiple id="fileUpload" style="display: none;">
+						<button data-ng-click="upload('fileUpload')" class="tileButton">upload</button>
 					</div>
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName">

@@ -312,6 +312,16 @@ var Subkit = function(config){
 			}
 		});
 	};
+	self.analytics = function(callback){
+		var url = self.baseUrl + "/statistics/analytics";
+		httpRequest.get(url, self.options, function(status, result){
+			if(status !== 200) {
+				if(callback) callback(result);
+			}else{
+				if(callback) callback(null, result.json());
+			}
+		});
+	};
 
 	//store
 	self.set = function(key, value, callback){

@@ -46,7 +46,21 @@ angular
 				$scope.totalKBytes = data.transfer.totalKBytes;
 				$scope.dbSizeKBytes = data.dbSizeKBytes;
 				$scope.staticsDirSizeKBytes = data.staticsDirSizeKBytes;
-
+				$scope.$apply();
+			});
+			subkit.analytics(function(err, data){
+				$scope.urls = [];
+				for (var property in data.urls) {
+				    $scope.urls.push({key: property, value: data.urls[property]});
+				}
+				$scope.agents = [];
+				for (var property in data.agents) {
+				    $scope.agents.push({key: property, value: data.agents[property]});
+				}
+				$scope.transfers = [];
+				for (var property in data.http) {
+				    $scope.transfers.push({key: property, value: data.http[property]});
+				}
 				$scope.$apply();
 			});
 		}

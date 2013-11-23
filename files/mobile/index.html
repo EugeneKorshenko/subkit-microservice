@@ -114,28 +114,59 @@
 			</view>
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
 				<div data-ng-controller="StatisticsCtrl">
-					<div class="tileButton">
-						<span class="light">Connections</span>
-						<div class="big" data-ng-bind="connections"></div>
+					<div class="menu">
+						<div class="tileButton">
+							<span class="light">Connections</span>
+							<div class="big" data-ng-bind="connections"></div>
+						</div>
+						<div class="tileButton">
+							<span class="light">Transfers</span>
+							<span class="light">KB</span>
+							<div class="big" data-ng-bind="totalKBytes"></div>
+						</div>
+						<div class="tileButton">
+							<span class="light">Requests</span>
+							<div class="big" data-ng-bind="requestNumber"></div>
+						</div>
+						<div class="tileButton">
+							<span class="light">DB</span>
+							<span class="light">KB</span>
+							<div class="big" data-ng-bind="dbSizeKBytes"></div>
+						</div>
+						<div class="tileButton">
+							<span class="light">Statics</span>
+							<span class="light">KB</span>
+							<div class="big" data-ng-bind="staticsDirSizeKBytes"></div>
+						</div>
 					</div>
-					<div class="tileButton">
-						<span class="light">Transfers</span>
-						<span class="light">KB</span>
-						<div class="big" data-ng-bind="totalKBytes"></div>
-					</div>
-					<div class="tileButton">
-						<span class="light">Requests</span>
-						<div class="big" data-ng-bind="requestNumber"></div>
-					</div>
-					<div class="tileButton">
-						<span class="light">DB</span>
-						<span class="light">KB</span>
-						<div class="big" data-ng-bind="dbSizeKBytes"></div>
-					</div>
-					<div class="tileButton">
-						<span class="light">Statics</span>
-						<span class="light">KB</span>
-						<div class="big" data-ng-bind="staticsDirSizeKBytes"></div>
+					<div style="clear: both;">
+						<h1 class="rowtext small" style="font-weight: bold;">Urls Count</h1>
+						<ul class="arrowlist">
+							<li data-ng-repeat="url in urls">
+								<div class="rowtext small">
+									<span data-ng-bind="url.value" style="font-weight: bold;"></span>
+									<span data-ng-bind="url.key"></span>
+								</div>
+							</li>
+						</ul>
+						<h1 class="rowtext small" style="font-weight: bold;">Agents Count</h1>
+						<ul class="arrowlist">
+							<li data-ng-repeat="agent in agents">
+								<div class="rowtext small">
+									<span data-ng-bind="agent.value" style="font-weight: bold;"></span>
+									<span data-ng-bind="agent.key"></span>
+								</div>
+							</li>
+						</ul>
+						<h1 class="rowtext small" style="font-weight: bold;">Transfers Count</h1>
+						<ul class="arrowlist">
+							<li data-ng-repeat="transfer in transfers">
+								<div class="rowtext small">
+									<span data-ng-bind="transfer.value" style="font-weight: bold;"></span>
+									<span data-ng-bind="transfer.key"></span>
+								</div>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</view>			

@@ -67,7 +67,6 @@ angular
 	}
 
 	$scope.show = function(fileName){
-		console.log(fileName);
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.download(fileName, "statics", function(err, data){
 			$scope.valueData = data;
@@ -78,8 +77,12 @@ angular
 	};
 
 	$scope.save = function(){
-		console.log($scope.valueData);
-		console.log($scope.keyData);
+        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		var file = new Blob([$scope.valueData]);
+        file.name = $scope.keyData;
+        subkit.upload(file, "statics", function(err, data){
+        	nav.back("files");
+        });
 	};
 
 	$scope.upload = function(elementId){

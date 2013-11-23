@@ -248,8 +248,6 @@ nav.go("center");
 			console.log(key);
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 			subkit.remove(key, function(err, data){
-				console.log(err);
-				console.log(data);
 				if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
 				_load();
 			});

@@ -222,8 +222,6 @@ nav.go("center");
 		_load();
 	};
 	$scope.remove = function(key){
-		console.log("Remove");
-
 		var keys = key.split('/');
 		var objectPropertyName = keys[keys.length-1];
 
@@ -233,19 +231,15 @@ nav.go("center");
 
 		var dataSegment = _search(keys, shared.rawObj, segPath);
 		
-		//delete property
+		//delete property by object
 		if(dataSegment !== undefined) {
-			console.log("prop");
 			delete dataSegment[objectPropertyName];
-			//TODOsave object to subkit
-			console.log(shared.rawObj);
-			_load();
-		}
-
-		//delete item
-		if(dataSegment === undefined){
-			console.log("item");
-			console.log(key);
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+			subkit.set(shared.rawKey, {}, function(err, data){
+				if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+				_load();
+			});
+		} else { //delete item from store or delete complete store
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 			subkit.remove(key, function(err, data){
 				if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }

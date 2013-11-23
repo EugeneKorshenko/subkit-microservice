@@ -367,8 +367,8 @@ var Subkit = function(config){
 			}
 		});
 	};
-	self.download = function(file, type, callback){
-		var url = self.baseUrl + "/" + type + "/download/" + file;
+	self.download = function(fileName, type, callback){
+		var url = self.baseUrl + "/" + type + "/download/" + fileName;
 		httpRequest.get(url, self.options, function(status, result){
 			if(status!==200) {
 				if(callback) changeStatus(result);
@@ -377,8 +377,8 @@ var Subkit = function(config){
 			}
 		});
 	};
-	self.delete = function(file, type, callback){
-		var url = self.baseUrl + "/" + type + "/" + file;
+	self.delete = function(fileName, type, callback){
+		var url = self.baseUrl + "/" + type + "/" + fileName;
 		httpRequest.del(url, self.options, function(status, result){
 			if(status!==200) {
 				if(callback) changeStatus(result);

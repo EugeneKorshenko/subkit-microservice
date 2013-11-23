@@ -99,7 +99,7 @@
 					</div>
 					<div class="rowtext">
 						<span>Property: </span>
-						<span data-ng-bind="keyData" style="color:black"></span>
+						<span data-ng-bind="keyData"></span>
 					</div>
 					<textarea data-ng-model="valueData[keyData]" class="codeeditor" rows="20"></textarea>
 				</view>
@@ -134,18 +134,33 @@
 					</div>
 				</div>
 			</view>			
-			<view data-content="files" class="hidden" back="center" backtext="back" headertext="files">
-				<div data-ng-controller="FilesCtrl">
+			<div data-ng-controller="FilesCtrl">
+				<view data-content="files" class="hidden" back="center" backtext="back" headertext="files">
 					<div class="menu">
+						<button data-ng-click="upload()" class="tileButton">upload</button>
+					</div>
+					<div class="row">
+						<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName">
+						<button class="rotateButton" data-ng-click="create(itemName)">+</button>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="file in files">
-							<button class="item" data-ng-bind="file" data-ng-click="show()"></button>
+							<button class="item" data-ng-bind="file" data-ng-click="show(file)"></button>
 							<button class="rotateButton" data-ng-click="remove(file)">&ndash;</button>
 						</li>
 					</ul>
-				</div>
-			</view>
+				</view>
+				<view data-content="fileeditor" class="hidden" headertext="value" backtext="store">
+					<div class="row">
+						<button class="flatButton" data-ng-click="save()">Save</button>
+					</div>
+					<div class="rowtext">
+						<span>File: </span>
+						<span data-ng-bind="keyData"></span>
+					</div>
+					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
+				</view>
+			</div>
 			<view data-content="settings" class="hidden" back="center" backtext="back" headertext="settings">
 			</view>
 			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">

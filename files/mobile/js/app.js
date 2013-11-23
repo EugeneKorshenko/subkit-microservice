@@ -64,6 +64,23 @@ angular
 
 		}
 	});
+
+	$scope.show = function(fileName){
+		console.log(fileName);
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.download(fileName, "statics", function(err, data){
+			$scope.valueData = data;
+			$scope.keyData = fileName;
+			$scope.$apply();
+			nav.go("fileeditor");
+		});
+	};
+
+	$scope.save = function(){
+		console.log($scope.valueData);
+		console.log($scope.keyData);
+	};
+
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";

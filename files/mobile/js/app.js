@@ -96,6 +96,13 @@ angular
 		fileInput.click();
 	};
 
+	$scope.remove = function(fileName){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.delete(fileName, "statics", function(err, data){
+			_load();
+		});
+	};
+
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";

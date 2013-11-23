@@ -113,7 +113,7 @@
 			<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="pubsub">
 			</view>
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
-				<div data-ng-controller="StatisticsCtrl" style="color: black">
+				<div data-ng-controller="StatisticsCtrl">
 					<div class="tileButton">
 						<span class="light">Connections</span>
 						<div class="big" data-ng-bind="connections"></div>
@@ -135,7 +135,16 @@
 				</div>
 			</view>			
 			<view data-content="files" class="hidden" back="center" backtext="back" headertext="files">
-				<h1>files</h1>
+				<div data-ng-controller="FilesCtrl">
+					<div class="menu">
+					</div>
+					<ul class="arrowlist">
+						<li data-ng-repeat="file in files">
+							<button class="item" data-ng-bind="file" data-ng-click="show()"></button>
+							<button class="rotateButton" data-ng-click="remove(file)">&ndash;</button>
+						</li>
+					</ul>
+				</div>
 			</view>
 			<view data-content="settings" class="hidden" back="center" backtext="back" headertext="settings">
 			</view>

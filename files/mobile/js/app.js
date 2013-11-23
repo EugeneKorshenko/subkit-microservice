@@ -51,6 +51,20 @@ angular
 		}
 	});
 }])
+.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "files") {
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.list("statics", function(err, data){
+				if(err) { $scope.error = err; $scope.$apply(); return; }
+				$scope.files = data;
+				$scope.$apply();
+			});
+
+		}
+	});
+}])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";
 	$scope.password = "";

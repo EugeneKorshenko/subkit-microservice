@@ -279,6 +279,7 @@ var Subkit = function(config){
 		});
 	};
 
+	//login
 	self.login = function(callback){
 		var url = self.baseUrl + "/manage/login";
 		httpRequest.authBasic(self.options.username, self.options.password);
@@ -300,6 +301,19 @@ var Subkit = function(config){
 		});
 	};
 
+	//statistics
+	self.statistics = function(callback){
+		var url = self.baseUrl + "/statistics/usage";
+		httpRequest.get(url, self.options, function(status, result){
+			if(status !== 200) {
+				if(callback) callback(result);
+			}else{
+				if(callback) callback(null, result.json());
+			}
+		});
+	};
+
+	//store
 	self.set = function(key, value, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 		var url = self.baseUrl + "/stores/" + key;
@@ -313,7 +327,6 @@ var Subkit = function(config){
 			}
 		});
 	};
-
 	self.get = function(key, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 		var url = self.baseUrl + "/stores/" + key;
@@ -325,18 +338,6 @@ var Subkit = function(config){
 			}
 		});
 	};
-
-	self.statistics = function(callback){
-		var url = self.baseUrl + "/statistics/usage";
-		httpRequest.get(url, self.options, function(status, result){
-			if(status !== 200) {
-				if(callback) callback(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
-		});
-	};
-
 	self.remove = function(key, callback){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 		var url = self.baseUrl + "/stores/" + key;
@@ -349,19 +350,7 @@ var Subkit = function(config){
 		});
 	};
 
-	self.push = function(channel, value, callback){
-		var url = self.baseUrl + "/channel/publish/" + channel;
-		var msg = JSON.parse(JSON.stringify(self.options));
-		msg["data"] = value;
-		httpRequest.post(url, msg, function(status, result){
-			if(status!==200) {
-				if(callback) changeStatus(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
-		});
-	};
-
+	//files
 	self.upload = function(file, type, callback){
 		var msg = JSON.parse(JSON.stringify(self.options));
 		msg.headers = {
@@ -378,7 +367,6 @@ var Subkit = function(config){
 			}
 		});
 	};
-
 	self.download = function(file, type, callback){
 		var url = self.baseUrl + "/" + type + "/download/" + file;
 		httpRequest.get(url, self.options, function(status, result){
@@ -389,7 +377,6 @@ var Subkit = function(config){
 			}
 		});
 	};
-
 	self.delete = function(file, type, callback){
 		var url = self.baseUrl + "/" + type + "/" + file;
 		httpRequest.del(url, self.options, function(status, result){
@@ -400,7 +387,32 @@ var Subkit = function(config){
 			}
 		});
 	};
+	self.list = function(type, callback){
+		var url = self.baseUrl + "/statics";
+		httpRequest.get(url, self.options, function(status, result){
+			if(status !== 200) {
+				if(callback) callback(result);
+			}else{
+				if(callback) callback(null, result.json());
+			}
+		});
+	};
 
+	//pubsub
+	self.push = function(channel, value, callback){
+		var url = self.baseUrl + "/channel/publish/" + channel;
+		var msg = JSON.parse(JSON.stringify(self.options));
+		msg["data"] = value;
+		httpRequest.post(url, msg, function(status, result){
+			if(status!==200) {
+				if(callback) changeStatus(result);
+			}else{
+				if(callback) callback(null, result.json());
+			}
+		});
+	};
+
+	//subscription
 	self.on = function(channel, callback) {
 		channel = channel.replace("/", "_");
 		self.subscribed[channel] = true;
@@ -418,11 +430,10 @@ var Subkit = function(config){
 			}
 		}
 	};
-
 	self.off = function(channel, pollingRef){
 		delete self.subscribed[channel];
 		clearTimeout(pollingRef);
-	}
+	};
 
 	var _poll = function(channel, clientId, callback) {
 		var intervalRef = null;

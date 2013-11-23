@@ -373,7 +373,9 @@ var Subkit = function(config){
 			if(status!==200) {
 				if(callback) changeStatus(result);
 			}else{
-				if(callback) callback(null, result.text());
+				var data = result.text();
+				if(callback && data != "undefined") return callback(null, data);
+				callback();
 			}
 		});
 	};

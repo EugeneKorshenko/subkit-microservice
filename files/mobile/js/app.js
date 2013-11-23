@@ -69,7 +69,7 @@ angular
 	$scope.show = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.download(fileName, "statics", function(err, data){
-			$scope.valueData = data;
+			$scope.valueData = data || "";
 			$scope.keyData = fileName;
 			$scope.$apply();
 			nav.go("fileeditor");
@@ -104,6 +104,16 @@ angular
 		subkit.delete(fileName, "statics", function(err, data){
 			_load();
 		});
+	};
+
+	$scope.create = function(fileName){
+        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		var file = new Blob([]);
+        file.name = fileName;
+        subkit.upload(file, "statics", function(err, data){
+        	$scope.fileName = "";
+        	_load();
+        });
 	};
 
 }])

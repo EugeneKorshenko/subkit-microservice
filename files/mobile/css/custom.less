@@ -135,8 +135,8 @@
 .content button:active {
 	opacity: 0.3;
 }
+
 .content ul {
-	padding-top: 1px;
 }
 
 .input:hover {
@@ -223,12 +223,34 @@
 	overflow: hidden;
 }
 
+.codeeditor {
+	width:100%;
+	height:auto;
+	resize: none;
+	border: 1px solid @highlight-color;
+}
+
+.rowtext {
+	color: @highlight-color;
+	font-size: 24px;
+	font-weight: 100;
+	width: 400px;
+	height: 50px;
+	text-align: left;
+	vertical-align: middle;
+	line-height: 50px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
 .imprint {
 	padding-top: 70px;	
 	text-align: center;
 	max-width: 480px;
 	margin: auto auto;
 }
+
 .imprint p {
 	text-align: justify;
 }

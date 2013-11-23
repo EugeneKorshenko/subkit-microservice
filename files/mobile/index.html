@@ -97,14 +97,17 @@
 					<div class="row">
 						<button class="flatButton" data-ng-click="saveValue()">Save</button>
 					</div>
-					<div data-ng-bind="keyData" style="color:black"></div>
-					<textarea data-ng-model="valueData[keyData]" style="width:100%; height:auto; resize: none;" rows="20"></textarea>
+					<div class="rowtext">
+						<span>Property: </span>
+						<span data-ng-bind="keyData" style="color:black"></span>
+					</div>
+					<textarea data-ng-model="valueData[keyData]" class="codeeditor" rows="20"></textarea>
 				</view>
 				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="store">
 					<div class="row">
 						<button class="flatButton" data-ng-click="saveJson()">Save</button>
 					</div>
-					<textarea data-ng-model="$parent.jsonData" style="width:100%; height:auto; resize: none;" rows="20"></textarea>
+					<textarea data-ng-model="$parent.jsonData" class="codeeditor" rows="20"></textarea>
 				</view>
 			</div>
 			<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="pubsub">

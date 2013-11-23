@@ -45,6 +45,7 @@ angular
 				$scope.requestNumber = data.transfer.count;
 				$scope.totalKBytes = data.transfer.totalKBytes;
 				$scope.dbSizeKBytes = data.dbSizeKBytes;
+				$scope.staticsDirSizeKBytes = data.staticsDirSizeKBytes;
 
 				$scope.$apply();
 			});

@@ -43,7 +43,8 @@ angular
 				$scope.lastUpdate = data.timestamp;
 				$scope.connections = data.connections;
 				$scope.requestNumber = data.transfer.count;
-				$scope.totaKBytes = data.transfer.totalKBytes;
+				$scope.totalKBytes = data.transfer.totalKBytes;
+				$scope.dbSizeKBytes = data.dbSizeKBytes;
 
 				$scope.$apply();
 			});

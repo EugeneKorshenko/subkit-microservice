@@ -85,7 +85,7 @@
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="store in stores">
-							<div class="{{(!store.value) ? 'arrow' : ''}}">
+							<div class="{{(!store.value) ? 'arrow' : 'nonarrow'}}">
 								<button class="item" data-ng-show="!store.value" data-ng-bind="store.key" data-ng-click="next(store.key)"></button>
 								<button class="item" data-ng-show="store.value" data-ng-bind="store.key" data-ng-click="edit(store.dataKey)"></button>
 							</div>

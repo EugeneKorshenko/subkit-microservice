@@ -32,8 +32,8 @@
 
 .tileButton {
 	display: inline-block;
-	width: 80px;
-	height: 80px;
+	width: 60px;
+	height: 60px;
 	border: 1px solid @highlight-color;
 	color: white;
 	outline: none;
@@ -53,7 +53,7 @@
 .big {
 	font-size: 24px;
 	width: 80px;
-	line-height: 50px;
+	line-height: 40px;
 	text-align: center;
 	vertical-align: middle;
 }
@@ -69,16 +69,21 @@
 	border-radius: 0px !important;
 }
 
-.row {
+.menu {
 	height: 60px;
+	float: left;
+}
+
+.row {
+	height: 40px;
 	border-bottom: 1px solid @highlight-color;
+	clear: both;
 }
 
 .row .rotateButton {
 	position: relative;
-	top: 15px;
+	top: 5px;
 }
-
 
 .submenu{
 	position:fixed; 
@@ -123,7 +128,6 @@
 }
 
 .content button {
-	border-radius: 6px;
 	font-weight: 100;
 	font-size: 14px;
     -webkit-tap-highlight-color: transparent;
@@ -148,7 +152,6 @@
 	border: 0px;
 	font-style: italic;
 	font-weight: 100;
-	font-size: 1.5em;
 	color: @highlight-color;
 	padding-left: 20px;
 	top: 0;

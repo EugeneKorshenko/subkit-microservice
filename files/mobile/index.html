@@ -74,9 +74,9 @@
 			</view>
 			<div data-ng-controller="StorageCtrl">
 				<view data-content="storage" class="hidden" backtext="center" headertext="storage">
-					<div class="row">
-						<button data-ng-click="previous()" data-ng-show="hasParent()" class="roundButton">previous</button>
-						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="roundButton">json</button>
+					<div class="menu">
+						<button data-ng-click="previous()" data-ng-show="hasParent()" class="tileButton">previous</button>
+						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="tileButton">json</button>
 					</div>
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName">
@@ -114,8 +114,9 @@
 						<div class="big" data-ng-bind="connections"></div>
 					</div>
 					<div class="tileButton">
-						<span class="light">Transfer</span>
+						<span class="light">Transfers</span>
 						<div class="big" data-ng-bind="totaKBytes"></div>
+						<span class="light">KB</span>
 					</div>
 					<div class="tileButton">
 						<span class="light">Requests</span>

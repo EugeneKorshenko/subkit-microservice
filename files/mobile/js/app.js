@@ -35,10 +35,7 @@ angular
 		if(name === "statistics") {
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 			subkit.statistics(function(err, data){
-				if(err) {
-					$rootScope.error = "network error";
-					nav.show("notify");
-				}
+				if(err) { $rootScope.error = "network error"; nav.show("notify"); }
 
 				$scope.lastUpdate = data.timestamp;
 				$scope.connections = data.connections;
@@ -75,7 +72,7 @@ angular
 	function _load(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.list("statics", function(err, data){
-			if(err) { $scope.error = err; $scope.$apply(); return; }
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
 			$scope.files = data;
 			$scope.$apply();
 		});
@@ -84,6 +81,7 @@ angular
 	$scope.show = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.download(fileName, "statics", function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
 			$scope.$apply();
@@ -96,6 +94,7 @@ angular
 		var file = new Blob([$scope.valueData]);
         file.name = $scope.keyData;
         subkit.upload(file, "statics", function(err, data){
+        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
         	nav.back("files");
         });
 	};
@@ -117,6 +116,7 @@ angular
 	$scope.remove = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.delete(fileName, "statics", function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
 			_load();
 		});
 	};
@@ -126,11 +126,11 @@ angular
 		var file = new Blob([]);
         file.name = fileName;
         subkit.upload(file, "statics", function(err, data){
+        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
         	$scope.fileName = "";
         	_load();
         });
 	};
-
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";

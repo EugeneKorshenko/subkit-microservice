@@ -6,6 +6,8 @@ var slideOpts = {
     popout: ['noanim', 'popout'],    
 };
 var Slide = function (slideType, vin, vout, callback) {
+    if(vin === "undefined" || vout === "undefined") return callback();
+
     var vIn = document.getElementById(vin),
         vOut = document.getElementById(vout),
         onAnimationEnd = function () {

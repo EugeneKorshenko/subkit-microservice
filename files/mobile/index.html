@@ -69,7 +69,8 @@
 			</view>
 			<view data-content="center" class="hidden" back="account" backtext="account" nexttext="&hellip;" next="settings" headertext="center">
 				<go data-view="storage" class="roundButton">store</go>
-				<go data-view="messaging" class="roundButton">pubsub</go>
+				<go data-view="files" class="roundButton">files</go>
+				<go data-view="pubsub" class="roundButton">pubsub</go>
 				<go data-view="statistics" class="roundButton">stats</go>
 			</view>
 			<div data-ng-controller="StorageCtrl">
@@ -105,7 +106,7 @@
 					<textarea data-ng-model="$parent.jsonData" style="width:100%; height:auto; resize: none;" rows="20"></textarea>
 				</view>
 			</div>
-			<view data-content="messaging" class="hidden" back="center" backtext="center" headertext="messaging">
+			<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="pubsub">
 			</view>
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
 				<div data-ng-controller="StatisticsCtrl" style="color: black">
@@ -129,6 +130,9 @@
 					</div>
 				</div>
 			</view>			
+			<view data-content="files" class="hidden" back="center" backtext="back" headertext="files">
+				<h1>files</h1>
+			</view>
 			<view data-content="settings" class="hidden" back="center" backtext="back" headertext="settings">
 			</view>
 			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">

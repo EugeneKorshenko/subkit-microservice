@@ -1,5 +1,4 @@
 'use strict';
-var agent = require('webkit-devtools-agent');
 var restify = require('restify'),
 	http = require('http'),
 	fs = require('fs'),

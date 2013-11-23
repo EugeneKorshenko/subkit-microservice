@@ -98,10 +98,8 @@ nav.go("center");
 			});
 		} else {
 			subkit.get(key, function(err, data){
-				if(err) {
-					$rootScope.error = "network error";
-					nav.show("notify");
-				}
+				if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+
 				segments = {};
 				obj = data;
 				shared.rawObj = angular.isObject(data) ? data : null;
@@ -110,7 +108,7 @@ nav.go("center");
 				angular.forEach(data, function(item, itemKey){
 					var value = "";
 					if(!angular.isObject(item)) value = item;
-					$scope.stores.push({key: item.name || item.key || itemKey, value: value, dataKey: key+"/"+itemKey});
+					$scope.stores.push({key: item.name || item.key || itemKey, value: value, dataKey: key+"/"+(item.name || item.key || itemKey)});
 				});
 				$scope.$apply();
 			});
@@ -167,14 +165,14 @@ nav.go("center");
 		shared.rawObj = JSON.parse($scope.jsonData);
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.set(shared.rawKey, shared.rawObj, function(err, data){
-			if(err) statusCtrl.show("network error");
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
 			nav.back("storage");
 		});
 	};
 	$scope.saveValue = function(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.set(shared.rawKey, shared.rawObj, function(err, data){
-			if(err) statusCtrl.show("network error");
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
 			nav.back("storage");
 		});
 	};
@@ -199,7 +197,7 @@ nav.go("center");
 			if(newKey.length === 2){
 				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 				subkit.set(shared.rawKey, {}, function(err, data){
-					if(err) statusCtrl.show("network error");
+					if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
 				});
 			}
 		}
@@ -222,6 +220,41 @@ nav.go("center");
 	$scope.previous = function(){
 		previous.pop();
 		_load();
+	};
+	$scope.remove = function(key){
+		console.log("Remove");
+
+		var keys = key.split('/');
+		var objectPropertyName = keys[keys.length-1];
+
+		var segPath = key.split('/');
+		segPath.pop();
+		segPath = segPath.join('/');
+
+		var dataSegment = _search(keys, shared.rawObj, segPath);
+		
+		//delete property
+		if(dataSegment !== undefined) {
+			console.log("prop");
+			delete dataSegment[objectPropertyName];
+			//TODOsave object to subkit
+			console.log(shared.rawObj);
+			_load();
+		}
+
+		//delete item
+		if(dataSegment === undefined){
+			console.log("item");
+			console.log(key);
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+			subkit.remove(key, function(err, data){
+				console.log(err);
+				console.log(data);
+				if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+				_load();
+			});
+		}
+
 	};
 }]);
 

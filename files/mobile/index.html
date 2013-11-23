@@ -89,7 +89,7 @@
 								<button class="item" data-ng-show="!store.value" data-ng-bind="store.key" data-ng-click="next(store.key)"></button>
 								<button class="item" data-ng-show="store.value" data-ng-bind="store.key" data-ng-click="edit(store.dataKey)"></button>
 							</div>
-							<button class="rotateButton" data-ng-click="remove(itemName)">&ndash;</button>
+							<button class="rotateButton" data-ng-click="remove(store.dataKey)">&ndash;</button>
 						</li>
 					</ul>
 				</view>

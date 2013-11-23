@@ -341,7 +341,7 @@ var Subkit = function(config){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 		var url = self.baseUrl + "/stores/" + key;
 		httpRequest.del(url, self.options, function(status, result){
-			if(status !== 200) {
+			if(status!==200 && status !== 202) {
 				if(callback) callback(result);
 			}else{
 				if(callback) callback(null, result.json());

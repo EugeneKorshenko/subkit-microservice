@@ -50,7 +50,6 @@ angular
 			});
 		}
 	});
-
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";

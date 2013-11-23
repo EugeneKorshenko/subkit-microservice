@@ -86,20 +86,21 @@
 					<ul class="arrowlist">
 						<li data-ng-repeat="store in stores">
 							<div class="{{(!store.value) ? 'arrow' : ''}}">
-								<button data-ng-show="!store.value" data-ng-bind="store.key" data-ng-click="next(store.key)"></button>
-								<button data-ng-show="store.value" data-ng-bind="store.key" data-ng-click="edit(store.dataKey)"></button>
+								<button class="item" data-ng-show="!store.value" data-ng-bind="store.key" data-ng-click="next(store.key)"></button>
+								<button class="item" data-ng-show="store.value" data-ng-bind="store.key" data-ng-click="edit(store.dataKey)"></button>
 							</div>
+							<button class="rotateButton" data-ng-click="remove(itemName)">&ndash;</button>
 						</li>
 					</ul>
 				</view>
-				<view data-content="valueeditor" class="hidden" headertext="value" backtext="storage">
+				<view data-content="valueeditor" class="hidden" headertext="value" backtext="store">
 					<div class="row">
 						<button class="flatButton" data-ng-click="saveValue()">Save</button>
 					</div>
 					<div data-ng-bind="keyData" style="color:black"></div>
 					<textarea data-ng-model="valueData[keyData]" style="width:100%; height:auto; resize: none;" rows="20"></textarea>
 				</view>
-				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="storage">
+				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="store">
 					<div class="row">
 						<button class="flatButton" data-ng-click="saveJson()">Save</button>
 					</div>

@@ -103,7 +103,7 @@ var app = angular
             element[0].id = attrs.content;
             if(backText) backElement = '<back data-view="'+backTarget+'" class="left">'+backText+'</back>';
             if(nextText) nextElement = '<go data-view="'+nextTarget+'" class="right">'+nextText+'</go>';
-            return '<section><header><h1>'+headerText+'</h1>'+backElement+nextElement+'</header><div class="scrollMask"></div><div class="scrollWrap"><div class="scroll"><div class="content center" data-ng-transclude></div></div></div></section>';
+            return '<section><header><h1>'+headerText+'</h1>'+backElement+nextElement+'</header><div class="scrollMask"></div><div class="scrollWrap"><div class="scroll"><div class="content" data-ng-transclude></div></div></div></section>';
           }
         };
     })

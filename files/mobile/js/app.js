@@ -517,12 +517,11 @@ nav.go("center");
 		segPath = segPath.join('/');
 
 		var dataSegment = _search(keys, shared.rawObj, segPath);
-		
 		//delete property by object
 		if(dataSegment !== undefined) {
 			delete dataSegment[objectPropertyName];
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-			subkit.set(shared.rawKey, {}, function(err, data){
+			subkit.set(shared.rawKey, shared.rawObj, function(err, data){
 				if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
 				_load();
 			});
@@ -533,7 +532,6 @@ nav.go("center");
 				_load();
 			});
 		}
-
 	};
 }]);
 

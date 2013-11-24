@@ -231,16 +231,17 @@
 				</view>
 				<view data-content="fileeditor" class="hidden" headertext="editor" backtext="files">
 					<div class="row">
-						<button class="flatButton" data-ng-click="save()">Save</button>
+						<button class="flatButton" data-ng-click="save()">save</button>
 					</div>
 					<div class="rowtext">
 						<span>File: </span>
 						<span data-ng-bind="keyData"></span>
-						<button class="tileButton" data-ng-click="show(keyData)">show</button>
+						<button class="tileButton" data-ng-click="preview(keyData)">preview</button>
 					</div>
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>
 				<view data-content="filepreview" class="hidden" headertext="preview" backtext="editor">
+					<div data-ng-bind-html="previewOutput" style="color:black;"></div>
 				</view>
 			</div>
 			<div data-ng-controller="TasksCtrl">
@@ -294,12 +295,12 @@
 				</view>
 				<view data-content="templateeditor" class="hidden" headertext="editor" backtext="templates">
 					<div class="row">
-						<button class="flatButton" data-ng-click="save()">Save</button>
+						<button class="flatButton" data-ng-click="save()">save</button>
 					</div>
 					<div class="rowtext">
 						<span>Template: </span>
 						<span data-ng-bind="keyData"></span>
-						<button class="tileButton" data-ng-click="open(keyData)">Open</button>
+						<button class="tileButton" data-ng-click="preview(keyData)">preview</button>
 					</div>
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>

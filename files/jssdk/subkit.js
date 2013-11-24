@@ -435,8 +435,8 @@ var Subkit = function(config){
 	};
 
 	//template
-	self.open = function(templateName, callback){
-		var url = self.baseUrl + "/templates/" + templateName;
+	self.open = function(name, type, callback){
+		var url = self.baseUrl + "/" + type + "/" + name;
 		httpRequest.get(url, self.options, function(status, result){
 			if(status !== 200) {
 				if(callback) callback(result.json());

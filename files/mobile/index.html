@@ -61,13 +61,18 @@
 					<div class="row">
 						<button class="flatButton" data-ng-click="register()">Register</button>
 					</div>
-					<div class="rowtext">
-						<span>Username: </span>
-						<input type="text" data-ng-model="newUsername">
+					<div data-ng-show="hasEnter" class="rowtext" style="text-align: center; width: 100%;">
+						<h1 data-ng-bind="loading"></h1>
 					</div>
-					<div class="rowtext">
-						<span>Password: </span>
-						<input type="password" data-ng-model="newPassword">
+					<div data-ng-hide="hasEnter">
+						<div class="rowtext">
+							<span>Username: </span>
+							<input type="text" data-ng-model="$parent.newUsername" placeholder="enter username">
+						</div>
+						<div class="rowtext">
+							<span>Password: </span>
+							<input type="password" data-ng-model="$parent.newPassword" placeholder="enter password">
+						</div>
 					</div>
 				</view>
 				<view data-content="info" class="hidden" back="login" backtext="back" headertext="info">

@@ -160,6 +160,23 @@ angular
 	$scope.domain = "";
 	$scope.error = "";
 	var nav = new Navigation();
+
+	$scope.register = function(){
+		$scope.hasEnter = true;
+		console.log("Register");
+		console.log($scope.newUsername);
+		console.log($scope.newPassword);
+		var counter = $scope.loading = 5;
+		var ref = setInterval(function(){
+			$scope.loading = --counter;
+			$scope.$apply();
+			if(counter === 0) {
+				clearInterval(ref);
+				nav.back("login");
+			}
+		}, 1000);
+	};
+
 	$scope.login = function(){
 		shared.username = $scope.username || "subkit";
 		shared.password = $scope.password || "subkit";

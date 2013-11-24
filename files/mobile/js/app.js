@@ -331,7 +331,6 @@ angular
 			if(subscription) subscription.off($scope.keyData);
 			_load();
 		}
-
 	});
 
 	var _load = function(){
@@ -351,17 +350,26 @@ angular
 	};
 	$scope.subscribe = function(channelName){
 		$scope.messageLog = [];
+		if(subscription) $scope.unsubscribe(channelName);
+		$scope.channelStatus = "subscribed";
 		subscription = subkit.on(channelName, function(data){
-			$scope.messageLog.push(data);
+			$scope.messageLog.unshift({timestamp: new Date(), value: JSON.stringify(data,null, 4)});
 			$scope.$apply();
 		});
 	};
 	$scope.unsubscribe = function(channelName){
 		subscription.off(channelName);
+		subscription = null;
+		$scope.channelStatus = "unsubscribed";
 	};
-
-	$scope.publish = function(channelName){
-		subkit.push(channelName, {value: "demo"});
+	$scope.create = function(channelName){
+		subkit.push(channelName, {value: "created"}, function(){
+			_load();
+		});
+	};
+	$scope.publish = function(channelName, value){
+		if(!subscription) $scope.channelStatus = "subscribe to channel please";
+		else subscription.push({value: value || new Date()});
 	};
 
 }])

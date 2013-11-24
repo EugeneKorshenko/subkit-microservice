@@ -167,18 +167,25 @@
 					</ul>					
 				</view>
 				<view data-content="channeleditor" class="hidden" headertext="channel" backtext="channels">
-					<div class="row">
-						<button data-ng-click="subscribe(keyData)">subscribe</button>
-						<button data-ng-click="unsubscribe(keyData)">unsubscibe</button>
-						<button data-ng-click="publish(keyData)">publish</button>
+					<div class="menu">
+						<button data-ng-click="subscribe(keyData)" class="tileButton largeTile">subscribe</button>
+						<button data-ng-click="unsubscribe(keyData)" class="tileButton largeTile">unsubscibe</button>
 					</div>
-					<div class="rowtext">
+					<div class="row rowtext">
 						<span>Channel: </span>
 						<span data-ng-bind="keyData"></span>
+						<span>Status: </span>
+						<span data-ng-bind="channelStatus" class="error"></span>
+
 					</div>
-					<ul class="codeeditor" style="color:black; height: 500px;">
+					<div class="rowtext">
+						<span>Value: </span>
+						<input type="text" data-ng-model="messageValue">
+						<button data-ng-click="publish(keyData, messageValue)" class="tileButton">publish</button>
+					</div>
+					<ul class="codepreview">
 						<li data-ng-repeat="message in messageLog">
-							<div data-ng-bind="message"></div>
+							<div data-ng-bind="message.value"></div>
 						</li>
 					</ul>
 				</view>

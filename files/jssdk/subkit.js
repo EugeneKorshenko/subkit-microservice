@@ -462,8 +462,8 @@ var Subkit = function(config){
 		var msg = JSON.parse(JSON.stringify(self.options));
 		msg["data"] = value;
 		httpRequest.post(url, msg, function(status, result){
-			if(status!==201 || status!==200) {
-				if(callback) changeStatus(result);
+			if(status!==201 && status!==200) {
+				if(callback) changeStatus(result.json);
 			}else{
 				if(callback) callback(null, result.json());
 			}

@@ -326,9 +326,17 @@ angular
 	$scope.password = "";
 	$scope.domain = "";
 	$scope.error = "";
+	
 	var nav = new Navigation();
 
 	$scope.register = function(){
+		
+		if (!signup.$valid){
+			console.log("nope. form invalid.");
+		}
+		 
+		if (!$scope.isValid)return;
+		
 		$scope.hasEnter = true;
 		console.log("Register");
 		console.log($scope.newUsername);

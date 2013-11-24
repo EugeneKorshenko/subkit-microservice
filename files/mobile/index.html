@@ -65,14 +65,29 @@
 						<h1 data-ng-bind="loading"></h1>
 					</div>
 					<div data-ng-hide="hasEnter">
-						<div class="rowtext">
-							<span>Username: </span>
-							<input type="text" data-ng-model="$parent.newUsername" placeholder="enter username">
-						</div>
-						<div class="rowtext">
-							<span>Password: </span>
-							<input type="password" data-ng-model="$parent.newPassword" placeholder="enter password">
-						</div>
+						<form name="signup">
+							<div class="rowtext">
+								<span>Username: </span>
+								<input type="text" name="newusername" data-ng-model="$parent.newUsername" placeholder="enter username" ng-required="true" ng-minlength="5" ng-maxlength="20">
+								<span class="validationerror" ng-show="signup.newusername.$error.required">Required!</span>
+								<span class="validationerror" ng-show="signup.newusername.$error.minlength">Too short!</span>
+								<span class="validationerror" ng-show="signup.newusername.$error.maxlength">Too long!</span>
+							</div>
+							<div class="rowtext">
+								<span>Password: </span>
+								<input type="password" name="newpassword" data-ng-model="$parent.newPassword" placeholder="enter password" ng-required="true" ng-minlength="10" ng-maxlength="20">
+								<span class="validationerror" ng-show="signup.newpassword.$error.required">Required!</span>
+								<span class="validationerror" ng-show="signup.newpassword.$error.minlength">Too short!</span>
+								<span class="validationerror" ng-show="signup.newpassword.$error.maxlength">Too long!</span>
+							</div>
+							<div style="color:#000">
+								<hr>
+								<span>Validation Debug Output!</span><br><br>
+								<tt>signup.newusername.$error = {{signup.newusername.$error}}</tt><br>
+								<tt>signup.newpassword.$error = {{signup.newpassword.$error}}</tt><br>
+								<tt>{{signup.$valid}}</tt><br>
+							</div>
+						</form>
 					</div>
 				</view>
 				<view data-content="info" class="hidden" back="login" backtext="back" headertext="info">
@@ -91,12 +106,14 @@
 				</view>
 			</div>
 			<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="center">
-				<go data-view="storage" class="roundButton">store</go>
-				<go data-view="files" class="roundButton">files</go>
-				<go data-view="pubsub" class="roundButton">pubsub</go>
-				<go data-view="tasks" class="roundButton">tasks</go>
-				<go data-view="templates" class="roundButton">templates</go>
-				<go data-view="statistics" class="roundButton">stats</go>
+				<div class="centerMenu">
+					<go data-view="storage" class="roundButton">store</go>
+					<go data-view="files" class="roundButton">files</go>
+					<go data-view="pubsub" class="roundButton">pubsub</go>
+					<go data-view="tasks" class="roundButton">tasks</go>
+					<go data-view="templates" class="roundButton">templates</go>
+					<go data-view="statistics" class="roundButton">stats</go>
+				</div>
 			</view>
 			<div data-ng-controller="StorageCtrl">
 				<view data-content="storage" class="hidden" backtext="center" headertext="store">

@@ -29,7 +29,7 @@ angular
         apiKey: _apiKey
    };
 }])
-.controller("AccountCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
+.controller("AccountCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "account") _load();
@@ -51,7 +51,7 @@ angular
 		console.log($scope.passwordValidation);
 	};
 }])
-.controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
+.controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "statistics") {
@@ -85,7 +85,7 @@ angular
 		}
 	});
 }])
-.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', function($scope, $rootScope, Navigation, shared, $sce){
+.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', function ($scope, $rootScope, Navigation, shared, $sce){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "files") _load();
@@ -165,7 +165,7 @@ angular
         });
 	};
 }])
-.controller("TasksCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
+.controller("TasksCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "tasks") _load();
@@ -242,7 +242,7 @@ angular
 		});
 	};
 }])
-.controller("TemplatesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', function($scope, $rootScope, Navigation, shared, $sce){
+.controller("TemplatesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', function ($scope, $rootScope, Navigation, shared, $sce){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "templates") _load();
@@ -321,7 +321,17 @@ angular
 		});
 	};
 }])
-.controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
+.controller("PubSubCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function ($scope, angularSubkit, Navigation, shared) {	
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "pubsub") _load();
+	});
+	var _load = function(){
+		$scope.channels = ["A", "B"];
+		$scope.$apply();
+	};
+}])
+.controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function ($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";
 	$scope.password = "";
 	$scope.domain = "";
@@ -365,7 +375,7 @@ nav.go("center");
 		});
 	};
 }])
-.controller("StorageCtrl", ['$scope','$rootScope', 'angularSubkit', 'Navigation', 'shared', function StorageCtrl($scope, $rootScope, angularSubkit, Navigation, shared) {
+.controller("StorageCtrl", ['$scope','$rootScope', 'angularSubkit', 'Navigation', 'shared', function ($scope, $rootScope, angularSubkit, Navigation, shared) {
 	var previous = [];
 	var nav = new Navigation();
 	var obj = [];

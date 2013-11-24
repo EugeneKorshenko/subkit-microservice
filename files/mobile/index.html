@@ -31,7 +31,6 @@
 		<script defer src="../jssdk/angularsubkit.js"></script>
 		<script defer src="libs/add2home.js"></script>
 		<script defer src="js/nav.js"></script>
-		<script defer src="js/api.js"></script>
 		<script defer src="js/app.js"></script>
 	</head>
 	<body class="flat">
@@ -152,8 +151,22 @@
 					<textarea data-ng-model="$parent.jsonData" class="codeeditor" rows="20"></textarea>
 				</view>
 			</div>
-			<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="pubsub">
-			</view>
+			<div data-ng-controller="PubSubCtrl">
+				<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="pubsub">
+					<div class="menu">
+					</div>
+					<div class="row">
+						<input type="text" class="input" placeholder="new" data-ng-model="$parent.channelName">
+						<button class="rotateButton" data-ng-click="create(channelName)">+</button>
+					</div>
+					<ul class="arrowlist">
+						<li data-ng-repeat="channel in channels">
+							<button class="item" data-ng-bind="channel" data-ng-click="show(channel)"></button>
+							<button class="rotateButton" data-ng-click="remove(channel)">&ndash;</button>
+						</li>
+					</ul>					
+				</view>
+			</div>
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
 				<div data-ng-controller="StatisticsCtrl">
 					<div class="menu">

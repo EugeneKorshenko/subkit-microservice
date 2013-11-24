@@ -29,6 +29,21 @@ angular
         apiKey: _apiKey
    };
 }])
+.controller("AccountCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "account") _load();
+	});
+
+	function _load(){
+		console.log("load Account");
+		$scope.username = "foo";
+		$scope.password = "bar";
+		$scope.passwordValidation = "";
+		$scope.apiKey = "kj";
+		$scope.$apply();
+	};
+}])
 .controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
 	var nav = new Navigation();
 	nav.onChanged(function(name){

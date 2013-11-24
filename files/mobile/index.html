@@ -67,10 +67,12 @@
 					</div>
 				</p>
 			</view>
-			<view data-content="center" class="hidden" back="account" backtext="account" nexttext="&hellip;" next="settings" headertext="center">
+			<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="&hellip;" next="account" headertext="center">
 				<go data-view="storage" class="roundButton">store</go>
 				<go data-view="files" class="roundButton">files</go>
 				<go data-view="pubsub" class="roundButton">pubsub</go>
+				<go data-view="tasks" class="roundButton">tasks</go>
+				<go data-view="templates" class="roundButton">templates</go>
 				<go data-view="statistics" class="roundButton">stats</go>
 			</view>
 			<div data-ng-controller="StorageCtrl">
@@ -198,9 +200,29 @@
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>
 			</div>
-			<view data-content="settings" class="hidden" back="center" backtext="back" headertext="settings">
+			<view data-content="tasks" class="hidden" back="center" backtext="back" headertext="tasks">
+			</view>
+			<view data-content="templates" class="hidden" back="center" backtext="back" headertext="templates">
 			</view>
 			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">
+				<div data-ng-controller="AccountCtrl">
+					<div class="rowtext">
+						<span>API Key: </span>
+						<span data-ng-bind="apiKey"></span>
+					</div>
+					<div class="rowtext">
+						<span>Username: </span>
+						<span data-ng-bind="username"></span>
+					</div>
+					<div class="rowtext">
+						<span>Password: </span>
+						<input type="text" data-ng-model="password">
+					</div>
+					<div class="rowtext">
+						<span>Validation: </span>
+						<input type="text" data-ng-model="passwordValidation">
+					</div>
+				</div>
 			</view>
 			<view data-content="notify" class="hidden" headertext="notification" backtext="close" back="center">
 				<h1 data-ng-bind="error" style="color:black;">Message</h1>

@@ -321,7 +321,7 @@ angular
 		});
 	};
 }])
-.controller("PubSubCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function ($scope, angularSubkit, Navigation, shared) {	
+.controller("PubSubCtrl",['$scope', '$rootScope', 'angularSubkit', 'Navigation', 'shared', function ($scope, $rootScope, angularSubkit, Navigation, shared) {	
 	var nav = new Navigation();
 	var subkit = null;
 	var subscription = null;
@@ -331,10 +331,16 @@ angular
 	});
 
 	var _load = function(){
-		$scope.channels = ["A", "B"];
-		$scope.$apply();
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.push("pubsub", {value: "demo"});
+		subkit.channels(function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			console.log(err);
+			console.log(data);
+			$scope.channels = data.map(function(itm){
+				return itm.channel;
+			});
+			$scope.$apply();
+		});
 	};
 	
 
@@ -345,6 +351,10 @@ angular
 	};
 	$scope.unsubscribe = function(channelName){
 		subscription.off("heartbeat");
+	};
+
+	$scope.send = function(){
+		subkit.push("pubsub", {value: "demo"});
 	};
 
 }])

@@ -447,20 +447,28 @@ var Subkit = function(config){
 	};
 
 	//pubsub
+	self.channels = function(callback){
+		var url = self.baseUrl + "/channels";
+		httpRequest.get(url, self.options, function(status, result){
+			if(status !== 200) {
+				if(callback) callback(result);
+			}else{
+				if(callback) callback(null, result.json());
+			}
+		});
+	};
 	self.push = function(channel, value, callback){
 		var url = self.baseUrl + "/channel/publish/" + channel;
 		var msg = JSON.parse(JSON.stringify(self.options));
 		msg["data"] = value;
 		httpRequest.post(url, msg, function(status, result){
-			if(status!==200) {
+			if(status!==201 || status!==200) {
 				if(callback) changeStatus(result);
 			}else{
 				if(callback) callback(null, result.json());
 			}
 		});
 	};
-
-	//subscription
 	self.on = function(channel, callback) {
 		channel = channel.replace("/", "_");
 		self.subscribed[channel] = true;
@@ -469,9 +477,6 @@ var Subkit = function(config){
 		return {
 			off: function(){
 				self.off(channel, pollingRef);
-			},
-			set: function(key, value, callback){
-				self.set(channel+"/"+key, value, callback);
 			},
 			push: function(value, callback){
 				self.push(channel, value, callback);

@@ -107,10 +107,20 @@ angular
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
 			$scope.$apply();
-			nav.go("fileeditor");
+			nav.go("filepreview");
 		});
 	};
 
+	$scope.open = function(fileName){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.download(fileName, "statics", function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			$scope.valueData = data || "";
+			$scope.keyData = fileName;
+			$scope.$apply();
+			nav.go("fileeditor");
+		});
+	};
 	$scope.save = function(){
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([$scope.valueData]);
@@ -152,6 +162,81 @@ angular
         	$scope.fileName = "";
         	_load();
         });
+	};
+}])
+.controller("TasksCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "tasks") _load();
+	});
+
+	function _load(){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.list("tasks", function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			$scope.tasks = data;
+			$scope.$apply();
+		});
+	}
+
+	$scope.show = function(fileName){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.download(fileName, "tasks", function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			$scope.valueData = data || "";
+			$scope.keyData = fileName;
+			$scope.$apply();
+			nav.go("taskeditor");
+		});
+	};
+
+	$scope.save = function(){
+        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		var file = new Blob([$scope.valueData]);
+        file.name = $scope.keyData;
+        subkit.upload(file, "tasks", function(err, data){
+        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        	nav.back("tasks");
+        });
+	};
+
+	$scope.upload = function(elementId){
+		var fileInput = document.getElementById(elementId);
+		fileInput.addEventListener('change', function(e) {
+			var files = fileInput.files;
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			for (var i = 0; i < files.length; i++) {
+				subkit.upload(files[i], "tasks", function(err, data){
+					_load();
+				});
+			};
+		});
+		fileInput.click();
+	};
+
+	$scope.remove = function(fileName){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.delete(fileName, "tasks", function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			_load();
+		});
+	};
+
+	$scope.create = function(fileName){
+        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		var file = new Blob([]);
+        file.name = fileName;
+        subkit.upload(file, "tasks", function(err, data){
+        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        	$scope.fileName = "";
+        	_load();
+        });
+	};
+
+	$scope.run = function(taskName){
+		console.log("run");
+		console.log(taskName);
+		nav.go("taskpreview");
 	};
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {

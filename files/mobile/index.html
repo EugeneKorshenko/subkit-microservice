@@ -101,8 +101,8 @@
 			<div data-ng-controller="StorageCtrl">
 				<view data-content="storage" class="hidden" backtext="center" headertext="store">
 					<div class="menu">
-						<button data-ng-click="previous()" data-ng-show="hasParent()" class="tileButton">previous</button>
-						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="tileButton">json</button>
+						<button data-ng-click="previous()" data-ng-show="hasParent()" class="tileButton mediumTile">previous</button>
+						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="tileButton mediumTile">json</button>
 					</div>
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName">
@@ -140,25 +140,25 @@
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
 				<div data-ng-controller="StatisticsCtrl">
 					<div class="menu">
-						<div class="tileButton">
+						<div class="tileButton largeTile">
 							<span class="light">Connections</span>
 							<div class="big" data-ng-bind="connections"></div>
 						</div>
-						<div class="tileButton">
+						<div class="tileButton largeTile">
 							<span class="light">Transfers</span>
 							<span class="light">KB</span>
 							<div class="big" data-ng-bind="totalKBytes"></div>
 						</div>
-						<div class="tileButton">
+						<div class="tileButton largeTile">
 							<span class="light">Requests</span>
 							<div class="big" data-ng-bind="requestNumber"></div>
 						</div>
-						<div class="tileButton">
+						<div class="tileButton largeTile">
 							<span class="light">DB</span>
 							<span class="light">KB</span>
 							<div class="big" data-ng-bind="dbSizeKBytes"></div>
 						</div>
-						<div class="tileButton">
+						<div class="tileButton largeTile">
 							<span class="light">Statics</span>
 							<span class="light">KB</span>
 							<div class="big" data-ng-bind="staticsDirSizeKBytes"></div>
@@ -199,7 +199,7 @@
 				<view data-content="files" class="hidden" back="center" backtext="back" headertext="files">
 					<div class="menu">
 						<input type="file" multiple id="fileUpload" style="display: none;">
-						<button data-ng-click="upload('fileUpload')" class="tileButton">upload</button>
+						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
 					</div>
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName">
@@ -207,24 +207,56 @@
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="file in files">
-							<button class="item" data-ng-bind="file" data-ng-click="show(file)"></button>
+							<button class="item" data-ng-bind="file" data-ng-click="open(file)"></button>
 							<button class="rotateButton" data-ng-click="remove(file)">&ndash;</button>
 						</li>
 					</ul>
 				</view>
-				<view data-content="fileeditor" class="hidden" headertext="value" backtext="store">
+				<view data-content="fileeditor" class="hidden" headertext="editor" backtext="files">
 					<div class="row">
 						<button class="flatButton" data-ng-click="save()">Save</button>
 					</div>
 					<div class="rowtext">
 						<span>File: </span>
 						<span data-ng-bind="keyData"></span>
+						<button class="tileButton" data-ng-click="show(keyData)">show</button>
 					</div>
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>
+				<view data-content="filepreview" class="hidden" headertext="preview" backtext="editor">
+				</view>
 			</div>
-			<view data-content="tasks" class="hidden" back="center" backtext="back" headertext="tasks">
-			</view>
+			<div data-ng-controller="TasksCtrl">
+				<view data-content="tasks" class="hidden" back="center" backtext="back" headertext="tasks">
+					<div class="menu">
+						<input type="file" multiple id="fileUpload" style="display: none;">
+						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
+					</div>
+					<div class="row">
+						<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName">
+						<button class="rotateButton" data-ng-click="create(fileName)">+</button>
+					</div>
+					<ul class="arrowlist">
+						<li data-ng-repeat="task in tasks">
+							<button class="item" data-ng-bind="task" data-ng-click="show(task)"></button>
+							<button class="rotateButton" data-ng-click="remove(task)">&ndash;</button>
+						</li>
+					</ul>
+				</view>
+				<view data-content="taskeditor" class="hidden" headertext="editor" backtext="tasks">
+					<div class="row">
+						<button class="flatButton" data-ng-click="save()">Save</button>
+					</div>
+					<div class="rowtext">
+						<span>Task: </span>
+						<span data-ng-bind="keyData"></span>
+						<button class="tileButton" data-ng-click="run(keyData)">Run</button>
+					</div>
+					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
+				</view>
+				<view data-content="taskpreview" class="hidden" headertext="preview" backtext="editor">
+				</view>				
+			</div>
 			<view data-content="templates" class="hidden" back="center" backtext="back" headertext="templates">
 			</view>
 			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">

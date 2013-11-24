@@ -400,7 +400,7 @@ var Subkit = function(config){
 		});
 	};
 	self.list = function(type, callback){
-		var url = self.baseUrl + "/statics";
+		var url = self.baseUrl + "/" + type;
 		httpRequest.get(url, self.options, function(status, result){
 			if(status !== 200) {
 				if(callback) callback(result);

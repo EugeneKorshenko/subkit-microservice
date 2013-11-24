@@ -32,8 +32,9 @@
 
 .tileButton {
 	display: inline-block;
-	width: 60px;
-	height: 60px;
+	width: 47px;
+	height: 47px;
+	vertical-align: middle;
 	border: 1px solid @highlight-color;
 	color: white;
 	outline: none;
@@ -45,17 +46,30 @@
 	background-color: white;
 	color: @highlight-color;
 }
-
+.largeTile {
+	width: 80px;
+	height: 80px;
+}
+.mediumTile {
+	width: 60px;
+	height: 60px;
+}
 .light {
 	font-size: 10px;
 }
 
-.big {
-	/* font-size: 24px; */
-	width: 80px;
-	line-height: 40px;
+.middle {
+	width: 60px;
+	line-height: 50px;
 	text-align: center;
 	vertical-align: middle;
+}
+
+.big {
+	width: 80px;
+	line-height: 70px;
+	text-align: right;
+	vertical-align: bottom;
 }
 
 .flatButton {
@@ -70,7 +84,7 @@
 }
 
 .menu {
-	height: 60px;
+	height: 80px;
 	float: left;
 }
 
@@ -225,6 +239,7 @@
 }
 
 .codeeditor {
+	margin-top: 3px;
 	width:100%;
 	height:auto;
 	resize: none;

@@ -258,8 +258,38 @@
 					<textarea data-ng-model="previewOutput" class="codeeditor" rows="20" disabled></textarea>
 				</view>				
 			</div>
-			<view data-content="templates" class="hidden" back="center" backtext="back" headertext="templates">
-			</view>
+			<div data-ng-controller="TemplatesCtrl">
+				<view data-content="templates" class="hidden" back="center" backtext="back" headertext="templates">
+					<div class="menu">
+						<input type="file" multiple id="fileUpload" style="display: none;">
+						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
+					</div>
+					<div class="row">
+						<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName">
+						<button class="rotateButton" data-ng-click="create(fileName)">+</button>
+					</div>
+					<ul class="arrowlist">
+						<li data-ng-repeat="template in templates">
+							<button class="item" data-ng-bind="template" data-ng-click="show(template)"></button>
+							<button class="rotateButton" data-ng-click="remove(template)">&ndash;</button>
+						</li>
+					</ul>
+				</view>
+				<view data-content="templateeditor" class="hidden" headertext="editor" backtext="templates">
+					<div class="row">
+						<button class="flatButton" data-ng-click="save()">Save</button>
+					</div>
+					<div class="rowtext">
+						<span>Template: </span>
+						<span data-ng-bind="keyData"></span>
+						<button class="tileButton" data-ng-click="open(keyData)">Open</button>
+					</div>
+					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
+				</view>
+				<view data-content="templatepreview" class="hidden" headertext="preview" backtext="editor">
+					<div data-ng-bind-html="previewOutput"></div>
+				</view>				
+			</div>
 			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">
 				<div data-ng-controller="AccountCtrl">
 					<div class="row">

@@ -241,6 +241,86 @@ angular
 		});
 	};
 }])
+.controller("TemplatesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', function($scope, $rootScope, Navigation, shared, $sce){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "templates") _load();
+	});
+
+	function _load(){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.list("templates", function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			$scope.templates = data;
+			$scope.$apply();
+		});
+	}
+
+	$scope.show = function(fileName){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.download(fileName, "templates", function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			$scope.valueData = data || "";
+			$scope.keyData = fileName;
+			$scope.$apply();
+			nav.go("templateeditor");
+		});
+	};
+
+	$scope.save = function(){
+        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		var file = new Blob([$scope.valueData]);
+        file.name = $scope.keyData;
+        subkit.upload(file, "templates", function(err, data){
+        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        });
+	};
+
+	$scope.upload = function(elementId){
+		var fileInput = document.getElementById(elementId);
+		fileInput.addEventListener('change', function(e) {
+			var files = fileInput.files;
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			for (var i = 0; i < files.length; i++) {
+				subkit.upload(files[i], "templates", function(err, data){
+					_load();
+				});
+			};
+		});
+		fileInput.click();
+	};
+
+	$scope.remove = function(fileName){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.delete(fileName, "templates", function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			_load();
+		});
+	};
+
+	$scope.create = function(fileName){
+        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		var file = new Blob([]);
+        file.name = fileName;
+        subkit.upload(file, "templates", function(err, data){
+        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        	$scope.fileName = "";
+        	_load();
+        });
+	};
+
+	$scope.open = function(templateName){
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.open(templateName, function(err, data){
+			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			console.log(data);
+			$scope.previewOutput = $sce.trustAsHtml(data) || "";
+			$scope.keyData = templateName;
+			$scope.$apply();
+			nav.go("templatepreview");
+		});
+	};
+}])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";
 	$scope.password = "";

@@ -434,6 +434,18 @@ var Subkit = function(config){
 		});
 	};
 
+	//template
+	self.open = function(templateName, callback){
+		var url = self.baseUrl + "/templates/" + templateName;
+		httpRequest.get(url, self.options, function(status, result){
+			if(status !== 200) {
+				if(callback) callback(result.json());
+			}else{
+				if(callback) callback(null, result.text());
+			}
+		});
+	};
+
 	//pubsub
 	self.push = function(channel, value, callback){
 		var url = self.baseUrl + "/channel/publish/" + channel;

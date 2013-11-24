@@ -327,15 +327,17 @@ angular
 	var subscription = null;
 
 	nav.onChanged(function(name){
-		if(name === "pubsub") _load();
+		if(name === "pubsub") {
+			if(subscription) subscription.off($scope.keyData);
+			_load();
+		}
+
 	});
 
 	var _load = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.channels(function(err, data){
 			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
-			console.log(err);
-			console.log(data);
 			$scope.channels = data.map(function(itm){
 				return itm.channel;
 			});
@@ -343,18 +345,23 @@ angular
 		});
 	};
 	
-
+	$scope.open = function(channelName){
+		$scope.keyData = channelName;
+		nav.go("channeleditor");
+	};
 	$scope.subscribe = function(channelName){
-		subscription = subkit.on("heartbeat", function(data){
-			console.log(data);
+		$scope.messageLog = [];
+		subscription = subkit.on(channelName, function(data){
+			$scope.messageLog.push(data);
+			$scope.$apply();
 		});
 	};
 	$scope.unsubscribe = function(channelName){
-		subscription.off("heartbeat");
+		subscription.off(channelName);
 	};
 
-	$scope.send = function(){
-		subkit.push("pubsub", {value: "demo"});
+	$scope.publish = function(channelName){
+		subkit.push(channelName, {value: "demo"});
 	};
 
 }])

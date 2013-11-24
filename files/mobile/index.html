@@ -154,9 +154,6 @@
 			<div data-ng-controller="PubSubCtrl">
 				<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="pubsub">
 					<div class="menu">
-						<button data-ng-click="subscribe()">Heartbeat ON</button>
-						<button data-ng-click="unsubscribe()">Heartbeat OFF</button>
-						<button data-ng-click="send()">Send</button>
 					</div>
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.channelName">
@@ -164,11 +161,28 @@
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="channel in channels">
-							<button class="item" data-ng-bind="channel" data-ng-click="show(channel)"></button>
+							<button class="item" data-ng-bind="channel" data-ng-click="open(channel)"></button>
 							<button class="rotateButton" data-ng-click="remove(channel)">&ndash;</button>
 						</li>
 					</ul>					
 				</view>
+				<view data-content="channeleditor" class="hidden" headertext="channel" backtext="channels">
+					<div class="row">
+						<button data-ng-click="subscribe(keyData)">subscribe</button>
+						<button data-ng-click="unsubscribe(keyData)">unsubscibe</button>
+						<button data-ng-click="publish(keyData)">publish</button>
+					</div>
+					<div class="rowtext">
+						<span>Channel: </span>
+						<span data-ng-bind="keyData"></span>
+					</div>
+					<ul class="codeeditor" style="color:black; height: 500px;">
+						<li data-ng-repeat="message in messageLog">
+							<div data-ng-bind="message"></div>
+						</li>
+					</ul>
+				</view>
+
 			</div>
 			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
 				<div data-ng-controller="StatisticsCtrl">

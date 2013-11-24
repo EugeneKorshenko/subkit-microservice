@@ -485,7 +485,7 @@ var Subkit = function(config){
 	};
 	self.off = function(channel, pollingRef){
 		delete self.subscribed[channel];
-		clearTimeout(pollingRef);
+		if(pollingRef) clearTimeout(pollingRef);
 	};
 
 	var _poll = function(channel, clientId, callback) {

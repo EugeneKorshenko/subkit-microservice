@@ -36,7 +36,7 @@
 	</head>
 	<body class="flat">
 		<views style="width: 100%;">
-			<view data-content="login" next="center" nexttext="&hellip;" headertext="subkit">
+			<view data-content="login" next="info" nexttext="info" headertext="subkit">
 				<div data-ng-controller="LoginCtrl">
 					<div class="row">
 						<input type="text" class="input" placeholder="domain" data-ng-model="domain">
@@ -206,27 +206,39 @@
 			</view>
 			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">
 				<div data-ng-controller="AccountCtrl">
+					<div class="row">
+						<button class="flatButton" data-ng-click="save()">Save</button>
+					</div>
+					<div class="rowtext">
+						<span>Domain: </span>
+						<span data-ng-bind="domain"></span>
+					</div>
 					<div class="rowtext">
 						<span>API Key: </span>
-						<span data-ng-bind="apiKey"></span>
+						<input type="text" data-ng-model="apiKey">
 					</div>
 					<div class="rowtext">
 						<span>Username: </span>
-						<span data-ng-bind="username"></span>
+						<input type="text" data-ng-model="username">
 					</div>
 					<div class="rowtext">
 						<span>Password: </span>
-						<input type="text" data-ng-model="password">
+						<input type="password" data-ng-model="password">
 					</div>
 					<div class="rowtext">
 						<span>Validation: </span>
-						<input type="text" data-ng-model="passwordValidation">
+						<input type="password" data-ng-model="passwordValidation">
 					</div>
 				</div>
 			</view>
 			<view data-content="notify" class="hidden" headertext="notification" backtext="close" back="center">
 				<h1 data-ng-bind="error" style="color:black;">Message</h1>
 				<div style="height:400px; width:400px; border:1px solid black;background-color:white;">
+				</div>
+			</view>
+			<view data-content="info" class="hidden" back="login" backtext="back" headertext="info">
+				<div class="rowtext">
+					SubKit
 				</div>
 			</view>
 		</views>

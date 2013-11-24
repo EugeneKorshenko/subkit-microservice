@@ -37,11 +37,18 @@ angular
 
 	function _load(){
 		console.log("load Account");
-		$scope.username = "foo";
-		$scope.password = "bar";
+		$scope.domain = shared.domain;
+		$scope.username = shared.username;
+		$scope.password = shared.password;
 		$scope.passwordValidation = "";
-		$scope.apiKey = "kj";
+		$scope.apiKey = shared.apiKey;
 		$scope.$apply();
+	};
+
+	$scope.save = function(){
+		console.log("save account");
+		console.log($scope.username);
+		console.log($scope.passwordValidation);
 	};
 }])
 .controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){

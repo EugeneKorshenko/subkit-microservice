@@ -196,7 +196,6 @@ angular
         file.name = $scope.keyData;
         subkit.upload(file, "tasks", function(err, data){
         	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
-        	nav.back("tasks");
         });
 	};
 
@@ -234,9 +233,12 @@ angular
 	};
 
 	$scope.run = function(taskName){
-		console.log("run");
-		console.log(taskName);
-		nav.go("taskpreview");
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		subkit.run(taskName, function(err, data){
+			$scope.previewOutput = err ? err.message : JSON.stringify(data, null, 4);
+			$scope.$apply();
+			nav.go("taskpreview");
+		});
 	};
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function LoginCtrl($scope, angularSubkit, Navigation, shared) {

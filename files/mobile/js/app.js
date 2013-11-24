@@ -85,7 +85,7 @@ angular
 		}
 	});
 }])
-.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function($scope, $rootScope, Navigation, shared){
+.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', function($scope, $rootScope, Navigation, shared, $sce){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "files") _load();
@@ -100,12 +100,12 @@ angular
 		});
 	}
 
-	$scope.show = function(fileName){
+	$scope.preview = function(templateName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.download(fileName, "statics", function(err, data){
+		subkit.open(templateName, "statics", function(err, data){
 			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
-			$scope.valueData = data || "";
-			$scope.keyData = fileName;
+			$scope.previewOutput = $sce.trustAsHtml(data) || "";
+			$scope.keyData = templateName;
 			$scope.$apply();
 			nav.go("filepreview");
 		});
@@ -121,6 +121,7 @@ angular
 			nav.go("fileeditor");
 		});
 	};
+
 	$scope.save = function(){
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([$scope.valueData]);
@@ -309,11 +310,10 @@ angular
         });
 	};
 
-	$scope.open = function(templateName){
+	$scope.preview = function(templateName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.open(templateName, function(err, data){
+		subkit.open(templateName, "templates", function(err, data){
 			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
-			console.log(data);
 			$scope.previewOutput = $sce.trustAsHtml(data) || "";
 			$scope.keyData = templateName;
 			$scope.$apply();

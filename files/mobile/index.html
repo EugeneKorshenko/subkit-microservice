@@ -36,8 +36,8 @@
 	</head>
 	<body class="flat">
 		<views style="width: 100%;">
-			<view data-content="login" next="info" nexttext="info" headertext="subkit">
-				<div data-ng-controller="LoginCtrl">
+			<div data-ng-controller="LoginCtrl">
+				<view data-content="login" next="info" nexttext="info" headertext="subkit">
 					<div class="row">
 						<input type="text" class="input" placeholder="domain" data-ng-model="domain">
 					</div>
@@ -50,23 +50,41 @@
 					<div class="row">
 						<button class="flatButton" data-ng-click="login()">Login</button>
 					</div>
-					<div class="row">
+					<div class="row center">
 						<span class="error" data-ng-bind="error"></span>
 					</div>
+					<div class="row center">
+						<go data-view="registration" class="rotateButton">+</go>
+					</div>
+				</view>
+				<view data-content="registration" class="hidden" back="login" backtext="back" headertext="registration">
 					<div class="row">
-						<button class="rotateButton">+</button>
+						<button class="flatButton" data-ng-click="register()">Register</button>
 					</div>
-				</div>
-				<p>
-	                <div class="shares">
-						<a class="link" href="http://subkit.io" data-name="subkitapp" target="_blank"></a>
-						<a class="mail" href="mailto:go@subkit.io" data-name="mailapp"></a>
-						<a class="twitter" href="https://twitter.com/subkit" data-name="twitterapp" target="_blank"></a>
-						<a class="facebook" href="https://www.facebook.com/subkit" data-name="facebookapp" target="_blank"></a>
-						<a class="gplus" href="https://plus.google.com/communities/106679532612202656243?hl=de" data-name="gplusapp" target="_blank"></a>
+					<div class="rowtext">
+						<span>Username: </span>
+						<input type="text" data-ng-model="newUsername">
 					</div>
-				</p>
-			</view>
+					<div class="rowtext">
+						<span>Password: </span>
+						<input type="password" data-ng-model="newPassword">
+					</div>
+				</view>
+				<view data-content="info" class="hidden" back="login" backtext="back" headertext="info">
+					<div class="rowtext">
+						SubKit
+					</div>
+					<p>
+		                <div class="shares">
+							<a class="link" href="http://subkit.io" data-name="subkitapp" target="_blank"></a>
+							<a class="mail" href="mailto:go@subkit.io" data-name="mailapp"></a>
+							<a class="twitter" href="https://twitter.com/subkit" data-name="twitterapp" target="_blank"></a>
+							<a class="facebook" href="https://www.facebook.com/subkit" data-name="facebookapp" target="_blank"></a>
+							<a class="gplus" href="https://plus.google.com/communities/106679532612202656243?hl=de" data-name="gplusapp" target="_blank"></a>
+						</div>
+					</p>
+				</view>
+			</div>
 			<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="center">
 				<go data-view="storage" class="roundButton">store</go>
 				<go data-view="files" class="roundButton">files</go>
@@ -234,11 +252,6 @@
 			<view data-content="notify" class="hidden" headertext="notification" backtext="close" back="center">
 				<h1 data-ng-bind="error" style="color:black;">Message</h1>
 				<div style="height:400px; width:400px; border:1px solid black;background-color:white;">
-				</div>
-			</view>
-			<view data-content="info" class="hidden" back="login" backtext="back" headertext="info">
-				<div class="rowtext">
-					SubKit
 				</div>
 			</view>
 		</views>

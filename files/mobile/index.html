@@ -278,7 +278,7 @@
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>
 				<view data-content="filepreview" class="hidden" headertext="preview" backtext="editor">
-					<div data-ng-bind-html="previewOutput" style="color:black;"></div>
+					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
 				</view>
 			</div>
 			<div data-ng-controller="TasksCtrl">
@@ -310,7 +310,7 @@
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>
 				<view data-content="taskpreview" class="hidden" headertext="preview" backtext="editor">
-					<textarea data-ng-model="previewOutput" class="codeeditor" rows="20" disabled></textarea>
+					<div data-ng-bind="previewOutput" class="codepreview"></div>
 				</view>				
 			</div>
 			<div data-ng-controller="TemplatesCtrl">
@@ -342,7 +342,7 @@
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>
 				<view data-content="templatepreview" class="hidden" headertext="preview" backtext="editor">
-					<div data-ng-bind-html="previewOutput"></div>
+					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
 				</view>				
 			</div>
 			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">

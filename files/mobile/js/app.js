@@ -323,13 +323,30 @@ angular
 }])
 .controller("PubSubCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function ($scope, angularSubkit, Navigation, shared) {	
 	var nav = new Navigation();
+	var subkit = null;
+	var subscription = null;
+
 	nav.onChanged(function(name){
 		if(name === "pubsub") _load();
 	});
+
 	var _load = function(){
 		$scope.channels = ["A", "B"];
 		$scope.$apply();
+		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+		subkit.push("pubsub", {value: "demo"});
 	};
+	
+
+	$scope.subscribe = function(channelName){
+		subscription = subkit.on("heartbeat", function(data){
+			console.log(data);
+		});
+	};
+	$scope.unsubscribe = function(channelName){
+		subscription.off("heartbeat");
+	};
+
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function ($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";

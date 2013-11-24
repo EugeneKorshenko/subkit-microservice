@@ -154,6 +154,8 @@
 			<div data-ng-controller="PubSubCtrl">
 				<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="pubsub">
 					<div class="menu">
+						<button data-ng-click="subscribe()">Heartbeat ON</button>
+						<button data-ng-click="unsubscribe()">Heartbeat OFF</button>
 					</div>
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.channelName">

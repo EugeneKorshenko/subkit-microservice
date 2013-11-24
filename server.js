@@ -101,50 +101,6 @@ server.use(restify.conditionalRequest());
 server.pre(restify.pre.sanitizePath());
 server.pre(restify.pre.userAgentConnection());
 
-//custom before / after code 
-// server.use(function customHandler(req, res, next) {
-// 	if(req.route.method === "OPTIONS") return next();
-
-// 	var ctx = function(statusCode, body) {
-// 		return {
-// 			url:req.url,
-// 			params: req.params,
-// 			contentType:req.headers["content-type"],
-// 			method:req.route.method,
-// 			versions:req.route.versions,
-// 			userAgent:req.headers["user-agent"],
-// 			authorization: req.headers["authorization"] || "None",
-// 			contentLength:req.headers["content-length"] || "0",
-// 			remoteAddress: req.connection.remoteAddress,
-// 			username: req.username,
-// 			statusCode: statusCode || null,
-// 			body: body || null
-// 		}
-// 	}
-//     var send = res.send;
-//     res.send = function(statusCode, body, headers){
-//     	res.send = send;
-//    		var obj = ctx(statusCode, body);
-// 		var task = storage.task("after", obj, function(error){
-// 			if(error)
-// 				obj.body = JSON.stringify(error.toString());
-// 		});
-// 		task();
-// 		res.send(obj.statusCode || 500 , obj.body, headers);
-//     }
-
-// 	var obj = ctx();
-// 	var fail;
-// 	var task = storage.task("before", obj, function(error){
-// 		if(error) {
-// 			fail = error;
-// 			res.send(obj.statusCode || 500, JSON.stringify(error.toString()));
-// 		};
-// 	});
-// 	task();
-// 	if(!fail) next();
-// });
-
 //CORS
 server.opts(/\.*/, function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -154,35 +110,7 @@ server.opts(/\.*/, function (req, res, next) {
 	return next();
 });
 
-//logging tracing
-// var trackingData = [];
-// server.on("after", function (req, res, route, err) {
-// 	var latency = res.get('Response-Time');
-// 	if (typeof (latency) !== 'number') latency = Date.now() - req._time;
-// 	 var obj = {
-// 	 		url:req.url,
-// 			remoteAddress: req.connection.remoteAddress,
-// 			remotePort: req.connection.remotePort,
-// 			req_id: req.getId(),
-// 			requestHeaders: req.headers,
-// 			statusCode: res.statusCode,
-// 			method:req.route.method,
-// 			versions:req.route.versions,
-// 			err: err,
-// 			inBytes: req.connection.bytesRead,
-// 			outBytes: req.connection.bytesWritten,
-// 			latency: latency,
-// 			secure: req.secure
-// 	};
-// 	if(trackingData.length < 100){
-// 		trackingData.push(obj)
-// 	}else{
-// 		storage.run("track", trackingData, function(error, data){});
-// 		trackingData = [];
-// 	}
-// });
-
-//handle error
+//handle errors
 // server.on("uncaughtException", function (req, res, route, err) {
 // 	console.log("A uncought exception was thrown: " + route + " -> " + err.message);
 // 	res.send(500, err.message);
@@ -196,40 +124,6 @@ server.opts(/\.*/, function (req, res, next) {
 server.get(/subkit[-0-9.a-z]*.js/, restify.serveStatic({
 	directory: path.join(__dirname, 'files/jssdk')
 }));
-
-//public libs
-server.get(/devcenter\/public\/([a-zA-Z0-9_\.~-]+.*)/, function(req, res, next){
-	var filePath = path.join(__dirname, 'files/devcenter', req.params[0]);
-	fs.readFile(filePath, 'utf8', function(error, data){
-		if(filePath.indexOf('.css') !== -1)
-			res.setHeader('Content-Type', 'text/css');
-		else if(filePath.indexOf('.js') !== -1)
-			res.setHeader('Content-Type', 'text/javascript');
-		else
-			res.setHeader('Content-Type', 'application/octet-stream');
-		if(error) return next(error);
-		res.write(data);
-		res.end();
-	});
-});
-//public console
-var rendererDevCenter = require("./lib/template-module.js").init({
-	templatesPath: path.join(__dirname, 'files/devcenter')
-});
-server.get("/devcenter/:name", function(req, res, next){
-	var templateName = req.params.name;
-	var consoleData = {
-		url: api.url,
-		apiKey: api.apiKey,
-		username: admin.username,
-		password: admin.password
-	};
-	rendererDevCenter.render(templateName, consoleData, function(err, html){
-		res.contentType = 'text/html';
-		res.write(html);
-		res.end();
-	});
-});
 
 //start web server
 server.listen(app.port, function(){

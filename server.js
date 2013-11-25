@@ -149,6 +149,13 @@ require("./lib/pubsub.js").init(server, pubsub, storage, es, helper);
 require("./lib/static.js").init(server, staticConfig, helper);
 require("./lib/template.js").init(server, templateConfig, helper);
 require("./lib/task.js").init(server, storage, taskConfig, task, helper);
+require("./lib/statistics.js").init(server, storage, staticConfig, helper);
+
+require("./lib/users.js").init(server, helper);
+require("./lib/email.js").init(server, helper);
+require("./lib/push.js").init(server, helper);
+require("./lib/location.js").init(server, helper);
+
 require("./lib/eventsource.js").init(server, es, helper);
 require("./lib/s3.js").init(server, s3Config, helper);
-require("./lib/statistics.js").init(server, storage, staticConfig, helper);
+

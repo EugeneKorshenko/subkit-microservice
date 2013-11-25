@@ -371,7 +371,6 @@ angular
 		if(!subscription) $scope.channelStatus = "subscribe to channel please";
 		else subscription.push({value: value || new Date()});
 	};
-
 }])
 .controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function ($scope, angularSubkit, Navigation, shared) {
 	$scope.username = "";
@@ -593,8 +592,82 @@ nav.go("center");
 			});
 		}
 	};
-}]);
+}])
+.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "email") _load();
+	});
 
+	function _load(){
+		console.log("load email");
+		$scope.$apply();
+	};
+
+	$scope.save = function(){
+		console.log("save email");
+	};
+}])
+.controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "pushnotify") _load();
+	});
+
+	function _load(){
+		console.log("load pushnotify");
+		$scope.$apply();
+	};
+
+	$scope.save = function(){
+		console.log("save pushnotify");
+	};
+}])
+.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "email") _load();
+	});
+
+	function _load(){
+		console.log("load email");
+		$scope.$apply();
+	};
+
+	$scope.save = function(){
+		console.log("save email");
+	};
+}])
+.controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "location") _load();
+	});
+
+	function _load(){
+		console.log("load location");
+		$scope.$apply();
+	};
+
+	$scope.save = function(){
+		console.log("save location");
+	};
+}])
+.controller("UsersCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "users") _load();
+	});
+
+	function _load(){
+		console.log("load users");
+		$scope.$apply();
+	};
+
+	$scope.save = function(){
+		console.log("save users");
+	};
+}])
 var App = {
     init: function () {
         FastClick.attach(document.body);

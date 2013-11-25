@@ -380,14 +380,28 @@
 				</div>
 			</view>
 
-			<view data-content="users" class="hidden" headertext="users" backtext="back" back="center">
-			</view>
-			<view data-content="email" class="hidden" headertext="email" backtext="back" back="center">
-			</view>
-			<view data-content="pushnotify" class="hidden" headertext="push notify" backtext="back" back="center">
-			</view>
-			<view data-content="location" class="hidden" headertext="location" backtext="back" back="center">
-			</view>
+			<div data-ng-controller="UsersCtrl">
+				<view data-content="users" class="hidden" headertext="users" backtext="back" back="center">
+				</view>
+			</div>
+
+			<div data-ng-controller="EMailCtrl">
+				<view data-content="email" class="hidden" headertext="email" backtext="back" back="center" next="emailsettings" nexttext="settings">
+				</view>
+				<view data-content="emailsettings" class="hidden" headertext="settings" backtext="back" back="email">
+				</view>
+			</div>
+
+			<div data-ng-controller="PushNotifyCtrl">
+				<view data-content="pushnotify" class="hidden" headertext="push notify" backtext="back" back="center" next="pushnotifysettings" nexttext="settings">
+				</view>
+				<view data-content="pushnotifysettings" class="hidden" headertext="settings" backtext="back" back="pushnotify">
+				</view>
+			</div>
+			<div data-ng-controller="LocationCtrl">
+				<view data-content="location" class="hidden" headertext="location" backtext="back" back="center">
+				</view>
+			</div>
 
 			<view data-content="notify" class="hidden" headertext="notification" backtext="close" back="center">
 				<h1 data-ng-bind="error" style="color:black;">Message</h1>

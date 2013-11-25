@@ -115,7 +115,7 @@
 				<div class="centerMenu">
 					<go data-view="users" class="tileButton largeTile">users</go>
 					<go data-view="email" class="tileButton largeTile">email</go>
-					<go data-view="push" class="tileButton largeTile">push notify</go>
+					<go data-view="pushnotify" class="tileButton largeTile">push notify</go>
 					<go data-view="location" class="tileButton largeTile">location</go>
 					<go data-view="statistics" class="tileButton largeTile">stats</go>
 				</div>
@@ -351,6 +351,7 @@
 					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
 				</view>				
 			</div>
+
 			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">
 				<div data-ng-controller="AccountCtrl">
 					<div class="row">
@@ -378,6 +379,16 @@
 					</div>
 				</div>
 			</view>
+
+			<view data-content="users" class="hidden" headertext="users" backtext="back" back="center">
+			</view>
+			<view data-content="email" class="hidden" headertext="email" backtext="back" back="center">
+			</view>
+			<view data-content="pushnotify" class="hidden" headertext="push notify" backtext="back" back="center">
+			</view>
+			<view data-content="location" class="hidden" headertext="location" backtext="back" back="center">
+			</view>
+
 			<view data-content="notify" class="hidden" headertext="notification" backtext="close" back="center">
 				<h1 data-ng-bind="error" style="color:black;">Message</h1>
 				<div style="height:400px; width:400px; border:1px solid black;background-color:white;">

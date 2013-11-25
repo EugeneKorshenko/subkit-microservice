@@ -106,12 +106,18 @@
 			</div>
 			<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="center">
 				<div class="centerMenu">
-					<go data-view="storage" class="roundButton">store</go>
-					<go data-view="pubsub" class="roundButton">pubsub</go>
-					<go data-view="files" class="roundButton">files</go>
-					<go data-view="templates" class="roundButton">templates</go>
-					<go data-view="tasks" class="roundButton">tasks</go>
-					<go data-view="statistics" class="roundButton">stats</go>
+					<go data-view="storage" class="tileButton largeTile">store</go>
+					<go data-view="pubsub" class="tileButton largeTile">pubsub</go>
+					<go data-view="files" class="tileButton largeTile">files</go>
+					<go data-view="templates" class="tileButton largeTile">templates</go>
+					<go data-view="tasks" class="tileButton largeTile">tasks</go>
+				</div>
+				<div class="centerMenu">
+					<go data-view="users" class="tileButton largeTile">users</go>
+					<go data-view="email" class="tileButton largeTile">email</go>
+					<go data-view="push" class="tileButton largeTile">push</go>
+					<go data-view="location" class="tileButton largeTile">location</go>
+					<go data-view="statistics" class="tileButton largeTile">stats</go>
 				</div>
 			</view>
 			<div data-ng-controller="StorageCtrl">

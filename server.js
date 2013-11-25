@@ -84,7 +84,7 @@ fs.watchFile(path.join(__dirname, "defaults.json"), reloadConf);
 
 //server middleware
 server.use(restify.acceptParser(server.acceptable));
-server.use(restify.bodyParser({ mapParams: false }));
+server.use(restify.bodyParser({ mapParams: true }));
 server.use(restify.fullResponse());
 server.use(restify.authorizationParser());
 server.use(restify.dateParser());

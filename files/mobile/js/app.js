@@ -1,4 +1,5 @@
 'use strict';
+
 angular
 .module('mobilecenter', ['app', 'subkit'])
 .service('shared', ['$rootScope', function ($rootScope) {
@@ -28,6 +29,50 @@ angular
         domain: _domain,
         apiKey: _apiKey
    };
+}])
+.controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function ($scope, angularSubkit, Navigation, shared) {
+	$scope.username = "";
+	$scope.password = "";
+	$scope.domain = "";
+	$scope.error = "";
+	
+	var nav = new Navigation();
+
+	$scope.register = function(){
+		
+		if (!signup.$valid){
+			console.log("nope. form invalid.");
+		}
+		 
+		if (!$scope.isValid)return;
+		
+		$scope.hasEnter = true;
+		console.log("Register");
+		console.log($scope.newUsername);
+		console.log($scope.newPassword);
+		var counter = $scope.loading = 5;
+		var ref = setInterval(function(){
+			$scope.loading = --counter;
+			$scope.$apply();
+			if(counter === 0) {
+				clearInterval(ref);
+				nav.back("login");
+			}
+		}, 1000);
+	};
+
+	$scope.login = function(){
+		shared.username = $scope.username || "subkit";
+		shared.password = $scope.password || "subkit";
+		shared.domain = $scope.domain || "http://localhost:8080";
+nav.go("center");
+		var subkit = new Subkit({ baseUrl: shared.domain, username: shared.username, password: shared.password });
+		subkit.login(function(err, data){
+			if(err) { $scope.error = err; $scope.$apply(); return; }
+			shared.apiKey = data.apiKey;
+			nav.go("center");
+		});
+	};
 }])
 .controller("AccountCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
 	var nav = new Navigation();
@@ -372,50 +417,6 @@ angular
 		else subscription.push({value: value || new Date()});
 	};
 }])
-.controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', function ($scope, angularSubkit, Navigation, shared) {
-	$scope.username = "";
-	$scope.password = "";
-	$scope.domain = "";
-	$scope.error = "";
-	
-	var nav = new Navigation();
-
-	$scope.register = function(){
-		
-		if (!signup.$valid){
-			console.log("nope. form invalid.");
-		}
-		 
-		if (!$scope.isValid)return;
-		
-		$scope.hasEnter = true;
-		console.log("Register");
-		console.log($scope.newUsername);
-		console.log($scope.newPassword);
-		var counter = $scope.loading = 5;
-		var ref = setInterval(function(){
-			$scope.loading = --counter;
-			$scope.$apply();
-			if(counter === 0) {
-				clearInterval(ref);
-				nav.back("login");
-			}
-		}, 1000);
-	};
-
-	$scope.login = function(){
-		shared.username = $scope.username || "subkit";
-		shared.password = $scope.password || "subkit";
-		shared.domain = $scope.domain || "http://localhost:8080";
-nav.go("center");
-		var subkit = new Subkit({ baseUrl: shared.domain, username: shared.username, password: shared.password });
-		subkit.login(function(err, data){
-			if(err) { $scope.error = err; $scope.$apply(); return; }
-			shared.apiKey = data.apiKey;
-			nav.go("center");
-		});
-	};
-}])
 .controller("StorageCtrl", ['$scope','$rootScope', 'angularSubkit', 'Navigation', 'shared', function ($scope, $rootScope, angularSubkit, Navigation, shared) {
 	var previous = [];
 	var nav = new Navigation();
@@ -667,7 +668,9 @@ nav.go("center");
 	$scope.save = function(){
 		console.log("save users");
 	};
-}])
+}]);
+
+
 var App = {
     init: function () {
         FastClick.attach(document.body);

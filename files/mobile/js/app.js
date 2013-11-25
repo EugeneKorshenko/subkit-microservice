@@ -339,7 +339,7 @@ nav.go("center");
 	$scope.remove = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.delete(fileName, "templates", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) { $rootScope.error = "network error"; natrv.show("notify"); return; }
 			_load();
 		});
 	};
@@ -668,8 +668,22 @@ nav.go("center");
 	$scope.save = function(){
 		console.log("save users");
 	};
-}]);
-
+}])
+.directive('validPassword',function(){
+  return{
+    require: "ngModel",
+    link: function(scope, elm, attrs, ctrl){
+      var regex = /^(?!.*(.)\1{3})((?=.*[\d])(?=.*[A-Za-z])|(?=.*[^\w\d\s])(?=.*[A-Za-z])).{8,20}$/;
+	
+      var validator = function(value){
+		ctrl.$setValidity('validPassword', regex.test(value));
+        return value;
+      };
+	  ctrl.$parsers.unshift(validator);
+	  ctrl.$formatters.unshift(validator);
+    }
+  };
+});
 
 var App = {
     init: function () {

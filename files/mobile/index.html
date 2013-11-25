@@ -75,9 +75,10 @@
 							</div>
 							<div class="rowtext">
 								<span>Password: </span>
-								<input type="password" name="newpassword" data-ng-model="$parent.newPassword" placeholder="enter password" ng-required="true" ng-minlength="10" ng-maxlength="20">
+								<input type="password" name="newpassword" data-ng-model="$parent.newPassword" placeholder="enter password" ng-required="true" ng-minlength="8" ng-maxlength="20" valid-password>
 								<span class="validationerror" ng-show="signup.newpassword.$error.required">Required!</span>
 								<span class="validationerror" ng-show="signup.newpassword.$error.minlength">Too short!</span>
+								<span class="validationerror" ng-show="signup.newpassword.$error.validPassword" title="At least one uppcase letter, one lowercase letter, a special character or a digit. Do not repeat characters!">At least one uppcase letter, one lowercase letter, a special character or a digit. Do not repeat characters!</span>
 								<span class="validationerror" ng-show="signup.newpassword.$error.maxlength">Too long!</span>
 							</div>
 							<div style="color:#000">

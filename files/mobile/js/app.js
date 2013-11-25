@@ -37,19 +37,13 @@ angular
 	$scope.error = "";
 	
 	var nav = new Navigation();
-
+		
 	$scope.register = function(){
-		
-		if (!signup.$valid){
-			console.log("nope. form invalid.");
-		}
-		 
-		if (!$scope.isValid)return;
-		
+	
+		//console.log($scope.newUsername);
+		//console.log($scope.newPassword);
+				
 		$scope.hasEnter = true;
-		console.log("Register");
-		console.log($scope.newUsername);
-		console.log($scope.newPassword);
 		var counter = $scope.loading = 5;
 		var ref = setInterval(function(){
 			$scope.loading = --counter;
@@ -65,7 +59,7 @@ angular
 		shared.username = $scope.username || "subkit";
 		shared.password = $scope.password || "subkit";
 		shared.domain = $scope.domain || "http://localhost:8080";
-nav.go("center");
+		nav.go("center");
 		var subkit = new Subkit({ baseUrl: shared.domain, username: shared.username, password: shared.password });
 		subkit.login(function(err, data){
 			if(err) { $scope.error = err; $scope.$apply(); return; }
@@ -674,8 +668,7 @@ nav.go("center");
     require: "ngModel",
     link: function(scope, elm, attrs, ctrl){
       var regex = /^(?!.*(.)\1{3})((?=.*[\d])(?=.*[A-Za-z])|(?=.*[^\w\d\s])(?=.*[A-Za-z])).{8,20}$/;
-	
-      var validator = function(value){
+	      var validator = function(value){
 		ctrl.$setValidity('validPassword', regex.test(value));
         return value;
       };

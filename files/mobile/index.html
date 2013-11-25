@@ -59,7 +59,7 @@
 				</view>
 				<view data-content="registration" class="hidden" back="login" backtext="back" headertext="registration">
 					<div class="row">
-						<button class="flatButton" data-ng-click="register()">Register</button>
+						<button class="flatButton" data-ng-click="register()" ng-disabled="!signup.$valid">Register</button>
 					</div>
 					<div data-ng-show="hasEnter" class="rowtext" style="text-align: center; width: 100%;">
 						<h1 data-ng-bind="loading"></h1>
@@ -75,17 +75,15 @@
 							</div>
 							<div class="rowtext">
 								<span>Password: </span>
-								<input type="password" name="newpassword" data-ng-model="$parent.newPassword" placeholder="enter password" ng-required="true" ng-minlength="10" ng-maxlength="20">
+								<input type="password" name="newpassword" data-ng-model="$parent.newPassword" placeholder="enter password" ng-required="true" ng-minlength="8" ng-maxlength="20" valid-password>
 								<span class="validationerror" ng-show="signup.newpassword.$error.required">Required!</span>
 								<span class="validationerror" ng-show="signup.newpassword.$error.minlength">Too short!</span>
+								<span class="validationerror" ng-show="signup.newpassword.$error.validPassword" title="Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!">Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!</span>
 								<span class="validationerror" ng-show="signup.newpassword.$error.maxlength">Too long!</span>
 							</div>
 							<div style="color:#000">
 								<hr>
-								<span>Validation Debug Output!</span><br><br>
-								<tt>signup.newusername.$error = {{signup.newusername.$error}}</tt><br>
-								<tt>signup.newpassword.$error = {{signup.newpassword.$error}}</tt><br>
-								<tt>{{signup.$valid}}</tt><br>
+								<tt>validation returns {{signup.$valid}}</tt><br>
 							</div>
 						</form>
 					</div>

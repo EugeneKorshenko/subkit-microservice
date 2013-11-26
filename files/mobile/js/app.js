@@ -30,7 +30,7 @@ angular
         apiKey: _apiKey
    };
 }])
-.controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', '5SecondNotificationBar', function ($scope, angularSubkit, Navigation, shared, NotificationBar) {
+.controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', 'NotificationBar', function ($scope, angularSubkit, Navigation, shared, NotificationBar) {
 	$scope.username = "";
 	$scope.password = "";
 	$scope.domain = "";
@@ -42,9 +42,8 @@ angular
 
 		//console.log($scope.newUsername);
 		//console.log($scope.newPassword);
-		
-		
-		NotificationBar.PostMessage('Registering crashed!', 'red');
+			
+		NotificationBar.PostMessage('Registering crashed!', 5000, 'faulty');
 				
 		$scope.hasEnter = true;
 		var counter = $scope.loading = 5;
@@ -695,27 +694,6 @@ angular.module("jv-NotificationBar", [])
     	domElement = element;
     };
     
-})
-.service("5SecondNotificationBar", function(NotificationBar) {
-    this.PostMessage = function(message, cssToApply) {
-        // This is 6000 because the CSS takes 1 second to appear 
-        // then we want it to linger for 5 seconds
-        NotificationBar.PostMessage(message, 6000, cssToApply);
-    };
-})
-.service("20SecondNotificationBar", function(NotificationBar) {
-    this.PostMessage = function(message, cssToApply) {
-        // This is 21000 because the CSS takes 1 second to appear 
-        // then we want it to linger for 20 seconds
-        NotificationBar.PostMessage(message, 21000, cssToApply);
-    };
-})
-.service("1SecondNotificationBar", function(NotificationBar) {
-    this.PostMessage = function(message, cssToApply) {
-        // This is 2000 because the CSS takes 1 second to appear, 
-        // then we want it to linger for 1 seconds
-        NotificationBar.PostMessage(message, 2000, cssToApply);
-    };
 })
 .directive("notificationBar", function(NotificationBar) {
     return {

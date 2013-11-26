@@ -70,8 +70,10 @@ angular
 		});
 	};
 }])
-.controller("AccountCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+.controller("AccountCtrl", ['$scope','$rootScope', 'Navigation', 'shared','NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
 	var nav = new Navigation();
+	
+	// onFirstEntry
 	nav.onChanged(function(name){
 		if(name === "account") _load();
 	});
@@ -87,9 +89,21 @@ angular
 	};
 
 	$scope.save = function(){
+		NotificationBar.PostMessage("Data saved successfully.", 6000, "success");
 		console.log("save account");
-		console.log($scope.username);
-		console.log($scope.passwordValidation);
+		console.log("$scope.username-> "+$scope.username);
+		console.log("$scope.password-> "+$scope.password);
+		console.log("$scope.passwordValidation-> "+$scope.passwordValidation);
+		console.log("$scope.piName-> "+$scope.piName);
+		console.log("$scope.piLastname-> "+$scope.piLastname);
+		console.log("$scope.piAddress-> "+$scope.piAddress);
+		console.log("$scope.piZip-> "+$scope.piZip);
+		console.log("$scope.piCountry-> "+$scope.piCountry);
+		console.log("$scope.biName-> "+$scope.biName);
+		console.log("$scope.biLastname-> "+$scope.biLastname);
+		console.log("$scope.biAddress-> "+$scope.biAddress);
+		console.log("$scope.biZip-> "+$scope.biZip);
+		console.log("$scope.biCountry-> "+$scope.biCountry)
 	};
 }])
 .controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){

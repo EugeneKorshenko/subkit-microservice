@@ -35,7 +35,7 @@
 	</head>
 	<body class="flat">
 		<views style="width: 100%;">
-			
+			<div class="notification-bar"></div>
 			<div data-ng-controller="LoginCtrl">
 				<view data-content="login" next="info" nexttext="info" headertext="subkit">
 					<div class="row">
@@ -80,10 +80,6 @@
 								<span class="validationerror" ng-show="signup.newpassword.$error.minlength">Too short!</span>
 								<span class="validationerror" ng-show="signup.newpassword.$error.validPassword" title="Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!">Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!</span>
 								<span class="validationerror" ng-show="signup.newpassword.$error.maxlength">Too long!</span>
-							</div>
-							<div style="color:#000">
-								<hr>
-								<tt>validation returns {{signup.$valid}}</tt><br>
 							</div>
 						</form>
 					</div>

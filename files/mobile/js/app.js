@@ -30,11 +30,10 @@ angular
         apiKey: _apiKey
    };
 }])
-.controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', 'NotificationBar', function ($scope, angularSubkit, Navigation, shared, NotificationBar) {
+.controller("LoginCtrl",['$scope', 'angularSubkit', 'Navigation', 'shared', 'NotificationBar', function ($scope, angularSubkit, Navigation, shared, notify) {
 	$scope.username = "";
 	$scope.password = "";
 	$scope.domain = "";
-	$scope.error = "";
 	
 	var nav = new Navigation();
 		
@@ -43,7 +42,7 @@ angular
 		//console.log($scope.newUsername);
 		//console.log($scope.newPassword);
 			
-		NotificationBar.PostMessage('Registering crashed!', 5000, 'faulty');
+		notify.PostMessage('Registering crashed!', 5000, 'faulty');
 				
 		$scope.hasEnter = true;
 		var counter = $scope.loading = 5;
@@ -64,13 +63,13 @@ angular
 		nav.go("center");
 		var subkit = new Subkit({ baseUrl: shared.domain, username: shared.username, password: shared.password });
 		subkit.login(function(err, data){
-			if(err) { $scope.error = err; $scope.$apply(); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			shared.apiKey = data.apiKey;
 			nav.go("center");
 		});
 	};
 }])
-.controller("AccountCtrl", ['$scope','$rootScope', 'Navigation', 'shared','NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
+.controller("AccountCtrl", ['$scope','$rootScope', 'Navigation', 'shared','NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	
 	// onFirstEntry
@@ -106,7 +105,7 @@ angular
 		console.log("$scope.biCountry-> "+$scope.biCountry)
 	};
 }])
-.controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
+.controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "statistics") {
@@ -140,7 +139,7 @@ angular
 		}
 	});
 }])
-.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, NotificationBar){
+.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "files") _load();
@@ -149,7 +148,7 @@ angular
 	function _load(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.list("statics", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.files = data;
 			$scope.$apply();
 		});
@@ -158,7 +157,7 @@ angular
 	$scope.preview = function(templateName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.open(templateName, "statics", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.previewOutput = $sce.trustAsHtml(data) || "";
 			$scope.keyData = templateName;
 			$scope.$apply();
@@ -169,7 +168,7 @@ angular
 	$scope.open = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.download(fileName, "statics", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
 			$scope.$apply();
@@ -182,7 +181,7 @@ angular
 		var file = new Blob([$scope.valueData]);
         file.name = $scope.keyData;
         subkit.upload(file, "statics", function(err, data){
-        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         	nav.back("files");
         });
 	};
@@ -204,7 +203,7 @@ angular
 	$scope.remove = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.delete(fileName, "statics", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			_load();
 		});
 	};
@@ -214,13 +213,13 @@ angular
 		var file = new Blob([]);
         file.name = fileName;
         subkit.upload(file, "statics", function(err, data){
-        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         	$scope.fileName = "";
         	_load();
         });
 	};
 }])
-.controller("TasksCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
+.controller("TasksCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "tasks") _load();
@@ -229,7 +228,7 @@ angular
 	function _load(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.list("tasks", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.tasks = data;
 			$scope.$apply();
 		});
@@ -238,7 +237,7 @@ angular
 	$scope.show = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.download(fileName, "tasks", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
 			$scope.$apply();
@@ -251,7 +250,7 @@ angular
 		var file = new Blob([$scope.valueData]);
         file.name = $scope.keyData;
         subkit.upload(file, "tasks", function(err, data){
-        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         });
 	};
 
@@ -272,7 +271,7 @@ angular
 	$scope.remove = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.delete(fileName, "tasks", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			_load();
 		});
 	};
@@ -282,7 +281,7 @@ angular
 		var file = new Blob([]);
         file.name = fileName;
         subkit.upload(file, "tasks", function(err, data){
-        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         	$scope.fileName = "";
         	_load();
         });
@@ -297,7 +296,7 @@ angular
 		});
 	};
 }])
-.controller("TemplatesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, NotificationBar){
+.controller("TemplatesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "templates") _load();
@@ -306,7 +305,7 @@ angular
 	function _load(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.list("templates", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.templates = data;
 			$scope.$apply();
 		});
@@ -315,7 +314,7 @@ angular
 	$scope.show = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.download(fileName, "templates", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
 			$scope.$apply();
@@ -328,7 +327,7 @@ angular
 		var file = new Blob([$scope.valueData]);
         file.name = $scope.keyData;
         subkit.upload(file, "templates", function(err, data){
-        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         });
 	};
 
@@ -359,7 +358,7 @@ angular
 		var file = new Blob([]);
         file.name = fileName;
         subkit.upload(file, "templates", function(err, data){
-        	if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         	$scope.fileName = "";
         	_load();
         });
@@ -368,7 +367,7 @@ angular
 	$scope.preview = function(templateName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.open(templateName, "templates", function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.previewOutput = $sce.trustAsHtml(data) || "";
 			$scope.keyData = templateName;
 			$scope.$apply();
@@ -376,7 +375,7 @@ angular
 		});
 	};
 }])
-.controller("PubSubCtrl",['$scope', '$rootScope', 'angularSubkit', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, angularSubkit, Navigation, shared, NotificationBar) {	
+.controller("PubSubCtrl",['$scope', '$rootScope', 'angularSubkit', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, angularSubkit, Navigation, shared, notify) {	
 	var nav = new Navigation();
 	var subkit = null;
 	var subscription = null;
@@ -391,7 +390,7 @@ angular
 	var _load = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.channels(function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.channels = data.map(function(itm){
 				return itm.channel;
 			});
@@ -427,7 +426,7 @@ angular
 		else subscription.push({value: value || new Date()});
 	};
 }])
-.controller("StorageCtrl", ['$scope','$rootScope', 'angularSubkit', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, angularSubkit, Navigation, shared, NotificationBar) {
+.controller("StorageCtrl", ['$scope','$rootScope', 'angularSubkit', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, angularSubkit, Navigation, shared, notify) {
 	var previous = [];
 	var nav = new Navigation();
 	var obj = [];
@@ -455,7 +454,7 @@ angular
 			});
 		} else {
 			subkit.get(key, function(err, data){
-				if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 
 				segments = {};
 				obj = data;
@@ -522,14 +521,14 @@ angular
 		shared.rawObj = JSON.parse($scope.jsonData);
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.set(shared.rawKey, shared.rawObj, function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			nav.back("storage");
 		});
 	};
 	$scope.saveValue = function(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.set(shared.rawKey, shared.rawObj, function(err, data){
-			if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			nav.back("storage");
 		});
 	};
@@ -554,7 +553,7 @@ angular
 			if(newKey.length === 2){
 				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 				subkit.set(shared.rawKey, {}, function(err, data){
-					if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+					if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				});
 			}
 		}
@@ -592,19 +591,19 @@ angular
 			delete dataSegment[objectPropertyName];
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 			subkit.set(shared.rawKey, shared.rawObj, function(err, data){
-				if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				_load();
 			});
 		} else { //delete item from store or delete complete store
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 			subkit.remove(key, function(err, data){
-				if(err) { $rootScope.error = "network error"; nav.show("notify"); return; }
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				_load();
 			});
 		}
 	};
 }])
-.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
+.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "email") _load();
@@ -619,7 +618,7 @@ angular
 		console.log("save email");
 	};
 }])
-.controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
+.controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "pushnotify") _load();
@@ -634,7 +633,7 @@ angular
 		console.log("save pushnotify");
 	};
 }])
-.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
+.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "email") _load();
@@ -649,7 +648,7 @@ angular
 		console.log("save email");
 	};
 }])
-.controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
+.controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "location") _load();
@@ -664,15 +663,24 @@ angular
 		console.log("save location");
 	};
 }])
-.controller("UsersCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
+.controller("UsersCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
+	var subkit = null;
 	nav.onChanged(function(name){
 		if(name === "users") _load();
 	});
 
 	function _load(){
+		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		console.log("load users");
-		$scope.$apply();
+		subkit.users.list(function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			var users = data.map(function(itm){
+				return itm.key;
+			});
+			$scope.users = users;
+			$scope.$apply();
+		});
 	};
 
 	$scope.save = function(){
@@ -721,7 +729,6 @@ angular.module("jv-NotificationBar", [])
 .service("NotificationBar", function($timeout, $compile, $rootScope) {
     var domElement;
     this.PostMessage = function(message, timeToLinger, cssToApply) {
-		console.log("notification fired!");
         var template = angular.element("<div class=\"notification-message " + (cssToApply || "") +  "\" time=\""+timeToLinger+"\">"+message+"</div>");
         var newScope = $rootScope.$new();
         domElement.append($compile(template)(newScope));

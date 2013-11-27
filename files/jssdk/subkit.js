@@ -285,7 +285,7 @@ var Subkit = function(config){
 		httpRequest.authBasic(self.options.username, self.options.password);
 		httpRequest.post(url, self.options, function(status, result){
 			if(status !== 200){
-				if(callback) callback("auth error");
+				if(callback) callback({message:"authentication failed"});
 			}
 			else {
 				self.options.apiKey = result.json().api.apiKey;
@@ -305,21 +305,19 @@ var Subkit = function(config){
 	self.statistics = function(callback){
 		var url = self.baseUrl + "/statistics/usage";
 		httpRequest.get(url, self.options, function(status, result){
-			if(status !== 200) {
-				if(callback) callback(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
+			if(!callback) return;
+			if(status === 0) return callback({message: "Lost network connection."});
+			if(status !== 200) return callback(result.json());
+			callback(null, result.json());
 		});
 	};
 	self.analytics = function(callback){
 		var url = self.baseUrl + "/statistics/analytics";
 		httpRequest.get(url, self.options, function(status, result){
-			if(status !== 200) {
-				if(callback) callback(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
+			if(!callback) return;
+			if(status === 0) return callback({message: "Lost network connection."});
+			if(status !== 200) return callback(result.json());
+			callback(null, result.json());
 		});
 	};
 
@@ -341,11 +339,10 @@ var Subkit = function(config){
 		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 		var url = self.baseUrl + "/stores/" + key;
 		httpRequest.get(url, self.options, function(status, result){
-			if(status !== 200) {
-				if(callback) callback(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
+			if(!callback) return;
+			if(status === 0) return callback({message: "Lost network connection."});
+			if(status !== 200) return callback(result.json());
+			callback(null, result.json());
 		});
 	};
 	self.remove = function(key, callback){
@@ -402,13 +399,34 @@ var Subkit = function(config){
 	self.list = function(type, callback){
 		var url = self.baseUrl + "/" + type;
 		httpRequest.get(url, self.options, function(status, result){
-			if(status !== 200) {
-				if(callback) callback(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
+			if(!callback) return;
+			if(status === 0) return callback({message: "Lost network connection."});
+			if(status !== 200) return callback(result.json());
+			callback(null, result.json());
 		});
 	};
+
+	//users
+	self.users = {
+		list: function(callback){
+			var url = self.baseUrl + "/users";
+			httpRequest.get(url, self.options, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status !== 200) return callback(result.json());
+				callback(null, result.json());
+			});
+		},
+		groups: function(){
+
+		},
+		create: function(){
+
+		},
+		validate: function(){
+
+		}
+	}
 
 	//task
 	self.run = function(taskName, callback){
@@ -438,11 +456,10 @@ var Subkit = function(config){
 	self.open = function(name, type, callback){
 		var url = self.baseUrl + "/" + type + "/" + name;
 		httpRequest.get(url, self.options, function(status, result){
-			if(status !== 200) {
-				if(callback) callback(result.json());
-			}else{
-				if(callback) callback(null, result.text());
-			}
+			if(!callback) return;
+			if(status === 0) return callback({message: "Lost network connection."});
+			if(status !== 200) return callback(result.json());
+			callback(null, result.json());
 		});
 	};
 
@@ -450,11 +467,10 @@ var Subkit = function(config){
 	self.channels = function(callback){
 		var url = self.baseUrl + "/channels";
 		httpRequest.get(url, self.options, function(status, result){
-			if(status !== 200) {
-				if(callback) callback(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
+			if(!callback) return;
+			if(status === 0) return callback({message: "Lost network connection."});
+			if(status !== 200) return callback(result.json());
+			callback(null, result.json());
 		});
 	};
 	self.push = function(channel, value, callback){
@@ -462,11 +478,10 @@ var Subkit = function(config){
 		var msg = JSON.parse(JSON.stringify(self.options));
 		msg["data"] = value;
 		httpRequest.post(url, msg, function(status, result){
-			if(status!==201 && status!==200) {
-				if(callback) changeStatus(result.json);
-			}else{
-				if(callback) callback(null, result.json());
-			}
+			if(!callback) return;
+			if(status === 0) return callback({message: "Lost network connection."});
+			if(status !== 200) return callback(result.json());
+			callback(null, result.json());
 		});
 	};
 	self.on = function(channel, callback) {
@@ -493,7 +508,7 @@ var Subkit = function(config){
 		var subscribeUrl = self.baseUrl + "/subscribe/" + channel + "/" + clientId;
 		httpRequest.get(subscribeUrl, self.options, function(status, result){
 			if(status !== 200) {
-				callback({error:"subscription error - retry"});
+				callback({message: "subscription error - retry"});
 				intervalRef = setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 250);
 			}else{
 				result.json().forEach(function(item){

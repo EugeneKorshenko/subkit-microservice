@@ -321,7 +321,7 @@
 	margin: 5px;
 }
 
-.notification-bar { position:fixed; bottom:2em; right:2em; max-width:8em; z-index: 9999;}
+.notification-bar { position:fixed; bottom:2em; right:2em; max-width:10em; z-index: 9999;}
 .notification-message { 
     min-height: 1.5em; 
     margin-top:3px; 
@@ -387,17 +387,24 @@ div[name='account']{
 			}
 			div.provContent{
 				color: #227598;
-				padding: 5px;
+				padding: 25px;
 				max-height: 290px;
 				min-height: 150px;
-				padding-top: 10px;
 				ul{
-					list-style-type:square;
+					
+					list-style: initial !important;
+					list-style-type:square !important;
+					text-align: left;					
 					li{
+						display: list-item;
 						font-size: 12px;
-						line-height: 12px;
+						line-height: 20px;
 						height: auto !important;
 						padding: 2px !important;
+						vertical-align: middle;
+						strong{
+							font-weight: bold;
+						}
 					}
 				}
 			}

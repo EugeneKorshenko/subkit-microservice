@@ -698,8 +698,12 @@ angular
     require: "ngModel",
     link: function(scope, elm, attrs, ctrl){
 	    var validator = function(value){
+			if (value == angular.undefined) {
+				ctrl.$setValidity('validJson', false);
+				return value;
+			}
 			try{
-				a=JSON.parse(value);
+				var a=JSON.parse(value);
 				ctrl.$setValidity('validJson',true);
 			}catch(e){
 				ctrl.$setValidity('validJson', false);

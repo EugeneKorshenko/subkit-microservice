@@ -38,17 +38,22 @@
 			<div class="notification-bar"></div>
 			<div data-ng-controller="LoginCtrl">
 				<view data-content="login" next="info" nexttext="info" headertext="subkit">
+					<form name="loginf">
+						<div class="row">
+							<input type="text" class="input" name="ldomain" placeholder="domain" data-ng-model="domain" required>
+							<span class="validationerror" ng-show="loginf.ldomain.$error.required">Required!</span>
+						</div>
+						<div class="row">
+							<input type="text" class="input" name="lusername" placeholder="username" data-ng-model="username" required>
+							<span class="validationerror" ng-show="loginf.lusername.$error.required">Required!</span>
+						</div>
+						<div class="row">
+							<input type="password" class="input" name="lpassword" placeholder="password" data-ng-model="password" required>
+							<span class="validationerror" ng-show="loginf.lpassword.$error.required">Required!</span>
+						</div>
+					</form>
 					<div class="row">
-						<input type="text" class="input" placeholder="domain" data-ng-model="domain">
-					</div>
-					<div class="row">
-						<input type="text" class="input" placeholder="username" data-ng-model="username">
-					</div>
-					<div class="row">
-						<input type="password" class="input" placeholder="password" data-ng-model="password">
-					</div>
-					<div class="row">
-						<button class="flatButton" data-ng-click="login()">Login</button>
+						<button class="flatButton" data-ng-click="login()" ng-disabled="!loginf.$valid">Login</button>
 					</div>
 					<div class="row center">
 						<span class="error" data-ng-bind="error"></span>
@@ -59,27 +64,27 @@
 				</view>
 				<view data-content="registration" class="hidden" back="login" backtext="back" headertext="registration">
 					<div class="row">
-						<button class="flatButton" data-ng-click="register()" ng-disabled="!signup.$valid">Register</button>
+						<button class="flatButton" data-ng-click="register()" ng-disabled="!signupf.$valid">Register</button>
 					</div>
 					<div data-ng-show="hasEnter" class="rowtext" style="text-align: center; width: 100%;">
 						<h1 data-ng-bind="loading"></h1>
 					</div>
 					<div data-ng-hide="hasEnter">
-						<form name="signup">
+						<form name="signupf">
 							<div class="rowtext">
 								<span>Username: </span>
 								<input type="text" name="newusername" data-ng-model="$parent.newUsername" placeholder="enter username" ng-required="true" ng-minlength="5" ng-maxlength="20">
-								<span class="validationerror" ng-show="signup.newusername.$error.required">Required!</span>
-								<span class="validationerror" ng-show="signup.newusername.$error.minlength">Too short!</span>
-								<span class="validationerror" ng-show="signup.newusername.$error.maxlength">Too long!</span>
+								<span class="validationerror" ng-show="signupf.newusername.$error.required">Required!</span>
+								<span class="validationerror" ng-show="signupf.newusername.$error.minlength">Too short!</span>
+								<span class="validationerror" ng-show="signupf.newusername.$error.maxlength">Too long!</span>
 							</div>
 							<div class="rowtext">
 								<span>Password: </span>
 								<input type="password" name="newpassword" data-ng-model="$parent.newPassword" placeholder="enter password" ng-required="true" ng-minlength="8" ng-maxlength="20" valid-password>
-								<span class="validationerror" ng-show="signup.newpassword.$error.required">Required!</span>
-								<span class="validationerror" ng-show="signup.newpassword.$error.minlength">Too short!</span>
-								<span class="validationerror" ng-show="signup.newpassword.$error.validPassword" title="Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!">Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!</span>
-								<span class="validationerror" ng-show="signup.newpassword.$error.maxlength">Too long!</span>
+								<span class="validationerror" ng-show="signupf.newpassword.$error.required">Required!</span>
+								<span class="validationerror" ng-show="signupf.newpassword.$error.minlength">Too short!</span>
+								<span class="validationerror" ng-show="signupf.newpassword.$error.validPassword" title="Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!">Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!</span>
+								<span class="validationerror" ng-show="signupf.newpassword.$error.maxlength">Too long!</span>
 							</div>
 						</form>
 					</div>
@@ -124,8 +129,12 @@
 						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="tileButton mediumTile">json</button>
 					</div>
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName">
-						<button class="rotateButton" data-ng-click="create(itemName)">+</button>
+						<form name="storefnewstore">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName" name="newstore" required ng-minlength="3">
+							<span class="validationerror" ng-show="storefnewstore.newstore.$error.required">Required!</span>
+							<span class="validationerror" ng-show="storefnewstore.newstore.$error.minlength">At least three characters!</span>
+							<button class="rotateButton" data-ng-click="create(itemName)" ng-disabled="!storefnewstore.$valid">+</button>
+						</form>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="store in stores">
@@ -145,13 +154,20 @@
 						<span>Property: </span>
 						<span data-ng-bind="keyData"></span>
 					</div>
-					<textarea data-ng-model="valueData[keyData]" class="codeeditor" rows="20"></textarea>
+					<form name="storefveditor">
+						<textarea data-ng-model="valueData[keyData]" class="codeeditor" rows="20" name="storeveditor"></textarea>
+						<!--<span class="validationerror" ng-show="storefveditor.storeveditor.$error.required">Required!</span>
+						<span class="validationerror" ng-show="storefveditor.storeveditor.$error.minlength">At least one character!</span>-->
+					</form>
 				</view>
 				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="store">
 					<div class="row">
 						<button class="flatButton" data-ng-click="saveJson()">Save</button>
 					</div>
-					<textarea data-ng-model="$parent.jsonData" class="codeeditor" rows="20"></textarea>
+					<form name="storefjeditor">
+						<textarea data-ng-model="$parent.jsonData" class="codeeditor" rows="20" name="storejeditor" required valid-json></textarea>
+						<span class="validationerror" ng-show="storefjeditor.storejeditor.$error.validJson" title="The JSON string you provided was composed containing errors. Please check for errors in your data structure!">The JSON string you provided was composed containing errors. Please check for errors in your data structure!</span>
+					</form>
 				</view>
 			</div>
 

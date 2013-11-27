@@ -667,24 +667,50 @@ angular
 	var nav = new Navigation();
 	var subkit = null;
 	nav.onChanged(function(name){
-		if(name === "users") _load();
+		if(name === "users") _loadUsers();
 	});
 
-	function _load(){
+	var _loadUsers = $scope.loadUsers = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		console.log("load users");
-		subkit.users.list(function(err, data){
+		subkit.users.users(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-			var users = data.map(function(itm){
-				return itm.key;
-			});
-			$scope.users = users;
+			$scope.items = data;
 			$scope.$apply();
 		});
 	};
 
-	$scope.save = function(){
-		console.log("save users");
+	var _loadGroups = $scope.loadGroups = function(){
+		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+		subkit.users.groups(function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			$scope.items = data;
+			$scope.$apply();
+		});
+	};
+
+	var _loadUsersByGroup = $scope.load
+
+	$scope.create = function(userId){
+		console.log("create user: " + userId);
+		subkit.users.create(userId, {}, function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			_load();
+		});
+	};
+
+	$scope.open = function(user){
+		console.log(user);
+		$scope.user = user.value;
+		console.log("open user: " + user);
+		nav.go("usereditor");
+	};
+
+	$scope.remove = function(userId){
+		console.log("remove user: " + userId);
+	};
+
+	$scope.save = function(userId){
+		console.log($scope.user);
 	};
 }])
 .directive('validPassword',function(){

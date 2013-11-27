@@ -348,7 +348,32 @@
 .notification-message.success { background-color:green}
 .notification-message > a {float:right; color: inherit; padding: 5px; text-decoration: none !important; font-weight: bold;}
 .notification-message > div { font-size:smaller; }
-.notification-message:hover { border: solid 1px white; -moz-box-shadow: 0 0 5px #227598; -webkit-box-shadow: 0 0 5px #227598; box-shadow: 0 0 5px #227598;}
+.notification-message:hover { 
+	border: solid 1px white; -moz-box-shadow: 0 0 5px #227598;
+	-webkit-box-shadow: 0 0 5px #227598; box-shadow: 0 0 5px #227598;
+}
+
+
+div[data-content='usereditor']{
+	h3.subHead{
+		color: #000;
+		text-align: center;
+	}
+	div.rowtext{
+		span:first-child{
+			width: 200px;
+			display: inline-block;
+		}
+		input[type='text'],[type='password']{
+			background-color: #eee;
+			width: 100% !important;
+			padding: 5px;
+		}
+		hr{
+			padding-bottom: 5px;
+		}
+	}
+}
 
 div[name='account']{
 	h3.subHead{

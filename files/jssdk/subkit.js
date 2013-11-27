@@ -408,20 +408,22 @@ var Subkit = function(config){
 
 	//users
 	self.users = {
-		list: function(callback){
-			var url = self.baseUrl + "/users";
-			httpRequest.get(url, self.options, function(status, result){
+		users: function(callback){
+			_get("/users", callback);
+		},
+		groups: function(callback){
+			_get("/users/groups", callback);
+		},
+		create: function(userId, value, callback){
+			var url = self.baseUrl + "/users/" + userId;
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg["data"] = value;
+			httpRequest.post(url, msg, function(status, result){
 				if(!callback) return;
 				if(status === 0) return callback({message: "Lost network connection."});
-				if(status !== 200) return callback(result.json());
+				if(status !== 200 && status!==201) return callback(result.json());
 				callback(null, result.json());
 			});
-		},
-		groups: function(){
-
-		},
-		create: function(){
-
 		},
 		validate: function(){
 
@@ -503,6 +505,15 @@ var Subkit = function(config){
 		if(pollingRef) clearTimeout(pollingRef);
 	};
 
+	var _get = function(path, callback){
+		var url = self.baseUrl + path;
+		httpRequest.get(url, self.options, function(status, result){
+			if(!callback) return;
+			if(status === 0) return callback({message: "Lost network connection."});
+			if(status !== 200) return callback(result.json());
+			callback(null, result.json());
+		});		
+	};
 	var _poll = function(channel, clientId, callback) {
 		var intervalRef = null;
 		var subscribeUrl = self.baseUrl + "/subscribe/" + channel + "/" + clientId;

@@ -504,17 +504,38 @@
 			<div data-ng-controller="UsersCtrl">
 				<view data-content="users" class="hidden" headertext="users" backtext="back" back="center">
 					<div class="menu">
+						<button class="tileButton largeTile" data-ng-click="loadUsers()">Users</button>
+						<button class="tileButton largeTile" data-ng-click="loadGroups()">Groups</button>
 					</div>
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
 						<button class="rotateButton" data-ng-click="create(userId)">+</button>
 					</div>
 					<ul class="arrowlist">
-						<li data-ng-repeat="user in users">
-							<button class="item" data-ng-bind="user" data-ng-click="open(user)"></button>
-							<button class="rotateButton" data-ng-click="remove(user)">&ndash;</button>
+						<li data-ng-repeat="item in items">
+							<button class="item" data-ng-bind="item.key" data-ng-click="open(item)"></button>
+							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
 						</li>
 					</ul>
+				</view>
+				<view data-content="usereditor" class="hidden" headertext="edit user" backtext="users">
+					<div class="row">
+						<button class="flatButton" data-ng-click="save()">save</button>
+					</div>
+					<div class="rowtext">
+						<span>Username:</span>
+						<input type="text" data-ng-model="user.username" placeholder="username">
+					</div>
+					<div class="rowtext">
+						<span>Password:</span>
+						<input type="password" data-ng-model="user.password" placeholder="password">
+					</div>
+					<div class="rowtext">
+						<span>Groups:</span>
+						<div data-ng-repeat="group in user.groups">
+							<input type="checkbox" data-ng-model="group" ng-true-value="{{group}}" ng-false-value="">
+						</div>
+					</div>
 				</view>
 			</div>
 

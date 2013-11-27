@@ -106,7 +106,7 @@ angular
 		console.log("$scope.biCountry-> "+$scope.biCountry)
 	};
 }])
-.controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+.controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "statistics") {
@@ -140,7 +140,7 @@ angular
 		}
 	});
 }])
-.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', function ($scope, $rootScope, Navigation, shared, $sce){
+.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, NotificationBar){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "files") _load();
@@ -220,7 +220,7 @@ angular
         });
 	};
 }])
-.controller("TasksCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+.controller("TasksCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "tasks") _load();
@@ -297,7 +297,7 @@ angular
 		});
 	};
 }])
-.controller("TemplatesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', function ($scope, $rootScope, Navigation, shared, $sce){
+.controller("TemplatesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, NotificationBar){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "templates") _load();
@@ -376,7 +376,7 @@ angular
 		});
 	};
 }])
-.controller("PubSubCtrl",['$scope', '$rootScope', 'angularSubkit', 'Navigation', 'shared', function ($scope, $rootScope, angularSubkit, Navigation, shared) {	
+.controller("PubSubCtrl",['$scope', '$rootScope', 'angularSubkit', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, angularSubkit, Navigation, shared, NotificationBar) {	
 	var nav = new Navigation();
 	var subkit = null;
 	var subscription = null;
@@ -427,7 +427,7 @@ angular
 		else subscription.push({value: value || new Date()});
 	};
 }])
-.controller("StorageCtrl", ['$scope','$rootScope', 'angularSubkit', 'Navigation', 'shared', function ($scope, $rootScope, angularSubkit, Navigation, shared) {
+.controller("StorageCtrl", ['$scope','$rootScope', 'angularSubkit', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, angularSubkit, Navigation, shared, NotificationBar) {
 	var previous = [];
 	var nav = new Navigation();
 	var obj = [];
@@ -604,7 +604,7 @@ angular
 		}
 	};
 }])
-.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "email") _load();
@@ -619,7 +619,7 @@ angular
 		console.log("save email");
 	};
 }])
-.controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+.controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "pushnotify") _load();
@@ -634,7 +634,7 @@ angular
 		console.log("save pushnotify");
 	};
 }])
-.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "email") _load();
@@ -649,7 +649,7 @@ angular
 		console.log("save email");
 	};
 }])
-.controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+.controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "location") _load();
@@ -664,7 +664,7 @@ angular
 		console.log("save location");
 	};
 }])
-.controller("UsersCtrl", ['$scope','$rootScope', 'Navigation', 'shared', function ($scope, $rootScope, Navigation, shared){
+.controller("UsersCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, NotificationBar){
 	var nav = new Navigation();
 	nav.onChanged(function(name){
 		if(name === "users") _load();
@@ -683,10 +683,29 @@ angular
   return{
     require: "ngModel",
     link: function(scope, elm, attrs, ctrl){
-      var regex = /^(?!.*(.)\1{3})((?=.*[\d])(?=.*[A-Za-z])|(?=.*[^\w\d\s])(?=.*[A-Za-z])).{8,20}$/;
-	      var validator = function(value){
-		ctrl.$setValidity('validPassword', regex.test(value));
-        return value;
+		var regex = /^(?!.*(.)\1{3})((?=.*[\d])(?=.*[A-Za-z])|(?=.*[^\w\d\s])(?=.*[A-Za-z])).{8,20}$/;
+		var validator = function(value){
+			ctrl.$setValidity('validPassword', regex.test(value));
+		return value;
+      };
+	  ctrl.$parsers.unshift(validator);
+	  ctrl.$formatters.unshift(validator);
+    }
+  };
+})
+.directive('validJson', function(){
+  return{
+    require: "ngModel",
+    link: function(scope, elm, attrs, ctrl){
+	    var validator = function(value){
+			try{
+				a=JSON.parse(value);
+				ctrl.$setValidity('validJson',true);
+			}catch(e){
+				ctrl.$setValidity('validJson', false);
+			} finally {
+				return value;
+			}
       };
 	  ctrl.$parsers.unshift(validator);
 	  ctrl.$formatters.unshift(validator);

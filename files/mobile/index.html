@@ -161,12 +161,12 @@
 					</form>
 				</view>
 				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="store">
-					<div class="row">
-						<button class="flatButton" data-ng-click="saveJson()">Save</button>
-					</div>
 					<form name="storefjeditor">
 						<textarea data-ng-model="$parent.jsonData" class="codeeditor" rows="20" name="storejeditor" required valid-json></textarea>
 						<span class="validationerror" ng-show="storefjeditor.storejeditor.$error.validJson" title="The JSON string you provided was composed containing errors. Please check for errors in your data structure!">The JSON string you provided was composed containing errors. Please check for errors in your data structure!</span>
+						<div class="row">
+							<button class="flatButton" data-ng-click="saveJson()" ng-disabled="!storefjeditor.$valid">Save</button>
+						</div>
 					</form>
 				</view>
 			</div>

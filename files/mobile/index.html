@@ -557,6 +557,16 @@
 
 			<div data-ng-controller="EMailCtrl">
 				<view data-content="email" class="hidden" headertext="email" backtext="back" back="center" next="emailsettings" nexttext="settings">
+					<div class="row">
+						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
+						<button class="rotateButton" data-ng-click="create(userId)">+</button>
+					</div>
+					<ul class="arrowlist">
+						<li data-ng-repeat="item in items">
+							<button class="item" data-ng-bind="item.key" data-ng-click="open(item)"></button>
+							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
+						</li>
+					</ul>
 				</view>
 				<view data-content="emailsettings" class="hidden" headertext="settings" backtext="back" back="email">
 				</view>

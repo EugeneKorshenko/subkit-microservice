@@ -71,14 +71,11 @@ angular
 }])
 .controller("AccountCtrl", ['$scope','$rootScope', 'Navigation', 'shared','NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
-	
-	// onFirstEntry
 	nav.onChanged(function(name){
 		if(name === "account") _load();
 	});
 
 	function _load(){
-		console.log("load Account");
 		$scope.domain = shared.domain;
 		$scope.username = shared.username;
 		$scope.password = shared.password;
@@ -88,7 +85,7 @@ angular
 	};
 
 	$scope.save = function(){
-		NotificationBar.PostMessage("Data saved successfully.", 6000, "success");
+		notify.PostMessage("Data saved successfully.", 6000, "success");
 		console.log("save account");
 		console.log("$scope.username-> "+$scope.username);
 		console.log("$scope.password-> "+$scope.password);

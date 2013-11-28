@@ -571,6 +571,15 @@
 								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.validPassword" title="Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!">Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!</span>
 								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.maxlength">Too long!</span>					
 						</div>
+						<div class="rowtext">
+							<span>EMail:</span>
+							<input type="text" data-ng-model="identity.email.address" placeholder="email" name="idemail" required ng-minlength="7" ng-maxlength="40" maxlength="40">
+							<span class="validationerror" ng-show="identiyfacc.idemail.$error.required">Required!</span>
+							<span class="validationerror" ng-show="identiyfacc.idemail.$error.minlength">At least two characters!</span>
+							<span class="validationerror" ng-show="identiyfacc.idemail.$error.maxlength">Too long!</span>
+							<span>Verified:</span>
+							<input type="checkbox" data-ng-model="identity.email.verified">
+						</div>
 						<div class="row">
 							<input type="text" class="input" placeholder="new" data-ng-model="$parent.newGroupName" name="addgroup" required ng-minlength="2">
 							<span class="validationerror" ng-show="identiyfacc.addgroup.$error.required">Required!</span>

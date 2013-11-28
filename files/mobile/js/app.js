@@ -675,7 +675,16 @@ angular
 		subkit.users.users(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
-			$scope.$apply();
+			subkit.users.groups(function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.groups = data.map(function(itm){
+					return {
+						key: itm,
+						value: false
+					}
+				});
+				$scope.$apply();
+			});
 		});
 	};
 
@@ -683,12 +692,14 @@ angular
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.users.groups(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-			$scope.items = data;
+			$scope.items = data.map(function(itm){
+				return {
+					key: itm
+				}
+			});
 			$scope.$apply();
 		});
 	};
-
-	var _loadUsersByGroup = $scope.load
 
 	$scope.create = function(userId){
 		console.log("create user: " + userId);
@@ -699,9 +710,22 @@ angular
 	};
 
 	$scope.open = function(user){
-		console.log(user);
 		$scope.user = user.value;
-		console.log("open user: " + user);
+
+		$scope.groups.forEach(function(itm){
+			var index = $scope.user.groups.indexOf(itm.key);
+			if(index === -1){
+				$scope.user.groups.push({
+					key: itm.key,
+					value: itm.value
+				});
+			}else{
+				$scope.user.groups[index] = {
+					key: itm.key,
+					value: true
+				}
+			}
+		});
 		nav.go("usereditor");
 	};
 
@@ -710,7 +734,16 @@ angular
 	};
 
 	$scope.save = function(userId){
-		console.log($scope.user);
+		$scope.user.groups = $scope.user.groups.filter(function(itm){
+			return itm.value;
+		})
+		.map(function(itm){
+			return itm.key;
+		});
+		subkit.users.save($scope.user.userid, $scope.user, function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			nav.back("users");
+		});
 	};
 }])
 .directive('validPassword',function(){

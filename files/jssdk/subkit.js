@@ -421,9 +421,20 @@ var Subkit = function(config){
 			httpRequest.post(url, msg, function(status, result){
 				if(!callback) return;
 				if(status === 0) return callback({message: "Lost network connection."});
-				if(status !== 200 && status!==201) return callback(result.json());
+				if(status!==201) return callback(result.json());
 				callback(null, result.json());
 			});
+		},
+		save: function(userId, value, callback){
+			var url = self.baseUrl + "/users/" + userId;
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg["data"] = value;
+			httpRequest.put(url, msg, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status!==202) return callback(result.json());
+				callback(null, result.json());
+			});			
 		},
 		validate: function(){
 

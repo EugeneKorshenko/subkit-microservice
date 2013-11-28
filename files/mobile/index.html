@@ -546,10 +546,11 @@
 						<span>Password:</span>
 						<input type="password" data-ng-model="user.password" placeholder="password">
 					</div>
-					<div class="rowtext">
+					<div class="rowtext" style="height: 100%;">
 						<span>Groups:</span>
-						<div data-ng-repeat="group in user.groups">
-							<input type="checkbox" data-ng-model="group" ng-true-value="{{group}}" ng-false-value="">
+						<div data-ng-repeat="group in user.groups" class="rowtext">
+							<span data-ng-bind="group.key"></span>
+							<input type="checkbox" data-ng-model="group.value">
 						</div>
 					</div>
 				</view>
@@ -573,12 +574,6 @@
 				<view data-content="location" class="hidden" headertext="location" backtext="back" back="center">
 				</view>
 			</div>
-
-			<view data-content="notify" class="hidden" headertext="notification" backtext="close" back="center">
-				<h1 data-ng-bind="error" style="color:black;">Message</h1>
-				<div style="height:400px; width:400px; border:1px solid black;background-color:white;">
-				</div>
-			</view>
 		</views>
 	</body>
 </html>

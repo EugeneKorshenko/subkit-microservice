@@ -519,10 +519,6 @@
 
 			<div data-ng-controller="UsersCtrl">
 				<view data-content="users" class="hidden" headertext="users" backtext="back" back="center">
-					<div class="menu">
-						<button class="tileButton largeTile" data-ng-click="loadUsers()">Users</button>
-						<button class="tileButton largeTile" data-ng-click="loadGroups()">Groups</button>
-					</div>
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
 						<button class="rotateButton" data-ng-click="create(userId)">+</button>

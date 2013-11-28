@@ -674,7 +674,7 @@ angular
 		subkit.identities.users(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
-			subkit.identities.groups(function(err, data){
+			subkit.identities.groups(null, function(err, data){
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				$scope.groups = data;
 				$scope.$apply();
@@ -684,7 +684,7 @@ angular
 
 	var _loadGroups = $scope.loadGroups = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.identities.groups(function(err, data){
+		subkit.identities.groups(null, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
 			$scope.$apply();
@@ -752,7 +752,7 @@ angular
 		});
 	};
 }])
-.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
+.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
 	var nav = new Navigation();
 	var subkit = null;
 	nav.onChanged(function(name){
@@ -760,11 +760,48 @@ angular
 	});
 	var _loadGroups = $scope.loadGroups = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.identities.groups(function(err, data){
+		subkit.identities.groups(null, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
 			$scope.$apply();
 		});
+	};
+
+	$scope.preview = function(){
+		subkit.open($scope.template, "templates", function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			$scope.previewOutput = $sce.trustAsHtml(data) || "";
+			$scope.$apply();
+			nav.go("emailpreview");
+		});
+	}
+
+	$scope.open = function(emailgroup){
+		$scope.emailgroup = emailgroup;
+		subkit.identities.groups($scope.emailgroup.key, function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			$scope.items = data;
+
+			subkit.list("templates", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.templates = data;
+				$scope.$apply();
+			});
+		})
+		nav.go("emailgroupeditor");
+	};
+
+	$scope.use = function(){
+		try{
+			$scope.templateData = JSON.parse($scope.templateJson);
+			nav.back("emailgroupeditor");
+		}catch(error){}
+	};
+
+	$scope.send = function(){
+		console.log($scope.template);
+		console.log($scope.templateData);
+		console.log($scope.emailgroup.key);
 	};
 }])
 .directive('validPassword',function(){
@@ -816,8 +853,7 @@ angular.module("jv-NotificationBar", [])
     
     this.RegisterDOM = function(element) {
     	domElement = element;
-    };
-    
+    };   
 })
 .directive("notificationBar", function(NotificationBar) {
     return {

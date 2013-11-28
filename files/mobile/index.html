@@ -148,7 +148,7 @@
 				</view>
 				<view data-content="valueeditor" class="hidden" headertext="value" backtext="store">
 					<div class="row">
-						<button class="flatButton" data-ng-click="saveValue()">Save</button>
+						<button class="flatButton" data-ng-click="saveValue()">save</button>
 					</div>
 					<div class="rowtext">
 						<span>Property: </span>
@@ -165,7 +165,7 @@
 						<textarea data-ng-model="$parent.jsonData" class="codeeditor" rows="20" name="storejeditor" required valid-json></textarea>
 						<span class="validationerror" ng-show="storefjeditor.storejeditor.$error.validJson" title="The JSON string you provided was composed containing errors. Please check for errors in your data structure!">The JSON string you provided was composed containing errors. Please check for errors in your data structure!</span>
 						<div class="row">
-							<button class="flatButton" data-ng-click="saveJson()" ng-disabled="!storefjeditor.$valid">Save</button>
+							<button class="flatButton" data-ng-click="saveJson()" ng-disabled="!storefjeditor.$valid">save</button>
 						</div>
 					</form>
 				</view>
@@ -322,7 +322,7 @@
 				</view>
 				<view data-content="taskeditor" class="hidden" headertext="editor" backtext="tasks">
 					<div class="row">
-						<button class="flatButton" data-ng-click="save()">Save</button>
+						<button class="flatButton" data-ng-click="save()">save</button>
 					</div>
 					<div class="rowtext">
 						<span>Task: </span>
@@ -512,7 +512,7 @@
 					<div class="clear"></div>
 					<hr>
 					<div class="row">
-						<button class="flatButton" data-ng-click="save()">Save</button>
+						<button class="flatButton" data-ng-click="save()">save</button>
 					</div>
 				</div>
 			</view>
@@ -567,6 +567,34 @@
 							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
 						</li>
 					</ul>
+				</view>
+				<view data-content="emailgroupeditor" class="hidden" headertext="edit email group" backtext="email">
+					<div class="rowtext">
+						<select data-ng-model="$parent.template" data-ng-options="t for t in templates">
+							<option value="">-- choose template --</option>
+						</select>
+						<go data-view="templatedata" class="tileButton">json</go>
+						<button data-ng-click="preview()" class="tileButton" data-ng-show="$parent.template">preview</button>
+					</div>
+					<ul class="arrowlist">
+						<li data-ng-repeat="item in items">
+							<button class="item" data-ng-bind="item.key" data-ng-click="open(item)"></button>
+							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
+						</li>
+					</ul>
+				</view>
+				<view data-content="templatedata" class="hidden" headertext="data" backtext="back" back="emailgroupeditor">
+					<form name="storefjeditor">
+						<div class="row">
+							<button class="flatButton" data-ng-click="use()" ng-disabled="!storefjeditor.$valid">use</button>
+						</div>
+						<textarea data-ng-model="$parent.templateJson" class="codeeditor" rows="20" name="storejeditor" required valid-json></textarea>
+						<span class="validationerror" ng-show="storefjeditor.storejeditor.$error.validJson" title="The JSON string you provided was composed containing errors. Please check for errors in your data structure!">The JSON string you provided was composed containing errors. Please check for errors in your data structure!</span>
+					</form>
+				</view>
+				<view data-content="emailpreview" class="hidden" headertext="preview" backtext="back" back="emailgroupeditor">
+					<button class="flatButton" data-ng-click="send()">send</button>
+					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
 				</view>
 				<view data-content="emailsettings" class="hidden" headertext="settings" backtext="back" back="email">
 				</view>

@@ -609,7 +609,7 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="emailgroupeditor" class="hidden" headertext="edit email group" backtext="email">
+				<view data-content="emailgroupeditor" class="hidden" headertext="editor" backtext="email">
 					<div class="rowtext">
 						<select data-ng-model="$parent.template" data-ng-options="t for t in templates">
 							<option value="">-- choose template --</option>
@@ -619,12 +619,12 @@
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="item in items">
-							<button class="item" data-ng-bind="item.key" data-ng-click="open(item)"></button>
+							<span class="item" data-ng-bind="item.key"></span>
 							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
 						</li>
 					</ul>
 				</view>
-				<view data-content="templatedata" class="hidden" headertext="data" backtext="back" back="emailgroupeditor">
+				<view data-content="templatedata" class="hidden" headertext="editor" backtext="back" back="emailgroupeditor">
 					<form name="storefjeditor">
 						<div class="row">
 							<button class="flatButton" data-ng-click="use()" ng-disabled="!storefjeditor.$valid">use</button>
@@ -643,6 +643,31 @@
 
 			<div data-ng-controller="PushNotifyCtrl">
 				<view data-content="pushnotify" class="hidden" headertext="push notify" backtext="back" back="center" next="pushnotifysettings" nexttext="settings">
+					<div class="row">
+						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
+						<button class="rotateButton" data-ng-click="create(userId)">+</button>
+					</div>
+					<ul class="arrowlist">
+						<li data-ng-repeat="item in items">
+							<button class="item" data-ng-bind="item.key" data-ng-click="open(item)"></button>
+							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
+						</li>
+					</ul>
+				</view>
+				<view data-content="pushnotifygroupeditor" class="hidden" headertext="editor" backtext="back" back="pushnotify">
+					<div class="rowtext">
+						<form name="pushnotifyfnew">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.pushmessage" name="pushmessage" required>
+							<span class="validationerror" ng-show="tasksfnew.pushmessage.$error.required">Required!</span>
+							<button class="tileButton" data-ng-click="send()" ng-disabled="!pushnotifyfnew.$valid">send</button>
+						</form>
+					</div>
+					<ul class="arrowlist">
+						<li data-ng-repeat="item in items">
+							<span class="item" data-ng-bind="item.key"></span>
+							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
+						</li>
+					</ul>
 				</view>
 				<view data-content="pushnotifysettings" class="hidden" headertext="settings" backtext="back" back="pushnotify">
 				</view>

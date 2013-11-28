@@ -602,66 +602,6 @@ angular
 		}
 	};
 }])
-.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
-	var nav = new Navigation();
-	nav.onChanged(function(name){
-		if(name === "email") _load();
-	});
-
-	function _load(){
-		console.log("load email");
-		$scope.$apply();
-	};
-
-	$scope.save = function(){
-		console.log("save email");
-	};
-}])
-.controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
-	var nav = new Navigation();
-	nav.onChanged(function(name){
-		if(name === "pushnotify") _load();
-	});
-
-	function _load(){
-		console.log("load pushnotify");
-		$scope.$apply();
-	};
-
-	$scope.save = function(){
-		console.log("save pushnotify");
-	};
-}])
-.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
-	var nav = new Navigation();
-	nav.onChanged(function(name){
-		if(name === "email") _load();
-	});
-
-	function _load(){
-		console.log("load email");
-		$scope.$apply();
-	};
-
-	$scope.save = function(){
-		console.log("save email");
-	};
-}])
-.controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
-	var nav = new Navigation();
-	nav.onChanged(function(name){
-		if(name === "location") _load();
-	});
-
-	function _load(){
-		console.log("load location");
-		$scope.$apply();
-	};
-
-	$scope.save = function(){
-		console.log("save location");
-	};
-}])
 .controller("IdentityCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	var subkit = null;
@@ -746,7 +686,7 @@ angular
 		$scope.identity.groups = $scope.identity.groups.filter(function(itm){
 			return itm.value;
 		});
-		subkit.identities.save($scope.identity.identityId, $scope.identity, function(err, data){
+		subkit.identities.save($scope.identity.identityId, angular.copy($scope.identity), function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			nav.back("identity");
 		});
@@ -774,8 +714,7 @@ angular
 			$scope.$apply();
 			nav.go("emailpreview");
 		});
-	}
-
+	};
 	$scope.open = function(emailgroup){
 		$scope.emailgroup = emailgroup;
 		subkit.identities.groups($scope.emailgroup.key, function(err, data){
@@ -790,18 +729,61 @@ angular
 		})
 		nav.go("emailgroupeditor");
 	};
-
 	$scope.use = function(){
 		try{
 			$scope.templateData = JSON.parse($scope.templateJson);
 			nav.back("emailgroupeditor");
 		}catch(error){}
 	};
-
 	$scope.send = function(){
 		console.log($scope.template);
 		console.log($scope.templateData);
 		console.log($scope.emailgroup.key);
+	};
+}])
+.controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
+	var nav = new Navigation();
+	var subkit = null;
+	nav.onChanged(function(name){
+		if(name === "pushnotify") _loadGroups();
+	});
+	var _loadGroups = $scope.loadGroups = function(){
+		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+		subkit.identities.groups(null, function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			$scope.items = data;
+			$scope.$apply();
+		});
+	};
+
+	$scope.open = function(pushnotifygroup){
+		$scope.pushnotifygroup = pushnotifygroup;
+		subkit.identities.groups($scope.pushnotifygroup.key, function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			$scope.items = data;
+			$scope.$apply();
+		})
+		nav.go("pushnotifygroupeditor");
+	};
+
+	$scope.send = function(){
+		console.log($scope.pushnotifygroup);
+		console.log($scope.pushmessage);
+	};
+}])
+.controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
+	var nav = new Navigation();
+	nav.onChanged(function(name){
+		if(name === "location") _load();
+	});
+
+	function _load(){
+		console.log("load location");
+		$scope.$apply();
+	};
+
+	$scope.save = function(){
+		console.log("save location");
 	};
 }])
 .directive('validPassword',function(){

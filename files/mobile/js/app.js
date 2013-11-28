@@ -663,14 +663,14 @@ angular
 		console.log("save location");
 	};
 }])
-.controller("UsersCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
+.controller("IdentityCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	var subkit = null;
 	nav.onChanged(function(name){
-		if(name === "users") _loadUsers();
+		if(name === "identity") _loadIdentities();
 	});
 
-	var _loadUsers = $scope.loadUsers = function(){
+	var _loadIdentities = $scope.loadIdentities = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.identities.users(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
@@ -705,36 +705,36 @@ angular
 		subkit.identities.create(identityId, {}, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.identityId = "";
-			_loadUsers();
+			_loadIdentities();
 		});
 	};
 
-	$scope.open = function(user){
-		$scope.user = user.value;
+	$scope.open = function(identity){
+		$scope.identity = identity.value;
 
 		$scope.groups.forEach(function(itm){
-			var index = $scope.user.groups.indexOf(itm.key);
+			var index = $scope.identity.groups.indexOf(itm.key);
 			if(index === -1){
-				$scope.user.groups.push({
+				$scope.identity.groups.push({
 					key: itm.key,
 					value: itm.value
 				});
 			}else{
-				$scope.user.groups[index] = {
+				$scope.identity.groups[index] = {
 					key: itm.key,
 					value: true
 				}
 			}
 		});
-		nav.go("usereditor");
+		nav.go("identityeditor");
 	};
 
 	$scope.addToGroup = function(newGroupName){
-		var exists = $scope.user.groups.filter(function(itm){
+		var exists = $scope.identity.groups.filter(function(itm){
 			return itm.key === newGroupName;
 		});
 		if(exists.length === 0){
-			$scope.user.groups.push({
+			$scope.identity.groups.push({
 				key: newGroupName,
 				value: true
 			});
@@ -747,20 +747,20 @@ angular
 	$scope.remove = function(identityId){
 		subkit.identities.remove(identityId, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-			_loadUsers();
+			_loadIdentities();
 		});
 	};
 
 	$scope.save = function(identityId){
-		$scope.user.groups = $scope.user.groups.filter(function(itm){
+		$scope.identity.groups = $scope.identity.groups.filter(function(itm){
 			return itm.value;
 		})
 		.map(function(itm){
 			return itm.key;
 		});
-		subkit.identities.save($scope.user.identityId, $scope.user, function(err, data){
+		subkit.identities.save($scope.identity.identityId, $scope.identity, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-			nav.back("users");
+			nav.back("identity");
 		});
 	};
 }])

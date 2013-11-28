@@ -672,10 +672,10 @@ angular
 
 	var _loadUsers = $scope.loadUsers = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.users.users(function(err, data){
+		subkit.identities.users(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
-			subkit.users.groups(function(err, data){
+			subkit.identities.groups(function(err, data){
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				$scope.groups = data.map(function(itm){
 					return {
@@ -690,7 +690,7 @@ angular
 
 	var _loadGroups = $scope.loadGroups = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.users.groups(function(err, data){
+		subkit.identities.groups(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data.map(function(itm){
 				return {
@@ -701,10 +701,10 @@ angular
 		});
 	};
 
-	$scope.create = function(userId){
-		subkit.users.create(userId, {}, function(err, data){
+	$scope.create = function(identityId){
+		subkit.identities.create(identityId, {}, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-			$scope.userId = "";
+			$scope.identityId = "";
 			_loadUsers();
 		});
 	};
@@ -744,21 +744,21 @@ angular
 		$scope.newGroupName = "";
 	};
 
-	$scope.remove = function(userId){
-		subkit.users.remove(userId, function(err, data){
+	$scope.remove = function(identityId){
+		subkit.identities.remove(identityId, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			_loadUsers();
 		});
 	};
 
-	$scope.save = function(userId){
+	$scope.save = function(identityId){
 		$scope.user.groups = $scope.user.groups.filter(function(itm){
 			return itm.value;
 		})
 		.map(function(itm){
 			return itm.key;
 		});
-		subkit.users.save($scope.user.userid, $scope.user, function(err, data){
+		subkit.identities.save($scope.user.identityId, $scope.user, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			nav.back("users");
 		});

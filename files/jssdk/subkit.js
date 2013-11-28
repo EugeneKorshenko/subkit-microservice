@@ -406,16 +406,16 @@ var Subkit = function(config){
 		});
 	};
 
-	//users
-	self.users = {
+	//identities
+	self.identities = {
 		users: function(callback){
-			_get("/users", callback);
+			_get("/identities", callback);
 		},
 		groups: function(callback){
-			_get("/users/groups", callback);
+			_get("/identities/groups", callback);
 		},
 		create: function(userId, value, callback){
-			var url = self.baseUrl + "/users/" + userId;
+			var url = self.baseUrl + "/identities/" + userId;
 			var msg = JSON.parse(JSON.stringify(self.options));
 			msg["data"] = value;
 			httpRequest.post(url, msg, function(status, result){
@@ -426,7 +426,7 @@ var Subkit = function(config){
 			});
 		},
 		remove: function(userId, callback){
-			var url = self.baseUrl + "/users/" + userId;
+			var url = self.baseUrl + "/identities/" + userId;
 			httpRequest.del(url, self.options, function(status, result){
 				if(!callback) return;
 				if(status === 0) return callback({message: "Lost network connection."});
@@ -435,7 +435,7 @@ var Subkit = function(config){
 			});
 		},
 		save: function(userId, value, callback){
-			var url = self.baseUrl + "/users/" + userId;
+			var url = self.baseUrl + "/identities/" + userId;
 			var msg = JSON.parse(JSON.stringify(self.options));
 			msg["data"] = value;
 			httpRequest.put(url, msg, function(status, result){

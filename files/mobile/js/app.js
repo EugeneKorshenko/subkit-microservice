@@ -469,7 +469,6 @@ angular
 				$scope.$apply();
 			});
 		}
-
 	};
 	function _search(path, obj, segPath){
 		for(var itm in obj){
@@ -677,12 +676,7 @@ angular
 			$scope.items = data;
 			subkit.identities.groups(function(err, data){
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.groups = data.map(function(itm){
-					return {
-						key: itm,
-						value: false
-					}
-				});
+				$scope.groups = data;
 				$scope.$apply();
 			});
 		});
@@ -692,11 +686,7 @@ angular
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.identities.groups(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-			$scope.items = data.map(function(itm){
-				return {
-					key: itm
-				}
-			});
+			$scope.items = data;
 			$scope.$apply();
 		});
 	};
@@ -713,17 +703,16 @@ angular
 		$scope.identity = identity.value;
 
 		$scope.groups.forEach(function(itm){
-			var index = $scope.identity.groups.indexOf(itm.key);
-			if(index === -1){
+			var index = $scope.identity.groups.filter(function(itm2){ return itm.key===itm2.key});
+			if(index.length === 0){
 				$scope.identity.groups.push({
 					key: itm.key,
+					isEMail: itm.isEmail,
+					isPushNotify: itm.isPushNotify,
 					value: itm.value
 				});
 			}else{
-				$scope.identity.groups[index] = {
-					key: itm.key,
-					value: true
-				}
+				$scope.identity.groups[0].value = true;
 			}
 		});
 		nav.go("identityeditor");
@@ -736,6 +725,8 @@ angular
 		if(exists.length === 0){
 			$scope.identity.groups.push({
 				key: newGroupName,
+				isEMail: false,
+				isPushNotify: false,
 				value: true
 			});
 		} else if(exists[0]){
@@ -754,13 +745,25 @@ angular
 	$scope.save = function(identityId){
 		$scope.identity.groups = $scope.identity.groups.filter(function(itm){
 			return itm.value;
-		})
-		.map(function(itm){
-			return itm.key;
 		});
 		subkit.identities.save($scope.identity.identityId, $scope.identity, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			nav.back("identity");
+		});
+	};
+}])
+.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
+	var nav = new Navigation();
+	var subkit = null;
+	nav.onChanged(function(name){
+		if(name === "email") _loadGroups();
+	});
+	var _loadGroups = $scope.loadGroups = function(){
+		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+		subkit.identities.groups(function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			$scope.items = data;
+			$scope.$apply();
 		});
 	};
 }])

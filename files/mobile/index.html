@@ -200,7 +200,6 @@
 						<span data-ng-bind="keyData"></span>
 						<span>Status: </span>
 						<span data-ng-bind="channelStatus" class="error"></span>
-
 					</div>
 					<form name="pubsubfnewval">
 						<span>Value: </span><input type="text" data-ng-model="messageValue" name="pubnewval" required>
@@ -283,8 +282,11 @@
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
 					</div>
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName">
-						<button class="rotateButton" data-ng-click="create(fileName)">+</button>
+						<form name="filefnewfile">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addfile" required>
+							<span class="validationerror" ng-show="filefnewfile.addfile.$error.required">Required!</span>
+							<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!filefnewfile.$valid" >+</button>
+						</form>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="file in files">

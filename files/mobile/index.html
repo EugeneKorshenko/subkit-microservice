@@ -351,8 +351,12 @@
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
 					</div>
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName">
-						<button class="rotateButton" data-ng-click="create(fileName)">+</button>
+						<form name="templatefnew">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addtemplate" required ng-minlength="2">
+							<span class="validationerror" ng-show="templatefnew.addtemplate.$error.required">Required!</span>
+							<span class="validationerror" ng-show="templatefnew.addtemplate.$error.minlength">At least two characters!</span>
+							<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!templatefnew.$valid">+</button>
+						</form>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="template in templates">

@@ -705,7 +705,8 @@ angular
 		console.log("create user: " + userId);
 		subkit.users.create(userId, {}, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-			_load();
+			$scope.userId = "";
+			_loadUsers();
 		});
 	};
 
@@ -729,8 +730,26 @@ angular
 		nav.go("usereditor");
 	};
 
+	$scope.addToGroup = function(newGroupName){
+		var exists = $scope.user.groups.filter(function(itm){
+			return itm.key === newGroupName;
+		});
+		if(exists.length === 0){
+			$scope.user.groups.push({
+				key: newGroupName,
+				value: true
+			});
+		} else if(exists[0]){
+			exists[0].value = true;
+		}
+		$scope.newGroupName = "";
+	};
+
 	$scope.remove = function(userId){
-		console.log("remove user: " + userId);
+		subkit.users.remove(userId, function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			_loadUsers();
+		});
 	};
 
 	$scope.save = function(userId){

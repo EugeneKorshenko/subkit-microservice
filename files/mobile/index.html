@@ -546,8 +546,11 @@
 						<span>Password:</span>
 						<input type="password" data-ng-model="user.password" placeholder="password">
 					</div>
+					<div class="row">
+						<input type="text" class="input" placeholder="new" data-ng-model="$parent.newGroupName">
+						<button class="rotateButton" data-ng-click="addToGroup(newGroupName)">+</button>
+					</div>
 					<div class="rowtext" style="height: 100%;">
-						<span>Groups:</span>
 						<div data-ng-repeat="group in user.groups" class="rowtext">
 							<span data-ng-bind="group.key"></span>
 							<input type="checkbox" data-ng-model="group.value">

@@ -425,6 +425,15 @@ var Subkit = function(config){
 				callback(null, result.json());
 			});
 		},
+		remove: function(userId, callback){
+			var url = self.baseUrl + "/users/" + userId;
+			httpRequest.del(url, self.options, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status!==202) return callback(result.json());
+				callback(null, result.json());
+			});
+		},
 		save: function(userId, value, callback){
 			var url = self.baseUrl + "/users/" + userId;
 			var msg = JSON.parse(JSON.stringify(self.options));

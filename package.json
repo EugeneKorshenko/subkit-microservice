@@ -22,7 +22,9 @@
     "node-gcm": "~0.9.7",
     "mpns": "~2.0.1",
     "aws-sign": "~0.3.0",
-    "node-restify-validation": "0.0.5"
+    "node-restify-validation": "0.0.5",
+    "simplesmtp": "~0.3.15",
+    "mailcomposer": "~0.2.4"
   },
   "devDependencies": {
     "mocha": "*",

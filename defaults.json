@@ -44,6 +44,12 @@
     "backupPath":"./backups"
   },
   "emailConfig": {
+    "MTPUsername": "AKIAJXZCV4FOAIQ66NSA",
+    "SMTPPassword": "AopXWpwLIVpNSmjzOu0SDY2+TFFG1bqDT0w7u6TeSsVd",
+    "senderAddress": "no-reply@subkit.io",
+    "SMTPServer": "email-smtp.us-east-1.amazonaws.com",
+    "Port":"465",
+    "TLS":true,
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",
     "secretAccessKey": "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",
     "region": "eu-west-1"

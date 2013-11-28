@@ -51,6 +51,8 @@ taskConfig.filesPath = path.join(__dirname, taskConfig.filesPath);
 taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
 taskConfig.hooks = hooks;
 
+var emailConfig = nconf.get("emailConfig");
+
 var s3Config = nconf.get("s3Config");
 var schedulerConfig = nconf.get("schedulerConfig");
 
@@ -62,6 +64,7 @@ var storage = require('storage-module').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
 var job = require('./lib/task-module.js').init(storageConfig, storage, pubsub);
 var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub);
+// var email = require('./lib/email-module.js').init(emailConfig, storage, pubsub);
 
 var options = { name: "SubKit" };
 
@@ -152,7 +155,7 @@ require("./lib/task.js").init(server, storage, taskConfig, task, helper);
 require("./lib/statistics.js").init(server, storage, staticConfig, helper);
 
 require("./lib/users.js").init(server, storage, helper);
-require("./lib/email.js").init(server, storage, helper);
+require("./lib/email.js").init(server, emailConfig, helper);
 require("./lib/push.js").init(server, storage, helper);
 require("./lib/location.js").init(server, storage, helper);
 

@@ -43,7 +43,7 @@
 	background-color: @highlight-color;
 	overflow: hidden;
 }
-.tileButton:hover {
+.tileButton:hover:enabled {
 	background-color: white;
 	color: @highlight-color;
 }
@@ -454,6 +454,10 @@ form[name='pubsubfnewval']{
 
 div.clear{
 	clear: both;
+}
+
+button.tileButton:disabled{
+	background-color: graytext !important;
 }
 
 

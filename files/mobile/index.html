@@ -537,8 +537,12 @@
 			<div data-ng-controller="IdentityCtrl">
 				<view data-content="identity" class="hidden" headertext="identity" backtext="back" back="center">
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
-						<button class="rotateButton" data-ng-click="create(userId)">+</button>
+						<form name="identiyfnew">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId" name="addidentity" required ng-minlength="2">
+							<span class="validationerror" ng-show="identiyfnew.addidentity.$error.required">Required!</span>
+							<span class="validationerror" ng-show="identiyfnew.addidentity.$error.minlength">At least two characters!</span>
+							<button class="rotateButton" data-ng-click="create(userId)" ng-disabled="!identiyfnew.$valid">+</button>
+						</form>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="item in items">
@@ -548,27 +552,38 @@
 					</ul>
 				</view>
 				<view data-content="identityeditor" class="hidden" headertext="edit identity" backtext="identity">
-					<div class="row">
-						<button class="flatButton" data-ng-click="save()">save</button>
-					</div>
-					<div class="rowtext">
-						<span>Identity:</span>
-						<input type="text" data-ng-model="identity.username" placeholder="username">
-					</div>
-					<div class="rowtext">
-						<span>Password:</span>
-						<input type="password" data-ng-model="identity.password" placeholder="password">
-					</div>
-					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.newGroupName">
-						<button class="rotateButton" data-ng-click="addToGroup(newGroupName)">+</button>
-					</div>
-					<div class="rowtext" style="height: 100%;">
-						<div data-ng-repeat="group in identity.groups" class="rowtext">
-							<span data-ng-bind="group.key"></span>
-							<input type="checkbox" data-ng-model="group.value">
+					<form name="identiyfacc">
+						<div class="row">
+							<button class="flatButton" data-ng-click="save()" ng-disabled="!identiyfacc.idusername.$valid || !identiyfacc.idpassword.$valid">save</button>
 						</div>
-					</div>
+						<div class="rowtext">
+							<span>Identity:</span>
+							<input type="text" data-ng-model="identity.username" placeholder="username" name="idusername" required ng-minlength="2" ng-maxlength="20" maxlength="20">
+							<span class="validationerror" ng-show="identiyfacc.idusername.$error.required">Required!</span>
+							<span class="validationerror" ng-show="identiyfacc.idusername.$error.minlength">At least two characters!</span>
+							<span class="validationerror" ng-show="identiyfacc.idusername.$error.maxlength">Too long!</span>
+						</div>
+						<div class="rowtext">
+							<span>Password:</span>
+							<input type="password" data-ng-model="identity.password" placeholder="password" name="idpassword" required ng-minlength="8" ng-maxlength="20" valid-password maxlength="20">
+								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.required">Required!</span>
+								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.minlength">Too short!</span>
+								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.validPassword" title="Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!">Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!</span>
+								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.maxlength">Too long!</span>					
+						</div>
+						<div class="row">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.newGroupName" name="addgroup" required ng-minlength="2">
+							<span class="validationerror" ng-show="identiyfacc.addgroup.$error.required">Required!</span>
+							<span class="validationerror" ng-show="identiyfacc.addgroup.$error.minlength">Too short!</span>
+							<button class="rotateButton" data-ng-click="addToGroup(newGroupName)" ng-disabled="!identiyfacc.addgroup.$valid" >+</button>
+						</div>
+						<div class="rowtext" style="height: 100%;">
+							<div data-ng-repeat="group in identity.groups" class="rowtext">
+								<span data-ng-bind="group.key"></span>
+								<input type="checkbox" data-ng-model="group.value">
+							</div>
+						</div>
+					</form>
 				</view>
 			</div>
 

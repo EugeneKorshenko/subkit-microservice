@@ -808,7 +808,7 @@ angular
   return{
     require: "ngModel",
     link: function(scope, elm, attrs, ctrl){
-		var regex = /^(?!.*(.)\1{3})((?=.*[\d])(?=.*[A-Za-z])|(?=.*[^\w\d\s])(?=.*[A-Za-z])).{8,20}$/;
+		var regex = /^(?!.*(.)\1{3})((?=.*[\d])(?=.*[A-Za-z])|(?=.*[^\w\d\s])(?=.*[A-Za-z])).{7,21}$/;
 		var validator = function(value){
 			ctrl.$setValidity('validPassword', regex.test(value));
 		return value;

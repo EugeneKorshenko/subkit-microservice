@@ -176,8 +176,12 @@
 					<div class="menu">
 					</div>
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.channelName">
-						<button class="rotateButton" data-ng-click="create(channelName)">+</button>
+						<form name="pubsubfnewpub">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.channelName" name="newpub" required ng-minlength="3">
+							<span class="validationerror" ng-show="pubsubfnewpub.newpub.$error.required">Required!</span>
+							<span class="validationerror" ng-show="pubsubfnewpub.newpub.$error.minlength">At least three characters!</span>
+							<button class="rotateButton" data-ng-click="create(channelName)" ng-disabled="!pubsubfnewpub.$valid">+</button>
+						</form>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="channel in channels">
@@ -196,18 +200,19 @@
 						<span data-ng-bind="keyData"></span>
 						<span>Status: </span>
 						<span data-ng-bind="channelStatus" class="error"></span>
-
 					</div>
-					<div class="rowtext">
-						<span>Value: </span>
-						<input type="text" data-ng-model="messageValue">
-						<button data-ng-click="publish(keyData, messageValue)" class="tileButton">publish</button>
-					</div>
-					<ul class="codepreview">
+					<form name="pubsubfnewval">
+						<span>Value: </span><input type="text" data-ng-model="messageValue" name="pubnewval" required>
+						<span class="validationerror" ng-show="pubsubfnewval.pubnewval.$error.required">Required!</span>
+						<button data-ng-click="publish(keyData, messageValue)" class="tileButton" ng-disabled="!pubsubfnewval.$valid">publish</button>
+					</form>
+					<div class="codepreview">
+					<ul>
 						<li data-ng-repeat="message in messageLog">
 							<div data-ng-bind="message.value"></div>
 						</li>
 					</ul>
+					</div>
 				</view>
 			</div>
 
@@ -277,8 +282,11 @@
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
 					</div>
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName">
-						<button class="rotateButton" data-ng-click="create(fileName)">+</button>
+						<form name="filefnewfile">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addfile" required>
+							<span class="validationerror" ng-show="filefnewfile.addfile.$error.required">Required!</span>
+							<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!filefnewfile.$valid" >+</button>
+						</form>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="file in files">
@@ -310,8 +318,11 @@
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
 					</div>
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName">
-						<button class="rotateButton" data-ng-click="create(fileName)">+</button>
+						<form name="tasksfnew">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addtask" required>
+							<span class="validationerror" ng-show="tasksfnew.addtask.$error.required">Required!</span>
+							<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!tasksfnew.$valid">+</button>
+						</form>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="task in tasks">
@@ -321,15 +332,17 @@
 					</ul>
 				</view>
 				<view data-content="taskeditor" class="hidden" headertext="editor" backtext="tasks">
-					<div class="row">
-						<button class="flatButton" data-ng-click="save()">save</button>
-					</div>
-					<div class="rowtext">
-						<span>Task: </span>
-						<span data-ng-bind="keyData"></span>
-						<button class="tileButton" data-ng-click="run(keyData)">Run</button>
-					</div>
-					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
+					<form name="tasksfeditor">
+						<div class="row">
+							<button class="flatButton" data-ng-click="save()" ng-disabled="false">Save</button>
+						</div>
+						<div class="rowtext">
+							<span>Task: </span>
+							<span data-ng-bind="keyData"></span>
+							<button class="tileButton" data-ng-click="run(keyData)" ng-disabled="!tasksfeditor.$valid">Run</button>
+						</div>
+						<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20" name="taskeditor" required></textarea>
+					</form>
 				</view>
 				<view data-content="taskpreview" class="hidden" headertext="preview" backtext="editor">
 					<div data-ng-bind="previewOutput" class="codepreview"></div>
@@ -343,8 +356,12 @@
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
 					</div>
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName">
-						<button class="rotateButton" data-ng-click="create(fileName)">+</button>
+						<form name="templatefnew">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addtemplate" required ng-minlength="2">
+							<span class="validationerror" ng-show="templatefnew.addtemplate.$error.required">Required!</span>
+							<span class="validationerror" ng-show="templatefnew.addtemplate.$error.minlength">At least two characters!</span>
+							<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!templatefnew.$valid">+</button>
+						</form>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="template in templates">
@@ -520,8 +537,12 @@
 			<div data-ng-controller="IdentityCtrl">
 				<view data-content="identity" class="hidden" headertext="identity" backtext="back" back="center">
 					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
-						<button class="rotateButton" data-ng-click="create(userId)">+</button>
+						<form name="identiyfnew">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId" name="addidentity" required ng-minlength="2">
+							<span class="validationerror" ng-show="identiyfnew.addidentity.$error.required">Required!</span>
+							<span class="validationerror" ng-show="identiyfnew.addidentity.$error.minlength">At least two characters!</span>
+							<button class="rotateButton" data-ng-click="create(userId)" ng-disabled="!identiyfnew.$valid">+</button>
+						</form>
 					</div>
 					<ul class="arrowlist">
 						<li data-ng-repeat="item in items">
@@ -531,27 +552,38 @@
 					</ul>
 				</view>
 				<view data-content="identityeditor" class="hidden" headertext="edit identity" backtext="identity">
-					<div class="row">
-						<button class="flatButton" data-ng-click="save()">save</button>
-					</div>
-					<div class="rowtext">
-						<span>Identity:</span>
-						<input type="text" data-ng-model="identity.username" placeholder="username">
-					</div>
-					<div class="rowtext">
-						<span>Password:</span>
-						<input type="password" data-ng-model="identity.password" placeholder="password">
-					</div>
-					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.newGroupName">
-						<button class="rotateButton" data-ng-click="addToGroup(newGroupName)">+</button>
-					</div>
-					<div class="rowtext" style="height: 100%;">
-						<div data-ng-repeat="group in identity.groups" class="rowtext">
-							<span data-ng-bind="group.key"></span>
-							<input type="checkbox" data-ng-model="group.value">
+					<form name="identiyfacc">
+						<div class="row">
+							<button class="flatButton" data-ng-click="save()" ng-disabled="!identiyfacc.idusername.$valid || !identiyfacc.idpassword.$valid">save</button>
 						</div>
-					</div>
+						<div class="rowtext">
+							<span>Identity:</span>
+							<input type="text" data-ng-model="identity.username" placeholder="username" name="idusername" required ng-minlength="2" ng-maxlength="20" maxlength="20">
+							<span class="validationerror" ng-show="identiyfacc.idusername.$error.required">Required!</span>
+							<span class="validationerror" ng-show="identiyfacc.idusername.$error.minlength">At least two characters!</span>
+							<span class="validationerror" ng-show="identiyfacc.idusername.$error.maxlength">Too long!</span>
+						</div>
+						<div class="rowtext">
+							<span>Password:</span>
+							<input type="password" data-ng-model="identity.password" placeholder="password" name="idpassword" required ng-minlength="8" ng-maxlength="20" valid-password maxlength="20">
+								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.required">Required!</span>
+								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.minlength">Too short!</span>
+								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.validPassword" title="Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!">Uppercase letters, lowercase letters, special characters and/or digits. Do not repeat characters!</span>
+								<span class="validationerror" ng-show="identiyfacc.idpassword.$error.maxlength">Too long!</span>					
+						</div>
+						<div class="row">
+							<input type="text" class="input" placeholder="new" data-ng-model="$parent.newGroupName" name="addgroup" required ng-minlength="2">
+							<span class="validationerror" ng-show="identiyfacc.addgroup.$error.required">Required!</span>
+							<span class="validationerror" ng-show="identiyfacc.addgroup.$error.minlength">Too short!</span>
+							<button class="rotateButton" data-ng-click="addToGroup(newGroupName)" ng-disabled="!identiyfacc.addgroup.$valid" >+</button>
+						</div>
+						<div class="rowtext" style="height: 100%;">
+							<div data-ng-repeat="group in identity.groups" class="rowtext">
+								<span data-ng-bind="group.key"></span>
+								<input type="checkbox" data-ng-model="group.value">
+							</div>
+						</div>
+					</form>
 				</view>
 			</div>
 

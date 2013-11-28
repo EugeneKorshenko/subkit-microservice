@@ -702,7 +702,6 @@ angular
 	};
 
 	$scope.create = function(userId){
-		console.log("create user: " + userId);
 		subkit.users.create(userId, {}, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.userId = "";

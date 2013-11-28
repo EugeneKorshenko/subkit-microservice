@@ -247,6 +247,10 @@
 	border: 1px solid @highlight-color;
 }
 
+div.codepreview{
+	overflow: auto;
+}
+
 .codepreview {
 	margin-top: 3px;
 	color: black;
@@ -301,7 +305,7 @@
 }
 
 .validationerror {
-	color: red;
+	color: red !important;
 	vertical-align: middle;
 	font-size: 0.8em;
 }
@@ -441,6 +445,13 @@ div[name='account']{
 			}
 		}
 }
+
+form[name='pubsubfnewval']{
+ span{
+	color: #227598;
+ }
+}
+
 div.clear{
 	clear: both;
 }

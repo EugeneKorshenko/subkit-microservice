@@ -47,7 +47,8 @@ templateConfig.templateData = {
 };
 
 var taskConfig = nconf.get("taskConfig");
-taskConfig.filesPath = path.join(__dirname, taskConfig.filesPath);
+taskConfig.tasksPath = path.join(__dirname, taskConfig.tasksPath);
+taskConfig.jobsPath = path.join(__dirname, taskConfig.jobsPath);
 taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
 taskConfig.hooks = hooks;
 
@@ -64,7 +65,6 @@ var storage = require('storage-module').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
 var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
 var email = require("./lib/email-module.js").init(emailConfig, renderer);
-var job = require('./lib/task-module.js').init(storageConfig, storage, pubsub, email);
 var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email);
 
 var options = { name: "SubKit" };
@@ -148,7 +148,6 @@ require('./doc').configure(server, {
 
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
-require("./lib/jobs.js").init(server, job, helper);
 require("./lib/pubsub.js").init(server, pubsub, storage, es, helper);
 require("./lib/static.js").init(server, staticConfig, helper);
 require("./lib/template.js").init(server, templateConfig, renderer, helper);
@@ -159,8 +158,6 @@ require("./lib/identity.js").init(server, storage, helper);
 require("./lib/email.js").init(server, emailConfig, email, helper);
 require("./lib/push.js").init(server, storage, helper);
 require("./lib/location.js").init(server, storage, helper);
-
-
 
 require("./lib/eventsource.js").init(server, es, helper);
 require("./lib/s3.js").init(server, s3Config, helper);

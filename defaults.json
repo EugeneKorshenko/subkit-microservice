@@ -40,7 +40,7 @@
   },
   "taskConfig": {
     "rightsPath":"./rights.json",
-    "filesPath":"./files/task",
+    "tasksPath":"./files/task",
     "jobsPath":"./files/jobs",
     "backupPath":"./backups"
   },

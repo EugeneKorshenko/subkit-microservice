@@ -334,19 +334,23 @@
 				<view data-content="taskeditor" class="hidden" headertext="editor" backtext="tasks">
 					<form name="tasksfeditor">
 						<div class="row">
-							<button class="flatButton" data-ng-click="save()" ng-disabled="false">Save</button>
+							<button class="flatButton" data-ng-click="save()" ng-disabled="false">save</button>
 						</div>
 						<div class="rowtext">
 							<span>Task: </span>
 							<span data-ng-bind="keyData"></span>
-							<button class="tileButton" data-ng-click="run(keyData)" ng-disabled="!tasksfeditor.$valid">Run</button>
+							<button class="tileButton" data-ng-click="run(keyData)" ng-disabled="!tasksfeditor.$valid">run</button>
+							<button class="tileButton" data-ng-click="schedule(keyData)" ng-disabled="!tasksfeditor.$valid">schedule</button>
 						</div>
 						<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20" name="taskeditor" required></textarea>
 					</form>
 				</view>
 				<view data-content="taskpreview" class="hidden" headertext="preview" backtext="editor">
 					<div data-ng-bind="previewOutput" class="codepreview"></div>
-				</view>				
+				</view>
+				<view data-content="scheduletask" class="hidden" headertext="schedule" backtext="editor">
+					
+				</view>	
 			</div>
 
 			<div data-ng-controller="TemplatesCtrl">

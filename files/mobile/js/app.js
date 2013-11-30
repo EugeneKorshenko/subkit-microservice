@@ -284,6 +284,10 @@ angular
         });
 	};
 
+	$scope.schedule = function(taskName){
+		nav.go("scheduletask");
+	};
+
 	$scope.run = function(taskName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		subkit.run(taskName, function(err, data){

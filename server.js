@@ -65,7 +65,6 @@ var es = require('./lib/eventsource-module.js').init(storage, pubsub);
 var job = require('./lib/task-module.js').init(storageConfig, storage, pubsub);
 var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub);
 var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
-var scheduler = require('./lib/scheduler-module.js').init(storage);
 
 var options = { name: "SubKit" };
 
@@ -155,11 +154,8 @@ require("./lib/template.js").init(server, templateConfig, renderer, helper);
 require("./lib/task.js").init(server, storage, taskConfig, task, helper);
 require("./lib/statistics.js").init(server, storage, staticConfig, helper);
 
-require("./lib/scheduler.js").init(server, scheduler, helper);
-
-
 require("./lib/identity.js").init(server, storage, helper);
-require("./lib/email.js").init(server, emailConfig, storage, renderer, scheduler, helper);
+require("./lib/email.js").init(server, emailConfig, storage, renderer, helper);
 require("./lib/push.js").init(server, storage, helper);
 require("./lib/location.js").init(server, storage, helper);
 

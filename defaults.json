@@ -41,6 +41,7 @@
   "taskConfig": {
     "rightsPath":"./rights.json",
     "filesPath":"./files/task",
+    "jobsPath":"./files/jobs",
     "backupPath":"./backups"
   },
   "emailConfig": {

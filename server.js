@@ -155,7 +155,7 @@ require("./lib/task.js").init(server, storage, taskConfig, task, helper);
 require("./lib/statistics.js").init(server, storage, staticConfig, helper);
 
 require("./lib/identity.js").init(server, storage, helper);
-require("./lib/email.js").init(server, emailConfig, email, helper);
+require("./lib/email.js").init(server, emailConfig, email, task, helper);
 require("./lib/push.js").init(server, storage, helper);
 require("./lib/location.js").init(server, storage, helper);
 

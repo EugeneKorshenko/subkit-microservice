@@ -61,7 +61,9 @@
     "region": "eu-west-1"
   },
   "pushConfig": {
-
+    "cert": "./certs/apn/cert.pem",
+    "key": "./certs/apn/key.pem",
+    "pfx": "./certs/apn/key.p12"
   },
   "s3Config": {
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",

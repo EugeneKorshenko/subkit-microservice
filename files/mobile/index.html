@@ -618,6 +618,7 @@
 						<select data-ng-model="$parent.template" data-ng-options="t for t in templates">
 							<option value="">-- choose template --</option>
 						</select>
+						<input type="text" placeholder="subject" data-ng-model="$parent.subject">
 						<go data-view="templatedata" class="tileButton">json</go>
 						<button data-ng-click="preview()" class="tileButton" data-ng-show="$parent.template">preview</button>
 					</div>

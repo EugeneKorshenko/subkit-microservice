@@ -449,8 +449,25 @@ var Subkit = function(config){
 		validate: function(){
 
 		}
-	}
+	};
 
+	//email
+	self.email = {
+		send: function(value, callback){
+			var url = self.baseUrl + "/email/send";
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg["data"] = value;
+			httpRequest.post(url, msg, function(status, result){
+				if(status!==200 && status!==201) {
+					if(callback) changeStatus(result);
+				}else{
+					if(callback) callback(null, result.json());
+				}
+			});
+		}
+	};
+
+	//push notify
 	self.notify = {
 		upload: function(file, callback){
 			var msg = JSON.parse(JSON.stringify(self.options));

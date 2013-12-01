@@ -740,6 +740,16 @@ angular
 		console.log($scope.template);
 		console.log($scope.templateData);
 		console.log($scope.emailgroup.key);
+
+		subkit.email.send({
+			"recipients": ["mike@mikebild.com", "go@subkit.io"],
+			"templateid": $scope.template,
+			"subject": $scope.subject,
+			"data": $scope.templateData
+		}, function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			notify.PostMessage("Push message sent.", 5000, 'success');
+		});
 	};
 }])
 .controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){

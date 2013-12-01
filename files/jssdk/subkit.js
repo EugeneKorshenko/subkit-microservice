@@ -451,6 +451,37 @@ var Subkit = function(config){
 		}
 	}
 
+	self.notify = {
+		upload: function(file, callback){
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg.headers = {
+			  'Content-Type': 'application/octed-stream',
+			  apiKey: config.apiKey
+			};
+			msg["data"] = file;
+			var url = self.baseUrl + "/push/upload";
+			httpRequest.post(url, msg, function(status, result){
+				if(status!==201) {
+					if(callback) changeStatus(result);
+				}else{
+					if(callback) callback();
+				}
+			});
+		},
+		send: function(value, callback){
+			var url = self.baseUrl + "/push/send";
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg["data"] = value;
+			httpRequest.post(url, msg, function(status, result){
+				if(status!==200 && status!==201) {
+					if(callback) changeStatus(result);
+				}else{
+					if(callback) callback(null, result.json());
+				}
+			});
+		}
+	}
+
 	//task
 	self.run = function(taskName, callback){
 		var url = self.baseUrl + "/tasks/run/" + taskName;

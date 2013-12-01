@@ -206,14 +206,14 @@ angular
 	};
 
 	$scope.create = function(fileName){
-        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([]);
-        file.name = fileName;
-        subkit.upload(file, "statics", function(err, data){
-        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-        	$scope.fileName = "";
-        	_load();
-        });
+		file.name = fileName;
+		subkit.upload(file, "statics", function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			$scope.fileName = "";
+			_load();
+		});
 	};
 }])
 .controller("TasksCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
@@ -757,6 +757,18 @@ angular
 		});
 	};
 
+	$scope.upload = function(elementId){
+		var fileInput = document.getElementById(elementId);
+		fileInput.addEventListener('change', function(e) {
+			var file = fileInput.files[0];
+			subkit.notify.upload(file, function(err, data){
+				console.log(err);
+				console.log(data);
+			});
+		});
+		fileInput.click();
+    };
+
 	$scope.open = function(pushnotifygroup){
 		$scope.pushnotifygroup = pushnotifygroup;
 		subkit.identities.groups($scope.pushnotifygroup.key, function(err, data){
@@ -769,7 +781,13 @@ angular
 
 	$scope.send = function(){
 		console.log($scope.pushnotifygroup);
-		console.log($scope.pushmessage);
+		subkit.notify.send({
+			"message": $scope.pushmessage,
+			"device": "9e4c089d4f00e9878010007b12584203308a792b7884cecf22f431d0e5583618"
+		}, function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			notify.PostMessage("Push message sent.", 5000, 'success');
+		});
 	};
 }])
 .controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){

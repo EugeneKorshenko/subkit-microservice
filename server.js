@@ -161,7 +161,7 @@ require("./lib/statistics.js").init(server, storage, staticConfig, helper);
 
 require("./lib/identity.js").init(server, storage, helper);
 require("./lib/email.js").init(server, emailConfig, task, helper);
-require("./lib/push.js").init(server, storage, push, helper);
+require("./lib/push.js").init(server, pushConfig, storage, push, helper);
 require("./lib/location.js").init(server, storage, helper);
 
 require("./lib/eventsource.js").init(server, es, helper);

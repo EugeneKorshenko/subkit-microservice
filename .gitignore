@@ -7,3 +7,4 @@ rights.json
 files/static/
 files/task/
 files/template/
+*.p12

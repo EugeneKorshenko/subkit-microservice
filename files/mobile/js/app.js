@@ -829,6 +829,20 @@ angular
     }
   };
 })
+.directive('validDomain',function(){
+  return{
+    require: "ngModel",
+    link: function(scope, elm, attrs, ctrl){
+		var regex = /^(?!:\/\/)([a-zA-Z0-9]+\.)?[a-zA-Z0-9][a-zA-Z0-9-]+\.[a-zA-Z]{2,6}?$/i;
+		var validator = function(value){
+			ctrl.$setValidity('validDomain', regex.test(value));
+		return value;
+      };
+	  ctrl.$parsers.unshift(validator);
+	  ctrl.$formatters.unshift(validator);
+    }
+  };
+})
 .directive('validJson', function(){
   return{
     require: "ngModel",
@@ -852,33 +866,22 @@ angular
     }
   };
 })
-.directive('uiValidateEquals', function() {
+.directive("repeatPassword", function() {
     return {
-        restrict: 'A',
-        require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
-            function validateEqual(myValue, otherValue) {
-				console.log(myValue);
-				console.log(otherValue);
-                if (myValue === otherValue) {
-                    ctrl.$setValidity('equal', true);
-                    return myValue;
-                } else {
-                    ctrl.$setValidity('equal', false);
-                    return undefined;
+        require: "ngModel",
+        link: function(scope, elem, attrs, ctrl) {
+            var otherInput = elem.inheritedData("$formController")[attrs.repeatPassword];
+            ctrl.$parsers.push(function(value) {
+                if(value === otherInput.$viewValue) {
+                    ctrl.$setValidity("repeat", true);
+                    return value;
                 }
-            }
-
-            scope.$watch(attrs.uiValidateEquals, function(otherModelValue) {
-                validateEqual(ctrl.$viewValue, otherModelValue);               
+                ctrl.$setValidity("repeat", false);
             });
 
-            ctrl.$parsers.unshift(function(viewValue) {
-                return validateEqual(viewValue, scope.$eval(attrs.uiValidateEquals));
-            });
-
-            ctrl.$formatters.unshift(function(modelValue) {
-                return validateEqual(modelValue, scope.$eval(attrs.uiValidateEquals));                
+            otherInput.$parsers.push(function(value) {
+                ctrl.$setValidity("repeat", value === ctrl.$viewValue);
+                return value;
             });
         }
     };

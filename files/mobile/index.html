@@ -40,7 +40,7 @@
 				<view data-content="login" next="info" nexttext="info" headertext="Welcome to SubKit">
 					<form name="loginf">
 						<div class="row">
-							<input type="text" class="input" name="ldomain" placeholder="domain" data-ng-model="domain" required>
+							<input type="text" class="input" name="ldomain" placeholder="domain" data-ng-model="domain" required valid-domain>
 						</div>
 						<div class="row">
 							<input type="text" class="input" name="lusername" placeholder="username" data-ng-model="username" required>
@@ -69,10 +69,10 @@
 								<input type="text" class="input" placeholder="give a new username" name="newusername" data-ng-model="$parent.newUsername" ng-required="true" ng-minlength="5" ng-maxlength="20">
 							</div>
 							<div class="row">
-								<input type="password" class="input" placeholder="set a complex password containing lower- and upper-case as well as special characters" name="newpassword" data-ng-model="$parent.newPassword" ng-required="true" ng-minlength="8" ng-maxlength="20" valid-password>
+								<input type="password" class="input" placeholder="set a complex password containing 8-20 lower- and upper-case as well as special characters" name="newpassword" id="newpassword" data-ng-model="$parent.newPassword" ng-required="true" ng-minlength="8" ng-maxlength="20" valid-password>
 							</div>
 							<div class="row">
-								<input type="password" class="input" placeholder="repeat the defined password once more just to be sure" name="newpasswordverify" data-ng-model="$parent.newPasswordv" ng-required="true" ui-validate-equals="$parent.newPassword">
+								<input type="password" class="input" placeholder="repeat the defined password once more just to be sure" name="newpasswordverify" data-ng-model="$parent.newPasswordv" ng-required="true" repeat-password="newpassword">
 							</div>
 						</form>
 						<div class="row">

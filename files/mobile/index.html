@@ -121,40 +121,41 @@
 					</div>
 					<div class="row">
 						<form name="storefnewstore">
-							<input type="text" class="input" placeholder="new" data-ng-model="$parent.itemName" name="newstore" required ng-minlength="3">
-							<span class="validationerror" ng-show="storefnewstore.newstore.$error.required">Required!</span>
-							<span class="validationerror" ng-show="storefnewstore.newstore.$error.minlength">At least three characters!</span>
-							<button class="rotateButton" data-ng-click="create(itemName)" ng-disabled="!storefnewstore.$valid">+</button>
+							<div class="tCell">
+								<input type="text" placeholder="new" data-ng-model="$parent.itemName" name="newstore" required ng-minlength="3">
+							</div>
+							<div class="tCell">
+								<button class="rotateButton" data-ng-click="create(itemName)" ng-disabled="!storefnewstore.$valid">+</button>
+							</div>
 						</form>
 					</div>
-					<ul class="arrowlist">
-						<li data-ng-repeat="store in stores">
-							<div class="{{(!store.value) ? 'arrow' : 'nonarrow'}}">
-								<button class="item" data-ng-show="!store.value" data-ng-bind="store.key" data-ng-click="next(store.key)"></button>
-								<button class="item" data-ng-show="store.value" data-ng-bind="store.key" data-ng-click="edit(store.dataKey)"></button>
+					<div class="itemlist" data-ng-repeat="store in stores" data-ng-click="(!store.value) ? next(store.key) : edit(store.dataKey)">
+						<div title="Administer {{store.key}}">
+							<div>
+								<span data-ng-bind="store.key"></span>
 							</div>
-							<button class="rotateButton" data-ng-click="remove(store.dataKey)">&ndash;</button>
-						</li>
-					</ul>
+							<div class="{{(!store.value) ? 'arrow' : 'nonarrow'}}"></div>
+						</div>
+						<div>
+							<button class="rotateButton" data-ng-click="remove(store.dataKey)" title="Remove {{store.key}}">&ndash;</button>
+						</div>
+					</div>
 				</view>
 				<view data-content="valueeditor" class="hidden" headertext="value" backtext="store">
 					<div class="row">
-						<button class="flatButton" data-ng-click="saveValue()">save</button>
+						<button class="flatButton" data-ng-click="saveValue()" ng-disabled="!storefveditor.$valid">save</button>
 					</div>
 					<div class="rowtext">
 						<span>Property: </span>
 						<span data-ng-bind="keyData"></span>
 					</div>
 					<form name="storefveditor">
-						<textarea data-ng-model="valueData[keyData]" class="codeeditor" rows="20" name="storeveditor"></textarea>
-						<!--<span class="validationerror" ng-show="storefveditor.storeveditor.$error.required">Required!</span>
-						<span class="validationerror" ng-show="storefveditor.storeveditor.$error.minlength">At least one character!</span>-->
+						<textarea data-ng-model="valueData[keyData]" class="codeeditor" rows="20" name="storeveditor" required></textarea>
 					</form>
 				</view>
 				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="store">
 					<form name="storefjeditor">
 						<textarea data-ng-model="$parent.jsonData" class="codeeditor" rows="20" name="storejeditor" required valid-json></textarea>
-						<span class="validationerror" ng-show="storefjeditor.storejeditor.$error.validJson" title="The JSON string you provided was composed containing errors. Please check for errors in your data structure!">The JSON string you provided was composed containing errors. Please check for errors in your data structure!</span>
 						<div class="row">
 							<button class="flatButton" data-ng-click="saveJson()" ng-disabled="!storefjeditor.$valid">save</button>
 						</div>

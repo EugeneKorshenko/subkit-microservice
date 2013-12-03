@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -22,7 +23,11 @@ module.exports = function(grunt) {
           "files/mobile/css/style.css": "files/mobile/css/style.less"
         }
       }
-    }
+    },
+   watch: {
+            files: "files/mobile/css/*",
+            tasks: ["less"]
+        }
   });
   grunt.registerTask('default', ['mochaTest']);
   grunt.registerTask('css', ['less']);

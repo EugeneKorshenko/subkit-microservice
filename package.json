@@ -32,7 +32,8 @@
     "grunt-cli": "*",
     "grunt": "*",
     "grunt-mocha-test": "*",
-    "grunt-contrib-less": "~0.8.2"
+    "grunt-contrib-less": "~0.8.2",
+   "grunt-contrib-watch": "*"
   },
   "main": "src/server.js",
   "engines": {

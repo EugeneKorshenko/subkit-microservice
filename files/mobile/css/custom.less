@@ -219,7 +219,7 @@
 	height: 30px;
 }
 
-.arrowlist .arrow {
+.arrow {
 	background: url(../img/listArrow.svg);
 	background-position: left center;
 	background-repeat: no-repeat;
@@ -396,26 +396,12 @@ view[data-content='registration']{
 
 view[data-content='storage']{
 	form{
-		.tCell{
-			padding: 5px 20px;
-			display: table-cell;
-			text-align: right;
-			width: 100%;
-			button{
-				position: initial !important;
-			}
-			input{
-				padding: 5px;
-				width: 100%;
-			}
-		}
-		.tCell:first{
-			text-align: left;
-		}
+		
 	}
 	div.itemlist{
 		border-bottom: 1px solid @highlight-color;
 		padding: 5px;
+		display: table-row;
 		div:nth-of-type(1){
 			transition: background-color 150ms linear;
 			cursor: pointer;
@@ -549,8 +535,37 @@ input.ng-invalid.ng-dirty, textarea.ng-invalid.ng-dirty {
 	transition: background-color 550ms linear;
 }
 input.ng-valid.ng-dirty, textarea.ng-valid.ng-dirty {
-	background-color: #A3EAFF;
+	background-color: transparent;
 	transition: background-color 350ms linear;
+}
+
+div.table{
+	display: table; 
+	width: 100%;
+	white-space: nowrap;
+	.tablerow{
+		display: table-row;
+		.tablecell{
+			border-bottom: 1px solid @highlight-color;
+			padding: 5px;
+			display: table-cell;
+			color: @highlight-color;
+			width: 100%;
+			input{
+				width: 100%;
+				padding: 5px 5px 5px 0;
+			}
+			span{
+				display: inline-block;
+				width: 100%; 
+				padding: 5px 5px 5px 0;
+			}
+		}
+		.tablecell30{
+			width: 30px;
+			display: inline-block;
+		}
+	}
 }
 
 /* browsers must not draw red-outline when 'required' attr was found*/
@@ -559,7 +574,11 @@ input.ng-valid.ng-dirty, textarea.ng-valid.ng-dirty {
 }
 
 button{
-	cursor: pointer;  
+	cursor: pointer;
+}
+
+.pointer{
+	cursor: pointer;
 }
 
 

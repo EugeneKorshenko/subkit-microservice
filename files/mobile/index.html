@@ -119,27 +119,28 @@
 						<button data-ng-click="previous()" data-ng-show="hasParent()" class="tileButton mediumTile">previous</button>
 						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="tileButton mediumTile">json</button>
 					</div>
-					<div class="row">
-						<form name="storefnewstore">
-							<div class="tCell">
-								<input type="text" placeholder="new" data-ng-model="$parent.itemName" name="newstore" required ng-minlength="3">
+							<form name="storefnewstore">
+						<div class="table">
+							<div class="tablerow">
+								<div class="tablecell">
+									<input type="text" placeholder="new" data-ng-model="$parent.itemName" name="newstore" required ng-minlength="3">
+								</div>
+								<div class="tablecell30">
+									<button class="rotateButton" data-ng-click="create(itemName)" ng-disabled="!storefnewstore.$valid" title="Add Item">+</button>
+								</div>
 							</div>
-							<div class="tCell">
-								<button class="rotateButton" data-ng-click="create(itemName)" ng-disabled="!storefnewstore.$valid" title="Add Item">+</button>
-							</div>
-						</form>
-					</div>
-					<div class="itemlist" data-ng-repeat="store in stores" data-ng-click="(!store.value) ? next(store.key) : edit(store.dataKey)">
-						<div title="Administer {{store.key}}">
-							<div>
-								<span data-ng-bind="store.key"></span>
-							</div>
-							<div class="{{(!store.value) ? 'arrow' : 'nonarrow'}}"></div>
 						</div>
-						<div>
-							<button class="rotateButton" data-ng-click="remove(store.dataKey)" title="Remove {{store.key}}">&ndash;</button>
+						<div class="table">
+							<div class="tablerow" data-ng-repeat="store in stores">
+								<div class="tablecell pointer" title="Administer '{{store.key}}'" data-ng-click="(!store.value) ? next(store.key) : edit(store.dataKey)">
+									<span data-ng-bind="store.key"></span>
+								</div>
+								<div class="tablecell30">
+									<button class="rotateButton" data-ng-click="remove(store.dataKey)" title="Remove '{{store.key}}'">&ndash;</button>
+								</div>
+							</div>
 						</div>
-					</div>
+					</form>
 				</view>
 				<view data-content="valueeditor" class="hidden" headertext="value" backtext="store">
 					<div class="row">
@@ -170,8 +171,6 @@
 					<div class="row">
 						<form name="pubsubfnewpub">
 							<input type="text" class="input" placeholder="new" data-ng-model="$parent.channelName" name="newpub" required ng-minlength="3">
-							<span class="validationerror" ng-show="pubsubfnewpub.newpub.$error.required">Required!</span>
-							<span class="validationerror" ng-show="pubsubfnewpub.newpub.$error.minlength">At least three characters!</span>
 							<button class="rotateButton" data-ng-click="create(channelName)" ng-disabled="!pubsubfnewpub.$valid">+</button>
 						</form>
 					</div>
@@ -195,7 +194,6 @@
 					</div>
 					<form name="pubsubfnewval">
 						<span>Value: </span><input type="text" data-ng-model="messageValue" name="pubnewval" required>
-						<span class="validationerror" ng-show="pubsubfnewval.pubnewval.$error.required">Required!</span>
 						<button data-ng-click="publish(keyData, messageValue)" class="tileButton" ng-disabled="!pubsubfnewval.$valid">publish</button>
 					</form>
 					<div class="codepreview">

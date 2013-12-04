@@ -25,7 +25,7 @@ module.exports = function(grunt) {
       }
     },
    watch: {
-            files: "files/mobile/css/*",
+            files: ["files/mobile/css/custom.less"],
             tasks: ["less"]
         }
   });

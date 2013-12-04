@@ -96,7 +96,7 @@
 				</view>
 			</div>
 
-			<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="center">
+			<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="SubKit Center">
 				<div class="centerMenu">
 					<go data-view="storage" class="tileButton largeTile">store</go>
 					<go data-view="pubsub" class="tileButton largeTile">pubsub</go>
@@ -114,12 +114,12 @@
 			</view>
 
 			<div data-ng-controller="StorageCtrl">
-				<view data-content="storage" class="hidden" backtext="center" headertext="store">
+				<view data-content="storage" class="hidden" backtext="center" headertext="Store">
 					<div class="menu">
 						<button data-ng-click="previous()" data-ng-show="hasParent()" class="tileButton mediumTile">previous</button>
 						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="tileButton mediumTile">json</button>
 					</div>
-							<form name="storefnewstore">
+					<form name="storefnewstore">
 						<div class="table">
 							<div class="tablerow">
 								<div class="tablecell">
@@ -142,7 +142,7 @@
 						</div>
 					</form>
 				</view>
-				<view data-content="valueeditor" class="hidden" headertext="value" backtext="store">
+				<view data-content="valueeditor" class="hidden" headertext="Store/ValueEditor" backtext="store">
 					<div class="row">
 						<button class="flatButton" data-ng-click="saveValue()" ng-disabled="!storefveditor.$valid">save</button>
 					</div>
@@ -154,7 +154,7 @@
 						<textarea data-ng-model="valueData[keyData]" class="codeeditor" rows="20" name="storeveditor" required></textarea>
 					</form>
 				</view>
-				<view data-content="jsoneditor" class="hidden" headertext="json" backtext="store">
+				<view data-content="jsoneditor" class="hidden" headertext="Store/JsonEditor" backtext="store">
 					<form name="storefjeditor">
 						<textarea data-ng-model="$parent.jsonData" class="codeeditor" rows="20" name="storejeditor" required valid-json></textarea>
 						<div class="row">
@@ -165,23 +165,34 @@
 			</div>
 
 			<div data-ng-controller="PubSubCtrl">
-				<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="pubsub">
+				<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="PubSub">
 					<div class="menu">
 					</div>
-					<div class="row">
-						<form name="pubsubfnewpub">
-							<input type="text" class="input" placeholder="new" data-ng-model="$parent.channelName" name="newpub" required ng-minlength="3">
-							<button class="rotateButton" data-ng-click="create(channelName)" ng-disabled="!pubsubfnewpub.$valid">+</button>
-						</form>
-					</div>
-					<ul class="arrowlist">
-						<li data-ng-repeat="channel in channels">
-							<button class="item" data-ng-bind="channel" data-ng-click="open(channel)"></button>
-							<button class="rotateButton" data-ng-click="remove(channel)">&ndash;</button>
-						</li>
-					</ul>					
+					<form name="pubsubfnewpub">
+						<div class="table">
+							<div class="tablerow">
+								<div class="tablecell">
+									<input type="text" class="input" placeholder="new" data-ng-model="$parent.channelName" name="newpub" required ng-minlength="3">
+								</div>
+								<div class="tablecell30">
+									<button class="rotateButton" data-ng-click="create(channelName)" ng-disabled="!pubsubfnewpub.$valid" title="Add Channel">+</button>
+								</div>
+							</div>
+						</div>
+						<div class="table">
+							<div class="tablerow" data-ng-repeat="channel in channels">
+								<div class="tablecell pointer" title="Administer Task: {{channel}}" data-ng-click="open(channel)">
+									<span data-ng-bind="channel"></span>
+								</div>
+								<div class="tablecell30">
+									<button class="rotateButton" data-ng-click="remove(channel)" title="Remove Task">&ndash;</button>
+								</div>
+							
+							</div>
+						</div>
+					</form>
 				</view>
-				<view data-content="channeleditor" class="hidden" headertext="channel" backtext="channels">
+				<view data-content="channeleditor" class="hidden" headertext="PubSub/Channels" backtext="pubsub">
 					<div class="menu">
 						<button data-ng-click="subscribe(keyData)" class="tileButton largeTile">subscribe</button>
 						<button data-ng-click="unsubscribe(keyData)" class="tileButton largeTile">unsubscibe</button>
@@ -193,8 +204,13 @@
 						<span data-ng-bind="channelStatus" class="error"></span>
 					</div>
 					<form name="pubsubfnewval">
-						<span>Value: </span><input type="text" data-ng-model="messageValue" name="pubnewval" required>
-						<button data-ng-click="publish(keyData, messageValue)" class="tileButton" ng-disabled="!pubsubfnewval.$valid">publish</button>
+						<div class="table">
+							<div class="tablerow">
+								<div class="tablecell60 tBlue"><span>Value: </span></div>
+								<div class="tablecell rstBorder"><input type="text" data-ng-model="messageValue" name="pubnewval" required></div>
+								<div class="tablecell60"><button data-ng-click="publish(keyData, messageValue)" class="button" ng-disabled="!pubsubfnewval.$valid">publish</button></div>
+							</div>
+						</div>
 					</form>
 					<div class="codepreview">
 					<ul>
@@ -205,9 +221,9 @@
 					</div>
 				</view>
 			</div>
-
-			<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="statistics">
-				<div data-ng-controller="StatisticsCtrl">
+			
+			<div data-ng-controller="StatisticsCtrl">
+				<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="Statistics">
 					<div class="menu">
 						<div class="tileButton largeTile">
 							<span class="light">Connections</span>
@@ -262,11 +278,11 @@
 							</li>
 						</ul>
 					</div>
-				</div>
-			</view>	
-
+				</view>	
+			</div>
+			
 			<div data-ng-controller="FilesCtrl">
-				<view data-content="files" class="hidden" back="center" backtext="back" headertext="files">
+				<view data-content="files" class="hidden" back="center" backtext="back" headertext="Files">
 					<div class="menu">
 						<input type="file" multiple id="fileUpload" style="display: none;">
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
@@ -285,7 +301,7 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="fileeditor" class="hidden" headertext="editor" backtext="files">
+				<view data-content="fileeditor" class="hidden" headertext="Files/Editor" backtext="files">
 					<div class="row">
 						<button class="flatButton" data-ng-click="save()">save</button>
 					</div>
@@ -296,13 +312,13 @@
 					</div>
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>
-				<view data-content="filepreview" class="hidden" headertext="preview" backtext="editor">
+				<view data-content="filepreview" class="hidden" headertext="Files/Preview" backtext="editor">
 					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
 				</view>
 			</div>
 
 			<div data-ng-controller="TasksCtrl">
-				<view data-content="tasks" class="hidden" back="center" backtext="back" headertext="tasks">
+				<view data-content="tasks" class="hidden" back="center" backtext="back" headertext="Tasks">
 					<div class="menu">
 						<input type="file" multiple id="fileUpload" style="display: none;">
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
@@ -321,7 +337,7 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="taskeditor" class="hidden" headertext="editor" backtext="tasks">
+				<view data-content="taskeditor" class="hidden" headertext="Tasks/Editor" backtext="tasks">
 					<form name="tasksfeditor">
 						<div class="row">
 							<button class="flatButton" data-ng-click="save()" ng-disabled="false">save</button>
@@ -335,7 +351,7 @@
 						<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20" name="taskeditor" required></textarea>
 					</form>
 				</view>
-				<view data-content="taskpreview" class="hidden" headertext="preview" backtext="editor">
+				<view data-content="taskpreview" class="hidden" headertext="Tasks/Preview" backtext="editor">
 					<div data-ng-bind="previewOutput" class="codepreview"></div>
 				</view>
 				<view data-content="scheduletask" class="hidden" headertext="schedule" backtext="editor">
@@ -344,7 +360,7 @@
 			</div>
 
 			<div data-ng-controller="TemplatesCtrl">
-				<view data-content="templates" class="hidden" back="center" backtext="back" headertext="templates">
+				<view data-content="templates" class="hidden" back="center" backtext="back" headertext="Templates">
 					<div class="menu">
 						<input type="file" multiple id="fileUpload" style="display: none;">
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
@@ -364,7 +380,7 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="templateeditor" class="hidden" headertext="editor" backtext="templates">
+				<view data-content="templateeditor" class="hidden" headertext="Templates/Editor" backtext="templates">
 					<div class="row">
 						<button class="flatButton" data-ng-click="save()">save</button>
 					</div>
@@ -380,7 +396,7 @@
 				</view>				
 			</div>
 
-			<view data-content="account" class="hidden" back="center" backtext="back" headertext="account">
+			<view data-content="account" class="hidden" back="center" backtext="back" headertext="Account">
 				<div data-ng-controller="AccountCtrl" name="account">
 					<hr>
 					<h3 class="subHead">General Informations</h3>
@@ -529,7 +545,7 @@
 			</view>
 
 			<div data-ng-controller="IdentityCtrl">
-				<view data-content="identity" class="hidden" headertext="identity" backtext="back" back="center">
+				<view data-content="identity" class="hidden" headertext="Identity" backtext="back" back="center">
 					<div class="row">
 						<form name="identiyfnew">
 							<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId" name="addidentity" required ng-minlength="2">
@@ -545,7 +561,7 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="identityeditor" class="hidden" headertext="edit identity" backtext="identity">
+				<view data-content="identityeditor" class="hidden" headertext="Identity/Edit" backtext="identity">
 					<form name="identiyfacc">
 						<div class="row">
 							<button class="flatButton" data-ng-click="save()" ng-disabled="!identiyfacc.idusername.$valid || !identiyfacc.idpassword.$valid">save</button>
@@ -591,7 +607,7 @@
 			</div>
 
 			<div data-ng-controller="EMailCtrl">
-				<view data-content="email" class="hidden" headertext="email" backtext="back" back="center" next="emailsettings" nexttext="settings">
+				<view data-content="email" class="hidden" headertext="Email" backtext="back" back="center" next="emailsettings" nexttext="settings">
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
 						<button class="rotateButton" data-ng-click="create(userId)">+</button>
@@ -603,7 +619,7 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="emailgroupeditor" class="hidden" headertext="editor" backtext="email">
+				<view data-content="emailgroupeditor" class="hidden" headertext="Email/GroupEditor" backtext="email">
 					<div class="rowtext">
 						<select data-ng-model="$parent.template" data-ng-options="t for t in templates">
 							<option value="">-- choose template --</option>
@@ -619,7 +635,7 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="templatedata" class="hidden" headertext="editor" backtext="back" back="emailgroupeditor">
+				<view data-content="templatedata" class="hidden" headertext="Email/GroupEditor/Template" backtext="back" back="emailgroupeditor">
 					<form name="storefjeditor">
 						<div class="row">
 							<button class="flatButton" data-ng-click="use()" ng-disabled="!storefjeditor.$valid">use</button>
@@ -628,16 +644,16 @@
 						<span class="validationerror" ng-show="storefjeditor.storejeditor.$error.validJson" title="The JSON string you provided was composed containing errors. Please check for errors in your data structure!">The JSON string you provided was composed containing errors. Please check for errors in your data structure!</span>
 					</form>
 				</view>
-				<view data-content="emailpreview" class="hidden" headertext="preview" backtext="back" back="emailgroupeditor">
+				<view data-content="emailpreview" class="hidden" headertext="Email/GroupEditor/Template/Preview" backtext="back" back="emailgroupeditor">
 					<button class="flatButton" data-ng-click="send()">send</button>
 					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
 				</view>
-				<view data-content="emailsettings" class="hidden" headertext="settings" backtext="back" back="email">
+				<view data-content="emailsettings" class="hidden" headertext="Settings" backtext="back" back="email">
 				</view>
 			</div>
 
 			<div data-ng-controller="PushNotifyCtrl">
-				<view data-content="pushnotify" class="hidden" headertext="push notify" backtext="back" back="center" next="pushnotifysettings" nexttext="settings">
+				<view data-content="pushnotify" class="hidden" headertext="PushNotifications" backtext="back" back="center" next="pushnotifysettings" nexttext="settings">
 					<div class="row">
 						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
 						<button class="rotateButton" data-ng-click="create(userId)">+</button>
@@ -649,7 +665,7 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="pushnotifygroupeditor" class="hidden" headertext="editor" backtext="back" back="pushnotify">
+				<view data-content="pushnotifygroupeditor" class="hidden" headertext="PushNotifications/Editor" backtext="back" back="pushnotify">
 					<div class="rowtext">
 						<form name="pushnotifyfnew">
 							<input type="text" class="input" placeholder="new" data-ng-model="$parent.pushmessage" name="pushmessage" required>
@@ -664,7 +680,7 @@
 						</li>
 					</ul>
 				</view>
-				<view data-content="pushnotifysettings" class="hidden" headertext="settings" backtext="back" back="pushnotify">
+				<view data-content="pushnotifysettings" class="hidden" headertext="PushNotifications/Settings" backtext="back" back="pushnotify">
 					<div class="menu">
 						<input type="file" id="fileUpload" style="display: none;">
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">pfx/p12 certificate</button>
@@ -673,7 +689,7 @@
 			</div>
 
 			<div data-ng-controller="LocationCtrl">
-				<view data-content="location" class="hidden" headertext="location" backtext="back" back="center">
+				<view data-content="location" class="hidden" headertext="GeoLocation" backtext="back" back="center">
 				</view>
 			</div>
 		</views>

@@ -295,32 +295,42 @@
 						<input type="file" multiple id="fileUpload" style="display: none;">
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
 					</div>
-					<div class="row">
-						<form name="filefnewfile">
-							<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addfile" required>
-							<span class="validationerror" ng-show="filefnewfile.addfile.$error.required">Required!</span>
-							<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!filefnewfile.$valid" >+</button>
-						</form>
-					</div>
-					<ul class="arrowlist">
-						<li data-ng-repeat="file in files">
-							<button class="item" data-ng-bind="file" data-ng-click="open(file)"></button>
-							<button class="rotateButton" data-ng-click="remove(file)">&ndash;</button>
-						</li>
-					</ul>
+					<form name="filefnewfile">
+						<div class="table">
+							<div class="tablerow">
+								<div class="tablecell">
+										<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addfile" required ng-minlenght="3">
+								</div>
+								<div class="tablecell30">
+									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!filefnewfile.$valid" >+</button>
+								</div>
+							</div>
+						</div>
+						<div class="table">
+							<div class="tablerow" data-ng-repeat="file in files">
+								<div class="tablecell pointer" data-ng-click="open(file)" title="Edit '{{file}}'">
+									<span data-ng-bind="file"></span>
+								</div>
+								<div class="tablecell30">
+									<button class="rotateButton" data-ng-click="remove(file)" title="Delete '{{file}}'">&ndash;</button>
+								</div>
+							</div>
+						</div>
+					</form>
 				</view>
 				<view data-content="fileeditor" class="hidden" headertext="Files/Editor" backtext="files">
 					<div class="row">
 						<button class="flatButton" data-ng-click="save()">save</button>
 					</div>
-					<div class="rowtext">
-						<span>File: </span>
-						<span data-ng-bind="keyData"></span>
-						<button class="tileButton" data-ng-click="preview(keyData)">preview</button>
+					<div class="table">
+						<div class="tablerow">
+							<div class="tablecell">File:&nbsp;<span data-ng-bind="keyData"></span></div>
+							<div class="tablecell60"><button class="tileButton" data-ng-click="preview(keyData)">preview</button></div>
+						</div>
 					</div>
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>
-				<view data-content="filepreview" class="hidden" headertext="Files/Preview" backtext="editor">
+				<view data-content="filepreview" class="hidden" headertext="Files/Editor/Preview" backtext="editor">
 					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
 				</view>
 			</div>

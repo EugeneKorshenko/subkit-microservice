@@ -409,6 +409,37 @@ view[data-content='storage']{
 
 }
 
+view[data-content='fileeditor']{
+	.table{
+		margin-top: 5px;
+		button{
+			width: 60px !important;
+		}
+		.tablerow{
+			.tablecell{
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+				border: none;
+				padding: 0;
+				span{
+					display: inline-block;
+					width: 100%; 
+					padding: 0;
+					max-width: 640px;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
+					vertical-align: middle;
+				}
+			}
+			.tablecell60{
+				text-align: right;
+			}
+		}
+	}
+}
+
 view[data-content='channeleditor']{
 	div.status{
 		font-size: 14px;

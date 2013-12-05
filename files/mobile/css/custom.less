@@ -8,11 +8,15 @@
 	transition: 0.2s;
 	background-color: rgba(255,255,255,0.0);
 }
-.rotateButton:hover {
+.rotateButton:hover:enabled {
 	-webkit-transform: rotateZ(360deg);
 	-moz-transform: rotateZ(360deg);
 	background-color: @highlight-color;
 	color: white;
+}
+
+.rotateButton:disabled{
+	opacity: 0.25;
 }
 
 .roundButton {
@@ -43,10 +47,16 @@
 	background-color: @highlight-color;
 	overflow: hidden;
 }
+
 .tileButton:hover:enabled {
 	background-color: white;
 	color: @highlight-color;
 }
+
+.tileButton:disabled{
+	background-color: graytext !important;
+}
+
 .largeTile {
 	width: 80px;
 	height: 80px;
@@ -87,6 +97,7 @@
 .menu {
 	height: 80px;
 	float: left;
+	padding-right: 5px;
 }
 
 .row {
@@ -398,8 +409,36 @@ view[data-content='storage']{
 
 }
 
-
 view[data-content='channeleditor']{
+	div.status{
+		font-size: 14px;
+		color: #227598;
+		max-width: 705px;
+		display: inline-block;
+		div.table{
+			display: inline-table;
+			.tablecell{
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+				border: none;
+				padding: 0;
+				span{
+					display: inline-block;
+					width: 100%; 
+					padding: 0;
+					max-width: 640px;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
+					vertical-align: middle;
+				}
+			}
+			.tablecell60{
+				vertical-align: middle;
+			}
+		}
+	}
 	form[name='pubsubfnewval']{
 		span{
 			color: #227598;
@@ -411,7 +450,7 @@ view[data-content='channeleditor']{
 				}
 				div:nth-of-type(2){
 					input{
-
+						border-bottom: 1px solid @highlight-color;
 					}
 				}
 				div:nth-of-type(3){
@@ -510,10 +549,6 @@ div[name='account']{
 
 div.clear{
 	clear: both;
-}
-
-button.tileButton:disabled{
-	background-color: graytext !important;
 }
 
 /* validation fun */

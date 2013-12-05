@@ -197,12 +197,20 @@
 						<button data-ng-click="subscribe(keyData)" class="tileButton largeTile">subscribe</button>
 						<button data-ng-click="unsubscribe(keyData)" class="tileButton largeTile">unsubscibe</button>
 					</div>
-					<div class="row rowtext">
-						<span>Channel: </span>
-						<span data-ng-bind="keyData"></span>
-						<span>Status: </span>
-						<span data-ng-bind="channelStatus" class="error"></span>
+					<div class="status">
+						<div class="table">
+							<div class="tablerow">
+								<div class="tablecell60">Channel</div>:&nbsp;
+								<div class="tablecell"><span data-ng-bind="keyData"></div>
+							</div>
+							<div class="tablerow">
+								<div class="tablecell60">Status</span></div>:&nbsp;
+								<div class="tablecell"><span data-ng-bind="channelStatus" class="error"></div>
+							</div>
+						</div>
 					</div>
+					<div class="clear"></div>
+					<hr>
 					<form name="pubsubfnewval">
 						<div class="table">
 							<div class="tablerow">

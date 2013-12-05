@@ -166,8 +166,7 @@
 
 			<div data-ng-controller="PubSubCtrl">
 				<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="PubSub">
-					<div class="menu">
-					</div>
+					<div class="menu"></div>
 					<form name="pubsubfnewpub">
 						<div class="table">
 							<div class="tablerow">
@@ -188,7 +187,6 @@
 							<div class="tablecell30">
 								<button class="rotateButton" data-ng-click="remove(channel)" title="Remove Task">&ndash;</button>
 							</div>
-						
 						</div>
 					</div>
 				</view>
@@ -221,11 +219,11 @@
 						</div>
 					</form>
 					<div class="codepreview">
-					<ul>
-						<li data-ng-repeat="message in messageLog">
-							<div data-ng-bind="message.value"></div>
-						</li>
-					</ul>
+						<ul>
+							<li data-ng-repeat="message in messageLog">
+								<div data-ng-bind="message.value"></div>
+							</li>
+						</ul>
 					</div>
 				</view>
 			</div>
@@ -425,8 +423,8 @@
 				</view>				
 			</div>
 
-			<view data-content="account" class="hidden" back="center" backtext="back" headertext="Account">
-				<div data-ng-controller="AccountCtrl" name="account">
+			<div data-ng-controller="AccountCtrl" name="account">
+				<view data-content="account" class="hidden" back="center" backtext="back" headertext="Account">
 					<hr>
 					<h3 class="subHead">General Informations</h3>
 					<hr>
@@ -570,9 +568,9 @@
 					<div class="row">
 						<button class="flatButton" data-ng-click="save()">save</button>
 					</div>
-				</div>
-			</view>
-
+				</view>
+			</div>
+			
 			<div data-ng-controller="IdentityCtrl">
 				<view data-content="identity" class="hidden" headertext="Identity" backtext="back" back="center">
 					<div class="row">

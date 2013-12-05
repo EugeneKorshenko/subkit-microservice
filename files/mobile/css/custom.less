@@ -409,11 +409,11 @@ view[data-content='storage']{
 
 }
 
-view[data-content='fileeditor'], view[data-content='templateeditor']{
+view[data-content='fileeditor'], view[data-content='templateeditor'], view[data-content='taskeditor']{
 	.table{
 		margin-top: 5px;
 		button{
-			width: 60px !important;
+			width: 60px;
 		}
 		.tablerow{
 			.tablecell{
@@ -435,6 +435,12 @@ view[data-content='fileeditor'], view[data-content='templateeditor']{
 			}
 			.tablecell60{
 				text-align: right;
+			}
+			.tablecell80{
+				text-align: right;
+				button{
+					width: 75px;
+				}
 			}
 		}
 	}
@@ -628,6 +634,10 @@ div.table{
 		}
 		.tablecell60{
 			width: 60px;
+			display: inline-block;
+		}
+		.tablecell80{
+			width: 80px;
 			display: inline-block;
 		}
 	}

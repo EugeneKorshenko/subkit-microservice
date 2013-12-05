@@ -589,10 +589,10 @@ var Subkit = function(config){
 		httpRequest.get(subscribeUrl, self.options, function(status, result){
 			if(status !== 200) {
 				callback({message: "subscription error - retry"});
-				intervalRef = setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 250);
+				intervalRef = setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 500);
 			}else{
 				result.json().forEach(function(item){
-					callback(item.data);
+					callback(item.value);
 				});
 				intervalRef = setTimeout(function(){ if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 0);	
 			}

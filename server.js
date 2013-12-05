@@ -69,7 +69,7 @@ var storage = require('storage-module').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
 var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
 var email = require("./lib/email-module.js").init(emailConfig, renderer);
-var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email);
+var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email, helper);
 var push = require('./lib/push-module.js').init(pushConfig);
 
 var options = { name: "SubKit" };
@@ -157,7 +157,7 @@ require("./lib/pubsub.js").init(server, pubsub, helper);
 require("./lib/static.js").init(server, staticConfig, helper);
 require("./lib/template.js").init(server, templateConfig, renderer, helper);
 require("./lib/task.js").init(server, storage, taskConfig, task, helper);
-require("./lib/statistics.js").init(server, storage, staticConfig, helper);
+require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helper);
 
 require("./lib/identity.js").init(server, storage, helper);
 require("./lib/email.js").init(server, emailConfig, task, helper);

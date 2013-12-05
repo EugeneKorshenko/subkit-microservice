@@ -130,17 +130,17 @@
 								</div>
 							</div>
 						</div>
-						<div class="table">
-							<div class="tablerow" data-ng-repeat="store in stores">
-								<div class="tablecell pointer" title="Administer '{{store.key}}'" data-ng-click="(!store.value) ? next(store.key) : edit(store.dataKey)">
-									<span data-ng-bind="store.key"></span>
-								</div>
-								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="remove(store.dataKey)" title="Remove '{{store.key}}'">&ndash;</button>
-								</div>
+					</form>
+					<div class="table">
+						<div class="tablerow" data-ng-repeat="store in stores">
+							<div class="tablecell pointer" title="Administer '{{store.key}}'" data-ng-click="(!store.value) ? next(store.key) : edit(store.dataKey)">
+								<span data-ng-bind="store.key"></span>
+							</div>
+							<div class="tablecell30">
+								<button class="rotateButton" data-ng-click="remove(store.dataKey)" title="Remove '{{store.key}}'">&ndash;</button>
 							</div>
 						</div>
-					</form>
+					</div>
 				</view>
 				<view data-content="valueeditor" class="hidden" headertext="Store/ValueEditor" backtext="store">
 					<div class="row">
@@ -179,18 +179,18 @@
 								</div>
 							</div>
 						</div>
-						<div class="table">
-							<div class="tablerow" data-ng-repeat="channel in channels">
-								<div class="tablecell pointer" title="Administer Task: {{channel}}" data-ng-click="open(channel)">
-									<span data-ng-bind="channel"></span>
-								</div>
-								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="remove(channel)" title="Remove Task">&ndash;</button>
-								</div>
-							
-							</div>
-						</div>
 					</form>
+					<div class="table">
+						<div class="tablerow" data-ng-repeat="channel in channels">
+							<div class="tablecell pointer" title="Administer Task: {{channel}}" data-ng-click="open(channel)">
+								<span data-ng-bind="channel"></span>
+							</div>
+							<div class="tablecell30">
+								<button class="rotateButton" data-ng-click="remove(channel)" title="Remove Task">&ndash;</button>
+							</div>
+						
+						</div>
+					</div>
 				</view>
 				<view data-content="channeleditor" class="hidden" headertext="PubSub/Channels" backtext="pubsub">
 					<div class="menu">
@@ -306,17 +306,17 @@
 								</div>
 							</div>
 						</div>
-						<div class="table">
-							<div class="tablerow" data-ng-repeat="file in files">
-								<div class="tablecell pointer" data-ng-click="open(file)" title="Edit '{{file}}'">
-									<span data-ng-bind="file"></span>
-								</div>
-								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="remove(file)" title="Delete '{{file}}'">&ndash;</button>
-								</div>
+					</form>
+					<div class="table">
+						<div class="tablerow" data-ng-repeat="file in files">
+							<div class="tablecell pointer" data-ng-click="open(file)" title="Edit '{{file}}'">
+								<span data-ng-bind="file"></span>
+							</div>
+							<div class="tablecell30">
+								<button class="rotateButton" data-ng-click="remove(file)" title="Delete '{{file}}'">&ndash;</button>
 							</div>
 						</div>
-					</form>
+					</div>
 				</view>
 				<view data-content="fileeditor" class="hidden" headertext="Files/Editor" backtext="files">
 					<div class="row">
@@ -383,29 +383,40 @@
 						<input type="file" multiple id="fileUpload" style="display: none;">
 						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
 					</div>
-					<div class="row">
-						<form name="templatefnew">
-							<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addtemplate" required ng-minlength="2">
-							<span class="validationerror" ng-show="templatefnew.addtemplate.$error.required">Required!</span>
-							<span class="validationerror" ng-show="templatefnew.addtemplate.$error.minlength">At least two characters!</span>
-							<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!templatefnew.$valid">+</button>
-						</form>
+					<form name="templatefnew">
+						<div class="table">
+							<div class="tablerow">
+								<div class="tablecell">
+									<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addtemplate" required ng-minlength="2">
+								</div>
+								<div class="tablecell30">
+									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!templatefnew.$valid">+</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="table">
+						<div class="tablerow" data-ng-repeat="template in templates">
+							<div class="tablecell pointer" data-ng-click="show(template)" title="Edit '{{$parent.fileName}}'">
+								<span data-ng-bind="template"></span>
+							</div>
+							<div class="tablecell30">
+								<button class="rotateButton" data-ng-click="remove(template)" title="Remove '{{$parent.fileName}}'">&ndash;</button>
+							</div>								
+						</div>
 					</div>
-					<ul class="arrowlist">
-						<li data-ng-repeat="template in templates">
-							<button class="item" data-ng-bind="template" data-ng-click="show(template)"></button>
-							<button class="rotateButton" data-ng-click="remove(template)">&ndash;</button>
-						</li>
-					</ul>
 				</view>
 				<view data-content="templateeditor" class="hidden" headertext="Templates/Editor" backtext="templates">
 					<div class="row">
 						<button class="flatButton" data-ng-click="save()">save</button>
 					</div>
-					<div class="rowtext">
-						<span>Template: </span>
-						<span data-ng-bind="keyData"></span>
-						<button class="tileButton" data-ng-click="preview(keyData)">preview</button>
+					<div class="table">
+						<div class="tablerow">
+							<div class="tablecell">Template:&nbsp;<span data-ng-bind="keyData"></span></div>
+							<div class="tablecell60">
+								<button class="tileButton" data-ng-click="preview(keyData)">preview</button>
+							</div>
+						</div>
 					</div>
 					<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20"></textarea>
 				</view>

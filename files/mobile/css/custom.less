@@ -516,21 +516,23 @@ view[data-content='channeleditor']{
 	}
 }
 
-
-div[name='account']{
+view[data-content='account']{
 	h3.subHead{
 		color: #000;
 		text-align: center;
+		background: #eee;
+		padding: 10px;
+		font-weight: bold;
 	}
+
 	div.rowtext{
-		span:first-child{
-			width: 200px;
-			display: inline-block;
-		}
+		width: 100%;
+		text-align: center;
+		border-bottom: 1px solid @highlight-color;
 		input[type='text'],[type='password']{
-			background-color: #eee;
-			width: 100% !important;
-			padding: 5px;
+			width: 100%;
+			text-align: inherit;
+			height: 50px;
 		}
 		hr{
 			padding-bottom: 5px;

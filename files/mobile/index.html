@@ -50,13 +50,13 @@
 						</div>
 					</form>
 					<div class="row">
-						<button class="flatButton" data-ng-click="login()" ng-disabled="!loginf.$valid">Sign In</button>
+						<button class="flatButton" data-ng-click="login()" ng-disabled="!loginf.$valid" title="Sign in">Sign In</button>
 					</div>
 					<div class="row center">
 						<span class="error" data-ng-bind="error"></span>
 					</div>
 					<div class="row center">
-						<go data-view="registration" class="rotateButton">+</go>
+						<go data-view="registration" class="rotateButton" title="Create new Account">+</go>
 					</div>
 				</view>
 				<view data-content="registration" class="hidden" back="login" backtext="back" headertext="New Account">
@@ -65,6 +65,9 @@
 					</div>
 					<div data-ng-hide="hasEnter">
 						<form name="signupf">
+							<div class="row">
+								<button class="flatButton" data-ng-click="register()" ng-disabled="!signupf.$valid" title="Create new Account">Register</button>
+							</div>								
 							<div class="row">
 								<input type="text" class="input" placeholder="give a new username" name="newusername" data-ng-model="$parent.newUsername" ng-required="true" ng-minlength="5" ng-maxlength="20">
 							</div>
@@ -75,9 +78,7 @@
 								<input type="password" class="input" placeholder="repeat the defined password once more just to be sure" name="newpasswordverify" data-ng-model="$parent.newPasswordv" ng-required="true" repeat-password="newpassword">
 							</div>
 						</form>
-						<div class="row">
-							<button class="flatButton" data-ng-click="register()" ng-disabled="!signupf.$valid">Register</button>
-						</div>						
+				
 					</div>
 				</view>
 				<view data-content="info" class="hidden" back="login" backtext="back" headertext="info">
@@ -98,26 +99,26 @@
 
 			<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="SubKit Center">
 				<div class="centerMenu">
-					<go data-view="storage" class="tileButton largeTile">store</go>
-					<go data-view="pubsub" class="tileButton largeTile">pubsub</go>
-					<go data-view="files" class="tileButton largeTile">files</go>
-					<go data-view="templates" class="tileButton largeTile">templates</go>
-					<go data-view="tasks" class="tileButton largeTile">tasks</go>
+					<go data-view="storage" class="tileButton largeTile" title="SubKit Data Storage">store</go>
+					<go data-view="pubsub" class="tileButton largeTile" title="SubKit Publish/Subscribe">pubsub</go>
+					<go data-view="files" class="tileButton largeTile" title="SubKit File Administration">files</go>
+					<go data-view="templates" class="tileButton largeTile" title="SubKit Template Engine">templates</go>
+					<go data-view="tasks" class="tileButton largeTile" title="SubKit Task Executor">tasks</go>
 				</div>
 				<div class="centerMenu">
-					<go data-view="identity" class="tileButton largeTile">identity</go>
-					<go data-view="email" class="tileButton largeTile">email</go>
-					<go data-view="pushnotify" class="tileButton largeTile">push notify</go>
-					<go data-view="location" class="tileButton largeTile">location</go>
-					<go data-view="statistics" class="tileButton largeTile">stats</go>
+					<go data-view="identity" class="tileButton largeTile" title="SubKit User Department">identity</go>
+					<go data-view="email" class="tileButton largeTile" title="SubKit Email Service">email</go>
+					<go data-view="pushnotify" class="tileButton largeTile" title="SubKit Push Notifications">push notify</go>
+					<go data-view="location" class="tileButton largeTile" title="SubKit Geo Locations">location</go>
+					<go data-view="statistics" class="tileButton largeTile" title="SubKit Statistics">stats</go>
 				</div>
 			</view>
 
 			<div data-ng-controller="StorageCtrl">
 				<view data-content="storage" class="hidden" backtext="center" headertext="Store">
 					<div class="menu">
-						<button data-ng-click="previous()" data-ng-show="hasParent()" class="tileButton mediumTile">previous</button>
-						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="tileButton mediumTile">json</button>
+						<button data-ng-click="previous()" data-ng-show="hasParent()" class="tileButton mediumTile" title="Return to previous Item">previous</button>
+						<button data-ng-click="json(key)" data-ng-show="isJSON()" class="tileButton mediumTile" title="Edit JSONObject">json</button>
 					</div>
 					<form name="storefnewstore">
 						<div class="table">
@@ -144,7 +145,7 @@
 				</view>
 				<view data-content="valueeditor" class="hidden" headertext="Store/ValueEditor" backtext="store">
 					<div class="row">
-						<button class="flatButton" data-ng-click="saveValue()" ng-disabled="!storefveditor.$valid">save</button>
+						<button class="flatButton" data-ng-click="saveValue()" ng-disabled="!storefveditor.$valid" title="Save changed Value">save</button>
 					</div>
 					<div class="rowtext">
 						<span>Property: </span>
@@ -158,7 +159,7 @@
 					<form name="storefjeditor">
 						<textarea data-ng-model="$parent.jsonData" class="codeeditor" rows="20" name="storejeditor" required valid-json></textarea>
 						<div class="row">
-							<button class="flatButton" data-ng-click="saveJson()" ng-disabled="!storefjeditor.$valid">save</button>
+							<button class="flatButton" data-ng-click="saveJson()" ng-disabled="!storefjeditor.$valid" title="Save changed JSON">save</button>
 						</div>
 					</form>
 				</view>
@@ -192,8 +193,8 @@
 				</view>
 				<view data-content="channeleditor" class="hidden" headertext="PubSub/Channels" backtext="pubsub">
 					<div class="menu">
-						<button data-ng-click="subscribe(keyData)" class="tileButton largeTile">subscribe</button>
-						<button data-ng-click="unsubscribe(keyData)" class="tileButton largeTile">unsubscibe</button>
+						<button data-ng-click="subscribe(keyData)" class="tileButton largeTile" title="Subscribe to Channel '{{keyData}}'">subscribe</button>
+						<button data-ng-click="unsubscribe(keyData)" class="tileButton largeTile" title="Unsubscribe from Channel '{{keyData}}'">unsubscibe</button>
 					</div>
 					<div class="status">
 						<div class="table">
@@ -214,7 +215,7 @@
 							<div class="tablerow">
 								<div class="tablecell60 tBlue"><span>Value: </span></div>
 								<div class="tablecell rstBorder"><input type="text" data-ng-model="messageValue" name="pubnewval" required></div>
-								<div class="tablecell60"><button data-ng-click="publish(keyData, messageValue)" class="button" ng-disabled="!pubsubfnewval.$valid">publish</button></div>
+								<div class="tablecell60"><button data-ng-click="publish(keyData, messageValue)" class="button" ng-disabled="!pubsubfnewval.$valid" title="Publish value to Channel '{{keyData}}'">publish</button></div>
 							</div>
 						</div>
 					</form>
@@ -233,29 +234,29 @@
 					<div class="menu">
 						<div class="tileButton largeTile">
 							<span class="light">Connections</span>
-							<div class="big" data-ng-bind="connections"></div>
+							<div class="big" data-ng-bind="connections" title="Overall connections made to your SubKit"></div>
 						</div>
 						<div class="tileButton largeTile">
 							<span class="light">Transfers</span>
 							<span class="light">KB</span>
-							<div class="big" data-ng-bind="totalKBytes"></div>
+							<div class="big" data-ng-bind="totalKBytes" title="Overall KiB transferred from and to your SubKit"></div>
 						</div>
 						<div class="tileButton largeTile">
 							<span class="light">Requests</span>
-							<div class="big" data-ng-bind="requestNumber"></div>
+							<div class="big" data-ng-bind="requestNumber" title="Overall requests made to you SubKit"></div>
 						</div>
 						<div class="tileButton largeTile">
 							<span class="light">DB</span>
 							<span class="light">KB</span>
-							<div class="big" data-ng-bind="dbSizeKBytes"></div>
+							<div class="big" data-ng-bind="dbSizeKBytes" title="Your Subkit's storage size in KiB"></div>
 						</div>
 						<div class="tileButton largeTile">
 							<span class="light">Statics</span>
 							<span class="light">KB</span>
-							<div class="big" data-ng-bind="staticsDirSizeKBytes"></div>
+							<div class="big" data-ng-bind="staticsDirSizeKBytes" title="Statistics' weight in KiB"></div>
 						</div>
 					</div>
-					<div style="clear: both;">
+					<div style="clear: both;" title="Overall URL requested from your SubKit">
 						<h1 class="rowtext small" style="font-weight: bold;">Urls Count</h1>
 						<ul class="arrowlist">
 							<li data-ng-repeat="url in urls">
@@ -266,7 +267,7 @@
 							</li>
 						</ul>
 						<h1 class="rowtext small" style="font-weight: bold;">Agents Count</h1>
-						<ul class="arrowlist">
+						<ul class="arrowlist" title="Recognized agents calling your SubKit">
 							<li data-ng-repeat="agent in agents">
 								<div class="rowtext small">
 									<span data-ng-bind="agent.value" style="font-weight: bold;"></span>
@@ -275,7 +276,7 @@
 							</li>
 						</ul>
 						<h1 class="rowtext small" style="font-weight: bold;">Transfers Count</h1>
-						<ul class="arrowlist">
+						<ul class="arrowlist" title="Transfers made to and from your SubKit">
 							<li data-ng-repeat="transfer in transfers">
 								<div class="rowtext small">
 									<span data-ng-bind="transfer.value" style="font-weight: bold;"></span>
@@ -291,7 +292,7 @@
 				<view data-content="files" class="hidden" back="center" backtext="back" headertext="Files">
 					<div class="menu">
 						<input type="file" multiple id="fileUpload" style="display: none;">
-						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
+						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile" title="Upload a local file">upload</button>
 					</div>
 					<form name="filefnewfile">
 						<div class="table">
@@ -300,7 +301,7 @@
 										<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addfile" required ng-minlenght="3">
 								</div>
 								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!filefnewfile.$valid">+</button>
+									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!filefnewfile.$valid" title="Create a new file">+</button>
 								</div>
 							</div>
 						</div>
@@ -319,12 +320,12 @@
 				<view data-content="fileeditor" class="hidden" headertext="Files/Editor" backtext="files">
 					<form name="formfileeditor">
 						<div class="row">
-							<button class="flatButton" data-ng-click="save()" ng-disabled="!formfileeditor.$valid">save</button>
+							<button class="flatButton" data-ng-click="save()" ng-disabled="!formfileeditor.$valid" title="Save file changes">save</button>
 						</div>
 						<div class="table">
 							<div class="tablerow">
 								<div class="tablecell">File:&nbsp;<span data-ng-bind="keyData"></span></div>
-								<div class="tablecell60"><button class="tileButton" data-ng-click="preview(keyData)" ng-disabled="!formfileeditor.$valid">preview</button></div>
+								<div class="tablecell60"><button class="tileButton" data-ng-click="preview(keyData)" ng-disabled="!formfileeditor.$valid" title="Preview this file">preview</button></div>
 							</div>
 						</div>
 						<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20" name="fileditor" required></textarea>
@@ -339,7 +340,7 @@
 				<view data-content="tasks" class="hidden" back="center" backtext="back" headertext="Tasks">
 					<div class="menu">
 						<input type="file" multiple id="fileUpload" style="display: none;">
-						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
+						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile" title="Upload a taskfile">upload</button>
 					</div>
 					<form name="tasksfnew">
 						<div class="table">
@@ -348,18 +349,18 @@
 									<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addtask" required>
 								</div>
 								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!tasksfnew.$valid">+</button>
+									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!tasksfnew.$valid" title="Create a new Task">+</button>
 								</div>
 							</div>
 						</div>
 					</form>
 					<div class="table">
 						<div class="tablerow" data-ng-repeat="task in tasks">
-							<div class="tablecell pointer" data-ng-click="show(task)" title="Edit Task '{{$parent.fileName}}'">
+							<div class="tablecell pointer" data-ng-click="show(task)" title="Edit Task '{{task}}'">
 								<span data-ng-bind="task"></span>
 							</div>
 							<div class="tablecell30">
-								<button class="rotateButton" data-ng-click="remove(task)" title="Remove Task '{{$parent.FileName}}'">&ndash;</button>
+								<button class="rotateButton" data-ng-click="remove(task)" title="Remove Task '{{task}}'">&ndash;</button>
 							</div>
 						</div>
 					</div>
@@ -367,13 +368,13 @@
 				<view data-content="taskeditor" class="hidden" headertext="Tasks/Editor" backtext="tasks">
 					<form name="tasksfeditor">
 						<div class="row">
-							<button class="flatButton" data-ng-click="save()" ng-disabled="!tasksfeditor.$valid">save</button>
+							<button class="flatButton" data-ng-click="save()" ng-disabled="!tasksfeditor.$valid" title="Save Task changes">save</button>
 						</div>
 						<div class="table">
 							<div class="tablerow">
 								<div class="tablecell">Task:&nbsp;<span data-ng-bind="keyData"></span></div>
-								<div class="tablecell60"><button class="tileButton" data-ng-click="run(keyData)" ng-disabled="!tasksfeditor.$valid">run</button></div>
-								<div class="tablecell80"><button class="tileButton" data-ng-click="schedule(keyData)" ng-disabled="!tasksfeditor.$valid">schedule</button></div>
+								<div class="tablecell60"><button class="tileButton" data-ng-click="run(keyData)" ng-disabled="!tasksfeditor.$valid" title="Run Task '{{keyData}}'">run</button></div>
+								<div class="tablecell80"><button class="tileButton" data-ng-click="schedule(keyData)" ng-disabled="!tasksfeditor.$valid" title="Schedule Task '{{keyData}}'">schedule</button></div>
 							</div>
 						</div>
 						<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20" name="taskeditor" required></textarea>
@@ -382,8 +383,7 @@
 				<view data-content="taskpreview" class="hidden" headertext="Tasks/Editor/Run" backtext="editor">
 					<div data-ng-bind="previewOutput" class="codepreview"></div>
 				</view>
-				<view data-content="scheduletask" class="hidden" headertext="Tasks/Editor/Schedule" backtext="editor">
-					
+				<view data-content="scheduletask" class="hidden" headertext="Tasks/Editor/Schedule" backtext="editor">					
 				</view>	
 			</div>
 
@@ -391,7 +391,7 @@
 				<view data-content="templates" class="hidden" back="center" backtext="back" headertext="Templates">
 					<div class="menu">
 						<input type="file" multiple id="fileUpload" style="display: none;">
-						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">upload</button>
+						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile" title="Upload template">upload</button>
 					</div>
 					<form name="templatefnew">
 						<div class="table">
@@ -400,7 +400,7 @@
 									<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addtemplate" required ng-minlength="2">
 								</div>
 								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!templatefnew.$valid">+</button>
+									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!templatefnew.$valid" title="Create new template">+</button>
 								</div>
 							</div>
 						</div>
@@ -419,13 +419,13 @@
 				<view data-content="templateeditor" class="hidden" headertext="Templates/Editor" backtext="templates">
 					<form name="templateeditor">
 						<div class="row">
-							<button class="flatButton" data-ng-click="save()" ng-disabled="!templateeditor.$valid">save</button>
+							<button class="flatButton" data-ng-click="save()" ng-disabled="!templateeditor.$valid" title="Save template">save</button>
 						</div>
 						<div class="table">
 							<div class="tablerow">
 								<div class="tablecell">Template:&nbsp;<span data-ng-bind="keyData"></span></div>
 								<div class="tablecell60">
-									<button class="tileButton" data-ng-click="preview(keyData)" ng-disabled="!templateeditor.$valid">preview</button>
+									<button class="tileButton" data-ng-click="preview(keyData)" ng-disabled="!templateeditor.$valid" title="Preview template '{{keyData}}'">preview</button>
 								</div>
 							</div>
 						</div>
@@ -439,149 +439,131 @@
 
 			<div data-ng-controller="AccountCtrl" name="account">
 				<view data-content="account" class="hidden" back="center" backtext="back" headertext="Account">
-					<hr>
-					<h3 class="subHead">General Informations</h3>
-					<hr>
-					<div class="rowtext">
-						<span>Domain: </span>
-						<span data-ng-bind="domain"></span>
-					</div>
-					<div class="rowtext">
-						<span>API Key: </span>
-						<input type="text" data-ng-model="apiKey" required>
-					</div>
-					<div class="rowtext">
-						<span>Username: </span>
-						<input type="text" data-ng-model="username" required>
-					</div>
-					<div class="rowtext">
-						<span>Password: </span>
-						<input type="password" data-ng-model="password" required>
-					</div>
-					<div class="rowtext">
-						<span>Validation: </span>
-						<input type="password" data-ng-model="passwordValidation" required>
-					</div>
-					<hr>
-					<h3 class="subHead">Personal Informations</h3>
-					<hr>
-					<div class="rowtext">
-						<span>Name</span>
-						<input type="text" data-ng-model="piName" required>
-					</div>
-					<div class="rowtext">
-						<span>Lastname</span>
-						<input type="text" data-ng-model="piLastname" required>
-					</div>
-					<div class="rowtext">
-						<span>Street and Number</span>
-						<input type="text" data-ng-model="piAddress" required>
-					</div>
-					<div class="rowtext">
-						<span>ZIP</span>
-						<input type="text" data-ng-model="piZip" required>
-					</div>
-					<div class="rowtext">
-						<span>Country</span>
-						<input type="text" data-ng-model="piCountry" required>
-					</div>
-					<hr>
-					<h3 class="subHead">Billing Informations (leave empty if it's the same as above)</h3>
-					<hr>
-					<div class="rowtext">
-						<span>Name</span>
-						<input type="text" data-ng-model="biName">
-					</div>
-					<div class="rowtext">
-						<span>Lastname</span>
-						<input type="text" data-ng-model="biLastname">
-					</div>
-					<div class="rowtext">
-						<span>Street and Number</span>
-						<input type="text" data-ng-model="biAddress">
-					</div>
-					<div class="rowtext">
-						<span>ZIP</span>
-						<input type="text" data-ng-model="biZip">
-					</div>
-					<div class="rowtext">
-						<span>Country</span>
-						<input type="text" data-ng-model="biCountry">
-					</div>
-					<hr>
-					<h3 class="subHead">Provisioning</h3>
-					<hr>
-					<div class="payment">
-						<div class="provBox">
-							<div class="provHead">Development</div>
-							<div class="provContent">
-								<ul>
-									<li>5 GB Data Transfer</li>
-									<li>50 Max Concurrent Connections</li>
-									<li>100 MB Data Storage</li>
-								</ul>
-							</div>
-							<div class="pselector"><input type="radio" ng-model="provisioning" value="dev" checked='checked'></div>
+					<form name="account">
+						<div class="row">
+							<button class="flatButton" data-ng-click="save()" ng-disabled="!account.$valid" title="Save account">save</button>
 						</div>
-						<div class="provBox">
-							<div class="provHead">Startup</div>
-							<div class="provContent">
-								<ul>
-									<li>20 GB Data Transfer  + 2€ per additional GB</li>
-									<li>200 Concurrent Connections + 0.20€ per additional Connection</li>
-									<li>3 GB Data Storage</li>
-								</ul>
-							</div>
-							<div class="pselector"><input type="radio" ng-model="provisioning" value="su"></div>
+						<h3 class="subHead">General Informations</h3>
+						<div class="rowtext">
+							<span>Domain: </span>
+							<span data-ng-bind="domain"></span>
 						</div>
-						<div class="provBox">
-							<div class="provHead">Production</div>
-							<div class="provContent">
-								<ul>
-									<li>275 GB Data Transfer  + 1,75€ per additional GB</li>
-									<li>750 Concurrent Connections + 0.15€ per additional Connection</li>
-									<li>10 GB Data Storage</li>
-								</ul>
-							</div>
-							<div class="pselector"><input type="radio" ng-model="provisioning" value="prod"></div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="apiKey" placeholder="API Key" required>
 						</div>
-						<div class="provBox">
-							<div class="provHead">Scale</div>
-							<div class="provContent">
-								<ul>
-									<li>250 GB Data Transfer  + 1,50€ per additional GB</li>
-									<li>2500 Concurrent Connections + 0.10€ per additional Connection</li>
-									<li>30 GB Data Storage</li>
-								</ul>
-							</div>
-							<div class="pselector"><input type="radio" ng-model="provisioning" value="scale"></div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="username" placeholder="Username" required>
 						</div>
-						<div class="provBox">
-							<div class="provHead">Top App</div>
-							<div class="provContent">
-								<ul>
-									<li>1000 GB Data Transfer  + 1,00€ per additional GB</li>
-									<li>10000 Concurrent Connections + 0.50€ per additional Connection</li>
-									<li>100 GB Data Storage</li>
-								</ul>
-							</div>
-							<div class="pselector"><input type="radio" ng-model="provisioning" value="top"></div>
+						<div class="rowtext">
+							<input type="password" placeholder="Current Password" placeholder="Current Password">
 						</div>
-						<div class="provBox">
-							<div class="provHead">MEAP</div>
-							<div class="provContent">
-								<ul>
-									<li>If you are interested in setting up SubKit as a <strong>Mobile Enterprise Application Platform</strong>, contact our customer support for further informations please.</li>
-								</ul>
-							</div>
-							<div class="pselector"></div>
+						<div class="rowtext">
+							<input type="password" data-ng-model="newpassword" placeholder="New Password">
 						</div>
-					</div>
-					<div class="clear"></div>
-					<hr>
-					<div class="row">
-						<button class="flatButton" data-ng-click="save()">save</button>
-					</div>
+						<div class="rowtext">
+							<input type="password" data-ng-model="newpasswordValidation" placeholder="Repeat New Password">
+						</div>
+						<h3 class="subHead">Personal Informations</h3>
+						<div class="rowtext">
+							<input type="text" data-ng-model="piName" placeholder="Name" required>
+						</div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="piLastname" placeholder="Lastname" required>
+						</div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="piAddress" placeholder="Street and Number" required>
+						</div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="piZip" placeholder="ZIP" required>
+						</div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="piCountry" placeholder="Country" required>
+						</div>
+						<h3 class="subHead">Billing Informations (leave empty if it's the same as above)</h3>
+						<div class="rowtext">
+							<input type="text" data-ng-model="biName" placeholder="Name">
+						</div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="biLastname" placeholder="Lastname">
+						</div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="biAddress" placeholder="Street and Number">
+						</div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="biZip" placeholder="ZIP">
+						</div>
+						<div class="rowtext">
+							<input type="text" data-ng-model="biCountry" placeholder="Country">
+						</div>
+						<h3 class="subHead">Provisioning</h3>
+						<div class="payment">
+							<div class="provBox">
+								<div class="provHead">Development</div>
+								<div class="provContent">
+									<ul>
+										<li>5 GB Data Transfer</li>
+										<li>50 Max Concurrent Connections</li>
+										<li>100 MB Data Storage</li>
+									</ul>
+								</div>
+								<div class="pselector"><input type="radio" ng-model="provisioning" value="dev" checked='checked'></div>
+							</div>
+							<div class="provBox">
+								<div class="provHead">Startup</div>
+								<div class="provContent">
+									<ul>
+										<li>20 GB Data Transfer  + 2€ per additional GB</li>
+										<li>200 Concurrent Connections + 0.20€ per additional Connection</li>
+										<li>3 GB Data Storage</li>
+									</ul>
+								</div>
+								<div class="pselector"><input type="radio" ng-model="provisioning" value="su"></div>
+							</div>
+							<div class="provBox">
+								<div class="provHead">Production</div>
+								<div class="provContent">
+									<ul>
+										<li>275 GB Data Transfer  + 1,75€ per additional GB</li>
+										<li>750 Concurrent Connections + 0.15€ per additional Connection</li>
+										<li>10 GB Data Storage</li>
+									</ul>
+								</div>
+								<div class="pselector"><input type="radio" ng-model="provisioning" value="prod"></div>
+							</div>
+							<div class="provBox">
+								<div class="provHead">Scale</div>
+								<div class="provContent">
+									<ul>
+										<li>250 GB Data Transfer  + 1,50€ per additional GB</li>
+										<li>2500 Concurrent Connections + 0.10€ per additional Connection</li>
+										<li>30 GB Data Storage</li>
+									</ul>
+								</div>
+								<div class="pselector"><input type="radio" ng-model="provisioning" value="scale"></div>
+							</div>
+							<div class="provBox">
+								<div class="provHead">Top App</div>
+								<div class="provContent">
+									<ul>
+										<li>1000 GB Data Transfer  + 1,00€ per additional GB</li>
+										<li>10000 Concurrent Connections + 0.50€ per additional Connection</li>
+										<li>100 GB Data Storage</li>
+									</ul>
+								</div>
+								<div class="pselector"><input type="radio" ng-model="provisioning" value="top"></div>
+							</div>
+							<div class="provBox">
+								<div class="provHead">MEAP</div>
+								<div class="provContent">
+									<ul>
+										<li>If you are interested in setting up SubKit as a <strong>Mobile Enterprise Application Platform</strong>, contact our customer support for further informations please.</li>
+									</ul>
+								</div>
+								<div class="pselector"></div>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</form>
 				</view>
 			</div>
 			
@@ -590,8 +572,6 @@
 					<div class="row">
 						<form name="identiyfnew">
 							<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId" name="addidentity" required ng-minlength="2">
-							<span class="validationerror" ng-show="identiyfnew.addidentity.$error.required">Required!</span>
-							<span class="validationerror" ng-show="identiyfnew.addidentity.$error.minlength">At least two characters!</span>
 							<button class="rotateButton" data-ng-click="create(userId)" ng-disabled="!identiyfnew.$valid">+</button>
 						</form>
 					</div>

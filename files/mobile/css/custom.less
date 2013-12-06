@@ -516,6 +516,54 @@ view[data-content='channeleditor']{
 	}
 }
 
+view[data-content='identityeditor']{
+	form[name='identiyfacc']{
+		h3.subHead{
+			color: #000;
+			text-align: center;
+			background: #eee;
+			padding: 10px;
+			font-weight: bold;
+		}
+		input[type='checkbox']{
+			cursor: pointer;
+		}
+		div.row{
+			text-align: center;
+			input[type='text'], input[type='password']{
+				text-align:center;
+				display: block;
+				width: 100%;
+				height: 40px;
+			}
+			div.verified{
+				padding: 5px;
+				span{
+					color: #227598;
+					display: block;
+				}
+			}
+		}
+		div.table{
+			div.tablerow{
+				div.tablecell{
+					vertical-align: middle;
+				}
+				div.tablecell30{
+					padding: 5px;
+					text-align: center;
+					input[type='checkbox']{
+						width: 20px;
+						height: 20px;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
 view[data-content='account']{
 	h3.subHead{
 		color: #000;

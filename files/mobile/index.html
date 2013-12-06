@@ -651,11 +651,11 @@
 					</form>
 					<div class="table">
 						<div class="tablerow" data-ng-repeat="item in items">
-							<div class="tablecell pointer" data-ng-click="open(item)">
+							<div class="tablecell pointer" data-ng-click="open(item)" title="Administer Emailtemplate '{{item.key}}'">
 								<span data-ng-bind="item.key"></span>
 							</div>
 							<div class="tablecell30">
-								<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
+								<button class="rotateButton" data-ng-click="remove(item.key)" title="Remove Emailtemplate '{{item.key}}'">&ndash;</button>
 							</div>
 						</div>
 					</div>
@@ -694,31 +694,52 @@
 
 			<div data-ng-controller="PushNotifyCtrl">
 				<view data-content="pushnotify" class="hidden" headertext="PushNotifications" backtext="back" back="center" next="pushnotifysettings" nexttext="settings">
-					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
-						<button class="rotateButton" data-ng-click="create(userId)">+</button>
+					<form name="pushnotifyfnewmessage">
+						<div class="table">
+							<div class="tablerow">
+								<div class="tablecell">
+									<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId" required>
+								</div>
+								<div class="tablecell30">
+									<button class="rotateButton" data-ng-click="create(userId)" title="New Push Notification" ng-disabled="!pushnotifyfnewmessage.$valid">+</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="table">
+						<div class="tablerow" data-ng-repeat="item in items">
+							<div class="tablecell pointer" data-ng-click="open(item)" title="Administer Push Notification '{{item.key}}'">
+								<span data-ng-bind="item.key"></span>
+							</div>
+							<div class="tablecell30">
+								<button class="rotateButton" data-ng-click="remove(item.key)" title="Remove Push Notification '{{item.key}}'">&ndash;</button>
+							</div>
+						</div>
 					</div>
-					<ul class="arrowlist">
-						<li data-ng-repeat="item in items">
-							<button class="item" data-ng-bind="item.key" data-ng-click="open(item)"></button>
-							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
-						</li>
-					</ul>
 				</view>
 				<view data-content="pushnotifygroupeditor" class="hidden" headertext="PushNotifications/Editor" backtext="back" back="pushnotify">
-					<div class="rowtext">
-						<form name="pushnotifyfnew">
-							<input type="text" class="input" placeholder="new" data-ng-model="$parent.pushmessage" name="pushmessage" required>
-							<span class="validationerror" ng-show="tasksfnew.pushmessage.$error.required">Required!</span>
-							<button class="tileButton" data-ng-click="send()" ng-disabled="!pushnotifyfnew.$valid">send</button>
-						</form>
+					<form name="pushnotifyfnew">
+						<div class="table">
+							<div class="tablerow">
+								<div class="tablecell">
+									<input type="text" class="input" placeholder="new" data-ng-model="$parent.pushmessage" name="pushmessage" required>
+								</div>
+								<div class="tablecell60">
+									<button class="tileButton" data-ng-click="send()" ng-disabled="!pushnotifyfnew.$valid">send</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="table">
+						<div class="tablerow">
+							<div class="tablecell">
+								<span data-ng-bind="item.key"></span>
+							</div>
+							<div class="tablecell60">
+								<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
+							</div>
+						</div>
 					</div>
-					<ul class="arrowlist">
-						<li data-ng-repeat="item in items">
-							<span class="item" data-ng-bind="item.key"></span>
-							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
-						</li>
-					</ul>
 				</view>
 				<view data-content="pushnotifysettings" class="hidden" headertext="PushNotifications/Settings" backtext="back" back="pushnotify">
 					<div class="menu">

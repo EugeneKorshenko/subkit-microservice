@@ -47,6 +47,7 @@
     "rightsPath":"./rights.json",
     "tasksPath":"./files/task",
     "jobsPath":"./files/jobs",
+    "mapreducePath":"./files/mapreduce",
     "backupPath":"./backups"
   },
   "emailConfig": {

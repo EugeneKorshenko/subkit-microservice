@@ -49,6 +49,7 @@ templateConfig.templateData = {
 var taskConfig = nconf.get("taskConfig");
 taskConfig.tasksPath = path.join(__dirname, taskConfig.tasksPath);
 taskConfig.jobsPath = path.join(__dirname, taskConfig.jobsPath);
+taskConfig.mapreducePath = path.join(__dirname, taskConfig.mapreducePath);
 taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
 taskConfig.hooks = hooks;
 

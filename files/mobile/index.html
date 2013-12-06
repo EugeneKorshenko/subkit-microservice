@@ -637,16 +637,28 @@
 
 			<div data-ng-controller="EMailCtrl">
 				<view data-content="email" class="hidden" headertext="Email" backtext="back" back="center" next="emailsettings" nexttext="settings">
-					<div class="row">
-						<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId">
-						<button class="rotateButton" data-ng-click="create(userId)">+</button>
+					<form name="emailfnewtemplate">
+						<div class="table">
+							<div class="tablerow">
+								<div class="tablecell">
+									<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId" required>
+								</div>
+								<div class="tablecell30">
+									<button class="rotateButton" data-ng-click="create(userId)" title="Create new Emailtemplate" ng-disabled="!emailfnewtemplate.$valid">+</button>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="table">
+						<div class="tablerow" data-ng-repeat="item in items">
+							<div class="tablecell pointer" data-ng-click="open(item)">
+								<span data-ng-bind="item.key"></span>
+							</div>
+							<div class="tablecell30">
+								<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
+							</div>
+						</div>
 					</div>
-					<ul class="arrowlist">
-						<li data-ng-repeat="item in items">
-							<button class="item" data-ng-bind="item.key" data-ng-click="open(item)"></button>
-							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
-						</li>
-					</ul>
 				</view>
 				<view data-content="emailgroupeditor" class="hidden" headertext="Email/GroupEditor" backtext="email">
 					<div class="rowtext">
@@ -667,14 +679,13 @@
 				<view data-content="templatedata" class="hidden" headertext="Email/GroupEditor/Template" backtext="back" back="emailgroupeditor">
 					<form name="storefjeditor">
 						<div class="row">
-							<button class="flatButton" data-ng-click="use()" ng-disabled="!storefjeditor.$valid">use</button>
+							<button class="flatButton" data-ng-click="use()" ng-disabled="!storefjeditor.$valid" title="Use this template">Save</button>
 						</div>
 						<textarea data-ng-model="$parent.templateJson" class="codeeditor" rows="20" name="storejeditor" required valid-json></textarea>
-						<span class="validationerror" ng-show="storefjeditor.storejeditor.$error.validJson" title="The JSON string you provided was composed containing errors. Please check for errors in your data structure!">The JSON string you provided was composed containing errors. Please check for errors in your data structure!</span>
 					</form>
 				</view>
 				<view data-content="emailpreview" class="hidden" headertext="Email/GroupEditor/Template/Preview" backtext="back" back="emailgroupeditor">
-					<button class="flatButton" data-ng-click="send()">send</button>
+					<button class="flatButton" data-ng-click="send()" ng-disabled="!storefjeditor.$valid" title="Send to clients">send</button>
 					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
 				</view>
 				<view data-content="emailsettings" class="hidden" headertext="Settings" backtext="back" back="email">

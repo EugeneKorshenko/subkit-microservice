@@ -69,8 +69,8 @@ var storage = require('storage-module').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
 var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
 var email = require("./lib/email-module.js").init(emailConfig, renderer);
-var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email, helper);
 var push = require('./lib/push-module.js').init(pushConfig);
+var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email, push, es);
 
 var options = { name: "SubKit" };
 

@@ -499,9 +499,9 @@ var Subkit = function(config){
 		}
 	}
 
-	//task
-	self.run = function(taskName, callback){
-		var url = self.baseUrl + "/tasks/run/" + taskName;
+	//plugin
+	self.run = function(pluginName, callback){
+		var url = self.baseUrl + "/plugins/run/" + pluginName;
 		httpRequest.get(url, self.options, function(status, result){
 			if(status !== 200) {
 				if(callback) callback(result.json());
@@ -510,8 +510,8 @@ var Subkit = function(config){
 			}
 		});
 	};
-	self.exec = function(taskName, value, callback){
-		var url = self.baseUrl + "/tasks/run/" + taskName;
+	self.exec = function(pluginName, value, callback){
+		var url = self.baseUrl + "/plugins/run/" + pluginName;
 		var msg = JSON.parse(JSON.stringify(self.options));
 		msg["data"] = value;
 		httpRequest.post(url, msg, function(status, result){

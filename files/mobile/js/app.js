@@ -224,7 +224,7 @@ angular
 
 	function _load(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.list("tasks", function(err, data){
+		subkit.list("plugins", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.tasks = data;
 			$scope.$apply();
@@ -233,7 +233,7 @@ angular
 
 	$scope.show = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.download(fileName, "tasks", function(err, data){
+		subkit.download(fileName, "plugins", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
@@ -246,7 +246,7 @@ angular
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([$scope.valueData]);
         file.name = $scope.keyData;
-        subkit.upload(file, "tasks", function(err, data){
+        subkit.upload(file, "plugins", function(err, data){
         	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         });
 	};
@@ -257,7 +257,7 @@ angular
 			var files = fileInput.files;
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 			for (var i = 0; i < files.length; i++) {
-				subkit.upload(files[i], "tasks", function(err, data){
+				subkit.upload(files[i], "plugins", function(err, data){
 					_load();
 				});
 			};
@@ -267,7 +267,7 @@ angular
 
 	$scope.remove = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.delete(fileName, "tasks", function(err, data){
+		subkit.delete(fileName, "plugins", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			_load();
 		});
@@ -277,7 +277,7 @@ angular
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([]);
         file.name = fileName;
-        subkit.upload(file, "tasks", function(err, data){
+        subkit.upload(file, "plugins", function(err, data){
         	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         	$scope.fileName = "";
         	_load();

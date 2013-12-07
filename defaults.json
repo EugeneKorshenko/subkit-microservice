@@ -45,7 +45,7 @@
   },
   "taskConfig": {
     "rightsPath":"./rights.json",
-    "tasksPath":"./files/task",
+    "pluginsPath":"./files/plugins",
     "jobsPath":"./files/jobs",
     "mapreducePath":"./files/mapreduce",
     "backupPath":"./backups"

@@ -1,5 +1,5 @@
 log("MapReduce: " + params.key + " started");
-eventsource.live("mypubsub", {
+eventsource.live("mypubsubaggegator", {
 			$init: function(state){
 				log("init");
 				log(state)
@@ -7,9 +7,9 @@ eventsource.live("mypubsub", {
 				state.events = state.events || [];
 				return state;
 			},
-			$completed: function(state){
-				log("completed");
-				log(state);
+			bucket1: function(state, event){
+				state.count++;
+				state.events.push(event);
 			},
 			first: function(state, event){
 				state.count++;

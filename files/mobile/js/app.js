@@ -687,7 +687,11 @@ angular
 		$scope.identity.groups = $scope.identity.groups.filter(function(itm){
 			return itm.value;
 		});
-		subkit.identities.save($scope.identity.identityId, angular.copy($scope.identity), function(err, data){
+		var changedIdentity = angular.copy($scope.identity);
+		changedIdentity.groups.forEach(function(group){
+			delete group.value;
+		});
+		subkit.identities.save($scope.identity.identityId, changedIdentity, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			nav.back("identity");
 		});

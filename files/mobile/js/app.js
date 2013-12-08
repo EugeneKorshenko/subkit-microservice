@@ -642,7 +642,6 @@ angular
 
 	$scope.open = function(identity){
 		$scope.identity = identity.value;
-		console.log($scope.identity);
 		$scope.groups.forEach(function(itm){
 			var index = $scope.identity.groups.filter(function(itm2){ return itm.key===itm2.key});
 			if(index.length === 0){

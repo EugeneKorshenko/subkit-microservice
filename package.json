@@ -25,7 +25,8 @@
     "node-restify-validation": "0.0.5",
     "simplesmtp": "~0.3.15",
     "mailcomposer": "~0.2.4",
-    "json-stringify-safe": "~5.0.0"
+    "json-stringify-safe": "~5.0.0",
+    "geoip": "~0.4.12"
   },
   "devDependencies": {
     "mocha": "*",
@@ -33,7 +34,7 @@
     "grunt": "*",
     "grunt-mocha-test": "*",
     "grunt-contrib-less": "~0.8.2",
-   "grunt-contrib-watch": "*"
+    "grunt-contrib-watch": "*"
   },
   "main": "src/server.js",
   "engines": {

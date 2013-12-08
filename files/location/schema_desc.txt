@@ -1,0 +1,2 @@
+"DE","Stockstadt Am Rhein","64589",49.8094,8.4728
+country,city,postalCode,latitude,longitude

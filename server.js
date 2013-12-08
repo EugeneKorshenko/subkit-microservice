@@ -72,6 +72,7 @@ var renderer = require("./lib/template-module.js").init({templatesPath: template
 var email = require("./lib/email-module.js").init(emailConfig, renderer);
 var push = require('./lib/push-module.js').init(pushConfig);
 var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email, push, es);
+var identity = require('./lib/identity-module.js').init(storage);
 
 var options = { name: "SubKit" };
 
@@ -160,7 +161,7 @@ require("./lib/template.js").init(server, templateConfig, renderer, helper);
 require("./lib/plugin.js").init(server, storage, taskConfig, task, helper);
 require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helper);
 
-require("./lib/identity.js").init(server, storage, helper);
+require("./lib/identity.js").init(server, storage, identity, helper);
 require("./lib/email.js").init(server, emailConfig, task, helper);
 require("./lib/push.js").init(server, pushConfig, storage, push, helper);
 require("./lib/location.js").init(server, storage, helper);

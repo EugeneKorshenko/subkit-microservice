@@ -69,12 +69,14 @@ if(!fs.existsSync(storageConfig.rightsPath))
 var	pubsub = require("messaging-module").init({pollInterval: 1});
 var storage = require('storage-module').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
+var identity = require('./lib/identity-module.js').init(storage);
+
 var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
-var email = require("./lib/email-module.js").init(emailConfig, renderer);
-var push = require('./lib/push-module.js').init(pushConfig);
+var email = require("./lib/email-module.js").init(emailConfig, renderer, identity);
+var push = require('./lib/push-module.js').init(pushConfig, identity);
 var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email, push, es);
 var location = require('./lib/location-module.js').init(storage);
-var identity = require('./lib/identity-module.js').init(storage);
+
 
 var options = { name: "SubKit" };
 

@@ -73,7 +73,7 @@ var identity = require('./lib/identity-module.js').init(storage);
 
 var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
 var email = require("./lib/email-module.js").init(emailConfig, renderer, identity);
-var push = require('./lib/push-module.js').init(pushConfig, identity);
+var push = require('./lib/push-module.js').init(pushConfig, storage);
 var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email, push, es);
 var location = require('./lib/location-module.js').init(storage);
 
@@ -167,7 +167,7 @@ require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helpe
 
 require("./lib/identity.js").init(server, storage, identity, helper);
 require("./lib/email.js").init(server, emailConfig, task, helper);
-require("./lib/push.js").init(server, pushConfig, storage, push, helper);
+require("./lib/push.js").init(server, pushConfig, push,identity, helper);
 require("./lib/location.js").init(server, storage, helper);
 
 require("./lib/eventsource.js").init(server, es, helper);

@@ -64,7 +64,8 @@
   "pushConfig": {
     "cert": "./certs/apn/cert.pem",
     "key": "./certs/apn/key.pem",
-    "pfx": "./certs/apn/key.p12"
+    "pfx": "./certs/apn/key.p12",
+    "GCMAPIKey": ""
   },
   "s3Config": {
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",

@@ -134,10 +134,14 @@ server.opts(/\.*/, function (req, res, next) {
 // 	console.log("A uncought exception was thrown: " + err.message);
 // });
 
+//js sdk
+server.get(/\/sdk\/?.*/, restify.serveStatic({
+	directory: './files/jssdk'
+}));
 
-//public js sdk
-server.get(/subkit[-0-9.a-z]*.js/, restify.serveStatic({
-	directory: path.join(__dirname, 'files/jssdk')
+//development center
+server.get(/\/devcenter\/?.*/, restify.serveStatic({
+  directory: './files/mobile'
 }));
 
 //start web server

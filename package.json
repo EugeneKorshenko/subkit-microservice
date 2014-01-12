@@ -24,8 +24,7 @@
     "node-restify-validation": "0.0.5",
     "simplesmtp": "~0.3.15",
     "mailcomposer": "~0.2.4",
-    "json-stringify-safe": "~5.0.0",
-    "JSONPath": "~0.9.1"
+    "json-stringify-safe": "~5.0.0"
   },
   "devDependencies": {
     "mocha": "*",

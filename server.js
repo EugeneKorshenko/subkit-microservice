@@ -139,6 +139,28 @@ server.get(/\/sdk\/?.*/, restify.serveStatic({
 	directory: './files/jssdk'
 }));
 
+//public console
+var rendererDevCenter = require("./lib/template-module.js").init({
+	templatesPath: path.join(__dirname, 'files/devcenter')
+});
+server.get("/admin/:name", function(req, res, next){
+
+	var consoleData = {
+	  url: api.url,
+	  apiKey: api.apiKey,
+	  username: admin.username,
+	  password: admin.password
+	};
+	rendererDevCenter.render(req.params.name, consoleData, function(err, html){
+	  res.contentType = 'text/html';
+	  res.write(html);
+	  res.end();
+	});
+});
+server.get(/\/admin\/public\/?.*/, restify.serveStatic({
+  directory: './files/devcenter'
+}));
+
 //development center
 server.get(/\/devcenter\/?.*/, restify.serveStatic({
   directory: './files/mobile'

@@ -20,7 +20,7 @@
 		<link rel="apple-touch-icon" sizes="120x120" href="img/touch-icon-iphone-retina.png">
 		<link rel="apple-touch-icon" sizes="152x152" href="img/touch-icon-ipad-retina.png">
 		<link rel="apple-touch-startup-image" href="img/touch-startup-image.png" />
-		<link rel="icon" type="image/png" href="img/favicon.png" />
+		<link rel="icon" type="image/ico" href="img/favicon.ico" />
 
 		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 
@@ -37,7 +37,7 @@
 		<views style="width: 100%;">
 			<div class="notification-bar"></div>
 			<div data-ng-controller="LoginCtrl">
-				<view data-content="login" next="info" nexttext="info" headertext="Welcome to SubKit">
+				<view data-content="login" next="info" nexttext="info" headertext="dev center">
 					<form name="loginf">
 						<div class="row">
 							<input type="text" class="input" name="ldomain" placeholder="domain" data-ng-model="domain" required valid-domain>
@@ -85,6 +85,8 @@
 					<div class="rowtext">
 						SubKit
 					</div>
+					<a href="/admin/doc" target="_blank">Subkit Live HTTP API</a>
+					<a href="/admin/index" target="_blank">Example Apps</a>
 					<p>
 		                <div class="shares">
 							<a class="link" href="http://subkit.io" data-name="subkitapp" target="_blank"></a>

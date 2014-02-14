@@ -62,11 +62,10 @@
     "region": "eu-west-1"
   },
   "pushConfig": {
-    "cert": "./certs/apn/cert.pem",
-    "key": "./certs/apn/key.pem",
-    "pfx": "./certs/apn/key.p12",
-    "GCMID": "874633879301",
-    "GCMAPIKey": "AIzaSyAo0JJ7nKgLQ1d-ZFG7-OpLEGaCh3nq03U"
+    "APN_Pfx": "./certs/apn/key.p12",
+    "MPNS_Cert": "",
+    "MPNS_Key": "",
+    "GCM_APIKey": "AIzaSyAo0JJ7nKgLQ1d-ZFG7-OpLEGaCh3nq03U"
   },
   "s3Config": {
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",

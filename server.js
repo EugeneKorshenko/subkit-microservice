@@ -55,9 +55,9 @@ taskConfig.hooks = hooks;
 
 var emailConfig = nconf.get("emailConfig");
 var pushConfig = nconf.get("pushConfig");
-pushConfig.cert = path.join(__dirname, pushConfig.cert);
-pushConfig.key = path.join(__dirname, pushConfig.key);
-pushConfig.pfx = path.join(__dirname, pushConfig.pfx);
+pushConfig.APN_Pfx = path.join(__dirname, pushConfig.APN_Pfx);
+pushConfig.MPNS_Cert = path.join(__dirname, pushConfig.MPNS_Cert);
+pushConfig.MPNS_Key = path.join(__dirname, pushConfig.MPNS_Key);
 
 var s3Config = nconf.get("s3Config");
 var schedulerConfig = nconf.get("schedulerConfig");

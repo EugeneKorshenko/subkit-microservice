@@ -65,7 +65,7 @@
     "APN_Pfx": "./certs/apn/key.p12",
     "MPNS_Cert": "",
     "MPNS_Key": "",
-    "GCM_APIKey": "AIzaSyAo0JJ7nKgLQ1d-ZFG7-OpLEGaCh3nq03U"
+    "GCM_APIKey": "AIzaSyCJLy5wbP12MyRzyt2MOJ75XahpE2Hq9JM"
   },
   "s3Config": {
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",

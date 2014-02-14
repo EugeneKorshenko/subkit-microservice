@@ -65,7 +65,8 @@
     "cert": "./certs/apn/cert.pem",
     "key": "./certs/apn/key.pem",
     "pfx": "./certs/apn/key.p12",
-    "GCMAPIKey": ""
+    "GCMID": "874633879301",
+    "GCMAPIKey": "AIzaSyAo0JJ7nKgLQ1d-ZFG7-OpLEGaCh3nq03U"
   },
   "s3Config": {
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",

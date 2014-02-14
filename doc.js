@@ -122,7 +122,6 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-
 	stores_doc.get("/stores/{name}/{key}", "Gets an item in store.", {
 	    nickname: "Find",
 		responseClass: "Value",
@@ -145,7 +144,6 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-
 	stores_doc.post('/stores/{name}/{key}', "Create an item in store.", {
 		nickname: "Create",
 		responseClass: "void",
@@ -169,7 +167,6 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-
 	stores_doc.put('/stores/{name}/{key}', "Update an item in store.", {
 		nickname: "Update",
 		responseClass: "void",
@@ -193,7 +190,6 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-
 	stores_doc.delete('/stores/{name}/{key}', "Delete an item in store.", {
 		nickname: "Delete",
 		responseClass: "void",
@@ -238,7 +234,6 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-
 	stores_doc.delete("/stores/{name}/grant", "Revoke public access to a store.", {
 		nickname: "Revoke",
 		responseClass: "void",

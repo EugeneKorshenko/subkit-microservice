@@ -38,9 +38,7 @@ angular
 	var nav = new Navigation();
 		
 	$scope.register = function(){
-			
 		notify.PostMessage('Registering crashed!', 5000, 'faulty');
-				
 		$scope.hasEnter = true;
 		var counter = $scope.loading = 5;
 		var ref = setInterval(function(){
@@ -54,15 +52,9 @@ angular
 	};
 
 	$scope.login = function(){
-		console.log("login");
-		console.log($scope);
 		shared.username = $scope.username;
 		shared.password = $scope.password;
 		shared.domain = $scope.domain;
-		console.log(shared.username);
-		console.log(shared.password);
-		console.log(shared.domain);
-
 		var subkit = new Subkit({ baseUrl: shared.domain, username: shared.username, password: shared.password });
 		subkit.login(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');

@@ -162,9 +162,29 @@ server.get(/\/admin\/public\/?.*/, restify.serveStatic({
 }));
 
 //development center
+var rendererMobileCenter = require("./lib/template-module.js").init({
+	templatesPath: path.join(__dirname, 'files/mobile')
+});
+server.get("/devcenter", function(req, res, next){
+
+	var consoleData = {
+	  url: api.url,
+	  apiKey: api.apiKey,
+	  username: admin.username,
+	  password: admin.password
+	};
+	rendererMobileCenter.render("index", consoleData, function(err, html){
+	  res.contentType = 'text/html';
+	  res.write(html);
+	  res.end();
+	});
+});
+
 server.get(/\/devcenter\/?.*/, restify.serveStatic({
   directory: './files/mobile'
 }));
+
+
 
 //start web server
 server.listen(app.port, function(){

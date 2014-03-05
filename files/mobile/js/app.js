@@ -38,9 +38,6 @@ angular
 	var nav = new Navigation();
 		
 	$scope.register = function(){
-
-		//console.log($scope.newUsername);
-		//console.log($scope.newPassword);
 			
 		notify.PostMessage('Registering crashed!', 5000, 'faulty');
 				
@@ -57,9 +54,9 @@ angular
 	};
 
 	$scope.login = function(){
-		shared.username = $scope.username || "subkit";
-		shared.password = $scope.password || "subkit";
-		shared.domain = $scope.domain || "http://localhost:8080";
+		shared.username = $scope.username;
+		shared.password = $scope.password;
+		shared.domain = $scope.domain;
 		nav.go("center");
 		var subkit = new Subkit({ baseUrl: shared.domain, username: shared.username, password: shared.password });
 		subkit.login(function(err, data){
@@ -838,7 +835,10 @@ angular
     link: function(scope, elm, attrs, ctrl){
 		var regex = /^(?!:\/\/)([a-zA-Z0-9]+\.)?[a-zA-Z0-9][a-zA-Z0-9-]+\.[a-zA-Z]{2,6}?$/i;
 		var validator = function(value){
-			ctrl.$setValidity('validDomain', regex.test(value));
+			if(value === "http://localhost:8080" || value === "https://localhost:8080" || value === "localhost:8080")
+				ctrl.$setValidity('validDomain', true);
+			else
+				ctrl.$setValidity('validDomain', regex.test(value));
 		return value;
       };
 	  ctrl.$parsers.unshift(validator);

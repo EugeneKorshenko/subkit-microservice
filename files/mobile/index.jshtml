@@ -40,13 +40,13 @@
 				<view data-content="login" next="info" nexttext="info" headertext="dev center">
 					<form name="loginf">
 						<div class="row">
-							<input type="text" class="input" name="ldomain" placeholder="@locals.url" data-ng-model="domain" data-ng-init="domain='@locals.url'" required valid-domain>
+							<input type="text" class="input" name="ldomain" placeholder="domain" data-ng-model="$parent.domain" data-ng-init="$parent.domain='@locals.url'" required valid-domain>
 						</div>
 						<div class="row">
-							<input type="text" class="input" name="lusername" placeholder="username" data-ng-model="username" required>
+							<input type="text" class="input" name="lusername" placeholder="username" data-ng-model="$parent.username" required>
 						</div>
 						<div class="row">
-							<input type="password" class="input" name="lpassword" placeholder="password" data-ng-model="password" required>
+							<input type="password" class="input" name="lpassword" placeholder="password" data-ng-model="$parent.password" required>
 						</div>
 					</form>
 					<div class="row">

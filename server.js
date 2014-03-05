@@ -165,7 +165,7 @@ server.get(/\/admin\/public\/?.*/, restify.serveStatic({
 var rendererMobileCenter = require("./lib/template-module.js").init({
 	templatesPath: path.join(__dirname, 'files/mobile')
 });
-server.get("/devcenter", function(req, res, next){
+server.get("/devcenter/", function(req, res, next){
 
 	var consoleData = {
 	  url: api.url,

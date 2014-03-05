@@ -839,14 +839,14 @@ angular
     require: "ngModel",
     link: function(scope, elm, attrs, ctrl){
 		// var regex = /^(:\/\/)([a-zA-Z0-9]+\.)?[a-zA-Z0-9][a-zA-Z0-9-]+\.[a-zA-Z]{2,6}?$/i;
-		// var validator = function(value){
-		// 	if(value === "http://localhost:8080" || value === "https://localhost:8080" || value === "localhost:8080")
-		// 		ctrl.$setValidity('validDomain', true);
-		// 	else
-		// 		ctrl.$setValidity('validDomain', regex.test(value));
-		ctrl.$setValidity('validDomain', true);
-		return value;
-      };
+		var validator = function(value){
+			// 	if(value === "http://localhost:8080" || value === "https://localhost:8080" || value === "localhost:8080")
+			// 		ctrl.$setValidity('validDomain', true);
+			// 	else
+			// 		ctrl.$setValidity('validDomain', regex.test(value));
+			ctrl.$setValidity('validDomain', true);
+			return value;
+	    };
 	  ctrl.$parsers.unshift(validator);
 	  ctrl.$formatters.unshift(validator);
     }

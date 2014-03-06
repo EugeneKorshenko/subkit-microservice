@@ -752,6 +752,12 @@ angular
 .controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 	var nav = new Navigation();
 	var subkit = null;
+
+	$scope.messageAlert = "";
+	$scope.messageSound = "";
+	$scope.messageBadge = "";
+	$scope.messagePayload = "";
+
 	nav.onChanged(function(name){
 		if(name === "pushnotify") _loadGroups();
 	});
@@ -788,10 +794,15 @@ angular
 
 	$scope.send = function(){
 		console.log($scope.pushnotifygroup);
-		subkit.notify.send({
-			"message": $scope.pushmessage,
+		var payload = {
+			"alert": $scope.messageAlert,
+			"sound": $scope.messageSound,
+			"badge": $scope.messageBadge,
+			"payload": $scope.messagePayload,
 			"device": "9e4c089d4f00e9878010007b12584203308a792b7884cecf22f431d0e5583618"
-		}, function(err, data){
+		};
+		console.log(payload);
+		subkit.notify.send(payload, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			notify.PostMessage("Push message sent.", 5000, 'success');
 		});

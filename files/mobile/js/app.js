@@ -757,6 +757,8 @@ angular
 	$scope.messageSound = "";
 	$scope.messageBadge = "";
 	$scope.messagePayload = "";
+	$scope.gcmKey = "";
+	$scope.mpnKey = "";
 
 	nav.onChanged(function(name){
 		if(name === "pushnotify") _loadGroups();
@@ -782,6 +784,17 @@ angular
 		fileInput.click();
     };
 
+    $scope.saveSettings = function(){
+    	console.log("save push notify settings");
+    	var settings = { gcmKey: "", mpnKey: "" };
+    	subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+		subkit.notify.save(settings, function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			console.log(err);
+			console.log(data);
+		});
+    };
+
 	$scope.open = function(pushnotifygroup){
 		$scope.pushnotifygroup = pushnotifygroup;
 		subkit.identities.groups($scope.pushnotifygroup.key, function(err, data){
@@ -798,8 +811,7 @@ angular
 			"alert": $scope.messageAlert,
 			"sound": $scope.messageSound,
 			"badge": $scope.messageBadge,
-			"payload": $scope.messagePayload,
-			"device": "9e4c089d4f00e9878010007b12584203308a792b7884cecf22f431d0e5583618"
+			"payload": $scope.messagePayload
 		};
 		console.log(payload);
 		subkit.notify.send(payload, function(err, data){

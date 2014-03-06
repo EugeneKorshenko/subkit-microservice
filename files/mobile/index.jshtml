@@ -758,7 +758,7 @@
 				<view data-content="pushnotifysettings" class="hidden" headertext="PushNotifications/Settings" backtext="back" back="pushnotify">
 					<form name="pushnotifysettings">
 						<div class="row">
-							<button class="flatButton" data-ng-click="save()" title="save settings">save</button>
+							<button class="flatButton" data-ng-click="saveSettings()" title="save settings">save</button>
 						</div>
 						<h3 class="subHead">APN</h3>
 						<div>
@@ -767,11 +767,11 @@
 						</div>
 						<h3 class="subHead">GCM</h3>
 						<div class="rowtext">
-							<input type="text" placeholder="GCM Key" data-ng-model="GCMKey">
+							<input type="text" placeholder="GCM Key" data-ng-model="$parent.gcmKey">
 						</div>
 						<h3 class="subHead">MPN</h3>
 						<div class="rowtext">
-							<input type="text" placeholder="MPN Key" data-ng-model="MPNKey">
+							<input type="text" placeholder="MPN Key" data-ng-model="$parent.mpnKey">
 						</div>
 					</form>
 				</view>

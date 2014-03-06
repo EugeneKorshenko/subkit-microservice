@@ -496,6 +496,23 @@ var Subkit = function(config){
 					if(callback) callback(null, result.json());
 				}
 			});
+		},
+		settings: {
+			load: function(callback){
+				_get("/push/settings", callback);
+			},
+			save: function(value, callback){
+				var url = self.baseUrl + "/push/settings";
+				var msg = JSON.parse(JSON.stringify(self.options));
+				msg["data"] = value;
+				httpRequest.put(url, msg, function(status, result){
+					if(status!==200 && status!==201) {
+						if(callback) changeStatus(result);
+					}else{
+						if(callback) callback(null, result.json());
+					}
+				});
+			}
 		}
 	}
 

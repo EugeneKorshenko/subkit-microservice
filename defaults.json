@@ -16,47 +16,51 @@
     "port": 8080
   },
   "hooks": {
-    "error":{
+    "error": {
       "url": "http://localhost:8080",
       "version": "*",
-      "headers": {"api_key":"6654edc5-82a3-4006-967f-97d5817d7fe2"}
+      "headers": {
+        "api_key": "6654edc5-82a3-4006-967f-97d5817d7fe2"
+      }
     },
-    "self":{
+    "self": {
       "url": "http://localhost:8080",
       "version": "*",
-      "headers": {"api_key":"6654edc5-82a3-4006-967f-97d5817d7fe2"}
+      "headers": {
+        "api_key": "6654edc5-82a3-4006-967f-97d5817d7fe2"
+      }
     }
   },
   "storageConfig": {
-    "dbPath":"./testdb",
-    "rightsPath":"./rights.json",
-    "filesPath":"./files/jobs",
-    "backupPath":"./backups"
+    "dbPath": "./testdb",
+    "rightsPath": "./rights.json",
+    "filesPath": "./files/jobs",
+    "backupPath": "./backups"
   },
   "staticConfig": {
-    "rightsPath":"./rights.json",
-    "filesPath":"./files/static",
-    "backupPath":"./backups"
+    "rightsPath": "./rights.json",
+    "filesPath": "./files/static",
+    "backupPath": "./backups"
   },
   "templateConfig": {
-    "rightsPath":"./rights.json",
-    "filesPath":"./files/template",
-    "backupPath":"./backups"
+    "rightsPath": "./rights.json",
+    "filesPath": "./files/template",
+    "backupPath": "./backups"
   },
   "taskConfig": {
-    "rightsPath":"./rights.json",
-    "pluginsPath":"./files/plugins",
-    "jobsPath":"./files/jobs",
-    "mapreducePath":"./files/mapreduce",
-    "backupPath":"./backups"
+    "rightsPath": "./rights.json",
+    "pluginsPath": "./files/plugins",
+    "jobsPath": "./files/jobs",
+    "mapreducePath": "./files/mapreduce",
+    "backupPath": "./backups"
   },
   "emailConfig": {
     "MTPUsername": "AKIAJXZCV4FOAIQ66NSA",
     "SMTPPassword": "AopXWpwLIVpNSmjzOu0SDY2+TFFG1bqDT0w7u6TeSsVd",
     "senderAddress": "no-reply@subkit.io",
     "SMTPServer": "email-smtp.us-east-1.amazonaws.com",
-    "Port":"465",
-    "TLS":true,
+    "Port": "465",
+    "TLS": true,
     "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",
     "secretAccessKey": "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",
     "region": "eu-west-1"
@@ -72,10 +76,6 @@
     "secretAccessKey": "hGp/XGB4+oyxoKcRBafwlhPpPBD+s6ohr5gJR0Tt",
     "region": "eu-west-1"
   },
-  "schedulerConfig": {
-
-  },
-  "locationConfig": {
-
-  }
+  "schedulerConfig": {},
+  "locationConfig": {}
 }

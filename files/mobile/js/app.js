@@ -757,20 +757,32 @@ angular
 	$scope.messageSound = "";
 	$scope.messageBadge = "";
 	$scope.messagePayload = "";
+
 	$scope.gcmKey = "";
 	$scope.mpnKey = "";
 
 	nav.onChanged(function(name){
-		if(name === "pushnotify") _loadGroups();
+		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+		if(name === "pushnotify") {
+			_loadGroups();
+			_loadSettings();
+		}
 	});
 	var _loadGroups = $scope.loadGroups = function(){
-		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
 		subkit.identities.groups(null, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
 			$scope.$apply();
 		});
 	};
+
+	var _loadSettings = $scope.loadSettings = function(){
+		subkit.notify.settings.load(function(err, data){
+			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+			$scope.gcmKey = data.GCMKey;
+			$scope.mpnKey = data.MPNKey;
+		});
+	}
 
 	$scope.upload = function(elementId){
 		var fileInput = document.getElementById(elementId);
@@ -785,10 +797,9 @@ angular
     };
 
     $scope.saveSettings = function(){
-    	console.log("save push notify settings");
-    	var settings = { gcmKey: "", mpnKey: "" };
-    	subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.notify.save(settings, function(err, data){
+    	var settings = { GCMKey: $scope.gcmKey, MPNKey: $scope.mpnKey };
+    	console.log(settings);
+		subkit.notify.settings.save(settings, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			console.log(err);
 			console.log(data);

@@ -7,4 +7,4 @@ rights.json
 files/static/
 files/plugins/
 files/template/
-*.p12
+#*.p12

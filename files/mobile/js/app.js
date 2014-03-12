@@ -819,6 +819,8 @@ angular
 	$scope.send = function(){
 		console.log($scope.pushnotifygroup);
 		var payload = {
+			Text1: $scope.messageAlert,
+			Text2: $scope.messagePayload,
 			"alert": $scope.messageAlert,
 			"sound": $scope.messageSound,
 			"badge": $scope.messageBadge,

@@ -7,6 +7,8 @@ INSTALL
 
 `npm test`
 
+`sudo forever start -p <path to service> <path to service>/server.js`
+
 
 DOC
 ----

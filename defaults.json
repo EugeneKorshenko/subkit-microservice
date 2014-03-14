@@ -67,9 +67,9 @@
   },
   "pushConfig": {
     "APN_Pfx": "./certs/apn/key.p12",
+    "APN_Sandbox": true,
     "MPNS_Cert": "",
     "MPNS_Key": "",
-    "Sandbox": false,
     "GCM_APIKey": "AIzaSyCJLy5wbP12MyRzyt2MOJ75XahpE2Hq9JM"
   },
   "s3Config": {

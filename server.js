@@ -136,7 +136,7 @@ server.opts(/\.*/, function (req, res, next) {
 
 //js sdk
 server.get(/\/sdk\/?.*/, restify.serveStatic({
-	directory: './files/jssdk'
+	directory: path.join(__dirname, 'files/jssdk') 
 }));
 
 //public console
@@ -158,7 +158,7 @@ server.get("/admin/:name", function(req, res, next){
 	});
 });
 server.get(/\/admin\/public\/?.*/, restify.serveStatic({
-  directory: './files/devcenter'
+  directory: path.join(__dirname, 'files/devcenter')
 }));
 
 //development center
@@ -181,7 +181,7 @@ server.get("/devcenter/", function(req, res, next){
 });
 
 server.get(/\/devcenter\/?.*/, restify.serveStatic({
-  directory: './files/mobile'
+  directory: path.join(__dirname, 'files/mobile')
 }));
 
 

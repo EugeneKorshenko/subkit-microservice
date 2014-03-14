@@ -66,7 +66,8 @@
     "region": "eu-west-1"
   },
   "pushConfig": {
-    "APN_Pfx": "./certs/apn/key.p12",
+    "APN_Pfx": "./certs/apn/prod.p12",
+    "APN_Sandbox_Pfx": "./certs/apn/dev.p12",
     "APN_Sandbox": true,
     "MPNS_Cert": "",
     "MPNS_Key": "",

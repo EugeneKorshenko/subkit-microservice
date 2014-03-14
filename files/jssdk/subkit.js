@@ -469,14 +469,14 @@ var Subkit = function(config){
 
 	//push notify
 	self.notify = {
-		upload: function(file, callback){
+		upload: function(provider, env, file, callback){
 			var msg = JSON.parse(JSON.stringify(self.options));
 			msg.headers = {
 			  'Content-Type': 'application/octed-stream',
 			  apiKey: config.apiKey
 			};
 			msg["data"] = file;
-			var url = self.baseUrl + "/push/upload";
+			var url = self.baseUrl + "/push/upload/" + provider + "/" + env;
 			httpRequest.post(url, msg, function(status, result){
 				if(status!==201) {
 					if(callback) changeStatus(result);
@@ -502,6 +502,7 @@ var Subkit = function(config){
 				_get("/push/settings", callback);
 			},
 			save: function(value, callback){
+				console.log(value);
 				var url = self.baseUrl + "/push/settings";
 				var msg = JSON.parse(JSON.stringify(self.options));
 				msg["data"] = value;

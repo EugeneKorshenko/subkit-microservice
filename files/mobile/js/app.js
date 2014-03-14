@@ -760,6 +760,7 @@ angular
 
 	$scope.gcmKey = "";
 	$scope.mpnKey = "";
+	$scope.apnSandbox = false;
 
 	nav.onChanged(function(name){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
@@ -781,14 +782,15 @@ angular
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.gcmKey = data.GCMKey;
 			$scope.mpnKey = data.MPNKey;
+			$scope.apnSandbox = data.APNSandbox;
 		});
 	}
 
-	$scope.upload = function(elementId){
+	$scope.upload = function(provider, env, elementId){
 		var fileInput = document.getElementById(elementId);
 		fileInput.addEventListener('change', function(e) {
 			var file = fileInput.files[0];
-			subkit.notify.upload(file, function(err, data){
+			subkit.notify.upload(provider, env, file, function(err, data){
 				console.log(err);
 				console.log(data);
 			});
@@ -797,8 +799,7 @@ angular
     };
 
     $scope.saveSettings = function(){
-    	var settings = { GCMKey: $scope.gcmKey, MPNKey: $scope.mpnKey };
-    	console.log(settings);
+    	var settings = { GCMKey: $scope.gcmKey, MPNKey: $scope.mpnKey, APNSandbox: $scope.apnSandbox };
 		subkit.notify.settings.save(settings, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			console.log(err);

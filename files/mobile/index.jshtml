@@ -762,8 +762,11 @@
 						</div>
 						<h3 class="subHead">APN</h3>
 						<div>
-							<input type="file" id="fileUpload" style="display: none;">
-							<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile">pfx/p12 certificate</button>
+							<input type="file" id="ADNDevCertUpload" style="display: none;">
+							<button data-ng-click="upload('apn','dev','ADNDevCertUpload')" class="tileButton mediumTile">pfx/p12 dev certificate</button>
+							<input type="file" id="APNProdCertUpload" style="display: none;">
+							<button data-ng-click="upload('apn', 'prod','APNProdCertUpload')" class="tileButton mediumTile">pfx/p12 prod certificate</button>
+							<input type="checkbox" data-ng-model="$parent.apnSandbox"><span>Development Mode</span>
 						</div>
 						<h3 class="subHead">GCM</h3>
 						<div class="rowtext">

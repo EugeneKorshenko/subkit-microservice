@@ -56,6 +56,7 @@ taskConfig.hooks = hooks;
 var emailConfig = nconf.get("emailConfig");
 var pushConfig = nconf.get("pushConfig");
 pushConfig.APN_Pfx = path.join(__dirname, pushConfig.APN_Pfx);
+pushConfig.APN_Sandbox_Pfx = path.join(__dirname, pushConfig.APN_Sandbox_Pfx);
 pushConfig.MPNS_Cert = path.join(__dirname, pushConfig.MPNS_Cert);
 pushConfig.MPNS_Key = path.join(__dirname, pushConfig.MPNS_Key);
 

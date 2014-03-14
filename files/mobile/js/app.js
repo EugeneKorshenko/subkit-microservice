@@ -759,7 +759,6 @@ angular
 	$scope.messagePayload = "";
 
 	$scope.gcmKey = "";
-	$scope.mpnKey = "";
 	$scope.apnSandbox = false;
 
 	nav.onChanged(function(name){
@@ -781,7 +780,6 @@ angular
 		subkit.notify.settings.load(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.gcmKey = data.GCMKey;
-			$scope.mpnKey = data.MPNKey;
 			$scope.apnSandbox = data.APNSandbox;
 		});
 	}
@@ -799,7 +797,7 @@ angular
     };
 
     $scope.saveSettings = function(){
-    	var settings = { GCMKey: $scope.gcmKey, MPNKey: $scope.mpnKey, APNSandbox: $scope.apnSandbox };
+    	var settings = { GCMKey: $scope.gcmKey, APNSandbox: $scope.apnSandbox };
 		subkit.notify.settings.save(settings, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			console.log(err);

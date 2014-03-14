@@ -774,7 +774,8 @@
 						</div>
 						<h3 class="subHead">MPN</h3>
 						<div class="rowtext">
-							<input type="text" placeholder="MPN Key" data-ng-model="$parent.mpnKey">
+							<input type="file" id="MPNSDevCertUpload" style="display: none;">
+							<button data-ng-click="upload('mpns','prod','MPNSDevCertUpload')" class="tileButton mediumTile">pfx/p12 certificate</button>
 						</div>
 					</form>
 				</view>

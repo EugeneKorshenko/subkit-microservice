@@ -69,7 +69,7 @@
     "APN_Pfx": "./certs/apn/prod.p12",
     "APN_Sandbox_Pfx": "./certs/apn/dev.p12",
     "APN_Sandbox": true,
-    "MPNS_Pfx": "",
+    "MPNS_Pfx": "./certs/mpns/prod.p12",
     "GCM_APIKey": "AIzaSyCJLy5wbP12MyRzyt2MOJ75XahpE2Hq9JM"
   },
   "s3Config": {

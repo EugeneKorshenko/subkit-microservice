@@ -273,9 +273,9 @@ var Subkit = function(config){
 	self.subscribed = {};
 	
 	var changeStatus = function(status){
-		console.log(status);
+		console.log(status.json());
 		statusListeners.forEach(function(listener){
-			listener(status);
+			listener(status.json());
 		});
 	};
 

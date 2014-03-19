@@ -13,22 +13,39 @@ INSTALL
 FEATURES
 ----
 
-DONE		  | Feature
-------------- | -------------
-X		 	  | Storage
--			  | Users
+DONE		  | Feature 	  | Comments
+------------- | ------------- | ---------------
+X		 	  | JSON Storage  |
+X		 	  | PubSub		  |
+X		 	  | Files		  |
+X		 	  | Templates	  |
+X		 	  | PlugIn 		  |
+X		 	  | Identity  	  |
+X			  | EMail 		  |
+X			  | Mobile Push   |
+X			  | Location      |
+X			  | Statistics    |
+-			  | Payment   	  |
 
 SDKS
 ----
+
+DONE		  | Feature 		| Comments
+------------- | --------------- | ---------------
+X		 	  | iOS 			| [Try Subkit iOS](https://github.com/SubKit/try_subkit_ios)
+X		 	  | Android			| [Try Subkit Android](https://github.com/SubKit/try_subkit_android)
+X		 	  | WP8				| [Try Subkit WP8](https://github.com/SubKit/try_subkit_wp8)
+-			  | Xamarin			| 
+-		 	  | JavaScript		| 
+-			  | PhoneGap/Cordova| 
+
+
+PLUGINS
+----
+
 DONE		  | Feature
 ------------- | -------------
-X		 	  | iOS [Visit Try Subkit iOS](https://github.com/SubKit/try_subkit_ios)
-X		 	  | JavaScript
-X		 	  | Android
-X		 	  | WP8
--			  | Xamarin
--			  | PhoneGap/Cordova
-
+-		 	  | MySQL Connector
 
 DOC
 ----

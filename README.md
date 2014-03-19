@@ -22,7 +22,7 @@ SDKS
 ----
 DONE		  | Feature
 ------------- | -------------
-X		 	  | iOS
+X		 	  | iOS [Visit Try Subkit iOS](https://github.com/SubKit/try_subkit_ios)
 X		 	  | JavaScript
 X		 	  | Android
 X		 	  | WP8

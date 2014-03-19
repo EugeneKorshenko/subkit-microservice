@@ -6,9 +6,17 @@ INSTALL
 3. `node server.js` || `npm start`
 
 `npm test`
-
 `sudo forever start -p <path to service> <path to service>/server.js`
 
+BASICS
+----
+
+GETTING STARTED
+----
+
+CLOUD
+----
+!coming soon!
 
 FEATURES
 ----
@@ -21,6 +29,7 @@ X		 	  | Hooks	      |
 X		 	  | Backups	      | 
 X		 	  | JSON Im/Export| 
 X		 	  | ETag Caching  |
+X		 	  | API DOC       |
 -		 	  | Validation    | Request validation support
 -		 	  | WebSockets    |
 -		 	  | JSON Queries  | Advanced JSON Queries
@@ -46,6 +55,7 @@ X			  | Statistics    | Usage statistics and monitoring
 -			  | Payment   	  | Payment provider support
 -			  | Transcoder    | Transcoding images and videos
 -			  | S3       	  | Amazon S3 support
+
 
 SDKS
 ----
@@ -77,9 +87,18 @@ STATUS		  | Feature          | Comments
 -		 	  | MSSQL Connector  | MSSQL DB import/export connector
 -		 	  | HTML scraping    | Download and scrap HTML
 
+GUIDES
+----
+* RESTFul API rules
+* Transactions & Idempotency
+* Caching
+* Developing Plugin - JavaScript execution engine API
+* Using Modules - Use excisting modules
+* Developing Modules - Write your own modules
+
 DOC
 ----
-400	Bad Request - Request does not have a valid format, all required parameters, etc.
-401	Unauthorized Access - No currently valid session available.
-404	Not Found - Requested container does not exist.
-500	System Error - Specific reason is included in the error message.
+* 400	Bad Request - Request does not have a valid format, all required parameters, etc.
+* 401	Unauthorized Access - No currently valid session available.
+* 404	Not Found - Requested container does not exist.
+* 500	System Error - Specific reason is included in the error message.

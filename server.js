@@ -184,8 +184,6 @@ server.get(/\/devcenter\/?.*/, restify.serveStatic({
   directory: path.join(__dirname, 'files/mobile')
 }));
 
-
-
 //start web server
 server.listen(app.port, function(){
 	console.log("subkit lite service listen on: " + server.address().port);

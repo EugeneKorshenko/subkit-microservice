@@ -13,7 +13,15 @@ INSTALL
 FEATURES
 ----
 
-DONE		  | Feature 	  | Comments
+STATUS		  | Feature 	  | Comments
+------------- | ------------- | ---------------
+X		 	  | HTTP/HTTPS    |
+
+
+MODULES
+----
+
+STATUS		  | Feature 	  | Comments
 ------------- | ------------- | ---------------
 X		 	  | JSON Storage  |
 X		 	  | PubSub		  |
@@ -30,7 +38,7 @@ X			  | Statistics    |
 SDKS
 ----
 
-DONE		  | Feature 		| Comments
+STATUS		  | Feature 		| Comments
 ------------- | --------------- | ---------------
 X		 	  | iOS 			| [Try Subkit iOS](https://github.com/SubKit/try_subkit_ios)
 X		 	  | Android			| [Try Subkit Android](https://github.com/SubKit/try_subkit_android)
@@ -43,7 +51,7 @@ X		 	  | WP8				| [Try Subkit WP8](https://github.com/SubKit/try_subkit_wp8)
 PLUGINS
 ----
 
-DONE		  | Feature
+STATUS		  | Feature
 ------------- | -------------
 -		 	  | MySQL Connector
 

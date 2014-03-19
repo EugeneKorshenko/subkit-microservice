@@ -77,6 +77,8 @@ X		 	  | WP8				| [Try Subkit WP8](https://github.com/SubKit/try_subkit_wp8)
 -			  | PowerShell      |
 X			  | AngularJS       |
 
+* HTTPS support
+* Offline support (comming soon)
 
 PLUGINS
 ----

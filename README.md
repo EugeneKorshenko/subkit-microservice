@@ -15,7 +15,7 @@ FEATURES
 
 STATUS		  | Feature 	  | Comments
 ------------- | ------------- | ---------------
-X		 	  | HTTP/HTTPS    |
+X		 	  | HTTP/HTTPS    | [Service Configuration](service_config.md)
 
 
 MODULES

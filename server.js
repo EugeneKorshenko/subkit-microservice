@@ -141,7 +141,7 @@ server.get(/\/sdk\/?.*/, restify.serveStatic({
 
 //public console
 var rendererDevCenter = require("./lib/template-module.js").init({
-	templatesPath: path.join(__dirname, 'files/devcenter')
+	templatesPath: path.join(__dirname, 'files/mobile')
 });
 server.get("/admin/:name", function(req, res, next){
 
@@ -157,8 +157,8 @@ server.get("/admin/:name", function(req, res, next){
 	  res.end();
 	});
 });
-server.get(/\/admin\/public\/?.*/, restify.serveStatic({
-  directory: path.join(__dirname, 'files/devcenter')
+server.get(/\/admin\/?.*/, restify.serveStatic({
+  directory: path.join(__dirname, 'files/mobile')
 }));
 
 //development center

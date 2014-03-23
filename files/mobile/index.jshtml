@@ -19,8 +19,8 @@
 		<link rel="icon" type="image/ico" href="@locals.url/devcenter/img/favicon.ico" />
 
 		<link rel="stylesheet" href="@locals.url/devcenter/css/style.css" type="text/css" media="screen" />
+		<script src="@locals.url/devcenter/libs/fastclick.js"></script>
 
-		<script defer src="@locals.url/devcenter/libs/fastclick.js"></script>
 		<script defer src="@locals.url/devcenter/libs/angular.min.js"></script>
 		<script defer src="@locals.url/devcenter/libs/angular-sanitize.min.js"></script>
 		<script defer src="@locals.url/sdk/subkit.js"></script>
@@ -375,7 +375,7 @@
 								<div class="tablecell80"><button class="tileButton" data-ng-click="schedule(keyData)" ng-disabled="!tasksfeditor.$valid" title="Schedule Task '{{keyData}}'">schedule</button></div>
 							</div>
 						</div>
-						<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20" name="taskeditor" required></textarea>
+						<textarea id="taskeditor" data-ng-model="$parent.valueData" class="codeeditor" rows="20" name="taskeditor" required></textarea>
 					</form>
 				</view>
 				<view data-content="taskpreview" class="hidden" headertext="Tasks/Editor/Run" backtext="editor">
@@ -461,106 +461,6 @@
 						<div class="rowtext">
 							<input type="password" data-ng-model="newpasswordValidation" placeholder="Repeat New Password">
 						</div>
-						<h3 class="subHead">Personal Informations</h3>
-						<div class="rowtext">
-							<input type="text" data-ng-model="piName" placeholder="Name" required>
-						</div>
-						<div class="rowtext">
-							<input type="text" data-ng-model="piLastname" placeholder="Lastname" required>
-						</div>
-						<div class="rowtext">
-							<input type="text" data-ng-model="piAddress" placeholder="Street and Number" required>
-						</div>
-						<div class="rowtext">
-							<input type="text" data-ng-model="piZip" placeholder="ZIP" required>
-						</div>
-						<div class="rowtext">
-							<input type="text" data-ng-model="piCountry" placeholder="Country" required>
-						</div>
-						<h3 class="subHead">Billing Informations (leave empty if it's the same as above)</h3>
-						<div class="rowtext">
-							<input type="text" data-ng-model="biName" placeholder="Name">
-						</div>
-						<div class="rowtext">
-							<input type="text" data-ng-model="biLastname" placeholder="Lastname">
-						</div>
-						<div class="rowtext">
-							<input type="text" data-ng-model="biAddress" placeholder="Street and Number">
-						</div>
-						<div class="rowtext">
-							<input type="text" data-ng-model="biZip" placeholder="ZIP">
-						</div>
-						<div class="rowtext">
-							<input type="text" data-ng-model="biCountry" placeholder="Country">
-						</div>
-						<h3 class="subHead">Provisioning</h3>
-						<div class="payment">
-							<div class="provBox">
-								<div class="provHead">Development</div>
-								<div class="provContent">
-									<ul>
-										<li>5 GB Data Transfer</li>
-										<li>50 Max Concurrent Connections</li>
-										<li>100 MB Data Storage</li>
-									</ul>
-								</div>
-								<div class="pselector"><input type="radio" ng-model="provisioning" value="dev" checked='checked'></div>
-							</div>
-							<div class="provBox">
-								<div class="provHead">Startup</div>
-								<div class="provContent">
-									<ul>
-										<li>20 GB Data Transfer  + 2€ per additional GB</li>
-										<li>200 Concurrent Connections + 0.20€ per additional Connection</li>
-										<li>3 GB Data Storage</li>
-									</ul>
-								</div>
-								<div class="pselector"><input type="radio" ng-model="provisioning" value="su"></div>
-							</div>
-							<div class="provBox">
-								<div class="provHead">Production</div>
-								<div class="provContent">
-									<ul>
-										<li>275 GB Data Transfer  + 1,75€ per additional GB</li>
-										<li>750 Concurrent Connections + 0.15€ per additional Connection</li>
-										<li>10 GB Data Storage</li>
-									</ul>
-								</div>
-								<div class="pselector"><input type="radio" ng-model="provisioning" value="prod"></div>
-							</div>
-							<div class="provBox">
-								<div class="provHead">Scale</div>
-								<div class="provContent">
-									<ul>
-										<li>250 GB Data Transfer  + 1,50€ per additional GB</li>
-										<li>2500 Concurrent Connections + 0.10€ per additional Connection</li>
-										<li>30 GB Data Storage</li>
-									</ul>
-								</div>
-								<div class="pselector"><input type="radio" ng-model="provisioning" value="scale"></div>
-							</div>
-							<div class="provBox">
-								<div class="provHead">Top App</div>
-								<div class="provContent">
-									<ul>
-										<li>1000 GB Data Transfer  + 1,00€ per additional GB</li>
-										<li>10000 Concurrent Connections + 0.50€ per additional Connection</li>
-										<li>100 GB Data Storage</li>
-									</ul>
-								</div>
-								<div class="pselector"><input type="radio" ng-model="provisioning" value="top"></div>
-							</div>
-							<div class="provBox">
-								<div class="provHead">MEAP</div>
-								<div class="provContent">
-									<ul>
-										<li>If you are interested in setting up SubKit as a <strong>Mobile Enterprise Application Platform</strong>, contact our customer support for further informations please.</li>
-									</ul>
-								</div>
-								<div class="pselector"></div>
-							</div>
-						</div>
-						<div class="clear"></div>
 					</form>
 				</view>
 			</div>

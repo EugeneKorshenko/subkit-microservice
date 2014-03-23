@@ -23,7 +23,7 @@ FEATURES
 
 STATUS		  | Feature 	  | Comments
 ------------- | ------------- | ---------------
-X		 	  | HTTP/HTTPS    | [Service Configuration](service_config.md)
+X		 	  | HTTP/HTTPS    | [Service Configuration](docs/service_config.md)
 X		 	  | Dashboard     |
 X		 	  | Hooks	      | 
 X		 	  | Backups	      | 

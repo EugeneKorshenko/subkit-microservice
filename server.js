@@ -134,17 +134,17 @@ server.opts(/\.*/, function (req, res, next) {
 // 	console.log("A uncought exception was thrown: " + err.message);
 // });
 
-//js sdk
-server.get(/\/sdk\/?.*/, restify.serveStatic({
-	directory: path.join(__dirname, 'files/jssdk') 
-}));
-
-//public console
+//docu
+//JSON doc
+require('./doc').configure(server, {
+	discoveryUrl: "/docs",
+	version:      "1.2",
+	basePath:     api.url
+});
 var rendererDevCenter = require("./lib/template-module.js").init({
 	templatesPath: path.join(__dirname, 'files/mobile')
 });
 server.get("/doc", function(req, res, next){
-
 	var consoleData = {
 	  url: api.url,
 	  apiKey: api.apiKey,
@@ -175,11 +175,12 @@ server.get("/", function(req, res, next){
 	  res.end();
 	});
 });
-
-server.get(/\/dashboard\/?.*/, restify.serveStatic({
+server.get(/\/sdk\/?.*/, restify.serveStatic({
+  directory: path.join(__dirname, 'files')
+}));
+server.get(/\/.+/, restify.serveStatic({
   directory: path.join(__dirname, 'files/mobile')
 }));
-
 //start web server
 server.listen(app.port, function(){
 	console.log("subkit lite service listen on: " + server.address().port);
@@ -189,13 +190,6 @@ server.listen(app.port, function(){
 
 var helper = require("./lib/helper.js").init(admin, api, etag, lastModified, storage);
 helper.setNewETag();
-
-//JSON doc
-require('./doc').configure(server, {
-	discoveryUrl: "/docs",
-	version:      "1.2",
-	basePath:     api.url
-});
 
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);

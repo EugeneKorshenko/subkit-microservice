@@ -80,16 +80,7 @@
 					<div class="rowtext">
 						SubKit
 					</div>
-					<a href="/admin/doc" target="_blank">Subkit Live HTTP API</a>
-					<p>
-		                <div class="shares">
-							<a class="link" href="http://subkit.io" data-name="subkitapp" target="_blank"></a>
-							<a class="mail" href="mailto:go@subkit.io" data-name="mailapp"></a>
-							<a class="twitter" href="https://twitter.com/subkit" data-name="twitterapp" target="_blank"></a>
-							<a class="facebook" href="https://www.facebook.com/subkit" data-name="facebookapp" target="_blank"></a>
-							<a class="gplus" href="https://plus.google.com/communities/106679532612202656243?hl=de" data-name="gplusapp" target="_blank"></a>
-						</div>
-					</p>
+					<a href="/doc" target="_blank">API Documentation</a>
 				</view>
 			</div>
 

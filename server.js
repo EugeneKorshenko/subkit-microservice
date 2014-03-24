@@ -143,7 +143,7 @@ server.get(/\/sdk\/?.*/, restify.serveStatic({
 var rendererDevCenter = require("./lib/template-module.js").init({
 	templatesPath: path.join(__dirname, 'files/mobile')
 });
-server.get("/admin/:name", function(req, res, next){
+server.get("/doc", function(req, res, next){
 
 	var consoleData = {
 	  url: api.url,
@@ -151,22 +151,18 @@ server.get("/admin/:name", function(req, res, next){
 	  username: admin.username,
 	  password: admin.password
 	};
-	rendererDevCenter.render(req.params.name, consoleData, function(err, html){
+	rendererDevCenter.render("doc", consoleData, function(err, html){
 	  res.contentType = 'text/html';
 	  res.write(html);
 	  res.end();
 	});
 });
-server.get(/\/admin\/?.*/, restify.serveStatic({
-  directory: path.join(__dirname, 'files/mobile')
-}));
 
 //development center
 var rendererMobileCenter = require("./lib/template-module.js").init({
 	templatesPath: path.join(__dirname, 'files/mobile')
 });
 server.get("/", function(req, res, next){
-
 	var consoleData = {
 	  url: api.url,
 	  apiKey: api.apiKey,
@@ -178,9 +174,7 @@ server.get("/", function(req, res, next){
 	  res.write(html);
 	  res.end();
 	});
-},restify.serveStatic({
-  directory: path.join(__dirname, 'files/mobile')
-}));
+});
 
 server.get(/\/dashboard\/?.*/, restify.serveStatic({
   directory: path.join(__dirname, 'files/mobile')

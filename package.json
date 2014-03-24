@@ -6,8 +6,6 @@
     "node-uuid": "*",
     "nconf": "*",
     "swagger-doc": "*",
-    "messaging-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/messaging-module.git",
-    "storage-module": "git+https://subkitagent:subkitagent007@github.com/SubKit/storage-module.git",
     "aws-sdk": "git://github.com/aws/aws-sdk-js.git#master",
     "underscore": "*",
     "commander": "*",
@@ -24,7 +22,9 @@
     "node-restify-validation": "*",
     "simplesmtp": "*",
     "mailcomposer": "*",
-    "json-stringify-safe": "*"
+    "json-stringify-safe": "*",
+    "level": "*",
+    "jsonquery": "~0.1.3"
   },
   "devDependencies": {
     "mocha": "*",

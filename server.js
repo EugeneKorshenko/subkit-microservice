@@ -66,8 +66,8 @@ var schedulerConfig = nconf.get("schedulerConfig");
 if(!fs.existsSync(storageConfig.rightsPath))
 	fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');
 
-var	pubsub = require("messaging-module").init({pollInterval: 1});
-var storage = require('storage-module').init(storageConfig);
+var	pubsub = require("./lib/pubsub-module.js").init({pollInterval: 1});
+var storage = require('./lib/store-module.js').init(storageConfig);
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
 var identity = require('./lib/identity-module.js').init(storage);
 

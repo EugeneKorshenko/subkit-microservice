@@ -165,7 +165,7 @@ server.get(/\/admin\/?.*/, restify.serveStatic({
 var rendererMobileCenter = require("./lib/template-module.js").init({
 	templatesPath: path.join(__dirname, 'files/mobile')
 });
-server.get("/devcenter/", function(req, res, next){
+server.get("/", function(req, res, next){
 
 	var consoleData = {
 	  url: api.url,
@@ -178,9 +178,11 @@ server.get("/devcenter/", function(req, res, next){
 	  res.write(html);
 	  res.end();
 	});
-});
+},restify.serveStatic({
+  directory: path.join(__dirname, 'files/mobile')
+}));
 
-server.get(/\/devcenter\/?.*/, restify.serveStatic({
+server.get(/\/dashboard\/?.*/, restify.serveStatic({
   directory: path.join(__dirname, 'files/mobile')
 }));
 

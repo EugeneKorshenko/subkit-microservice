@@ -11,23 +11,22 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 
-		<link rel="apple-touch-icon" href="@locals.url/devcenter/img/touch-icon-iphone.png">
-		<link rel="apple-touch-icon" sizes="76x76" href="@locals.url/devcenter/img/touch-icon-ipad.png">
-		<link rel="apple-touch-icon" sizes="120x120" href="@locals.url/devcenter/img/touch-icon-iphone-retina.png">
-		<link rel="apple-touch-icon" sizes="152x152" href="@locals.url/devcenter/img/touch-icon-ipad-retina.png">
-		<link rel="apple-touch-startup-image" href="@locals.url/devcenter/img/touch-startup-image.png" />
-		<link rel="icon" type="image/ico" href="@locals.url/devcenter/img/favicon.ico" />
+		<link rel="apple-touch-icon" href="@locals.url/dashboard/img/touch-icon-iphone.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="@locals.url/dashboard/img/touch-icon-ipad.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="@locals.url/dashboard/img/touch-icon-iphone-retina.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="@locals.url/dashboard/img/touch-icon-ipad-retina.png">
+		<link rel="apple-touch-startup-image" href="@locals.url/dashboard/img/touch-startup-image.png" />
+		<link rel="icon" type="image/ico" href="@locals.url/dashboard/img/favicon.ico" />
 
-		<link rel="stylesheet" href="@locals.url/devcenter/css/style.css" type="text/css" media="screen" />
-		<script src="@locals.url/devcenter/libs/fastclick.js"></script>
-
-		<script defer src="@locals.url/devcenter/libs/angular.min.js"></script>
-		<script defer src="@locals.url/devcenter/libs/angular-sanitize.min.js"></script>
+		<link rel="stylesheet" href="@locals.url/dashboard/css/style.css" type="text/css" media="screen" />
+		<script src="@locals.url/dashboard/libs/fastclick.js"></script>
+		<script defer src="@locals.url/dashboard/libs/angular.min.js"></script>
+		<script defer src="@locals.url/dashboard/libs/angular-sanitize.min.js"></script>
+		<script defer src="@locals.url/dashboard/libs/add2home.js"></script>
 		<script defer src="@locals.url/sdk/subkit.js"></script>
 		<script defer src="@locals.url/sdk/angularsubkit.js"></script>
-		<script defer src="@locals.url/devcenter/libs/add2home.js"></script>
-		<script defer src="@locals.url/devcenter/js/nav.js"></script>
-		<script defer src="@locals.url/devcenter/js/app.js"></script>
+		<script defer src="@locals.url/dashboard/js/nav.js"></script>
+		<script defer src="@locals.url/dashboard/js/app.js"></script>
 	</head>
 	<body class="flat">
 		<views style="width: 100%;">

@@ -401,8 +401,9 @@ angular
 		$scope.messageLog = [];
 		if(subscription) $scope.unsubscribe(channelName);
 		$scope.channelStatus = "subscribed";
-		subscription = subkit.on(channelName, function(data){
-			$scope.messageLog.unshift({timestamp: new Date(), value: JSON.stringify(data,null, 4)});
+		subscription = subkit.on(channelName, function(error, data){
+			console.log(data);
+			$scope.messageLog.unshift({timestamp: new Date(), value: JSON.stringify(data, null, 4)});
 			$scope.$apply();
 		});
 	};

@@ -209,7 +209,7 @@
 					<div class="codepreview">
 						<ul>
 							<li data-ng-repeat="message in messageLog">
-								<div data-ng-bind="message.value"></div>
+								<div data-ng-bind="message"></div>
 							</li>
 						</ul>
 					</div>

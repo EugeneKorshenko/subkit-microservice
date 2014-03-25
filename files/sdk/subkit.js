@@ -611,7 +611,7 @@ var Subkit = function(config){
 				intervalRef = setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 500);
 			}else{
 				result.json().forEach(function(item){
-					callback(item.value);
+					callback(null, item.value);
 				});
 				intervalRef = setTimeout(function(){ if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 0);	
 			}

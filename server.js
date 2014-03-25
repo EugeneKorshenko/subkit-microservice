@@ -175,12 +175,11 @@ server.get("/", function(req, res, next){
 	  res.end();
 	});
 });
+
 server.get(/\/sdk\/?.*/, restify.serveStatic({
   directory: path.join(__dirname, 'files')
 }));
-server.get(/\/.+/, restify.serveStatic({
-  directory: path.join(__dirname, 'files/mobile')
-}));
+
 //start web server
 server.listen(app.port, function(){
 	console.log("subkit lite service listen on: " + server.address().port);
@@ -190,7 +189,6 @@ server.listen(app.port, function(){
 
 var helper = require("./lib/helper.js").init(admin, api, etag, lastModified, storage);
 helper.setNewETag();
-
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
 require("./lib/pubsub.js").init(server, pubsub, helper);
@@ -206,4 +204,9 @@ require("./lib/location.js").init(server, storage, helper);
 
 require("./lib/eventsource.js").init(server, es, helper);
 require("./lib/s3.js").init(server, s3Config, helper);
+
+
+server.get(/\/.+/, restify.serveStatic({
+  directory: path.join(__dirname, 'files/mobile')
+}));
 

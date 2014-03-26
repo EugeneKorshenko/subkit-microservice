@@ -55,27 +55,27 @@
     "backupPath": "./backups"
   },
   "emailConfig": {
-    "MTPUsername": "AKIAJXZCV4FOAIQ66NSA",
-    "SMTPPassword": "AopXWpwLIVpNSmjzOu0SDY2+TFFG1bqDT0w7u6TeSsVd",
-    "senderAddress": "no-reply@subkit.io",
-    "SMTPServer": "email-smtp.us-east-1.amazonaws.com",
+    "MTPUsername": "",
+    "SMTPPassword": "",
+    "senderAddress": "hello@subkit.io",
+    "SMTPServer": "",
     "Port": "465",
     "TLS": true,
-    "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",
-    "secretAccessKey": "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",
-    "region": "eu-west-1"
+    "accessKeyId": "",
+    "secretAccessKey": "",
+    "region": ""
   },
   "pushConfig": {
     "APN_Pfx": "./certs/apn/prod.p12",
     "APN_Sandbox_Pfx": "./certs/apn/dev.p12",
     "APN_Sandbox": true,
     "MPNS_Pfx": "./certs/mpns/prod.p12",
-    "GCM_APIKey": "AIzaSyCJLy5wbP12MyRzyt2MOJ75XahpE2Hq9JM"
+    "GCM_APIKey": ""
   },
   "s3Config": {
-    "accessKeyId": "AKIAJOOVPWJHPYRIBK7Q",
-    "secretAccessKey": "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",
-    "region": "eu-west-1"
+    "accessKeyId": "",
+    "secretAccessKey": "",
+    "region": ""
   },
   "schedulerConfig": {},
   "locationConfig": {}

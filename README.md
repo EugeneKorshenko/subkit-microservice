@@ -51,10 +51,11 @@ X			  | EMail 		  | Send EMails
 X			  | Mobile Push   | Mobile push notification to iOS, Android, WP8
 X			  | Location      | Location based services
 X			  | Statistics    | Usage statistics and monitoring
--			  | Graph Storage | A graph store
+-			  | MDM       	  | Mobile Device Management support
 -			  | Payment   	  | Payment provider support
 -			  | Transcoder    | Transcoding images and videos
 -			  | S3       	  | Amazon S3 support
+
 
 
 SDKS

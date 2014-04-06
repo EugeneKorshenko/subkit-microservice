@@ -302,27 +302,6 @@ var Subkit = function(config){
 		});
 	};
 
-	//statistics
-	self.statistics = function(callback){
-		var url = self.baseUrl + "/statistics/usage";
-		httpRequest.get(url, self.options, function(status, result){
-			if(!callback) return;
-			if(status === 0) return callback({message: "Lost network connection."});
-			if(status !== 200) return callback(result.json());
-			callback(null, result.json());
-		});
-	};
-	self.analytics = function(callback){
-		var url = self.baseUrl + "/statistics/analytics";
-		httpRequest.get(url, self.options, function(status, result){
-			if(!callback) return;
-			if(status === 0) return callback({message: "Lost network connection."});
-			if(status !== 200) return callback(result.json());
-			callback(null, result.json());
-		});
-	};
-
-	//store
 	self.store = {
 		set: function(key, value, callback){
 			key = key.replace(/^[a-zA-z0-9]\/\//, "!");
@@ -359,8 +338,6 @@ var Subkit = function(config){
 			});
 		}
 	};
-
-	//files
 	self.statics = {
 		upload: function(file, type, callback){
 			var msg = JSON.parse(JSON.stringify(self.options));
@@ -410,8 +387,6 @@ var Subkit = function(config){
 			});
 		}
 	};
-
-	//identities
 	self.identities = {
 		users: function(callback){
 			_get("/identities", callback);
@@ -455,8 +430,6 @@ var Subkit = function(config){
 
 		}
 	};
-
-	//email
 	self.email = {
 		send: function(value, callback){
 			var url = self.baseUrl + "/email/send";
@@ -471,8 +444,6 @@ var Subkit = function(config){
 			});
 		}
 	};
-
-	//push notify
 	self.notify = {
 		upload: function(provider, env, file, callback){
 			var msg = JSON.parse(JSON.stringify(self.options));
@@ -621,6 +592,27 @@ var Subkit = function(config){
 		off: function(channel, pollingRef){
 			delete self.subscribed[channel];
 			if(pollingRef) clearTimeout(pollingRef);
+		}
+	};
+
+	self.statistics = {
+		usage: function(callback){
+			var url = self.baseUrl + "/statistics/usage";
+			httpRequest.get(url, self.options, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status !== 200) return callback(result.json());
+				callback(null, result.json());
+			});
+		},
+		analytics: function(callback){
+			var url = self.baseUrl + "/statistics/analytics";
+			httpRequest.get(url, self.options, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status !== 200) return callback(result.json());
+				callback(null, result.json());
+			});
 		}
 	};
 };

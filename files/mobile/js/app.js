@@ -101,7 +101,7 @@ angular
 	nav.onChanged(function(name){
 		if(name === "statistics") {
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.statistics(function(err, data){
+			subkit.statistics.usage(function(err, data){
 				if(err) { $rootScope.error = "network error"; nav.show("notify"); }
 
 				$scope.lastUpdate = data.timestamp;
@@ -112,7 +112,7 @@ angular
 				$scope.staticsDirSizeKBytes = data.staticsDirSizeKBytes;
 				$scope.$apply();
 			});
-			subkit.analytics(function(err, data){
+			subkit.statistics.analytics(function(err, data){
 				$scope.urls = [];
 				for (var property in data.urls) {
 				    $scope.urls.push({key: property, value: data.urls[property]});

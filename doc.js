@@ -426,11 +426,11 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	//FILES MODULE
-	var files_doc = swagger.createResource("/docs/files",  {description: "Files distribution."});
-	files_doc.models.Value = {
+	//STATIC FILES MODULE
+	var statics_doc = swagger.createResource("/docs/statics",  {description: "Files distribution."});
+	statics_doc.models.Value = {
 	};
-	files_doc.get("/files", "Receive a list of files.", {
+	statics_doc.get("/statics", "Receive a list of files.", {
 	    nickname: "getFiles",
 		responseClass: "List[string]",
 		parameters: [],
@@ -441,10 +441,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	var file_doc = swagger.createResource("/docs/file",  {description: "File distribution."});
-	file_doc.models.Value = {
-	};
-	file_doc.post("/file/upload", "upload a file", {
+	statics_doc.post("/statics/upload", "upload a file", {
 	    nickname: "uploadFile",
 		responseClass: "",
 		parameters: [],
@@ -455,7 +452,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	file_doc.post("/file/upload/{name}", "upload a file", {
+	statics_doc.post("/statics/upload/{name}", "upload a file", {
 	    nickname: "uploadFile",
 		responseClass: "",
 		supportedContentTypes: ["application/octed-stream"],
@@ -470,7 +467,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	file_doc.put("/file/upload/{name}", "upload a file", {
+	statics_doc.put("/statics/upload/{name}", "upload a file", {
 	    nickname: "uploadFile",
 		responseClass: "",
 		supportedContentTypes: ["application/octed-stream"],
@@ -485,7 +482,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	file_doc.get("/file/download/{name}", "download a file", {
+	statics_doc.get("/statics/download/{name}", "download a file", {
 	    nickname: "downloadFile",
 		responseClass: "",
 		parameters: [
@@ -498,7 +495,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	file_doc.delete("/file/{name}", "delete a file", {
+	statics_doc.delete("/statics/{name}", "delete a file", {
 	    nickname: "deleteFile",
 		responseClass: "",
 		parameters: [

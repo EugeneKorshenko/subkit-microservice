@@ -323,39 +323,41 @@ var Subkit = function(config){
 	};
 
 	//store
-	self.set = function(key, value, callback){
-		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/stores/" + key;
-		var msg = JSON.parse(JSON.stringify(self.options));
-		msg["data"] = value;
-		httpRequest.post(url, msg, function(status, result){
-			if(status!==200 && status!==201) {
-				if(callback) _changeStatus(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
-		});
-	};
-	self.get = function(key, callback){
-		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/stores/" + key;
-		httpRequest.get(url, self.options, function(status, result){
-			if(!callback) return;
-			if(status === 0) return callback({message: "Lost network connection."});
-			if(status !== 200) return callback(result.json());
-			callback(null, result.json());
-		});
-	};
-	self.remove = function(key, callback){
-		key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-		var url = self.baseUrl + "/stores/" + key;
-		httpRequest.del(url, self.options, function(status, result){
-			if(status!==200 && status !== 202) {
-				if(callback) callback(result);
-			}else{
-				if(callback) callback(null, result.json());
-			}
-		});
+	self.store = {
+		set: function(key, value, callback){
+			key = key.replace(/^[a-zA-z0-9]\/\//, "!");
+			var url = self.baseUrl + "/stores/" + key;
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg["data"] = value;
+			httpRequest.post(url, msg, function(status, result){
+				if(status!==200 && status!==201) {
+					if(callback) _changeStatus(result);
+				}else{
+					if(callback) callback(null, result.json());
+				}
+			});
+		},
+		get: function(key, callback){
+			key = key.replace(/^[a-zA-z0-9]\/\//, "!");
+			var url = self.baseUrl + "/stores/" + key;
+			httpRequest.get(url, self.options, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status !== 200) return callback(result.json());
+				callback(null, result.json());
+			});
+		},
+		remove: function(key, callback){
+			key = key.replace(/^[a-zA-z0-9]\/\//, "!");
+			var url = self.baseUrl + "/stores/" + key;
+			httpRequest.del(url, self.options, function(status, result){
+				if(status!==200 && status !== 202) {
+					if(callback) callback(result);
+				}else{
+					if(callback) callback(null, result.json());
+				}
+			});
+		}
 	};
 
 	//files

@@ -26,53 +26,6 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	//PLUGIN MODULE
-	var mr_doc = swagger.createResource("/docs/job",  {description: "Run task operations"});
-	mr_doc.models.Value = {
-		id: "Value",
-		properties: {}
-	};
-	mr_doc.get("/job/schema", "Load JSON schema for specified store name.", {
-	    nickname: "getSchema",
-		responseClass: "Value",
-		parameters: [
-			{name: "store", description: "Store name", required:true, dataType: "string", paramType: "query"},
-		],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-	mr_doc.get("/job/{name}", "Execute task script by name.", {
-	    nickname: "run",
-	    responseClass: "Value",
-		parameters: [
-			{name: "name", description: "Script name.", required:true, dataType: "string", paramType: "path"},
-		],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-	mr_doc.post("/job/{name}", "Execute task script by name.", {
-	    nickname: "run",
-	    responseClass: "Value",
-		parameters: [
-			{name: "name", description: "Script name.", required:true, dataType: "string", paramType: "path"},
-			{name: "value", description: "Item object.", allowMultiple:true, required:true, dataType: "Value", paramType: "body"}
-		],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-	
 	//STORE MODULE
 	var stores_doc = swagger.createResource("/docs/stores",  {description: "Store operations."});
 	stores_doc.models.Value = {
@@ -427,7 +380,7 @@ module.exports.configure = function(server, options){
 	});
 
 	//STATIC FILES MODULE
-	var statics_doc = swagger.createResource("/docs/statics",  {description: "Files distribution."});
+	var statics_doc = swagger.createResource("/docs/statics",  {description: "Static files distribution operations."});
 	statics_doc.models.Value = {
 	};
 	statics_doc.get("/statics", "Receive a list of files.", {
@@ -500,6 +453,53 @@ module.exports.configure = function(server, options){
 		responseClass: "",
 		parameters: [
 			{name: "name", description: "file name", required:true, dataType: "string", paramType: "path"}
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+
+	//PLUGIN MODULE
+	var mr_doc = swagger.createResource("/docs/job",  {description: "Run task operations"});
+	mr_doc.models.Value = {
+		id: "Value",
+		properties: {}
+	};
+	mr_doc.get("/job/schema", "Load JSON schema for specified store name.", {
+	    nickname: "getSchema",
+		responseClass: "Value",
+		parameters: [
+			{name: "store", description: "Store name", required:true, dataType: "string", paramType: "query"},
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	mr_doc.get("/job/{name}", "Execute task script by name.", {
+	    nickname: "run",
+	    responseClass: "Value",
+		parameters: [
+			{name: "name", description: "Script name.", required:true, dataType: "string", paramType: "path"},
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	mr_doc.post("/job/{name}", "Execute task script by name.", {
+	    nickname: "run",
+	    responseClass: "Value",
+		parameters: [
+			{name: "name", description: "Script name.", required:true, dataType: "string", paramType: "path"},
+			{name: "value", description: "Item object.", allowMultiple:true, required:true, dataType: "Value", paramType: "body"}
 		],
 		"errorResponses":[
 			{

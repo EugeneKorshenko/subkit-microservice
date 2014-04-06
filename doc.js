@@ -380,10 +380,10 @@ module.exports.configure = function(server, options){
 	});
 
 	//STATIC FILES MODULE
-	var statics_doc = swagger.createResource("/docs/statics",  {description: "Static files distribution operations."});
+	var statics_doc = swagger.createResource("/docs/file",  {description: "Static files distribution operations."});
 	statics_doc.models.Value = {
 	};
-	statics_doc.get("/statics", "Receive a list of files.", {
+	statics_doc.get("/file", "Receive a list of files.", {
 	    nickname: "getFiles",
 		responseClass: "List[string]",
 		parameters: [],
@@ -394,7 +394,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.post("/statics/upload", "upload a file", {
+	statics_doc.post("/file/upload", "upload a file", {
 	    nickname: "uploadFile",
 		responseClass: "",
 		parameters: [],
@@ -405,7 +405,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.post("/statics/upload/{name}", "upload a file", {
+	statics_doc.post("/file/upload/{name}", "upload a file", {
 	    nickname: "uploadFile",
 		responseClass: "",
 		supportedContentTypes: ["application/octed-stream"],
@@ -420,7 +420,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.put("/statics/upload/{name}", "upload a file", {
+	statics_doc.put("/file/upload/{name}", "upload a file", {
 	    nickname: "uploadFile",
 		responseClass: "",
 		supportedContentTypes: ["application/octed-stream"],
@@ -435,7 +435,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.get("/statics/download/{name}", "download a file", {
+	statics_doc.get("/file/download/{name}", "download a file", {
 	    nickname: "downloadFile",
 		responseClass: "",
 		parameters: [
@@ -448,7 +448,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.delete("/statics/{name}", "delete a file", {
+	statics_doc.delete("/file/{name}", "delete a file", {
 	    nickname: "deleteFile",
 		responseClass: "",
 		parameters: [
@@ -463,12 +463,12 @@ module.exports.configure = function(server, options){
 	});
 
 	//PLUGIN MODULE
-	var mr_doc = swagger.createResource("/docs/job",  {description: "Run task operations"});
+	var mr_doc = swagger.createResource("/docs/plugins",  {description: "Run plugin operations"});
 	mr_doc.models.Value = {
 		id: "Value",
 		properties: {}
 	};
-	mr_doc.get("/job/schema", "Load JSON schema for specified store name.", {
+	mr_doc.get("/plugins/schema", "Load JSON schema for specified store name.", {
 	    nickname: "getSchema",
 		responseClass: "Value",
 		parameters: [
@@ -481,7 +481,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	mr_doc.get("/job/{name}", "Execute task script by name.", {
+	mr_doc.get("/plugins/{name}", "Execute task script by name.", {
 	    nickname: "run",
 	    responseClass: "Value",
 		parameters: [
@@ -494,7 +494,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	mr_doc.post("/job/{name}", "Execute task script by name.", {
+	mr_doc.post("/plugins/{name}", "Execute task script by name.", {
 	    nickname: "run",
 	    responseClass: "Value",
 		parameters: [

@@ -280,28 +280,28 @@ var Subkit = function(config){
 		});
 	};
 
-	//login
-	self.login = function(callback){
-		var url = self.baseUrl + "/manage/login";
-		httpRequest.authBasic(self.options.username, self.options.password);
-		httpRequest.post(url, self.options, function(status, result){
-			if(status !== 200){
-				if(callback) callback({message:"authentication failed"});
-			}
-			else {
-				self.options.apiKey = result.json().api.apiKey;
-				var result = {
-					apiKey: self.options.apiKey,
-					username: self.options.username,
-					password: self.options.password,
-					baseUrl: self.baseUrl,
-					devCenterUrl: self.baseUrl + "/devcenter/index"
+	self.manage = {
+		login: function(callback){
+			var url = self.baseUrl + "/manage/login";
+			httpRequest.authBasic(self.options.username, self.options.password);
+			httpRequest.post(url, self.options, function(status, result){
+				if(status !== 200){
+					if(callback) callback({message:"authentication failed"});
 				}
-				if(callback) callback(null, result);
-			}
-		});
+				else {
+					self.options.apiKey = result.json().api.apiKey;
+					var result = {
+						apiKey: self.options.apiKey,
+						username: self.options.username,
+						password: self.options.password,
+						baseUrl: self.baseUrl,
+						devCenterUrl: self.baseUrl + "/devcenter/index"
+					}
+					if(callback) callback(null, result);
+				}
+			});
+		}
 	};
-
 	self.store = {
 		set: function(key, value, callback){
 			key = key.replace(/^[a-zA-z0-9]\/\//, "!");
@@ -338,7 +338,7 @@ var Subkit = function(config){
 			});
 		}
 	};
-	self.statics = {
+	self.file = {
 		upload: function(file, type, callback){
 			var msg = JSON.parse(JSON.stringify(self.options));
 			msg.headers = {
@@ -387,16 +387,16 @@ var Subkit = function(config){
 			});
 		}
 	};
-	self.identities = {
+	self.identity = {
 		users: function(callback){
-			_get("/identities", callback);
+			_get("/identity", callback);
 		},
 		groups: function(key, callback){
-			var url = (key) ? "/identities/groups/" + key : "/identities/groups";
+			var url = (key) ? "/identity/groups/" + key : "/identity/groups";
 			_get(url, callback);
 		},
 		create: function(key, value, callback){
-			var url = self.baseUrl + "/identities/" + key;
+			var url = self.baseUrl + "/identity/" + key;
 			var msg = JSON.parse(JSON.stringify(self.options));
 			msg["data"] = value;
 			httpRequest.post(url, msg, function(status, result){
@@ -407,7 +407,7 @@ var Subkit = function(config){
 			});
 		},
 		remove: function(key, callback){
-			var url = self.baseUrl + "/identities/" + key;
+			var url = self.baseUrl + "/identity/" + key;
 			httpRequest.del(url, self.options, function(status, result){
 				if(!callback) return;
 				if(status === 0) return callback({message: "Lost network connection."});
@@ -416,7 +416,7 @@ var Subkit = function(config){
 			});
 		},
 		save: function(key, value, callback){
-			var url = self.baseUrl + "/identities/" + key;
+			var url = self.baseUrl + "/identity/" + key;
 			var msg = JSON.parse(JSON.stringify(self.options));
 			msg["data"] = value;
 			httpRequest.put(url, msg, function(status, result){
@@ -492,68 +492,6 @@ var Subkit = function(config){
 			}
 		}
 	};
-
-	//plugin
-	self.run = function(pluginName, callback){
-		var url = self.baseUrl + "/plugins/run/" + pluginName;
-		httpRequest.get(url, self.options, function(status, result){
-			if(status !== 200) {
-				if(callback) callback(result.json());
-			}else{
-				if(callback) callback(null, result.json());
-			}
-		});
-	};
-	self.exec = function(pluginName, value, callback){
-		var url = self.baseUrl + "/plugins/run/" + pluginName;
-		var msg = JSON.parse(JSON.stringify(self.options));
-		msg["data"] = value;
-		httpRequest.post(url, msg, function(status, result){
-			if(status!==200 && status!==201) {
-				if(callback) callback(result.json());
-			}else{
-				if(callback) callback(null, result.json());
-			}
-		});
-	};
-
-	//template
-	self.open = function(name, type, callback){
-		var url = self.baseUrl + "/" + type + "/" + name;
-		httpRequest.get(url, self.options, function(status, result){
-			if(!callback) return;
-			if(status === 0) return callback({message: "Lost network connection."});
-			if(status !== 200) return callback(result.json());
-			callback(null, result.text());
-		});
-	};
-	
-	//pubsub
-	var _get = function(path, callback){
-		var url = self.baseUrl + path;
-		httpRequest.get(url, self.options, function(status, result){
-			if(!callback) return;
-			if(status === 0) return callback({message: "Lost network connection."});
-			if(status !== 200) return callback(result.json());
-			callback(null, result.json());
-		});		
-	};
-	var _poll = function(channel, clientId, callback) {
-		var intervalRef = null;
-		var subscribeUrl = self.baseUrl + "/pubsub/subscribe/" + channel + "/" + clientId;
-		httpRequest.get(subscribeUrl, self.options, function(status, result){
-			if(status !== 200) {
-				callback({message: "subscription error - retry"});
-				intervalRef = setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 500);
-			}else{
-				result.json().forEach(function(item){
-					callback(null, item.value);
-				});
-				intervalRef = setTimeout(function(){ if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 0);	
-			}
-		});
-		return intervalRef;
-	};
 	self.pubsub = {
 		channels: function(callback){
 			var url = self.baseUrl + "/pubsub/channels";
@@ -594,7 +532,6 @@ var Subkit = function(config){
 			if(pollingRef) clearTimeout(pollingRef);
 		}
 	};
-
 	self.statistics = {
 		usage: function(callback){
 			var url = self.baseUrl + "/statistics/usage";
@@ -615,4 +552,67 @@ var Subkit = function(config){
 			});
 		}
 	};
+	self.template = {
+		open: function(name, type, callback){
+			var url = self.baseUrl + "/" + type + "/" + name;
+			httpRequest.get(url, self.options, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status !== 200) return callback(result.json());
+				callback(null, result.text());
+			});
+		}
+	};
+	self.plugin = {
+		run: function(pluginName, callback){
+			var url = self.baseUrl + "/plugins/run/" + pluginName;
+			httpRequest.get(url, self.options, function(status, result){
+				if(status !== 200) {
+					if(callback) callback(result.json());
+				}else{
+					if(callback) callback(null, result.json());
+				}
+			});
+		},
+		exec: function(pluginName, value, callback){
+			var url = self.baseUrl + "/plugins/run/" + pluginName;
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg["data"] = value;
+			httpRequest.post(url, msg, function(status, result){
+				if(status!==200 && status!==201) {
+					if(callback) callback(result.json());
+				}else{
+					if(callback) callback(null, result.json());
+				}
+			});
+		}
+	};
+	
+	//private pubsub
+	var _get = function(path, callback){
+		var url = self.baseUrl + path;
+		httpRequest.get(url, self.options, function(status, result){
+			if(!callback) return;
+			if(status === 0) return callback({message: "Lost network connection."});
+			if(status !== 200) return callback(result.json());
+			callback(null, result.json());
+		});		
+	};
+	var _poll = function(channel, clientId, callback) {
+		var intervalRef = null;
+		var subscribeUrl = self.baseUrl + "/pubsub/subscribe/" + channel + "/" + clientId;
+		httpRequest.get(subscribeUrl, self.options, function(status, result){
+			if(status !== 200) {
+				callback({message: "subscription error - retry"});
+				intervalRef = setTimeout(function() { if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 500);
+			}else{
+				result.json().forEach(function(item){
+					callback(null, item.value);
+				});
+				intervalRef = setTimeout(function(){ if(self.subscribed[channel]) _poll(channel, clientId, callback); }, 0);	
+			}
+		});
+		return intervalRef;
+	};
+
 };

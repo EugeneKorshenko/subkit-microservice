@@ -56,7 +56,7 @@ angular
 		shared.password = $scope.password;
 		shared.domain = $scope.domain;
 		var subkit = new Subkit({ baseUrl: shared.domain, username: shared.username, password: shared.password });
-		subkit.login(function(err, data){
+		subkit.manage.login(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			shared.apiKey = data.apiKey;
 			nav.go("center");
@@ -138,7 +138,7 @@ angular
 
 	function _load(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.statics.list("statics", function(err, data){
+		subkit.file.list("file", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.files = data;
 			$scope.$apply();
@@ -147,7 +147,7 @@ angular
 
 	$scope.preview = function(templateName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.open(templateName, "statics", function(err, data){
+		subkit.template.open(templateName, "file", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.previewOutput = $sce.trustAsHtml(data) || "";
 			$scope.keyData = templateName;
@@ -158,7 +158,7 @@ angular
 
 	$scope.open = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.statics.download(fileName, "statics", function(err, data){
+		subkit.file.download(fileName, "file", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
@@ -171,7 +171,7 @@ angular
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([$scope.valueData]);
         file.name = $scope.keyData;
-        subkit.statics.upload(file, "statics", function(err, data){
+        subkit.file.upload(file, "file", function(err, data){
         	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         	nav.back("files");
         });
@@ -183,7 +183,7 @@ angular
 			var files = fileInput.files;
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 			for (var i = 0; i < files.length; i++) {
-				subkit.statics.upload(files[i], "statics", function(err, data){
+				subkit.file.upload(files[i], "file", function(err, data){
 					_load();
 				});
 			};
@@ -193,7 +193,7 @@ angular
 
 	$scope.remove = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.statics.delete(fileName, "statics", function(err, data){
+		subkit.file.delete(fileName, "file", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			_load();
 		});
@@ -203,7 +203,7 @@ angular
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([]);
 		file.name = fileName;
-		subkit.statics.upload(file, "statics", function(err, data){
+		subkit.file.upload(file, "file", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.fileName = "";
 			_load();
@@ -218,7 +218,7 @@ angular
 
 	function _load(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.list("plugins", function(err, data){
+		subkit.file.list("plugins", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.tasks = data;
 			$scope.$apply();
@@ -227,7 +227,7 @@ angular
 
 	$scope.show = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.download(fileName, "plugins", function(err, data){
+		subkit.file.download(fileName, "plugins", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
@@ -240,7 +240,7 @@ angular
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([$scope.valueData]);
         file.name = $scope.keyData;
-        subkit.upload(file, "plugins", function(err, data){
+        subkit.file.upload(file, "plugins", function(err, data){
         	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         });
 	};
@@ -251,7 +251,7 @@ angular
 			var files = fileInput.files;
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 			for (var i = 0; i < files.length; i++) {
-				subkit.upload(files[i], "plugins", function(err, data){
+				subkit.file.upload(files[i], "plugins", function(err, data){
 					_load();
 				});
 			};
@@ -261,7 +261,7 @@ angular
 
 	$scope.remove = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.delete(fileName, "plugins", function(err, data){
+		subkit.file.delete(fileName, "plugins", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			_load();
 		});
@@ -271,7 +271,7 @@ angular
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([]);
         file.name = fileName;
-        subkit.upload(file, "plugins", function(err, data){
+        subkit.file.upload(file, "plugins", function(err, data){
         	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         	$scope.fileName = "";
         	_load();
@@ -284,7 +284,7 @@ angular
 
 	$scope.run = function(taskName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.run(taskName, function(err, data){
+		subkit.plugin.run(taskName, function(err, data){
 			$scope.previewOutput = err ? err.message : JSON.stringify(data, null, 4);
 			$scope.$apply();
 			nav.go("taskpreview");
@@ -299,7 +299,7 @@ angular
 
 	function _load(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.list("templates", function(err, data){
+		subkit.file.list("templates", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.templates = data;
 			$scope.$apply();
@@ -308,7 +308,7 @@ angular
 
 	$scope.show = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.download(fileName, "templates", function(err, data){
+		subkit.file.download(fileName, "templates", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
@@ -321,7 +321,7 @@ angular
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([$scope.valueData]);
         file.name = $scope.keyData;
-        subkit.upload(file, "templates", function(err, data){
+        subkit.file.upload(file, "templates", function(err, data){
         	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         });
 	};
@@ -332,7 +332,7 @@ angular
 			var files = fileInput.files;
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 			for (var i = 0; i < files.length; i++) {
-				subkit.upload(files[i], "templates", function(err, data){
+				subkit.file.upload(files[i], "templates", function(err, data){
 					_load();
 				});
 			};
@@ -342,7 +342,7 @@ angular
 
 	$scope.remove = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.delete(fileName, "templates", function(err, data){
+		subkit.file.delete(fileName, "templates", function(err, data){
 			if(err) { $rootScope.error = "network error"; natrv.show("notify"); return; }
 			_load();
 		});
@@ -352,7 +352,7 @@ angular
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([]);
         file.name = fileName;
-        subkit.upload(file, "templates", function(err, data){
+        subkit.file.upload(file, "templates", function(err, data){
         	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         	$scope.fileName = "";
         	_load();
@@ -361,7 +361,7 @@ angular
 
 	$scope.preview = function(templateName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.open(templateName, "templates", function(err, data){
+		subkit.template.open(templateName, "templates", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.previewOutput = $sce.trustAsHtml(data) || "";
 			$scope.keyData = templateName;
@@ -607,10 +607,10 @@ angular
 
 	var _loadIdentities = $scope.loadIdentities = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.identities.users(function(err, data){
+		subkit.identity.users(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
-			subkit.identities.groups(null, function(err, data){
+			subkit.identity.groups(null, function(err, data){
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				$scope.groups = data;
 				$scope.$apply();
@@ -620,7 +620,7 @@ angular
 
 	var _loadGroups = $scope.loadGroups = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.identities.groups(null, function(err, data){
+		subkit.identity.groups(null, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
 			$scope.$apply();
@@ -628,7 +628,7 @@ angular
 	};
 
 	$scope.create = function(identityId){
-		subkit.identities.create(identityId, {}, function(err, data){
+		subkit.identity.create(identityId, {}, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.identityId = "";
 			_loadIdentities();
@@ -671,7 +671,7 @@ angular
 	};
 
 	$scope.remove = function(identityId){
-		subkit.identities.remove(identityId, function(err, data){
+		subkit.identity.remove(identityId, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			_loadIdentities();
 		});
@@ -685,7 +685,7 @@ angular
 		changedIdentity.groups.forEach(function(group){
 			delete group.value;
 		});
-		subkit.identities.save($scope.identity.identityId, changedIdentity, function(err, data){
+		subkit.identity.save($scope.identity.identityId, changedIdentity, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			nav.back("identity");
 		});
@@ -699,7 +699,7 @@ angular
 	});
 	var _loadGroups = $scope.loadGroups = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.identities.groups(null, function(err, data){
+		subkit.identity.groups(null, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
 			$scope.$apply();
@@ -707,7 +707,7 @@ angular
 	};
 
 	$scope.preview = function(){
-		subkit.open($scope.template, "templates", function(err, data){
+		subkit.template.open($scope.template, "templates", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.previewOutput = $sce.trustAsHtml(data) || "";
 			$scope.$apply();
@@ -716,11 +716,11 @@ angular
 	};
 	$scope.open = function(emailgroup){
 		$scope.emailgroup = emailgroup;
-		subkit.identities.groups($scope.emailgroup.key, function(err, data){
+		subkit.identity.groups($scope.emailgroup.key, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
 
-			subkit.list("templates", function(err, data){
+			subkit.file.list("templates", function(err, data){
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				$scope.templates = data;
 				$scope.$apply();
@@ -770,7 +770,7 @@ angular
 		}
 	});
 	var _loadGroups = $scope.loadGroups = function(){
-		subkit.identities.groups(null, function(err, data){
+		subkit.identity.groups(null, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
 			$scope.$apply();
@@ -808,7 +808,7 @@ angular
 
 	$scope.open = function(pushnotifygroup){
 		$scope.pushnotifygroup = pushnotifygroup;
-		subkit.identities.groups($scope.pushnotifygroup.key, function(err, data){
+		subkit.identity.groups($scope.pushnotifygroup.key, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.items = data;
 			$scope.$apply();

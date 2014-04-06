@@ -138,7 +138,7 @@ angular
 
 	function _load(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.list("statics", function(err, data){
+		subkit.statics.list("statics", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.files = data;
 			$scope.$apply();
@@ -158,7 +158,7 @@ angular
 
 	$scope.open = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.download(fileName, "statics", function(err, data){
+		subkit.statics.download(fileName, "statics", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.valueData = data || "";
 			$scope.keyData = fileName;
@@ -171,7 +171,7 @@ angular
         var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([$scope.valueData]);
         file.name = $scope.keyData;
-        subkit.upload(file, "statics", function(err, data){
+        subkit.statics.upload(file, "statics", function(err, data){
         	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
         	nav.back("files");
         });
@@ -183,7 +183,7 @@ angular
 			var files = fileInput.files;
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 			for (var i = 0; i < files.length; i++) {
-				subkit.upload(files[i], "statics", function(err, data){
+				subkit.statics.upload(files[i], "statics", function(err, data){
 					_load();
 				});
 			};
@@ -193,7 +193,7 @@ angular
 
 	$scope.remove = function(fileName){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-		subkit.delete(fileName, "statics", function(err, data){
+		subkit.statics.delete(fileName, "statics", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			_load();
 		});
@@ -203,7 +203,7 @@ angular
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
 		var file = new Blob([]);
 		file.name = fileName;
-		subkit.upload(file, "statics", function(err, data){
+		subkit.statics.upload(file, "statics", function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.fileName = "";
 			_load();

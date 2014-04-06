@@ -361,52 +361,54 @@ var Subkit = function(config){
 	};
 
 	//files
-	self.upload = function(file, type, callback){
-		var msg = JSON.parse(JSON.stringify(self.options));
-		msg.headers = {
-		  'Content-Type': 'application/octed-stream',
-		  apiKey: config.apiKey
-		};
-		msg["data"] = file;
-		var url = self.baseUrl + "/" + type + "/upload/" + file.name;
-		httpRequest.post(url, msg, function(status, result){
-			if(status!==201) {
-				if(callback) _changeStatus(result);
-			}else{
-				if(callback) callback();
-			}
-		});
-	};
-	self.download = function(fileName, type, callback){
-		var url = self.baseUrl + "/" + type + "/download/" + fileName;
-		httpRequest.get(url, self.options, function(status, result){
-			if(status!==200) {
-				if(callback) _changeStatus(result);
-			}else{
-				var data = result.text();
-				if(callback && data != "undefined") return callback(null, data);
-				callback();
-			}
-		});
-	};
-	self.delete = function(fileName, type, callback){
-		var url = self.baseUrl + "/" + type + "/" + fileName;
-		httpRequest.del(url, self.options, function(status, result){
-			if(status!==200 && status!==202) {
-				if(callback) _changeStatus(result);
-			}else{
-				if(callback) callback(null, result.text());
-			}
-		});
-	};
-	self.list = function(type, callback){
-		var url = self.baseUrl + "/" + type;
-		httpRequest.get(url, self.options, function(status, result){
-			if(!callback) return;
-			if(status === 0) return callback({message: "Lost network connection."});
-			if(status !== 200) return callback(result.json());
-			callback(null, result.json());
-		});
+	self.statics = {
+		upload: function(file, type, callback){
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg.headers = {
+			  'Content-Type': 'application/octed-stream',
+			  apiKey: config.apiKey
+			};
+			msg["data"] = file;
+			var url = self.baseUrl + "/" + type + "/upload/" + file.name;
+			httpRequest.post(url, msg, function(status, result){
+				if(status!==201) {
+					if(callback) _changeStatus(result);
+				}else{
+					if(callback) callback();
+				}
+			});
+		},
+		download: function(fileName, type, callback){
+			var url = self.baseUrl + "/" + type + "/download/" + fileName;
+			httpRequest.get(url, self.options, function(status, result){
+				if(status!==200) {
+					if(callback) _changeStatus(result);
+				}else{
+					var data = result.text();
+					if(callback && data != "undefined") return callback(null, data);
+					callback();
+				}
+			});
+		},
+		delete: function(fileName, type, callback){
+			var url = self.baseUrl + "/" + type + "/" + fileName;
+			httpRequest.del(url, self.options, function(status, result){
+				if(status!==200 && status!==202) {
+					if(callback) _changeStatus(result);
+				}else{
+					if(callback) callback(null, result.text());
+				}
+			});
+		},
+		list: function(type, callback){
+			var url = self.baseUrl + "/" + type;
+			httpRequest.get(url, self.options, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status !== 200) return callback(result.json());
+				callback(null, result.json());
+			});
+		}
 	};
 
 	//identities

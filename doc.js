@@ -2,6 +2,7 @@ var swagger = require('swagger-doc');
 module.exports.configure = function(server, options){
 	swagger.configure(server, options);
 
+	//SUBKIT MANAGEMENT
 	var manage_doc = swagger.createResource("/docs/manage", {description: "Manage operation"});
 	manage_doc.description = "Management operation";
 	manage_doc.post("/manage/login","Login with username and password.",{
@@ -25,6 +26,7 @@ module.exports.configure = function(server, options){
 		]
 	});
 
+	//PLUGIN MODULE
 	var mr_doc = swagger.createResource("/docs/job",  {description: "Run task operations"});
 	mr_doc.models.Value = {
 		id: "Value",
@@ -70,8 +72,9 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-
-	var stores_doc = swagger.createResource("/docs/stores",  {description: "Store operations"});
+	
+	//STORE MODULE
+	var stores_doc = swagger.createResource("/docs/stores",  {description: "Store operations."});
 	stores_doc.models.Value = {
 		id: "Value",
 		properties: {}
@@ -256,135 +259,9 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	var subscribe_doc = swagger.createResource("/docs/subscribe",  {description: "Subscribe to a channel."});
-	subscribe_doc.get("/subscribe/{channel}/{clientId}", "Long-Polling Subscribe to specified channel with a client id.", {
-	    nickname: "subscribe",
-		parameters: [
-			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
-			{name: "clientId", description: "Your client id", required:true, dataType: "string", paramType: "path"},
-		],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-	subscribe_doc.post("/subscribe/{channel}/{clientId}", "Subscribe to specified channel with a client id.", {
-	    nickname: "subscribe",
-		parameters: [
-			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
-			{name: "clientId", description: "Your client id", required:true, dataType: "string", paramType: "path"},
-		],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-	subscribe_doc.delete("/subscribe/{channel}/{clientId}", "Unsubscribe from specified channel with a client id.", {
-	    nickname: "unsubscribe",
-		parameters: [
-			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
-			{name: "clientId", description: "Your client id", required:true, dataType: "string", paramType: "path"},
-		],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-
-	var channels_doc = swagger.createResource("/docs/channels",  {description: "Channels for message distribution."});
-	channels_doc.models.Info = {
-		id: "Info",
-		properties: {
-			channel:{
-				type: "string"
-			}
-		}
-	};
-	channels_doc.get("/channels", "Get all available channels.", {
-	    nickname: "getChannels",
-		responseClass: "List[Info]",
-		parameters: [],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-	channels_doc.get("/channels/{clientId}", "Get all channels by client Id.", {
-	    nickname: "getChannelsByClientId",
-		responseClass: "List[Info]",
-		parameters: [
-			{name: "clientId", description: "Client Id.", required:true, dataType: "string", paramType: "path"},
-		],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-	
-	var channel_doc = swagger.createResource("/docs/channel",  {description: "Channel for message distribution."});
-	channel_doc.post("/channel/publish/{channel}", "Publish message to specified channel.", {
-	    nickname: "publish",
-		parameters: [
-			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
-			{name: "value", description: "The message data", required:true, dataType: "Value", paramType: "body"},
-		],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-
-	var clients_doc = swagger.createResource("/docs/clients",  {description: "Clients for message distribution."});
-	clients_doc.models.Info = {
-		id: "Info",
-		properties: {
-			clientId:{
-				type: "string"
-			},
-			channel:{
-				type: "string"
-			}
-		}
-	};
-	clients_doc.get("/clients", "Get all available clients.", {
-	    nickname: "getClients",
-		responseClass: "List[Info]",
-		parameters: [],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-	clients_doc.get("/clients/{channel}", "Get all clients by channel name.", {
-	    nickname: "getClientsByChannel",
-		responseClass: "List[Info]",
-		parameters: [
-			{name: "channel", description: "Channel name.", required:true, dataType: "string", paramType: "path"},
-		],
-		"errorResponses":[
-			{
-				"code": 500,
-				"reason": "Script error."
-			}
-		]
-	});
-	
-	var client_doc = swagger.createResource("/docs/client",  {description: "Client for message distribution."});
-	client_doc.models.Value = {
+	//PUBSUB MODULE
+	var pubsub_doc = swagger.createResource("/docs/pubsub",  {description: "PubSub operations."});
+	pubsub_doc.models.Value = {
 		id: "Value",
 		properties: {
 		    clientId: {
@@ -397,7 +274,18 @@ module.exports.configure = function(server, options){
 		    }
   		}
 	};
-	client_doc.get("/client/{channel}/{clientId}", "Receive messages from specified stream and client id.", {
+	pubsub_doc.models.Info = {
+		id: "Info",
+		properties: {
+			clientId:{
+				type: "string"
+			},
+			channel:{
+				type: "string"
+			}
+		}
+	};
+	pubsub_doc.get("/pubsub/client/{channel}/{clientId}", "Receive messages from specified stream and client id.", {
 	    nickname: "receive",
 		responseClass: "List[Value]",
 		parameters: [
@@ -411,7 +299,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	client_doc.get("/client/{clientId}", "Receive all messages for client id.", {
+	pubsub_doc.get("/pubsub/client/{clientId}", "Receive all messages for client id.", {
 	    nickname: "receiveAll",
 		responseClass: "List[Value]",
 		parameters: [
@@ -424,7 +312,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	client_doc.post("/client/publish/{clientId}", "Publish message to specified client id.", {
+	pubsub_doc.post("/pubsub/client/publish/{clientId}", "Publish message to specified client id.", {
 	    nickname: "publish",
 		parameters: [
 			{name: "clientId", description: "The client Id", required:true, dataType: "string", paramType: "path"},
@@ -437,7 +325,108 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
+	pubsub_doc.get("/pubsub/clients", "Get all available clients.", {
+	    nickname: "getClients",
+		responseClass: "List[Info]",
+		parameters: [],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	pubsub_doc.get("/pubsub/clients/{channel}", "Get all clients by channel name.", {
+	    nickname: "getClientsByChannel",
+		responseClass: "List[Info]",
+		parameters: [
+			{name: "channel", description: "Channel name.", required:true, dataType: "string", paramType: "path"},
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	pubsub_doc.post("/pubsub/channel/publish/{channel}", "Publish message to specified channel.", {
+	    nickname: "publish",
+		parameters: [
+			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
+			{name: "value", description: "The message data", required:true, dataType: "Value", paramType: "body"},
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	pubsub_doc.get("/pubsub/channels", "Get all available channels.", {
+	    nickname: "getChannels",
+		responseClass: "List[Info]",
+		parameters: [],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	pubsub_doc.get("/pubsub/channels/{clientId}", "Get all channels by client Id.", {
+	    nickname: "getChannelsByClientId",
+		responseClass: "List[Info]",
+		parameters: [
+			{name: "clientId", description: "Client Id.", required:true, dataType: "string", paramType: "path"},
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	pubsub_doc.get("/pubsub/subscribe/{channel}/{clientId}", "Long-Polling Subscribe to specified channel with a client id.", {
+	    nickname: "subscribe",
+		parameters: [
+			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
+			{name: "clientId", description: "Your client id", required:true, dataType: "string", paramType: "path"},
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	pubsub_doc.post("/pubsub/subscribe/{channel}/{clientId}", "Subscribe to specified channel with a client id.", {
+	    nickname: "subscribe",
+		parameters: [
+			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
+			{name: "clientId", description: "Your client id", required:true, dataType: "string", paramType: "path"},
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	pubsub_doc.delete("/pubsub/subscribe/{channel}/{clientId}", "Unsubscribe from specified channel with a client id.", {
+	    nickname: "unsubscribe",
+		parameters: [
+			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
+			{name: "clientId", description: "Your client id", required:true, dataType: "string", paramType: "path"},
+		],
+		"errorResponses":[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
 
+	//FILES MODULE
 	var files_doc = swagger.createResource("/docs/files",  {description: "Files distribution."});
 	files_doc.models.Value = {
 	};
@@ -452,7 +441,6 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-
 	var file_doc = swagger.createResource("/docs/file",  {description: "File distribution."});
 	file_doc.models.Value = {
 	};

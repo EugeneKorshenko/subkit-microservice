@@ -272,7 +272,7 @@ var Subkit = function(config){
 	var statusListeners = [];
 	self.subscribed = {};
 	
-	var changeStatus = function(status){
+	var _changeStatus = function(status){
 		if(status.json) status = status.json();
 		console.log(status);
 		statusListeners.forEach(function(listener){
@@ -330,7 +330,7 @@ var Subkit = function(config){
 		msg["data"] = value;
 		httpRequest.post(url, msg, function(status, result){
 			if(status!==200 && status!==201) {
-				if(callback) changeStatus(result);
+				if(callback) _changeStatus(result);
 			}else{
 				if(callback) callback(null, result.json());
 			}
@@ -369,7 +369,7 @@ var Subkit = function(config){
 		var url = self.baseUrl + "/" + type + "/upload/" + file.name;
 		httpRequest.post(url, msg, function(status, result){
 			if(status!==201) {
-				if(callback) changeStatus(result);
+				if(callback) _changeStatus(result);
 			}else{
 				if(callback) callback();
 			}
@@ -379,7 +379,7 @@ var Subkit = function(config){
 		var url = self.baseUrl + "/" + type + "/download/" + fileName;
 		httpRequest.get(url, self.options, function(status, result){
 			if(status!==200) {
-				if(callback) changeStatus(result);
+				if(callback) _changeStatus(result);
 			}else{
 				var data = result.text();
 				if(callback && data != "undefined") return callback(null, data);
@@ -391,7 +391,7 @@ var Subkit = function(config){
 		var url = self.baseUrl + "/" + type + "/" + fileName;
 		httpRequest.del(url, self.options, function(status, result){
 			if(status!==200 && status!==202) {
-				if(callback) changeStatus(result);
+				if(callback) _changeStatus(result);
 			}else{
 				if(callback) callback(null, result.text());
 			}
@@ -460,7 +460,7 @@ var Subkit = function(config){
 			msg["data"] = value;
 			httpRequest.post(url, msg, function(status, result){
 				if(status!==200 && status!==201) {
-					if(callback) changeStatus(result);
+					if(callback) _changeStatus(result);
 				}else{
 					if(callback) callback(null, result.json());
 				}
@@ -480,7 +480,7 @@ var Subkit = function(config){
 			var url = self.baseUrl + "/push/upload/" + provider + "/" + env;
 			httpRequest.post(url, msg, function(status, result){
 				if(status!==201) {
-					if(callback) changeStatus(result);
+					if(callback) _changeStatus(result);
 				}else{
 					if(callback) callback();
 				}
@@ -492,7 +492,7 @@ var Subkit = function(config){
 			msg["data"] = value;
 			httpRequest.post(url, msg, function(status, result){
 				if(status!==200 && status!==201) {
-					if(callback) changeStatus(result);
+					if(callback) _changeStatus(result);
 				}else{
 					if(callback) callback(null, result.json());
 				}
@@ -509,14 +509,14 @@ var Subkit = function(config){
 				msg["data"] = value;
 				httpRequest.put(url, msg, function(status, result){
 					if(status!==200 && status!==201) {
-						if(callback) changeStatus(result);
+						if(callback) _changeStatus(result);
 					}else{
 						if(callback) callback(null, result.json());
 					}
 				});
 			}
 		}
-	}
+	};
 
 	//plugin
 	self.run = function(pluginName, callback){
@@ -552,47 +552,8 @@ var Subkit = function(config){
 			callback(null, result.text());
 		});
 	};
-
+	
 	//pubsub
-	self.channels = function(callback){
-		var url = self.baseUrl + "/channels";
-		httpRequest.get(url, self.options, function(status, result){
-			if(!callback) return;
-			if(status === 0) return callback({message: "Lost network connection."});
-			if(status !== 200) return callback(result.json());
-			callback(null, result.json());
-		});
-	};
-	self.push = function(channel, value, callback){
-		var url = self.baseUrl + "/channel/publish/" + channel;
-		var msg = JSON.parse(JSON.stringify(self.options));
-		msg["data"] = value;
-		httpRequest.post(url, msg, function(status, result){
-			if(!callback) return;
-			if(status === 0) return callback({message: "Lost network connection."});
-			if(status !== 200) return callback(result.json());
-			callback(null, result.json());
-		});
-	};
-	self.on = function(channel, callback) {
-		channel = channel.replace("/", "_");
-		self.subscribed[channel] = true;
-		changeStatus("subscribed to " + channel);
-		var pollingRef = _poll(channel, self.clientId, callback);
-		return {
-			off: function(){
-				self.off(channel, pollingRef);
-			},
-			push: function(value, callback){
-				self.push(channel, value, callback);
-			}
-		}
-	};
-	self.off = function(channel, pollingRef){
-		delete self.subscribed[channel];
-		if(pollingRef) clearTimeout(pollingRef);
-	};
-
 	var _get = function(path, callback){
 		var url = self.baseUrl + path;
 		httpRequest.get(url, self.options, function(status, result){
@@ -604,7 +565,7 @@ var Subkit = function(config){
 	};
 	var _poll = function(channel, clientId, callback) {
 		var intervalRef = null;
-		var subscribeUrl = self.baseUrl + "/subscribe/" + channel + "/" + clientId;
+		var subscribeUrl = self.baseUrl + "/pubsub/subscribe/" + channel + "/" + clientId;
 		httpRequest.get(subscribeUrl, self.options, function(status, result){
 			if(status !== 200) {
 				callback({message: "subscription error - retry"});
@@ -618,4 +579,44 @@ var Subkit = function(config){
 		});
 		return intervalRef;
 	};
-}
+	self.pubsub = {
+		channels: function(callback){
+			var url = self.baseUrl + "/pubsub/channels";
+			httpRequest.get(url, self.options, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status !== 200) return callback(result.json());
+				callback(null, result.json());
+			});
+		},
+		push: function(channel, value, callback){
+			var url = self.baseUrl + "/pubsub/channel/publish/" + channel;
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg["data"] = value;
+			httpRequest.post(url, msg, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status !== 200) return callback(result.json());
+				callback(null, result.json());
+			});
+		},
+		on: function(channel, callback) {
+			channel = channel.replace("/", "_");
+			self.subscribed[channel] = true;
+			_changeStatus("subscribed to " + channel);
+			var pollingRef = _poll(channel, self.clientId, callback);
+			return {
+				off: function(){
+					self.pubsub.off(channel, pollingRef);
+				},
+				push: function(value, callback){
+					self.pubsub.push(channel, value, callback);
+				}
+			}
+		},
+		off: function(channel, pollingRef){
+			delete self.subscribed[channel];
+			if(pollingRef) clearTimeout(pollingRef);
+		}
+	};
+};

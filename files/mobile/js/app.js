@@ -384,7 +384,7 @@ angular
 
 	var _load = function(){
 		subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.channels(function(err, data){
+		subkit.pubsub.channels(function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			$scope.channels = data.map(function(itm){
 				return itm.channel;
@@ -401,7 +401,7 @@ angular
 		$scope.messageLog = [];
 		if(subscription) $scope.unsubscribe(channelName);
 		$scope.channelStatus = "subscribed";
-		subscription = subkit.on(channelName, function(error, data){
+		subscription = subkit.pubsub.on(channelName, function(error, data){
 			var logMsg = JSON.stringify({timestamp: new Date(), value: data}, null, 4);
 			$scope.messageLog.unshift(logMsg);
 			$scope.$apply();
@@ -413,7 +413,7 @@ angular
 		$scope.channelStatus = "unsubscribed";
 	};
 	$scope.create = function(channelName){
-		subkit.push(channelName, {value: "created"}, function(){
+		subkit.pubsub.push(channelName, {value: "created"}, function(){
 			_load();
 		});
 	};

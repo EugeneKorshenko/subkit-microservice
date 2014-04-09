@@ -449,7 +449,7 @@ angular
 				$scope.stores.push({key: itemKey, value: value, dataKey: key+"/"+itemKey});
 			});
 		} else {
-			subkit.store.get(key, function(err, data){
+			subkit.stores.get(key, function(err, data){
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 
 				segments = {};
@@ -515,14 +515,14 @@ angular
 	$scope.saveJson = function(){
 		shared.rawObj = JSON.parse($scope.jsonData);
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.store.set(shared.rawKey, shared.rawObj, function(err, data){
+		subkit.stores.set(shared.rawKey, shared.rawObj, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			nav.back("storage");
 		});
 	};
 	$scope.saveValue = function(){
 		var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-		subkit.store.set(shared.rawKey, shared.rawObj, function(err, data){
+		subkit.stores.set(shared.rawKey, shared.rawObj, function(err, data){
 			if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 			nav.back("storage");
 		});
@@ -547,7 +547,7 @@ angular
 			shared.rawKey = newKey.join('/');
 			if(newKey.length === 2){
 				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-				subkit.store.set(shared.rawKey, {}, function(err, data){
+				subkit.stores.set(shared.rawKey, {}, function(err, data){
 					if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				});
 			}
@@ -585,13 +585,13 @@ angular
 		if(dataSegment !== undefined) {
 			delete dataSegment[objectPropertyName];
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-			subkit.store.set(shared.rawKey, shared.rawObj, function(err, data){
+			subkit.stores.set(shared.rawKey, shared.rawObj, function(err, data){
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				_load();
 			});
 		} else { //delete item from store or delete complete store
 			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-			subkit.store.remove(key, function(err, data){
+			subkit.stores.remove(key, function(err, data){
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				_load();
 			});

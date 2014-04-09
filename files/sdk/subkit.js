@@ -302,7 +302,7 @@ var Subkit = function(config){
 			});
 		}
 	};
-	self.store = {
+	self.stores = {
 		set: function(key, value, callback){
 			key = key.replace(/^[a-zA-z0-9]\/\//, "!");
 			var url = self.baseUrl + "/stores/" + key;

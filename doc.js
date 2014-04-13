@@ -8,7 +8,7 @@ module.exports.configure = function(server, options){
 	manage_doc.post("/manage/login","Login with username and password.",{
 		nickname: "Login",
 	    summary: "Validate username and password.",
-	    "errorResponses":[
+	    errorResponses:[
 			{
 				"code": 401,
 				"reason": "Unauthorized request."
@@ -18,7 +18,7 @@ module.exports.configure = function(server, options){
 	manage_doc.put("/manage/change","Change API key.",{
 		nickname: "ChangeAPIKey",
 	    summary: "Change the current API key to a new uuid.",
-	    "errorResponses":[
+	    errorResponses:[
 			{
 				"code": 401,
 				"reason": "Unauthorized request."
@@ -43,10 +43,10 @@ module.exports.configure = function(server, options){
 			}
 		}
 	};
-	stores_doc.get("/stores", "Gets all stores", {
+	stores_doc.get("/stores", "Get all stores", {
 		nickname: "ReadStores",
 		responseClass: "List[Info]",
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 401,
 				"reason": "Unauthorized request."
@@ -63,7 +63,7 @@ module.exports.configure = function(server, options){
 			{name: "from", description: "Start from a specified item key. (default:'')", required:false, dataType: "string", paramType: "query"},
 			{name: "limit", description: "Limit results within numeric number. (default: -1)", required:false, dataType: "int", paramType: "query"},
 	    ],
-	    "errorResponses":[
+	    errorResponses:[
 			{
 				"code": 400,
 				"reason": "Invalid parameter format."
@@ -85,7 +85,7 @@ module.exports.configure = function(server, options){
 			{name: "name", description: "Name of store.", required:true, dataType: "string", paramType: "path"},
 			{name: "key", description: "Item key.", required:true, dataType: "string", paramType: "path"}
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 400,
 				"reason": "Invalid parameter format."
@@ -108,7 +108,7 @@ module.exports.configure = function(server, options){
 			{name: "key", description: "Item key.", required:true, dataType: "string", paramType: "path"},
 			{name: "value", description: "Item object.", required:true, dataType: "Value", paramType: "body"}
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 400,
 				"reason": "Invalid parameter format."
@@ -131,7 +131,7 @@ module.exports.configure = function(server, options){
 			{name: "key", description: "Item key.", required:true, dataType: "string", paramType: "path"},
 			{name: "value", description: "Item object.", required:true, dataType: "Value", paramType: "body"}
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 400,
 				"reason": "Invalid parameter format."
@@ -154,7 +154,7 @@ module.exports.configure = function(server, options){
 			{name: "key", description: "Item key.", required:true, dataType: "string", paramType: "path"}
 			
 		],
-    	"errorResponses":[
+    	errorResponses:[
 			{
 				"code": 400,
 				"reason": "Invalid parameter format."
@@ -175,7 +175,7 @@ module.exports.configure = function(server, options){
 		parameters: [
         	{name:"name", description: "Name of store.", required:true, dataType: "string", paramType: "path"}
     	],
-    	"errorResponses":[
+    	errorResponses:[
 			{
 				"code": 400,
 				"reason": "Invalid parameter format."
@@ -196,7 +196,7 @@ module.exports.configure = function(server, options){
 	    parameters: [
         	{name:"name", description: "Name of store.", required:true, dataType: "string", paramType: "path"}
     	],
-    	"errorResponses":[
+    	errorResponses:[
 			{
 				"code": 400,
 				"reason": "Invalid parameter format."
@@ -245,7 +245,7 @@ module.exports.configure = function(server, options){
 			{name: "channel", description: "channel name", required:true, dataType: "string", paramType: "path"},
 			{name: "clientId", description: "client id", required:true, dataType: "string", paramType: "path"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -258,7 +258,7 @@ module.exports.configure = function(server, options){
 		parameters: [
 			{name: "clientId", description: "client id", required:true, dataType: "string", paramType: "path"}
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -271,7 +271,7 @@ module.exports.configure = function(server, options){
 			{name: "clientId", description: "The client Id", required:true, dataType: "string", paramType: "path"},
 			{name: "value", description: "The message data", required:true, dataType: "Value", paramType: "body"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -282,7 +282,7 @@ module.exports.configure = function(server, options){
 	    nickname: "getClients",
 		responseClass: "List[Info]",
 		parameters: [],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -295,7 +295,7 @@ module.exports.configure = function(server, options){
 		parameters: [
 			{name: "channel", description: "Channel name.", required:true, dataType: "string", paramType: "path"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -308,7 +308,7 @@ module.exports.configure = function(server, options){
 			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
 			{name: "value", description: "The message data", required:true, dataType: "Value", paramType: "body"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -319,7 +319,7 @@ module.exports.configure = function(server, options){
 	    nickname: "getChannels",
 		responseClass: "List[Info]",
 		parameters: [],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -332,7 +332,7 @@ module.exports.configure = function(server, options){
 		parameters: [
 			{name: "clientId", description: "Client Id.", required:true, dataType: "string", paramType: "path"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -345,7 +345,7 @@ module.exports.configure = function(server, options){
 			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
 			{name: "clientId", description: "Your client id", required:true, dataType: "string", paramType: "path"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -358,7 +358,7 @@ module.exports.configure = function(server, options){
 			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
 			{name: "clientId", description: "Your client id", required:true, dataType: "string", paramType: "path"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -371,7 +371,7 @@ module.exports.configure = function(server, options){
 			{name: "channel", description: "Channel name", required:true, dataType: "string", paramType: "path"},
 			{name: "clientId", description: "Your client id", required:true, dataType: "string", paramType: "path"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -387,7 +387,7 @@ module.exports.configure = function(server, options){
 	    nickname: "getFiles",
 		responseClass: "List[string]",
 		parameters: [],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -398,7 +398,7 @@ module.exports.configure = function(server, options){
 	    nickname: "uploadFile",
 		responseClass: "",
 		parameters: [],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -413,7 +413,7 @@ module.exports.configure = function(server, options){
 			{name: "name", description: "file name", required:true, dataType: "string", paramType: "path"},
 			{name: "data", description: "data", required:true, dataType: "string", paramType: "body"}
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -428,7 +428,7 @@ module.exports.configure = function(server, options){
 			{name: "name", description: "file name", required:true, dataType: "string", paramType: "path"},
 			{name: "data", description: "data", required:true, dataType: "string", paramType: "body"}
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -441,7 +441,7 @@ module.exports.configure = function(server, options){
 		parameters: [
 			{name: "name", description: "file name", required:true, dataType: "string", paramType: "path"}
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -454,7 +454,7 @@ module.exports.configure = function(server, options){
 		parameters: [
 			{name: "name", description: "file name", required:true, dataType: "string", paramType: "path"}
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
@@ -463,48 +463,78 @@ module.exports.configure = function(server, options){
 	});
 
 	//PLUGIN MODULE
-	var mr_doc = swagger.createResource("/docs/plugins",  {description: "Run plugin operations"});
+	var mr_doc = swagger.createResource("/docs/plugin",  {description: "Run plugin operations"});
 	mr_doc.models.Value = {
 		id: "Value",
 		properties: {}
 	};
-	mr_doc.get("/plugins/schema", "Load JSON schema for specified store name.", {
+	mr_doc.get("/plugin/schema", "Load JSON schema for specified store name.", {
 	    nickname: "getSchema",
 		responseClass: "Value",
 		parameters: [
 			{name: "store", description: "Store name", required:true, dataType: "string", paramType: "query"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
 			}
 		]
 	});
-	mr_doc.get("/plugins/{name}", "Execute task script by name.", {
+	mr_doc.get("/plugin/{name}", "Execute task script by name.", {
 	    nickname: "run",
 	    responseClass: "Value",
 		parameters: [
 			{name: "name", description: "Script name.", required:true, dataType: "string", paramType: "path"},
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
 			}
 		]
 	});
-	mr_doc.post("/plugins/{name}", "Execute task script by name.", {
+	mr_doc.post("/plugin/{name}", "Execute task script by name.", {
 	    nickname: "run",
 	    responseClass: "Value",
 		parameters: [
 			{name: "name", description: "Script name.", required:true, dataType: "string", paramType: "path"},
 			{name: "value", description: "Item object.", allowMultiple:true, required:true, dataType: "Value", paramType: "body"}
 		],
-		"errorResponses":[
+		errorResponses:[
 			{
 				"code": 500,
 				"reason": "Script error."
+			}
+		]
+	});
+
+	//TEMPLATE MODULE
+	var template_doc = swagger.createResource("/docs/templates",  {description: "Template engine operations."});
+	template_doc.models.Value = {
+	};
+	template_doc.get("/templates", "Get all templates.", {
+	    nickname: "list",
+		responseClass: "List[string]",
+		parameters: [],
+		errorResponses:[
+			{
+				"code": 500,
+				"reason": "Script error."
+			}
+		]
+	});
+	template_doc.get("/templates/{name}", "Get a rendered template.", {
+	    nickname: "render",
+	    responseClass: "string",
+	    produces:["text/html"],
+		parameters: [
+			{name: "name", description: "Template name.", required:true, dataType: "string", paramType: "path"},
+		],
+		errorResponses:[
+			{
+				"code": 500,
+				"reason": "Template error."
 			}
 		]
 	});

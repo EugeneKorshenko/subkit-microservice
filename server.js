@@ -98,6 +98,7 @@ fs.watchFile(path.join(__dirname, "config.json"), reloadConf);
 fs.watchFile(path.join(__dirname, "defaults.json"), reloadConf);
 
 //server middleware
+server.acceptable.push('text/html');
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.bodyParser({ mapParams: true }));
 server.use(restify.fullResponse());
@@ -115,6 +116,11 @@ server.use(function (req, res, next) {
 server.use(restify.conditionalRequest());
 server.pre(restify.pre.sanitizePath());
 server.pre(restify.pre.userAgentConnection());
+
+// server.pre(function(req, res, next) {
+//   req.headers.accept = 'application/json';
+//   return next();
+// });
 
 //CORS
 server.opts(/\.*/, function (req, res, next) {

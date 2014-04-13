@@ -117,11 +117,6 @@ server.use(restify.conditionalRequest());
 server.pre(restify.pre.sanitizePath());
 server.pre(restify.pre.userAgentConnection());
 
-// server.pre(function(req, res, next) {
-//   req.headers.accept = 'application/json';
-//   return next();
-// });
-
 //CORS
 server.opts(/\.*/, function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -132,13 +127,14 @@ server.opts(/\.*/, function (req, res, next) {
 });
 
 //handle errors
-// server.on("uncaughtException", function (req, res, route, err) {
-// 	console.log("A uncought exception was thrown: " + route + " -> " + err.message);
-// 	res.send(500, err.message);
-// });
-// process.on('uncaughtException', function(err){
-// 	console.log("A uncought exception was thrown: " + err.message);
-// });
+server.on("uncaughtException", function (req, res, route, err) {
+	console.log("A uncought exception was thrown: " + route + " -> " + err.message);
+	res.send(500, err.message);
+});
+
+process.on('uncaughtException', function(err){
+	console.log("A uncought exception was thrown: " + err.message);
+});
 
 //docu
 //JSON doc

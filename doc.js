@@ -604,7 +604,6 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-
 	//STATISTICS MODULE
 	var statistics_doc = swagger.createResource("/docs/statistics",  {description: "Service statistic operations."});
 	statistics_doc.models.Transfer = {
@@ -703,6 +702,155 @@ module.exports.configure = function(server, options){
 			{
 				code: 500,
 				message: "Error."
+			}
+		]
+	});
+
+	//EMAIL MODULE
+	var email_doc = swagger.createResource("/docs/email",  {description: "EMail operations."});
+	email_doc.models.SendEMail = {
+		id: "EMail",
+		properties: {
+			recipients:{
+				type: "List[string]",
+				required: true
+			},
+			groupid:{
+				type: "string"
+			},
+			templateid:{
+				type: "string"
+			},
+			payload:{
+				type: "complex"
+			},
+			html:{
+				type: "string"
+			},
+			text:{
+				type: "string"
+			},
+			subject:{
+				type: "string"
+			}
+		},
+		required: [
+			"recipients","groupid","subject"
+		]
+	};
+	email_doc.post("/email/send", "Send a email.", {
+	    nickname: "sendEmail",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "SendEMail", description: "A EMail object.", required:true, dataType: "SendEMail", paramType: "body"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	email_doc.put("/email/verify/addess/{id}", "Verify a email address.", {
+	    nickname: "verifyEMailAddress",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "EMail address.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	email_doc.put("/email/verify/domain/{id}", "Verify a email address.", {
+	    nickname: "verifyEMailDomain",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Domain name.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+
+
+	//IDENTITY MODULE
+	var identity_doc = swagger.createResource("/docs/identity",  {description: "Identity operations."});
+	identity_doc.models.Value = {
+	};
+	identity_doc.get("/identity", "Get all identities.", {
+	    nickname: "listIdentities",
+		responseClass: "List[string]",
+		notes:"",
+		parameters: [],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	identity_doc.get("/identity/{id}", "Get a identity.", {
+	    nickname: "getIdentity",
+	    responseClass: "string",
+	    notes:'',
+	    produces:["text/html"],
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"},
+		],
+		errorResponses:[{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	identity_doc.post("/identity/{id}", "Add a identity.", {
+	    nickname: "addIdentity",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	identity_doc.put("/identity/{id}", "Update a identity.", {
+	    nickname: "updateIdentity",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	identity_doc.delete("/identity/{id}", "Delete a identity.", {
+	    nickname: "deleteIdentity",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Template error."
 			}
 		]
 	});

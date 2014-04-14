@@ -3,8 +3,7 @@ module.exports.configure = function(server, options){
 	swagger.configure(server, options);
 
 	//SUBKIT MANAGEMENT
-	var manage_doc = swagger.createResource("/docs/manage", {description: "Manage operation"});
-	manage_doc.description = "Management operation";
+	var manage_doc = swagger.createResource("/docs/manage", {description: "Service instance management operations."});
 	manage_doc.post("/manage/login","Login with username and password.",{
 		nickname: "Login",
 	    summary: "Validate username and password.",
@@ -43,7 +42,7 @@ module.exports.configure = function(server, options){
 			}
 		}
 	};
-	stores_doc.get("/stores", "Get all stores", {
+	stores_doc.get("/stores", "List all stores.", {
 		nickname: "ReadStores",
 		responseClass: "List[Info]",
 		errorResponses:[
@@ -383,7 +382,7 @@ module.exports.configure = function(server, options){
 	var statics_doc = swagger.createResource("/docs/file",  {description: "Static files distribution operations."});
 	statics_doc.models.Value = {
 	};
-	statics_doc.get("/file", "Receive a list of files.", {
+	statics_doc.get("/file", "Receive the list of files.", {
 	    nickname: "getFiles",
 		responseClass: "List[string]",
 		parameters: [],
@@ -394,7 +393,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.post("/file/upload", "upload a file", {
+	statics_doc.post("/file/upload", "Upload a file.", {
 	    nickname: "uploadFile",
 		responseClass: "",
 		parameters: [],
@@ -405,7 +404,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.post("/file/upload/{name}", "upload a file", {
+	statics_doc.post("/file/upload/{name}", "Upload a file.", {
 	    nickname: "uploadFile",
 		responseClass: "",
 		supportedContentTypes: ["application/octed-stream"],
@@ -420,7 +419,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.put("/file/upload/{name}", "upload a file", {
+	statics_doc.put("/file/upload/{name}", "Upload a file.", {
 	    nickname: "uploadFile",
 		responseClass: "",
 		supportedContentTypes: ["application/octed-stream"],
@@ -435,7 +434,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.get("/file/download/{name}", "download a file", {
+	statics_doc.get("/file/download/{name}", "Download a file.", {
 	    nickname: "downloadFile",
 		responseClass: "",
 		parameters: [
@@ -448,7 +447,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	statics_doc.delete("/file/{name}", "delete a file", {
+	statics_doc.delete("/file/{name}", "Delete a file.", {
 	    nickname: "deleteFile",
 		responseClass: "",
 		parameters: [
@@ -766,7 +765,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	email_doc.put("/email/verify/domain/{id}", "Verify a email address.", {
+	email_doc.put("/email/verify/domain/{id}", "Verify a email domain.", {
 	    nickname: "verifyEMailDomain",
 		responseClass: "void",
 		notes: '',
@@ -780,7 +779,6 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-
 
 	//IDENTITY MODULE
 	var identity_doc = swagger.createResource("/docs/identity",  {description: "Identity operations."});

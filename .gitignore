@@ -3,6 +3,7 @@ node_modules
 npm-debug.log
 backups
 testdb
+masterdb
 rights.json
 files/static/
 files/plugins/

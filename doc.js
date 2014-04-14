@@ -10,8 +10,8 @@ module.exports.configure = function(server, options){
 	    summary: "Validate username and password.",
 	    errorResponses:[
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			}
 		]
 	});
@@ -20,8 +20,8 @@ module.exports.configure = function(server, options){
 	    summary: "Change the current API key to a new uuid.",
 	    errorResponses:[
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			}
 		]
 	});
@@ -48,8 +48,8 @@ module.exports.configure = function(server, options){
 		responseClass: "List[Info]",
 		errorResponses:[
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			}
 		]
 	});
@@ -65,16 +65,16 @@ module.exports.configure = function(server, options){
 	    ],
 	    errorResponses:[
 			{
-				"code": 400,
-				"reason": "Invalid parameter format."
+				code: 400,
+				message: "Invalid parameter format."
 			},
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			},
 			{
-				"code": 404,
-				"reason": "Invalid parameter format."
+				code: 404,
+				message: "Invalid parameter format."
 			}
 		]
 	});
@@ -87,16 +87,16 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 400,
-				"reason": "Invalid parameter format."
+				code: 400,
+				message: "Invalid parameter format."
 			},
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			},
 			{
-				"code": 404,
-				"reason": "Invalid parameter format."
+				code: 404,
+				message: "Invalid parameter format."
 			}
 		]
 	});
@@ -110,16 +110,16 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 400,
-				"reason": "Invalid parameter format."
+				code: 400,
+				message: "Invalid parameter format."
 			},
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			},
 			{
-				"code": 404,
-				"reason": "Invalid parameter format."
+				code: 404,
+				message: "Invalid parameter format."
 			}
 		]
 	});
@@ -133,16 +133,16 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 400,
-				"reason": "Invalid parameter format."
+				code: 400,
+				message: "Invalid parameter format."
 			},
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			},
 			{
-				"code": 404,
-				"reason": "Invalid parameter format."
+				code: 404,
+				message: "Invalid parameter format."
 			}
 		]
 	});
@@ -156,16 +156,16 @@ module.exports.configure = function(server, options){
 		],
     	errorResponses:[
 			{
-				"code": 400,
-				"reason": "Invalid parameter format."
+				code: 400,
+				message: "Invalid parameter format."
 			},
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			},
 			{
-				"code": 404,
-				"reason": "Invalid parameter format."
+				code: 404,
+				message: "Invalid parameter format."
 			}
 		]
 	});
@@ -177,16 +177,16 @@ module.exports.configure = function(server, options){
     	],
     	errorResponses:[
 			{
-				"code": 400,
-				"reason": "Invalid parameter format."
+				code: 400,
+				message: "Invalid parameter format."
 			},
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			},
 			{
-				"code": 404,
-				"reason": "Invalid parameter format."
+				code: 404,
+				message: "Invalid parameter format."
 			}
 		]
 	});
@@ -198,16 +198,16 @@ module.exports.configure = function(server, options){
     	],
     	errorResponses:[
 			{
-				"code": 400,
-				"reason": "Invalid parameter format."
+				code: 400,
+				message: "Invalid parameter format."
 			},
 			{
-				"code": 401,
-				"reason": "Unauthorized request."
+				code: 401,
+				message: "Unauthorized request."
 			},
 			{
-				"code": 404,
-				"reason": "Invalid parameter format."
+				code: 404,
+				message: "Invalid parameter format."
 			}
 		]
 	});
@@ -247,8 +247,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -260,8 +260,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -273,8 +273,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -284,8 +284,8 @@ module.exports.configure = function(server, options){
 		parameters: [],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -297,8 +297,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -310,8 +310,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -321,8 +321,8 @@ module.exports.configure = function(server, options){
 		parameters: [],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -334,8 +334,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -347,8 +347,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -360,8 +360,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -373,8 +373,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -389,8 +389,8 @@ module.exports.configure = function(server, options){
 		parameters: [],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -400,8 +400,8 @@ module.exports.configure = function(server, options){
 		parameters: [],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -415,8 +415,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -430,8 +430,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -443,8 +443,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -456,8 +456,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -476,8 +476,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -489,8 +489,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -503,8 +503,8 @@ module.exports.configure = function(server, options){
 		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
@@ -516,25 +516,90 @@ module.exports.configure = function(server, options){
 	template_doc.get("/templates", "Get all templates.", {
 	    nickname: "list",
 		responseClass: "List[string]",
+		notes:"curl https://:hostname/templates",
 		parameters: [],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Script error."
+				code: 500,
+				message: "Script error."
 			}
 		]
 	});
 	template_doc.get("/templates/{name}", "Get a rendered template.", {
-	    nickname: "render",
+	    nickname: "renderTemplate",
 	    responseClass: "string",
+	    notes:'curl https://:hostname/templates/:name',
 	    produces:["text/html"],
 		parameters: [
 			{name: "name", description: "Template name.", required:true, dataType: "string", paramType: "path"},
 		],
+		errorResponses:[{
+				code: 500,
+				message: "Template module error."
+			}
+		]
+	});
+	template_doc.get("/templates/download/{name}", "Download a template.", {
+	    nickname: "downloadTemplate",
+	    responseClass: "string",
+	    notes: 'curl -O https://:hostname/templates/download/:name',
+	    produces:["text/html"],
+		parameters: [
+			{name: "name", description: "Download a template by name.", required:true, dataType: "string", paramType: "path"},
+		],
+		errorResponses:[{
+				code: 500,
+				message: "Template module error."
+			}
+		]
+	});
+	template_doc.post("/templates/upload/{name}", "Add a template.", {
+	    nickname: "addTemplate",
+		responseClass: "void",
+		notes: 'curl -X POST --data-binary @:filename https://:hostname/templates/upload/:name -H "Content-Type:application/octet-stream"',
+		parameters: [
+			{name: "name", description: "Template name.", required:true, dataType: "string", paramType: "path"}
+		],
 		errorResponses:[
 			{
-				"code": 500,
-				"reason": "Template error."
+				code: 400,
+				message: "Add template failed."
+			},
+			{
+				code: 500,
+				message: "Template error."
+			}
+		]
+	});
+	template_doc.put("/templates/upload/{name}", "Add a template.", {
+	    nickname: "addTemplate",
+		responseClass: "void",
+		notes: 'curl --upload :filename :hostname/templates/upload/:name <br> curl -X PUT --data-binary @:filename https://:hostname/templates/upload/:name -H "Content-Type:application/octet-stream"',
+		parameters: [
+			{name: "name", description: "Template name.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 400,
+				message: "Add template failed."
+			},
+			{
+				code: 500,
+				message: "Template error."
+			}
+		]
+	});
+	template_doc.delete("/templates/{name}", "Delete a template.", {
+	    nickname: "deleteTemplate",
+		responseClass: "void",
+		notes: 'curl -X DELETE -i https://:hostname/templates/:name',
+		parameters: [
+			{name: "name", description: "Template name.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Template error."
 			}
 		]
 	});

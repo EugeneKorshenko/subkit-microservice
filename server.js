@@ -185,7 +185,7 @@ server.get(/\/sdk\/?.*/, restify.serveStatic({
 //start web server
 server.listen(app.port, function(){
 	console.log("subkit lite service listen on: " + server.address().port);
-	console.log(process.pid);
+	console.log("PID: " + process.pid);
 	http.globalAgent.maxSockets = 50000;
 });
 
@@ -206,7 +206,6 @@ require("./lib/location.js").init(server, storage, helper);
 
 require("./lib/eventsource.js").init(server, es, helper);
 require("./lib/s3.js").init(server, s3Config, helper);
-
 
 server.get(/\/.+/, restify.serveStatic({
   directory: path.join(__dirname, 'files/mobile')

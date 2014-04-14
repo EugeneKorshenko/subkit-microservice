@@ -852,4 +852,150 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
+
+	//PUSH MODULE	
+	var push_doc = swagger.createResource("/docs/push",  {description: "Push operations."});
+	push_doc.models.Value = {
+	};
+	push_doc.get("/push", "Get all identities.", {
+	    nickname: "listIdentities",
+		responseClass: "List[string]",
+		notes:"",
+		parameters: [],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	push_doc.get("/push/{id}", "Get a identity.", {
+	    nickname: "getIdentity",
+	    responseClass: "string",
+	    notes:'',
+	    produces:["text/html"],
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"},
+		],
+		errorResponses:[{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	push_doc.post("/push/{id}", "Add a identity.", {
+	    nickname: "addIdentity",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	push_doc.put("/push/{id}", "Update a identity.", {
+	    nickname: "updateIdentity",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	push_doc.delete("/push/{id}", "Delete a identity.", {
+	    nickname: "deleteIdentity",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Template error."
+			}
+		]
+	});
+
+	//LOCATION MODULE	
+	var location_doc = swagger.createResource("/docs/location",  {description: "Location operations."});
+	location_doc.models.Value = {
+	};
+	location_doc.get("/location", "Get all identities.", {
+	    nickname: "listIdentities",
+		responseClass: "List[string]",
+		notes:"",
+		parameters: [],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	location_doc.get("/location/{id}", "Get a identity.", {
+	    nickname: "getIdentity",
+	    responseClass: "string",
+	    notes:'',
+	    produces:["text/html"],
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"},
+		],
+		errorResponses:[{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	location_doc.post("/location/{id}", "Add a identity.", {
+	    nickname: "addIdentity",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	location_doc.put("/location/{id}", "Update a identity.", {
+	    nickname: "updateIdentity",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	location_doc.delete("/location/{id}", "Delete a identity.", {
+	    nickname: "deleteIdentity",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Template error."
+			}
+		]
+	});
 }

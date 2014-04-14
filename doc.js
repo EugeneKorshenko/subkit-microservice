@@ -603,4 +603,107 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
+
+
+	//STATISTICS MODULE
+	var statistics_doc = swagger.createResource("/docs/statistics",  {description: "Service statistic operations."});
+	statistics_doc.models.Transfer = {
+		id: "Transfer",
+		properties: {
+			count: {
+				type: "integer"
+			},
+			requestBytes: {
+				type: "integer"
+			},
+			responseBytes: {
+				type: "integer"
+			},
+			totalBytes: {
+				type: "integer"
+			},
+			totalKBytes: {
+				type: "integer"
+			},
+			totalMBytes: {
+				type: "integer"
+			},
+			totalGBytes: {
+				type: "integer"
+			}			
+		}
+	};
+	statistics_doc.models.Usage = {
+		id: "Usage",
+		properties: {
+			timestamp: {
+				type: "integer"
+			},
+			connections: {
+				type: "integer"
+			},
+			dbSizeBytes: {
+				type: "integer"
+			},
+			dbSizeKBytes: {
+				type: "integer"
+			},
+			dbSizeMBytes: {
+				type: "integer"
+			},
+			dbSizeGBytes: {
+				type: "integer"
+			},
+			staticsDirSizeKBytes: {
+				type: "integer"
+			},
+			staticsDirSizeMBytes: {
+				type: "integer"
+			},
+			staticsDirSizeGBytes: {
+				type: "integer"
+			},
+			transfer: {
+				$ref: "Transfer"
+			}
+		}
+	};
+	statistics_doc.models.Analytic = {
+		id: "Analytic",
+		properties: {
+			agents:{
+				type: "complex"
+			},
+			http:{
+				type: "complex"
+			},
+			urls:{
+				type: "complex"
+			}
+		}
+	}
+	statistics_doc.get("/statistics/usage", "Get service instance usage summaries.", {
+	    nickname: "getUsage",
+		responseClass: "Usage",
+		notes:"",
+		parameters: [],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	statistics_doc.get("/statistics/analytics", "Get service instance request analytics.", {
+	    nickname: "getAnalytics",
+		responseClass: "Analytic",
+		notes:"",
+		parameters: [],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
 }

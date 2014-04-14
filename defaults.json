@@ -1,7 +1,9 @@
 {
   "api": {
     "url": "http://localhost:8080",
-    "apiKey": "6654edc5-82a3-4006-967f-97d5817d7fe2"
+    "apiKey": "6654edc5-82a3-4006-967f-97d5817d7fe2",
+    "readKey": "6654edc5-82a3-4006-967f-97d5817d7fe3",
+    "writeKey": "6654edc5-82a3-4006-967f-97d5817d7fe4"
   },
   "admin": {
     "username": "subkit",

@@ -78,7 +78,7 @@ var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, ema
 var location = require('./lib/location-module.js').init(storage);
 
 
-var options = { name: "SubKit" };
+var options = { name: "subkit" };
 
 //configure HTTPS/SSL
 if(app.key) options.key = fs.readFileSync(app.key);
@@ -121,7 +121,7 @@ server.pre(restify.pre.userAgentConnection());
 server.opts(/\.*/, function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, HEAD, OPTION");
-	res.header("Access-Control-Allow-Headers", "Authorization, Content-Type, api_key, apikey, X-Requested-With");
+	res.header("Access-Control-Allow-Headers", "Authorization, Content-Type, api_key, apikey, readkey, writekey, read_key, write_key, X-Requested-With");
 	res.send(200);
 	return next();
 });

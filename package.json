@@ -21,6 +21,7 @@
     "randomstring": "*",
     "restify": "*",
     "shelljs": "*",
+    "stripe": "*",
     "simplesmtp": "*",
     "swagger-doc": "*",
     "time": "*",

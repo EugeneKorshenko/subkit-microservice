@@ -61,6 +61,7 @@ module.exports.configure = function(server, options){
 	    	{name: "cache", description: "Disable storage level caching. (default: true)", required:false, dataType: "boolean", paramType: "query"},
 			{name: "from", description: "Start from a specified item key. (default:'')", required:false, dataType: "string", paramType: "query"},
 			{name: "limit", description: "Limit results within numeric number. (default: -1)", required:false, dataType: "int", paramType: "query"},
+			{name: "where", description: "Filter results by JSON expression", required:false, dataType: "string", paramType: "query"},
 	    ],
 	    errorResponses:[
 			{

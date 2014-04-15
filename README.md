@@ -6,7 +6,7 @@ INSTALL
 3. `node server.js` || `npm start`
 
 `npm test`
-`sudo forever start -p <path to service> <path to service>/server.js`
+`forever start -p <path to service> <path to service>/server.js`
 
 BASICS
 ----

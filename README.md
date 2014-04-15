@@ -30,25 +30,27 @@ FEATURES
 STATUS		  | Feature 	  | Comments
 ------------- | ------------- | ---------------
 X		 	  | HTTP/HTTPS    | [Service Configuration](docs/service_config.md)
-X		 	  | Dashboard     |
-X		 	  | Hooks	      | 
-X		 	  | Backups	      | 
-X		 	  | JSON Im/Export| 
-X		 	  | ETag Caching  |
-X		 	  | API DOC       |
+X		 	  | Dashboard     | Web-Admin-Dashboard
+X		 	  | Backups	      | Backup and Restore your data
+X		 	  | JSON Im/Export| JSON data import and export
+X		 	  | ETag Caching  | ETag based content caching
+X		 	  | API DOC       | Interactive REST documentation
+X		 	  | JSON Queries  | Advanced JSON Queries
+X		 	  | Worker		  | Scheduled Background Worker
+X		 	  | Mointoring	  | Heartbeats for Web-Service Monitoring
+X		 	  | Statistics	  | Useful statistics and usage analysis
+X		 	  | History		  | Track and query all state changes
+X		 	  | Hooks	      | HTTP Hooks
 -		 	  | Validation    | Request validation support
--		 	  | WebSockets    |
--		 	  | JSON Queries  | Advanced JSON Queries
+-		 	  | WebSockets    | Web-Socket support for real-time notifications
 -		 	  | Authorization | Advanced resource based authorization
-
 
 MODULES
 ---
-
 STATUS		  | Feature 	  | Comments
 ------------- | ------------- | ---------------
 X		 	  | JSON Storage  | A JSON key/value store
-X		 	  | PubSub		  | Long polling real-time notifications pub/sub + storage changes
+X		 	  | PubSub		  | Long polling real-time notifications pub/sub and storage changes
 X		 	  | Files		  | Binary Up/Download
 X		 	  | Templates	  | JSHTML based template engine (more comming soon)
 X		 	  | PlugIn 		  | RESTful/Scheduler/Event-Driven server side JavaScript execution engine
@@ -62,10 +64,8 @@ X			  | Statistics    | Usage statistics and monitoring
 -			  | Transcoder    | Transcoding images and videos
 -			  | S3       	  | Amazon S3 support
 
-
 SDKS
 ---
-
 STATUS		  | Feature 		| Comments
 ------------- | --------------- | ---------------
 X		 	  | iOS 			| [Try Subkit iOS](https://github.com/SubKit/try_subkit_ios)
@@ -88,7 +88,6 @@ X			  | AngularJS       |
 
 PLUGINS
 ---
-
 STATUS		  | Feature          | Comments
 ------------- | ---------------- | ---------------
 -		 	  | MySQL Connector  | MySQL DB import/export connector

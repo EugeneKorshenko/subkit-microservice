@@ -1,25 +1,31 @@
 INSTALL
-----
+---
 
 1. `npm install`
 2. `grunt css`
 3. `node server.js` || `npm start`
+4. `npm install forever -g`
 
 `npm test`
 `forever start -p <path to service> <path to service>/server.js`
 
 BASICS
-----
+---
+
+* [RESTful JSON API](restful_api.md)
+* [Configuration Options](service_config.md)
 
 GETTING STARTED
-----
+---
 
-CLOUD
-----
-!coming soon!
+ARCHITECTURE
+---
+
+CLOUD (coming soon)
+---
 
 FEATURES
-----
+---
 
 STATUS		  | Feature 	  | Comments
 ------------- | ------------- | ---------------
@@ -37,7 +43,7 @@ X		 	  | API DOC       |
 
 
 MODULES
-----
+---
 
 STATUS		  | Feature 	  | Comments
 ------------- | ------------- | ---------------
@@ -57,9 +63,8 @@ X			  | Statistics    | Usage statistics and monitoring
 -			  | S3       	  | Amazon S3 support
 
 
-
 SDKS
-----
+---
 
 STATUS		  | Feature 		| Comments
 ------------- | --------------- | ---------------
@@ -67,8 +72,8 @@ X		 	  | iOS 			| [Try Subkit iOS](https://github.com/SubKit/try_subkit_ios)
 X		 	  | Android			| [Try Subkit Android](https://github.com/SubKit/try_subkit_android)
 X		 	  | WP8				| [Try Subkit WP8](https://github.com/SubKit/try_subkit_wp8)
 -			  | Xamarin			| 
--		 	  | JavaScript		| 
--			  | PhoneGap/Cordova| 
+X		 	  | JavaScript		| 
+X			  | PhoneGap/Cordova| 
 -			  | NodeJS		    |
 -			  | Python		    | 
 -			  | Ruby            |
@@ -79,10 +84,10 @@ X		 	  | WP8				| [Try Subkit WP8](https://github.com/SubKit/try_subkit_wp8)
 X			  | AngularJS       |
 
 * HTTPS support
-* Offline support (comming soon)
+* Offline support (coming soon)
 
 PLUGINS
-----
+---
 
 STATUS		  | Feature          | Comments
 ------------- | ---------------- | ---------------
@@ -91,20 +96,10 @@ STATUS		  | Feature          | Comments
 -		 	  | HTML scraping    | Download and scrap HTML
 
 GUIDES
-----
+---
 * RESTFul API rules
 * Transactions & Idempotency
 * Caching
 * Developing Plugin - JavaScript execution engine API
 * Using Modules - Use excisting modules
 * Developing Modules - Write your own modules
-
-DOC
-----
-* 200	Ok - The request has succeeded.
-* 201	Created - The request has been fulfilled and resulted in a new resource being created.
-* 202	Accepted - The request has been accepted for processing, but the processing has not been completed. 
-* 400	Bad Request - Request does not have a valid format, all required parameters, etc.
-* 401	Unauthorized Access - No currently valid session available.
-* 404	Not Found - Requested container does not exist.
-* 500	System Error - Specific reason is included in the error message.

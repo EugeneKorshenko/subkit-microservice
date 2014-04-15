@@ -101,6 +101,9 @@ GUIDES
 
 DOC
 ----
+* 200	Ok - The request has succeeded.
+* 201	Created - The request has been fulfilled and resulted in a new resource being created.
+* 202	Accepted - The request has been accepted for processing, but the processing has not been completed. 
 * 400	Bad Request - Request does not have a valid format, all required parameters, etc.
 * 401	Unauthorized Access - No currently valid session available.
 * 404	Not Found - Requested container does not exist.

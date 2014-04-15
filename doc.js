@@ -570,8 +570,8 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	template_doc.put("/templates/upload/{name}", "Add a template.", {
-	    nickname: "addTemplate",
+	template_doc.put("/templates/upload/{name}", "Change a template.", {
+	    nickname: "changeTemplate",
 		responseClass: "void",
 		notes: 'curl --upload :filename :hostname/templates/upload/:name <br> curl -X PUT --data-binary @:filename https://:hostname/templates/upload/:name -H "Content-Type:application/octet-stream"',
 		parameters: [
@@ -580,7 +580,7 @@ module.exports.configure = function(server, options){
 		errorResponses:[
 			{
 				code: 400,
-				message: "Add template failed."
+				message: "Change template failed."
 			},
 			{
 				code: 500,
@@ -588,7 +588,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	template_doc.delete("/templates/{name}", "Delete a template.", {
+	template_doc.delete("/templates/{name}", "Remove a template.", {
 	    nickname: "deleteTemplate",
 		responseClass: "void",
 		notes: 'curl -X DELETE -i https://:hostname/templates/:name',
@@ -704,6 +704,111 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
+
+	//LOCATION MODULE	
+	var location_doc = swagger.createResource("/docs/location",  {description: "Location operations."});
+	location_doc.models.GeoPoint = {
+		id: "GeoPoint",
+		properties:{
+			Latitude: {
+				type: "integer"
+			},
+			Longitude: {
+				type: "integer"
+			},
+			Payload: {
+				type: "complex"
+			}
+		},
+		required: [
+			"Latitude","Longitude"
+		]
+	};
+	location_doc.get("/location", "Get all geo point.", {
+	    nickname: "listGeoPoint",
+		responseClass: "List[GeoPoint]",
+		notes:"",
+		parameters: [],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	location_doc.get("/location/sphereNearBy/{lat}/{lon}/{maxDistance}", "Get geo points near by position.", {
+	    nickname: "listSphereNearBy",
+		responseClass: "List[GeoPoint]",
+		notes: "",
+		parameters: [
+			{name: "lat", description: "Latitude.", required:true, dataType: "string", paramType: "path"},
+			{name: "lon", description: "Longitude", required:true, dataType: "string", paramType: "path"},
+			{name: "maxDistance", description: "Sphere max distance from geo point in kilometers.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	location_doc.get("/location/{id}", "Get a geo point.", {
+	    nickname: "getGeoPoint",
+	    responseClass: "GeoPoint",
+	    notes:'',
+		parameters: [
+			{name: "id", description: "GeoPoint ID.", required:true, dataType: "string", paramType: "path"},
+		],
+		errorResponses:[{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	location_doc.post("/location/{id}", "Add a geo point.", {
+	    nickname: "addGeoPoint",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "GeoPoint ID.", required:false, dataType: "string", paramType: "path"},
+			{name: "GeoPoint", description: "A GeoPoint object.", required:true, dataType: "GeoPoint", paramType: "body"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	location_doc.put("/location/{id}", "Update a geo point.", {
+	    nickname: "changeGeoPoint",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "GeoPoint ID.", required:true, dataType: "string", paramType: "path"},
+			{name: "GeoPoint", description: "A GeoPoint object.", required:true, dataType: "GeoPoint", paramType: "body"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	location_doc.delete("/location/{id}", "Remove a geo point.", {
+	    nickname: "removeGeoPoint",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "GeoPoint ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});	
 
 	//EMAIL MODULE
 	var email_doc = swagger.createResource("/docs/email",  {description: "EMail operations."});
@@ -857,7 +962,7 @@ module.exports.configure = function(server, options){
 	var push_doc = swagger.createResource("/docs/push",  {description: "Push operations."});
 	push_doc.models.Value = {
 	};
-	push_doc.get("/push", "Get all identities.", {
+	push_doc.get("/push", "Get all push notifications.", {
 	    nickname: "listIdentities",
 		responseClass: "List[string]",
 		notes:"",
@@ -869,11 +974,10 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	push_doc.get("/push/{id}", "Get a identity.", {
+	push_doc.get("/push/{id}", "Get a push notification.", {
 	    nickname: "getIdentity",
 	    responseClass: "string",
 	    notes:'',
-	    produces:["text/html"],
 		parameters: [
 			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"},
 		],
@@ -883,7 +987,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	push_doc.post("/push/{id}", "Add a identity.", {
+	push_doc.post("/push/{id}", "Add a push notification.", {
 	    nickname: "addIdentity",
 		responseClass: "void",
 		notes: '',
@@ -897,7 +1001,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	push_doc.put("/push/{id}", "Update a identity.", {
+	push_doc.put("/push/{id}", "Update a push notification.", {
 	    nickname: "updateIdentity",
 		responseClass: "void",
 		notes: '',
@@ -911,80 +1015,7 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-	push_doc.delete("/push/{id}", "Delete a identity.", {
-	    nickname: "deleteIdentity",
-		responseClass: "void",
-		notes: '',
-		parameters: [
-			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Template error."
-			}
-		]
-	});
-
-	//LOCATION MODULE	
-	var location_doc = swagger.createResource("/docs/location",  {description: "Location operations."});
-	location_doc.models.Value = {
-	};
-	location_doc.get("/location", "Get all identities.", {
-	    nickname: "listIdentities",
-		responseClass: "List[string]",
-		notes:"",
-		parameters: [],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	location_doc.get("/location/{id}", "Get a identity.", {
-	    nickname: "getIdentity",
-	    responseClass: "string",
-	    notes:'',
-	    produces:["text/html"],
-		parameters: [
-			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"},
-		],
-		errorResponses:[{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	location_doc.post("/location/{id}", "Add a identity.", {
-	    nickname: "addIdentity",
-		responseClass: "void",
-		notes: '',
-		parameters: [
-			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	location_doc.put("/location/{id}", "Update a identity.", {
-	    nickname: "updateIdentity",
-		responseClass: "void",
-		notes: '',
-		parameters: [
-			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	location_doc.delete("/location/{id}", "Delete a identity.", {
+	push_doc.delete("/push/{id}", "Delete a push notification.", {
 	    nickname: "deleteIdentity",
 		responseClass: "void",
 		notes: '',

@@ -201,8 +201,8 @@ require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helpe
 
 require("./lib/identity.js").init(server, storage, identity, helper);
 require("./lib/email.js").init(server, emailConfig, task, helper);
-require("./lib/push.js").init(server, nconf, pushConfig, push,identity, helper);
-require("./lib/location.js").init(server, storage, helper);
+require("./lib/push.js").init(server, nconf, pushConfig, push, identity, helper);
+require("./lib/location.js").init(server, location, helper);
 
 require("./lib/eventsource.js").init(server, es, helper);
 require("./lib/s3.js").init(server, s3Config, helper);

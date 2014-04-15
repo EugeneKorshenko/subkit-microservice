@@ -765,12 +765,26 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
+	location_doc.post("/location", "Add a geo point.", {
+	    nickname: "addGeoPoint",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "GeoPoint", description: "A GeoPoint object.", required:true, dataType: "GeoPoint", paramType: "body"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
 	location_doc.post("/location/{id}", "Add a geo point.", {
 	    nickname: "addGeoPoint",
 		responseClass: "void",
 		notes: '',
 		parameters: [
-			{name: "id", description: "GeoPoint ID.", required:false, dataType: "string", paramType: "path"},
+			{name: "id", description: "GeoPoint ID.", required:true, dataType: "string", paramType: "path"},
 			{name: "GeoPoint", description: "A GeoPoint object.", required:true, dataType: "GeoPoint", paramType: "body"}
 		],
 		errorResponses:[

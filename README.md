@@ -12,8 +12,8 @@ INSTALL
 BASICS
 ---
 
-* [RESTful JSON API](restful_api.md)
-* [Configuration Options](service_config.md)
+* [RESTful JSON API](docs/restful_api.md)
+* [Configuration Options](docs/service_config.md)
 
 GETTING STARTED
 ---

@@ -40,7 +40,7 @@ X		 	  | Worker		  | Scheduled Background Worker
 X		 	  | Mointoring	  | Heartbeats for Web-Service Monitoring
 X		 	  | Statistics	  | Useful statistics and usage analysis
 X		 	  | History		  | Track and query all state changes
-X		 	  | Hooks	      | HTTP Hooks
+X		 	  | Hooks	      | User-defined HTTP callbacks
 -		 	  | Validation    | Request validation support
 -		 	  | WebSockets    | Web-Socket support for real-time notifications
 -		 	  | Authorization | Advanced resource based authorization

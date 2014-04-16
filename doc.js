@@ -60,7 +60,7 @@ module.exports.configure = function(server, options){
 	    	{name: "keysOnly", description: "Only get the keys.(default: false)", required:false, dataType: "boolean", paramType: "query"},
 	    	{name: "cache", description: "Disable storage level caching. (default: true)", required:false, dataType: "boolean", paramType: "query"},
 			{name: "from", description: "Start from a specified item key. (default:'')", required:false, dataType: "string", paramType: "query"},
-			{name: "limit", description: "Limit results within numeric number. (default: -1)", required:false, dataType: "int", paramType: "query"},
+			{name: "limit", description: "Limit results within numeric number. (default: -1)", required:false, dataType: "integer", paramType: "query"},
 			{name: "where", description: "Filter results by JSON expression", required:false, dataType: "string", paramType: "query"},
 	    ],
 	    errorResponses:[
@@ -151,8 +151,7 @@ module.exports.configure = function(server, options){
 		responseClass: "void",
 		parameters: [
 			{name: "name", description: "Name of store.", required:true, dataType: "string", paramType: "path"},
-			{name: "key", description: "Item key.", required:true, dataType: "string", paramType: "path"}
-			
+			{name: "key", description: "Item key.", required:false, dataType: "string", paramType: "path"}
 		],
     	errorResponses:[
 			{
@@ -825,6 +824,119 @@ module.exports.configure = function(server, options){
 		]
 	});	
 
+	//ACCOUNTS MODULE
+	var account_doc = swagger.createResource("/docs/account",  {description: "Identity operations."});
+	account_doc.models.Value = {
+	};
+
+	account_doc.get("/account/groups", "List all groups.", {
+	    nickname: "listIdentityGroups",
+		responseClass: "List[string]",
+		notes:"",
+		parameters: [],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	account_doc.get("/account/groups/identities", "List accounts by group name.", {
+	    nickname: "listIdentityGroups",
+		responseClass: "List[string]",
+		notes:"",
+		parameters: [],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	account_doc.get("/account/groups/{name}", "List accounts by group name.", {
+	    nickname: "listIdentityGroups",
+		responseClass: "List[string]",
+		notes:"",
+		parameters: [
+			{name: "name", description: "Group name.", required:true, dataType: "string", paramType: "path"},
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+
+	account_doc.get("/account", "List all accounts.", {
+	    nickname: "listIdentities",
+		responseClass: "List[string]",
+		notes:"",
+		parameters: [],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	account_doc.get("/account/{id}", "Get a account.", {
+	    nickname: "getaccount",
+	    responseClass: "string",
+	    notes:'',
+	    produces:["text/html"],
+		parameters: [
+			{name: "id", description: "Account ID.", required:true, dataType: "string", paramType: "path"},
+		],
+		errorResponses:[{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	account_doc.post("/account/{id}", "Add a account.", {
+	    nickname: "addaccount",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Account ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	account_doc.put("/account/{id}", "Update a account.", {
+	    nickname: "updateaccount",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Account ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Error."
+			}
+		]
+	});
+	account_doc.delete("/account/{id}", "Delete a account.", {
+	    nickname: "deleteaccount",
+		responseClass: "void",
+		notes: '',
+		parameters: [
+			{name: "id", description: "Account ID.", required:true, dataType: "string", paramType: "path"}
+		],
+		errorResponses:[
+			{
+				code: 500,
+				message: "Template error."
+			}
+		]
+	});
+
 	//EMAIL MODULE
 	var email_doc = swagger.createResource("/docs/email",  {description: "EMail operations."});
 	email_doc.models.SendEMail = {
@@ -900,79 +1012,6 @@ module.exports.configure = function(server, options){
 		]
 	});
 
-	//IDENTITY MODULE
-	var identity_doc = swagger.createResource("/docs/identity",  {description: "Identity operations."});
-	identity_doc.models.Value = {
-	};
-	identity_doc.get("/identity", "Get all identities.", {
-	    nickname: "listIdentities",
-		responseClass: "List[string]",
-		notes:"",
-		parameters: [],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	identity_doc.get("/identity/{id}", "Get a identity.", {
-	    nickname: "getIdentity",
-	    responseClass: "string",
-	    notes:'',
-	    produces:["text/html"],
-		parameters: [
-			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"},
-		],
-		errorResponses:[{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	identity_doc.post("/identity/{id}", "Add a identity.", {
-	    nickname: "addIdentity",
-		responseClass: "void",
-		notes: '',
-		parameters: [
-			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	identity_doc.put("/identity/{id}", "Update a identity.", {
-	    nickname: "updateIdentity",
-		responseClass: "void",
-		notes: '',
-		parameters: [
-			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	identity_doc.delete("/identity/{id}", "Delete a identity.", {
-	    nickname: "deleteIdentity",
-		responseClass: "void",
-		notes: '',
-		parameters: [
-			{name: "id", description: "Identity ID.", required:true, dataType: "string", paramType: "path"}
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Template error."
-			}
-		]
-	});
-
 	//PUSH MODULE	
 	var push_doc = swagger.createResource("/docs/push",  {description: "Push operations."});
 	push_doc.models.Value = {
@@ -1044,4 +1083,4 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
-}
+};

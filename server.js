@@ -73,13 +73,12 @@ var identity = require('./lib/identity-module.js').init(storage);
 
 var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
 var email = require("./lib/email-module.js").init(emailConfig, renderer, identity);
-var push = require('./lib/push-module.js').init(pushConfig, storage);
+var push = require('./lib/push-module.js').init(pushConfig, storage, identity);
 var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email, push, es);
 var location = require('./lib/location-module.js').init(storage);
 
 
-var options = { name: "subkit" };
-
+var options = { name: "subkit microservice" };
 //configure HTTPS/SSL
 if(app.key) options.key = fs.readFileSync(app.key);
 if(app.cert) options.certificate = fs.readFileSync(app.cert);
@@ -191,6 +190,7 @@ server.listen(app.port, function(){
 
 var helper = require("./lib/helper.js").init(admin, api, etag, lastModified, storage);
 helper.setNewETag();
+
 require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
 require("./lib/store.js").init(server, storage, helper);
 require("./lib/pubsub.js").init(server, pubsub, helper);
@@ -199,7 +199,7 @@ require("./lib/template.js").init(server, templateConfig, renderer, helper);
 require("./lib/plugin.js").init(server, storage, taskConfig, task, helper);
 require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helper);
 
-require("./lib/identity.js").init(server, storage, identity, helper);
+require("./lib/account.js").init(server, storage, identity, helper);
 require("./lib/email.js").init(server, emailConfig, task, helper);
 require("./lib/push.js").init(server, nconf, pushConfig, push, identity, helper);
 require("./lib/location.js").init(server, location, helper);

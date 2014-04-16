@@ -836,12 +836,15 @@
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         param = _ref[_i];
         if (param.paramType === 'path') {
+          if(!args[param.name] && !param.required){
+            reg = new RegExp('\/{' + this.parameters[_i].name + '[^\}]*\}', 'gi');
+            url = url.replace(reg, "");
+            delete param;
+          }
           if (args[param.name]) {
             reg = new RegExp('\{' + param.name + '[^\}]*\}', 'gi');
             url = url.replace(reg, encodeURIComponent(args[param.name]));
             delete args[param.name];
-          } else {
-            throw "" + param.name + " is a required path param.";
           }
         }
       }

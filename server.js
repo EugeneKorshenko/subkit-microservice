@@ -138,7 +138,7 @@ server.opts(/\.*/, function (req, res, next) {
 // });
 
 //JSON doc
-var doc = require('./doc').configure(server, {
+var doc = require('./lib/doc-module.js').configure(server, {
 	discoveryUrl: "/docs",
 	version:      "1.2",
 	basePath:     api.url

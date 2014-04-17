@@ -822,119 +822,6 @@ module.exports.configure = function(server, options){
 				message: "Error."
 			}
 		]
-	});	
-
-	//ACCOUNTS MODULE
-	var account_doc = swagger.createResource("/docs/account",  {description: "Identity operations."});
-	account_doc.models.Value = {
-	};
-
-	account_doc.get("/account/groups", "List all groups.", {
-	    nickname: "listIdentityGroups",
-		responseClass: "List[string]",
-		notes:"",
-		parameters: [],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	account_doc.get("/account/groups/identities", "List accounts by group name.", {
-	    nickname: "listIdentityGroups",
-		responseClass: "List[string]",
-		notes:"",
-		parameters: [],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	account_doc.get("/account/groups/{name}", "List accounts by group name.", {
-	    nickname: "listIdentityGroups",
-		responseClass: "List[string]",
-		notes:"",
-		parameters: [
-			{name: "name", description: "Group name.", required:true, dataType: "string", paramType: "path"},
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-
-	account_doc.get("/account", "List all accounts.", {
-	    nickname: "listIdentities",
-		responseClass: "List[string]",
-		notes:"",
-		parameters: [],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	account_doc.get("/account/{id}", "Get a account.", {
-	    nickname: "getaccount",
-	    responseClass: "string",
-	    notes:'',
-	    produces:["text/html"],
-		parameters: [
-			{name: "id", description: "Account ID.", required:true, dataType: "string", paramType: "path"},
-		],
-		errorResponses:[{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	account_doc.post("/account/{id}", "Add a account.", {
-	    nickname: "addaccount",
-		responseClass: "void",
-		notes: '',
-		parameters: [
-			{name: "id", description: "Account ID.", required:true, dataType: "string", paramType: "path"}
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	account_doc.put("/account/{id}", "Update a account.", {
-	    nickname: "updateaccount",
-		responseClass: "void",
-		notes: '',
-		parameters: [
-			{name: "id", description: "Account ID.", required:true, dataType: "string", paramType: "path"}
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Error."
-			}
-		]
-	});
-	account_doc.delete("/account/{id}", "Delete a account.", {
-	    nickname: "deleteaccount",
-		responseClass: "void",
-		notes: '',
-		parameters: [
-			{name: "id", description: "Account ID.", required:true, dataType: "string", paramType: "path"}
-		],
-		errorResponses:[
-			{
-				code: 500,
-				message: "Template error."
-			}
-		]
 	});
 
 	//EMAIL MODULE
@@ -1083,4 +970,9 @@ module.exports.configure = function(server, options){
 			}
 		]
 	});
+
+	return function(name, description){
+		return swagger.createResource("/docs/"+name, {description: description});
+	};
+
 };

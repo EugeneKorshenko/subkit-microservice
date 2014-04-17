@@ -1,4 +1,5 @@
 'use strict';
+
 var restify = require('restify'),
 	http = require('http'),
 	fs = require('fs'),
@@ -193,19 +194,19 @@ server.listen(app.port, function(){
 var helper = require("./lib/helper.js").init(admin, api, etag, lastModified, storage);
 helper.setNewETag();
 
-require("./lib/manage.js").init(nconf, api, app, server, storage, helper);
-require("./lib/store.js").init(server, storage, helper);
-require("./lib/pubsub.js").init(server, pubsub, helper);
-require("./lib/static.js").init(server, staticConfig, helper);
-require("./lib/template.js").init(server, templateConfig, renderer, helper);
-require("./lib/plugin.js").init(server, storage, taskConfig, task, helper);
-require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helper);
+require("./lib/manage.js").init(nconf, api, app, server, storage, helper, doc);
+require("./lib/store.js").init(server, storage, helper, doc);
+require("./lib/pubsub.js").init(server, pubsub, helper, doc);
+require("./lib/static.js").init(server, staticConfig, helper, doc);
+require("./lib/template.js").init(server, templateConfig, renderer, helper, doc);
+require("./lib/plugin.js").init(server, storage, taskConfig, task, helper, doc);
+require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helper, doc);
 require("./lib/account.js").init(server, account, helper, doc);
-require("./lib/email.js").init(server, emailConfig, task, helper);
-require("./lib/push.js").init(server, nconf, pushConfig, push, helper);
-require("./lib/location.js").init(server, location, helper);
-require("./lib/eventsource.js").init(server, es, helper);
-require("./lib/s3.js").init(server, s3Config, helper);
+require("./lib/email.js").init(server, emailConfig, task, helper, doc);
+require("./lib/push.js").init(server, nconf, pushConfig, push, helper, doc);
+require("./lib/location.js").init(server, location, helper, doc);
+require("./lib/eventsource.js").init(server, es, helper, doc);
+require("./lib/s3.js").init(server, s3Config, helper, doc);
 
 //all other resources
 server.get(/\/.+/, restify.serveStatic({

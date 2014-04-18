@@ -54,6 +54,7 @@
     }
   ],
   "optionalDependencies": {
-    "subkit-shell-plugin": "git+https://github.com/SubKit/subkit-shell-plugin.git"
+    "subkit-shell-plugin": "git+https://github.com/SubKit/subkit-shell-plugin.git",
+    "subkit-mdm-plugin": "git+https://github.com/SubKit/subkit-mdm-plugin.git"
   }
 }

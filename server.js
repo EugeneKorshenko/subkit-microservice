@@ -208,6 +208,21 @@ require("./lib/location.js").init(server, location, helper, doc);
 require("./lib/eventsource.js").init(server, es, helper, doc);
 require("./lib/s3.js").init(server, s3Config, helper, doc);
 
+//plugins
+var plugins = require('./package.json').optionalDependencies;
+var pluginContext = {
+	Server: server,
+	NConf: nconf,
+	Helper: helper,
+	Doc: doc,
+	Storage: storage,
+	PubSub: pubsub
+};
+for(var pluginName in plugins){
+	console.log("Loading plugin: " + pluginName);
+	require(pluginName).init(pluginContext);
+}
+
 //all other resources
 server.get(/\/.+/, restify.serveStatic({
   directory: path.join(__dirname, 'files/mobile')

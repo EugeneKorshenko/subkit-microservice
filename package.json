@@ -15,12 +15,10 @@
     "mpns": "*",
     "nconf": "*",
     "node-gcm": "*",
-    "node-restify-validation": "*",
     "node-uuid": "*",
     "procstreams": "*",
     "randomstring": "*",
     "restify": "*",
-    "shelljs": "*",
     "stripe": "*",
     "simplesmtp": "*",
     "swagger-doc": "*",
@@ -54,5 +52,8 @@
       "type": "",
       "url": ""
     }
-  ]
+  ],
+  "optionalDependencies": {
+    "subkit-shell-plugin": "git+https://github.com/SubKit/subkit-shell-plugin.git"
+  }
 }

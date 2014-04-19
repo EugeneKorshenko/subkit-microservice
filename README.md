@@ -104,4 +104,4 @@ GUIDES
 * RESTFul API
 * Transactions & Idempotency
 * Caching
-* Developing Tasks - The custom JavaScript execution API
+* Develop Tasks - The custom JavaScript execution API

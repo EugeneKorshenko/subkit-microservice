@@ -6,8 +6,10 @@ Custom Plugin Development
 `cd subkit-<name>-plugin`
 * download and unzip the plugin template to your new folder  
 `wget -O plugin-draft.zip https://github.com/SubKit/subkit-plugin-draft/archive/master.zip;`
-* change `README.md`
 * change `package.json`
+* `npm install`
+* `npm test`
+* change `README.md`
 * change `Gruntfile.js`
 * change `index.js`
 * rename and change files in lib

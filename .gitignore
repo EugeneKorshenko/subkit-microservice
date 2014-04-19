@@ -5,8 +5,8 @@ backups
 testdb
 masterdb
 rights.json
-files/static/
-files/plugins/
+files/statics/
+files/tasks/
 files/template/
 *.p12
 config.json

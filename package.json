@@ -50,6 +50,5 @@
     }
   ],
   "optionalDependencies": {
-    "subkit-email-plugin": "git+https://github.com/SubKit/subkit-email-plugin.git"
   }
 }

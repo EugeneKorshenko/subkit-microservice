@@ -46,7 +46,7 @@
   },
   "templateConfig": {
     "rightsPath": "./rights.json",
-    "filesPath": "./files/template",
+    "filesPath": "./files/templates",
     "backupPath": "./backups"
   },
   "taskConfig": {

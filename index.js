@@ -1,2 +1,2 @@
 'use strict';
-require('./server.js');
+return require('./server.js').init();

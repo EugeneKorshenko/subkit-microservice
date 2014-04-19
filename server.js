@@ -223,3 +223,16 @@ server.get(/\/.+/, restify.serveStatic({
   directory: path.join(__dirname, 'files/mobile')
 }));
 
+module.exports.init = function(){
+	return {
+		plugin: {
+			getContext: function(){
+				return pluginContext;
+			},
+			load: function(name, context){
+				console.log("Loading plugin: " + name);
+				require(pluginName).init(context || pluginContext);
+			}
+		}
+	};
+};

@@ -50,9 +50,6 @@
     }
   ],
   "optionalDependencies": {
-    "subkit-mdm-plugin": "git+https://github.com/SubKit/subkit-mdm-plugin.git",
-    "subkit-s3-plugin": "git+https://github.com/SubKit/subkit-s3-plugin.git",
-    "subkit-email-plugin": "git+https://github.com/SubKit/subkit-email-plugin.git",
-    "subkit-shell-plugin": "git+https://github.com/SubKit/subkit-shell-plugin.git"
+    "subkit-email-plugin": "git+https://github.com/SubKit/subkit-email-plugin.git"
   }
 }

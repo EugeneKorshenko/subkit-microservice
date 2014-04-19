@@ -1,5 +1,3 @@
 'use strict';
-
-module.exports.init = function(){
-	return require('./server.js').init();
-};
+var server = require('./server.js');
+module.exports.getContext = server.getContext;

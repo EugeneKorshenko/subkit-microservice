@@ -219,7 +219,19 @@ for(var pluginName in plugins){
 }
 
 //all other resources
-server.get(/\/.+/, restify.serveStatic({
+server.get(/\/css\/.+/, restify.serveStatic({
+  directory: path.join(__dirname, 'files/mobile')
+}));
+server.get(/\/libs\/.+/, restify.serveStatic({
+  directory: path.join(__dirname, 'files/mobile')
+}));
+server.get(/\/js\/.+/, restify.serveStatic({
+  directory: path.join(__dirname, 'files/mobile')
+}));
+server.get(/\/img\/.+/, restify.serveStatic({
+  directory: path.join(__dirname, 'files/mobile')
+}));
+server.get(/\/doc\/.+/, restify.serveStatic({
   directory: path.join(__dirname, 'files/mobile')
 }));
 

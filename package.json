@@ -9,7 +9,6 @@
     "json-stringify-safe": "*",
     "jsonquery": "*",
     "level": "*",
-    "mailcomposer": "*",
     "mpns": "*",
     "nconf": "*",
     "node-gcm": "*",
@@ -18,7 +17,6 @@
     "randomstring": "*",
     "restify": "*",
     "stripe": "*",
-    "simplesmtp": "*",
     "swagger-doc": "*",
     "time": "*",
     "underscore": "*",
@@ -52,8 +50,9 @@
     }
   ],
   "optionalDependencies": {
-    "subkit-mdm-plugin": "*",
-    "subkit-s3-plugin": "0.0.2",
-    "subkit-shell-plugin": "0.0.2"
+    "subkit-mdm-plugin": "git+https://github.com/SubKit/subkit-mdm-plugin.git",
+    "subkit-s3-plugin": "git+https://github.com/SubKit/subkit-s3-plugin.git",
+    "subkit-email-plugin": "git+https://github.com/SubKit/subkit-email-plugin.git",
+    "subkit-shell-plugin": "git+https://github.com/SubKit/subkit-shell-plugin.git"
   }
 }

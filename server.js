@@ -53,14 +53,10 @@ taskConfig.mapreducePath = path.join(__dirname, taskConfig.mapreducePath);
 taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
 taskConfig.hooks = hooks;
 
-var emailConfig = nconf.get("emailConfig");
-
 var pushConfig = nconf.get("pushConfig");
 pushConfig.APN_Sandbox_Pfx = path.join(__dirname, pushConfig.APN_Sandbox_Pfx);
 pushConfig.APN_Pfx = pushConfig.APN_Pfx ? path.join(__dirname, pushConfig.APN_Pfx) : "";
 pushConfig.MPNS_Pfx = (pushConfig.MPNS_Pfx && fs.existsSync(path.join(__dirname, pushConfig.MPNS_Pfx))) ? path.join(__dirname, pushConfig.MPNS_Pfx) : "";
-
-var s3Config = nconf.get("s3Config");
 
 var schedulerConfig = nconf.get("schedulerConfig");
 
@@ -72,15 +68,12 @@ var	pubsub = require("./lib/pubsub-module.js").init({pollInterval: 1});
 var storage = require('./lib/store-module.js').init(storageConfig);
 var identity = require('./lib/identity-module.js');
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
-
 var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
-var emailIdentity = identity.init("email", storage);
-var email = require("./lib/email-module.js").init(emailConfig, renderer, emailIdentity);
 var pushIdentity = identity.init("push", storage);
 var push = require('./lib/push-module.js').init(pushConfig, storage, pushIdentity);
 var accountIdentity = identity.init("account", storage);
 var account = require('./lib/account-module.js').init(accountIdentity);
-var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, email, push, es);
+var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, push, es);
 var location = require('./lib/location-module.js').init(storage);
 
 var options = { name: "subkit microservice" };
@@ -203,11 +196,9 @@ require("./lib/template.js").init(server, templateConfig, renderer, helper, doc)
 require("./lib/plugin.js").init(server, storage, taskConfig, task, helper, doc);
 require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helper, doc);
 require("./lib/account.js").init(server, account, helper, doc);
-require("./lib/email.js").init(server, emailConfig, task, helper, doc);
 require("./lib/push.js").init(server, nconf, pushConfig, push, helper, doc);
 require("./lib/location.js").init(server, location, helper, doc);
 require("./lib/eventsource.js").init(server, es, helper, doc);
-require("./lib/s3.js").init(server, s3Config, helper, doc);
 
 //plugins
 var plugins = require('./package.json').optionalDependencies;
@@ -219,7 +210,8 @@ var pluginContext = {
 	Storage: storage,
 	PubSub: pubsub,
 	Identity: identity,
-	EventSource: es
+	EventSource: es, 
+	Renderer: renderer
 };
 for(var pluginName in plugins){
 	console.log("Loading plugin: " + pluginName);

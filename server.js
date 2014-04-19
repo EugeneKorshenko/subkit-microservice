@@ -72,6 +72,7 @@ var	pubsub = require("./lib/pubsub-module.js").init({pollInterval: 1});
 var storage = require('./lib/store-module.js').init(storageConfig);
 var identity = require('./lib/identity-module.js');
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
+
 var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
 var emailIdentity = identity.init("email", storage);
 var email = require("./lib/email-module.js").init(emailConfig, renderer, emailIdentity);
@@ -216,7 +217,9 @@ var pluginContext = {
 	Helper: helper,
 	Doc: doc,
 	Storage: storage,
-	PubSub: pubsub
+	PubSub: pubsub,
+	Identity: identity,
+	EventSource: es
 };
 for(var pluginName in plugins){
 	console.log("Loading plugin: " + pluginName);

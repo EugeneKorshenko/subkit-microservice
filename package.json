@@ -3,8 +3,6 @@
   "version": "0.0.3",
   "dependencies": {
     "apn": "*",
-    "aws-sdk": "*",
-    "aws-sign": "*",
     "commander": "*",
     "cron": "*",
     "jshtml-express": "*",
@@ -55,6 +53,7 @@
   ],
   "optionalDependencies": {
     "subkit-mdm-plugin": "*",
+    "subkit-s3-plugin": "0.0.2",
     "subkit-shell-plugin": "0.0.2"
   }
 }

@@ -7,3 +7,7 @@ masterdb
 rights.json
 *.p12
 config.json
+files/statics/
+files/tasks/
+files/templates/
+files/mapreduce/

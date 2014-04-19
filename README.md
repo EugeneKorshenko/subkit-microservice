@@ -71,10 +71,10 @@ X			  | Environment	   	  | Host environment statistics and moinoring like CPU a
 -			  | Shell      		  | [Shell Plugin](https://www.npmjs.org/package/subkit-shell-plugin)
 -			  | Payment   		  | Payment provider support
 -			  | Transcoder		  | Transcoding images and videos
--			  | AWS S3			  | Amazon S3 support
+-			  | AWS S3			  | [Amazon S3 Plugin](https://www.npmjs.org/package/subkit-s3-plugin)
 -		 	  | MySQL connector   | MySQL DB import/export connector
 -		 	  | MSSQL Connector   | MSSQL DB import/export connector
--		 	  | HTML scraping     | Download and scrap HTML
+-		 	  | HTML scraping     | Scraping HTML
 
 
 SDKS

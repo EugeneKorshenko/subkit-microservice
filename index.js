@@ -1,2 +1,5 @@
 'use strict';
-return require('./server.js').init();
+
+module.exports.init = function(){
+	return require('./server.js').init();
+};

@@ -41,7 +41,7 @@
   },
   "staticConfig": {
     "rightsPath": "./rights.json",
-    "filesPath": "./files/static",
+    "filesPath": "./files/statics",
     "backupPath": "./backups"
   },
   "templateConfig": {
@@ -51,7 +51,7 @@
   },
   "taskConfig": {
     "rightsPath": "./rights.json",
-    "pluginsPath": "./files/plugins",
+    "tasksPath": "./files/tasks",
     "jobsPath": "./files/jobs",
     "mapreducePath": "./files/mapreduce",
     "backupPath": "./backups"

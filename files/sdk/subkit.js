@@ -563,7 +563,7 @@ var Subkit = function(config){
 			});
 		}
 	};
-	self.plugin = {
+	self.task = {
 		run: function(pluginName, callback){
 			var url = self.baseUrl + "/plugins/run/" + pluginName;
 			httpRequest.get(url, self.options, function(status, result){

@@ -47,7 +47,7 @@ templateConfig.templateData = {
 };
 
 var taskConfig = nconf.get("taskConfig");
-taskConfig.pluginsPath = path.join(__dirname, taskConfig.pluginsPath);
+taskConfig.tasksPath = path.join(__dirname, taskConfig.tasksPath);
 taskConfig.jobsPath = path.join(__dirname, taskConfig.jobsPath);
 taskConfig.mapreducePath = path.join(__dirname, taskConfig.mapreducePath);
 taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
@@ -193,7 +193,7 @@ require("./lib/store.js").init(server, storage, helper, doc);
 require("./lib/pubsub.js").init(server, pubsub, helper, doc);
 require("./lib/static.js").init(server, staticConfig, helper, doc);
 require("./lib/template.js").init(server, templateConfig, renderer, helper, doc);
-require("./lib/plugin.js").init(server, storage, taskConfig, task, helper, doc);
+require("./lib/task.js").init(server, storage, taskConfig, task, helper, doc);
 require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helper, doc);
 require("./lib/account.js").init(server, account, helper, doc);
 require("./lib/push.js").init(server, nconf, pushConfig, push, helper, doc);

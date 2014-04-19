@@ -1,6 +1,9 @@
 Custom Plugin Development
 ====
 
+* create a plugin directory  
+`mkdir subkit-<name>-plugin`
+`cd subkit-<name>-plugin`
 * clone plugin template  
 `git clone --mirror git@github.com:SubKit/subkit-plugin-draft.git`
 * change to repo directory  

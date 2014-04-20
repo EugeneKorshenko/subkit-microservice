@@ -1,16 +1,15 @@
 var assert = require('assert'),
     sut;
 
-before(function(done) {
+describe('Module: PubSub', function(){
+  before(function(done) {
     sut = require('../lib/pubsub-module.js').init({ pollInterval: 1});
     setTimeout(done, 1000);
-});
-
-after(function(done){
+  });
+  after(function(done){
     done();
-});
-
-describe('Module: PubSub', function(){
+  });
+  
   describe('on ...', function(){
     before(function(done){
       done();

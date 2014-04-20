@@ -12,6 +12,7 @@ module.exports = function(grunt) {
         'test/store.module.spec.js',
         'test/identity.module.spec.js',
         'test/pubsub.module.spec.js',
+        'test/task.module.spec.js',
         'test/store.spec.js',
         'test/identity.spec.js'
       ],
@@ -24,6 +25,7 @@ module.exports = function(grunt) {
       test: {
         options: {
           reporter: 'spec',
+          timeout: 10000
         },
         src: ['test/*.spec.js']
       }

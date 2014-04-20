@@ -11,6 +11,7 @@ module.exports = function(grunt) {
         'Gruntfile.js',
         'test/store.module.spec.js',
         'test/identity.module.spec.js',
+        'test/pubsub.module.spec.js',
         'test/store.spec.js',
         'test/identity.spec.js'
       ],

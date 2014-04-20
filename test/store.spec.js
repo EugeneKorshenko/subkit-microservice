@@ -16,7 +16,7 @@ after(function(done){
   done();
 });
 
-describe('Integration: Identity', function(){
+describe('Integration: Store', function(){
   describe('on ...', function(){
     before(function(done){
       done();

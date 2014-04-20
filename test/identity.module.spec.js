@@ -1,22 +1,16 @@
 var assert = require('assert'),
-    restify = require('restify');
-
-var client = restify.createJsonClient({
-  version: '*',
-  url: 'http://127.0.0.1:8080',
-  headers: {'api_key':'6654edc5-82a3-4006-967f-97d5817d7fe2'}
-});
+    sut;
 
 before(function(done) {
-    require('../server');
-    done();
+    sut = require('../lib/identity-module.js').init();
+    setTimeout(done, 1000);
 });
 
 after(function(done){
-  done();
+    done();
 });
 
-describe('Integration: Identity', function(){
+describe('Module: Identity', function(){
   describe('on ...', function(){
     before(function(done){
       done();

@@ -1,22 +1,50 @@
 var assert = require('assert'),
-    restify = require('restify');
-
-var client = restify.createJsonClient({
-  version: '*',
-  url: 'http://127.0.0.1:8080',
-  headers: {"api_key":"6654edc5-82a3-4006-967f-97d5817d7fe2"}
-});
+    sut;
 
 before(function(done) {
-    require('../server');
-    done();
+    sut = require('../lib/store-module.js').init({
+      dbPath:'./storespecdb',
+      rightsPath:'./rights.json',
+      tasksPath:'./tasks',
+      backupPath:'./backups'
+    });
+    sut.create('ademo', '1', {test: 'ademo 1 test'});
+    sut.create('bdemoa', '1', {test: 'bdemoa 1 test'});
+    sut.create('bdemob', '1', {test: 'bdemob 1 test'});
+    sut.create('bdemob', '2', {test: 'bdemob 2 test'});
+    sut.create('bdemob', '3', {test: 'bdemob 3 test', test2: 'bdemob 3 test2'});
+    sut.create('bdemob', '4', {test: 'bdemob 4 test'});
+    sut.create('bdemob', '5', {test: 'bdemob 5 test'});
+    sut.create('bdemob', '6', {test: 'bdemob 6 test'});
+    sut.create('bdemoc', '1', {test: 'bdemoc 1 test'});
+    sut.create('cdemoc', '1', {test: 'cdemoc 1 test'});
+    sut.create('rangequery', '1!a', {test: 'bdemob 1!a test'});
+    sut.create('rangequery', '1!b', {test: 'bdemob 1!b test'});
+    sut.create('rangequery', '1!c', {test: 'bdemob 1!c test'});
+    sut.create('rangequery', '2!a', {test: 'bdemob 2!a test'});
+    sut.create('rangequery', '2!b', {test: 'bdemob 2!b test'});
+    sut.create('rangequery', '2!b!1', {test: 'bdemob 2!b!1 test'});
+    sut.create('rangequery', '2!b!2', {test: 'bdemob 2!b!2 test'});
+    sut.create('rangequery', '2!b!3', {test: 'bdemob 2!b!3 test'});
+    sut.create('rangequery', '2!c', {test: 'bdemob 2!c test'});
+    sut.create('rangequery', '3!a', {test: 'bdemob 3!a test'});
+    sut.create('rangequery', '3!b', {test: 'bdemob 3!b test'});
+    sut.create('rangequery', '3!c', {test: 'bdemob 3!c test'});
+
+    sut.create('deleteDemo', '1', {test: 'delete demo 1 test'});
+    sut.create('deleteDemo', '2', {test: 'delete demo 2 test'});
+    sut.create('deleteDemo', '3', {test: 'delete demo 3 test'});
+    sut.create('deleteDemo', '4', {test: 'delete demo 4 test'});
+
+    setTimeout(done, 1000);
 });
 
 after(function(done){
-  done();
+    sut.destroy(console.log);
+    done();
 });
 
-describe('service: store', function(){
+describe('Module: Store', function(){
   describe('on ...', function(){
     before(function(done){
       done();
@@ -29,52 +57,6 @@ describe('service: store', function(){
     });
   });
 });
-
-// var assert = require('assert')
-//     ,storage;
- 
-// before(function(done) {
-//     storage = require("../index").init({
-//       dbPath:"./testdb",
-//       rightsPath:"./rights.json",
-//       tasksPath:"./tasks",
-//       backupPath:"./backups"
-//     });
-//     storage.create("ademo", "1", {test: "ademo 1 test"});
-//     storage.create("bdemoa", "1", {test: "bdemoa 1 test"});
-//     storage.create("bdemob", "1", {test: "bdemob 1 test"});
-//     storage.create("bdemob", "2", {test: "bdemob 2 test"});
-//     storage.create("bdemob", "3", {test: "bdemob 3 test", test2: "bdemob 3 test2"});
-//     storage.create("bdemob", "4", {test: "bdemob 4 test"});
-//     storage.create("bdemob", "5", {test: "bdemob 5 test"});
-//     storage.create("bdemob", "6", {test: "bdemob 6 test"});
-//     storage.create("bdemoc", "1", {test: "bdemoc 1 test"});
-//     storage.create("cdemoc", "1", {test: "cdemoc 1 test"});
-//     storage.create("rangequery", "1!a", {test: "bdemob 1!a test"});
-//     storage.create("rangequery", "1!b", {test: "bdemob 1!b test"});
-//     storage.create("rangequery", "1!c", {test: "bdemob 1!c test"});
-//     storage.create("rangequery", "2!a", {test: "bdemob 2!a test"});
-//     storage.create("rangequery", "2!b", {test: "bdemob 2!b test"});
-//     storage.create("rangequery", "2!b!1", {test: "bdemob 2!b!1 test"});
-//     storage.create("rangequery", "2!b!2", {test: "bdemob 2!b!2 test"});
-//     storage.create("rangequery", "2!b!3", {test: "bdemob 2!b!3 test"});
-//     storage.create("rangequery", "2!c", {test: "bdemob 2!c test"});
-//     storage.create("rangequery", "3!a", {test: "bdemob 3!a test"});
-//     storage.create("rangequery", "3!b", {test: "bdemob 3!b test"});
-//     storage.create("rangequery", "3!c", {test: "bdemob 3!c test"});
-
-//     storage.create("deleteDemo", "1", {test: "delete demo 1 test"});
-//     storage.create("deleteDemo", "2", {test: "delete demo 2 test"});
-//     storage.create("deleteDemo", "3", {test: "delete demo 3 test"});
-//     storage.create("deleteDemo", "4", {test: "delete demo 4 test"});
-
-//     setTimeout(done, 1000);
-// });
-
-// after(function(done){
-//     storage.destroy(console.log);
-//     done();
-// });
 
 // describe('service: storage', function(){
 //   describe('query', function(){

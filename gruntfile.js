@@ -9,6 +9,9 @@ module.exports = function(grunt) {
     jshint: {
       files: [
         'Gruntfile.js',
+        'test/store.module.spec.js',
+        'test/identity.module.spec.js',
+        'test/store.spec.js',
         'test/identity.spec.js'
       ],
       options: {
@@ -21,7 +24,7 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
         },
-        src: ['test/identity.spec.js']
+        src: ['test/*.spec.js']
       }
     },
     less: {

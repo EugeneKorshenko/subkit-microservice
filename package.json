@@ -26,6 +26,7 @@
     "mocha": "*",
     "grunt-cli": "*",
     "grunt": "*",
+    "grunt-contrib-jshint":"*",
     "grunt-mocha-test": "*",
     "grunt-contrib-less": "*",
     "grunt-contrib-watch": "*"
@@ -36,7 +37,7 @@
   },
   "scripts": {
     "start": "node server",
-    "test": "mocha -R spec --globals buffertools,SlowBuffer,events,util"
+    "test": "grunt test"
   },
   "author": "Mike Bild",
   "repository": {

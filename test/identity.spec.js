@@ -4,7 +4,7 @@ var assert = require('assert'),
 var client = restify.createJsonClient({
   version: '*',
   url: 'http://127.0.0.1:8080',
-  headers: {"api_key":"6654edc5-82a3-4006-967f-97d5817d7fe2"}
+  headers: {'api_key':'6654edc5-82a3-4006-967f-97d5817d7fe2'}
 });
 
 before(function(done) {
@@ -16,7 +16,7 @@ after(function(done){
   done();
 });
 
-describe('service: users', function(){
+describe('service: identity', function(){
   describe('on ...', function(){
     before(function(done){
       done();

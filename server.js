@@ -3,11 +3,8 @@
 var restify = require('restify'),
 	http = require('http'),
 	fs = require('fs'),
-	path = require("path"),
-	nconf = require('nconf'),
-	_ = require('underscore'),
-	uuid = require("node-uuid"),
-	crypto = require("crypto");
+	path = require('path'),
+	nconf = require('nconf');
 
 //config
 nconf
@@ -16,26 +13,26 @@ nconf
 	.file('config', path.join(__dirname, 'config.json'))
   	.file('defaults', path.join(__dirname, 'defaults.json'));
 
-var admin = nconf.get("admin"),
-	app = nconf.get("app"),
-	api = nconf.get("api"),
+var admin = nconf.get('admin'),
+	app = nconf.get('app'),
+	api = nconf.get('api'),
 	etag = null,
 	lastModified = null;
 
 //correct root path
-var storageConfig = nconf.get("storageConfig");
-var hooks = nconf.get("hooks");
+var storageConfig = nconf.get('storageConfig');
+var hooks = nconf.get('hooks');
 storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
 storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
 storageConfig.filesPath = path.join(__dirname, storageConfig.filesPath);
 storageConfig.hooks = hooks;
 
-var staticConfig = nconf.get("staticConfig");
+var staticConfig = nconf.get('staticConfig');
 staticConfig.filesPath = path.join(__dirname, staticConfig.filesPath);
 staticConfig.rightsPath = path.join(__dirname, staticConfig.rightsPath);
 staticConfig.hooks = hooks;
 
-var templateConfig = nconf.get("templateConfig");
+var templateConfig = nconf.get('templateConfig');
 templateConfig.filesPath = path.join(__dirname, templateConfig.filesPath);
 templateConfig.rightsPath = path.join(__dirname, templateConfig.rightsPath);
 templateConfig.hooks = hooks;
@@ -46,53 +43,51 @@ templateConfig.templateData = {
 	password: admin.password
 };
 
-var taskConfig = nconf.get("taskConfig");
+var taskConfig = nconf.get('taskConfig');
 taskConfig.tasksPath = path.join(__dirname, taskConfig.tasksPath);
 taskConfig.jobsPath = path.join(__dirname, taskConfig.jobsPath);
 taskConfig.mapreducePath = path.join(__dirname, taskConfig.mapreducePath);
 taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
 taskConfig.hooks = hooks;
 
-var pushConfig = nconf.get("pushConfig");
+var pushConfig = nconf.get('pushConfig');
 pushConfig.APN_Sandbox_Pfx = path.join(__dirname, pushConfig.APN_Sandbox_Pfx);
-pushConfig.APN_Pfx = pushConfig.APN_Pfx ? path.join(__dirname, pushConfig.APN_Pfx) : "";
-pushConfig.MPNS_Pfx = (pushConfig.MPNS_Pfx && fs.existsSync(path.join(__dirname, pushConfig.MPNS_Pfx))) ? path.join(__dirname, pushConfig.MPNS_Pfx) : "";
-
-var schedulerConfig = nconf.get("schedulerConfig");
+pushConfig.APN_Pfx = pushConfig.APN_Pfx ? path.join(__dirname, pushConfig.APN_Pfx) : '';
+pushConfig.MPNS_Pfx = (pushConfig.MPNS_Pfx && fs.existsSync(path.join(__dirname, pushConfig.MPNS_Pfx))) ? path.join(__dirname, pushConfig.MPNS_Pfx) : '';
 
 //init
 if(!fs.existsSync(storageConfig.rightsPath))
 	fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');
 
-var	pubsub = require("./lib/pubsub-module.js").init({pollInterval: 1});
+var	pubsub = require('./lib/pubsub-module.js').init({pollInterval: 1});
 var storage = require('./lib/store-module.js').init(storageConfig);
 var identity = require('./lib/identity-module.js');
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
-var renderer = require("./lib/template-module.js").init({templatesPath: templateConfig.filesPath});
-var pushIdentity = identity.init("push", storage);
+var renderer = require('./lib/template-module.js').init({templatesPath: templateConfig.filesPath});
+var pushIdentity = identity.init('push', storage);
 var push = require('./lib/push-module.js').init(pushConfig, storage, pushIdentity);
-var accountIdentity = identity.init("account", storage);
+var accountIdentity = identity.init('account', storage);
 var account = require('./lib/account-module.js').init(accountIdentity);
 var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, push, es);
 var location = require('./lib/location-module.js').init(storage);
 
-var options = { name: "subkit microservice" };
+var options = { name: 'subkit microservice' };
 //configure HTTPS/SSL
 if(app.key) options.key = fs.readFileSync(app.key);
 if(app.cert) options.certificate = fs.readFileSync(app.cert);
 var	server = restify.createServer(options);
 
 //conf reload
-var reloadConf = function(curr, prev){
+var reloadConf = function(){
 	nconf.file('config', path.join(__dirname, 'config.json'));
   	nconf.file('defaults', path.join(__dirname, 'defaults.json'));
-	admin = nconf.get("admin");
-	app = nconf.get("app");
-	api = nconf.get("api");
-	hooks = nconf.get("hooks");
-}
-fs.watchFile(path.join(__dirname, "config.json"), reloadConf);
-fs.watchFile(path.join(__dirname, "defaults.json"), reloadConf);
+	admin = nconf.get('admin');
+	app = nconf.get('app');
+	api = nconf.get('api');
+	hooks = nconf.get('hooks');
+};
+fs.watchFile(path.join(__dirname, 'config.json'), reloadConf);
+fs.watchFile(path.join(__dirname, 'defaults.json'), reloadConf);
 
 //server middleware
 server.acceptable.push('text/html');
@@ -116,62 +111,64 @@ server.pre(restify.pre.userAgentConnection());
 
 //CORS
 server.opts(/\.*/, function (req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, HEAD, OPTION");
-	res.header("Access-Control-Allow-Headers", "Authorization, Content-Type, api_key, apikey, readkey, writekey, read_key, write_key, X-Requested-With");
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, HEAD, OPTION');
+	res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type, api_key, apikey, readkey, writekey, read_key, write_key, X-Requested-With');
 	res.send(200);
 	return next();
 });
 
 //handle errors
-// server.on("uncaughtException", function (req, res, route, err) {
-// 	console.log("A uncought exception was thrown: " + route + " -> " + err.message);
-// 	res.send(500, err.message);
-// });
-// process.on('uncaughtException', function(err){
-// 	console.log("A uncought exception was thrown: " + err.message);
-// });
+server.on('uncaughtException', function (req, res, route, err) {
+	console.log('A uncought exception was thrown: ' + route + ' -> ' + err.message);
+	res.send(500, err.message);
+});
+process.on('uncaughtException', function(err){
+	console.log('A uncought exception was thrown: ' + err.message);
+});
 
 //JSON doc
 var doc = require('./lib/doc-module.js').configure(server, {
-	discoveryUrl: "/docs",
-	version:      "1.2",
+	discoveryUrl: '/docs',
+	version:      '1.2',
 	basePath:     api.url
 });
 //docu
-var rendererDevCenter = require("./lib/template-module.js").init({
+var rendererDevCenter = require('./lib/template-module.js').init({
 	templatesPath: path.join(__dirname, 'files/mobile')
 });
-server.get("/doc", function(req, res, next){
+server.get('/doc', function(req, res, next){
 	var consoleData = {
 	  url: api.url,
 	  apiKey: api.apiKey,
 	  username: admin.username,
 	  password: admin.password
 	};
-	rendererDevCenter.render("doc", consoleData, function(err, html){
+	rendererDevCenter.render('doc', consoleData, function(err, html){
 	  res.contentType = 'text/html';
 	  res.write(html);
 	  res.end();
 	});
+	return next();
 });
 
 //development center
-var rendererMobileCenter = require("./lib/template-module.js").init({
+var rendererMobileCenter = require('./lib/template-module.js').init({
 	templatesPath: path.join(__dirname, 'files/mobile')
 });
-server.get("/", function(req, res, next){
+server.get('/', function(req, res, next){
 	var consoleData = {
 	  url: api.url,
 	  apiKey: api.apiKey,
 	  username: admin.username,
 	  password: admin.password
 	};
-	rendererMobileCenter.render("index", consoleData, function(err, html){
+	rendererMobileCenter.render('index', consoleData, function(err, html){
 	  res.contentType = 'text/html';
 	  res.write(html);
 	  res.end();
 	});
+	return next();
 });
 //javascript SDKs
 server.get(/\/sdk\/?.*/, restify.serveStatic({
@@ -180,25 +177,25 @@ server.get(/\/sdk\/?.*/, restify.serveStatic({
 
 //start web server
 server.listen(app.port, function(){
-	console.log("subkit microservice listen on: " + server.address().port);
-	console.log("PID: " + process.pid);
+	console.log('subkit microservice listen on: ' + server.address().port);
+	console.log('PID: ' + process.pid);
 	http.globalAgent.maxSockets = 50000;
 });
 
-var helper = require("./lib/helper.js").init(admin, api, etag, lastModified, storage);
+var helper = require('./lib/helper.js').init(admin, api, etag, lastModified, storage);
 helper.setNewETag();
 
-require("./lib/manage.js").init(nconf, api, app, server, storage, helper, doc);
-require("./lib/store.js").init(server, storage, helper, doc);
-require("./lib/pubsub.js").init(server, pubsub, helper, doc);
-require("./lib/static.js").init(server, staticConfig, helper, doc);
-require("./lib/template.js").init(server, templateConfig, renderer, helper, doc);
-require("./lib/task.js").init(server, storage, taskConfig, task, helper, doc);
-require("./lib/statistics.js").init(server, storage, staticConfig, pubsub, helper, doc);
-require("./lib/account.js").init(server, account, helper, doc);
-require("./lib/push.js").init(server, nconf, pushConfig, push, helper, doc);
-require("./lib/location.js").init(server, location, helper, doc);
-require("./lib/eventsource.js").init(server, es, helper, doc);
+require('./lib/manage.js').init(nconf, api, app, server, storage, helper, doc);
+require('./lib/store.js').init(server, storage, helper, doc);
+require('./lib/pubsub.js').init(server, pubsub, helper, doc);
+require('./lib/static.js').init(server, staticConfig, helper, doc);
+require('./lib/template.js').init(server, templateConfig, renderer, helper, doc);
+require('./lib/task.js').init(server, storage, taskConfig, task, helper, doc);
+require('./lib/statistics.js').init(server, storage, staticConfig, pubsub, helper, doc);
+require('./lib/account.js').init(server, account, helper, doc);
+require('./lib/push.js').init(server, nconf, pushConfig, push, helper, doc);
+require('./lib/location.js').init(server, location, helper, doc);
+require('./lib/eventsource.js').init(server, es, helper, doc);
 
 //plugins
 var plugins = require('./package.json').optionalDependencies;
@@ -214,7 +211,7 @@ var pluginContext = {
 	Renderer: renderer
 };
 for(var pluginName in plugins){
-	console.log("Loading plugin: " + pluginName);
+	console.log('Loading plugin: ' + pluginName);
 	require(pluginName).init(pluginContext);
 }
 

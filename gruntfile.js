@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -14,7 +16,9 @@ module.exports = function(grunt) {
         'test/pubsub.module.spec.js',
         'test/task.module.spec.js',
         'test/store.spec.js',
-        'test/identity.spec.js'
+        'test/identity.spec.js',
+        'server.js',
+        'index.js'
       ],
       options: {
         jshintrc: '.jshintrc',

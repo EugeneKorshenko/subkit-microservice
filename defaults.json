@@ -78,7 +78,5 @@
     "accessKeyId": "",
     "secretAccessKey": "",
     "region": ""
-  },
-  "schedulerConfig": {},
-  "locationConfig": {}
+  }
 }

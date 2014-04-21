@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert'),
     sut;
 
@@ -17,21 +19,21 @@ describe('Module: PubSub', function(){
       assert.equal(data.length, 2);
       assert.equal(data[0].data.test, 'bla1');
     });
-    sut.send('otheruser', { test: 'bla1' }, function(error, data){});
-    sut.send('demouser', { test: 'bla1' }, function(error, data){});
-    sut.send('demouser', { test: 'bla2' }, function(error, data){});
-    sut.send('anotheruser', { test: 'bla1' }, function(error, data){});
+    sut.send('otheruser', { test: 'bla1' });
+    sut.send('demouser', { test: 'bla1' });
+    sut.send('demouser', { test: 'bla2' });
+    sut.send('anotheruser', { test: 'bla1' });
     done();
   }),
   it.skip('should receive messages from a user by single channel', function(done){
     sut.subscribe('demo2','demouser', {polling: false}, function(error, data){
       assert.equal(error, null);
       assert.notEqual(data, null);
-      sut.send('otheruser', { test: 'bla1' }, function(error, data){});
-      sut.send('demouser', { test: 'bla1' }, function(error, data){});
-      sut.send('demouser', { test: 'bla2' }, function(error, data){});
-      sut.send('anotheruser', { test: 'bla1' }, function(error, data){});
-      sut.publish('demo2', { test: 'bla3' }, function(error, data){});
+      sut.send('otheruser', { test: 'bla1' });
+      sut.send('demouser', { test: 'bla1' });
+      sut.send('demouser', { test: 'bla2' });
+      sut.send('anotheruser', { test: 'bla1' });
+      sut.publish('demo2', { test: 'bla3' });
     });
 
     sut.receive('demo2','demouser', function(error, data){
@@ -46,21 +48,21 @@ describe('Module: PubSub', function(){
     sut.subscribe('demo1','myuser', {polling: false}, function(error, data){
       assert.equal(error, null);
       assert.notEqual(data, null);
-      sut.send('otheruser', { test: 'otheruser bla1' }, function(error, data){});
-      sut.send('myuser', { test: 'first myuser bla1' }, function(error, data){});
-      sut.send('myuser', { test: 'first myuser bla2' }, function(error, data){});
-      sut.send('anotheruser', { test: 'anotheruser bla1' }, function(error, data){});
-      sut.publish('demo1', { test: 'demo1 bla3' }, function(error, data){});
+      sut.send('otheruser', { test: 'otheruser bla1' });
+      sut.send('myuser', { test: 'first myuser bla1' });
+      sut.send('myuser', { test: 'first myuser bla2' });
+      sut.send('anotheruser', { test: 'anotheruser bla1' });
+      sut.publish('demo1', { test: 'demo1 bla3' });
     });
 
     sut.subscribe('demo2','myuser', {polling: false}, function(error, data){
       assert.equal(error, null);
       assert.notEqual(data, null);
-      sut.send('otheruser', { test: 'otheruser bla1' }, function(error, data){});
-      sut.send('myuser', { test: 'second myuser bla1' }, function(error, data){});
-      sut.send('myuser', { test: 'second myuser bla2' }, function(error, data){});
-      sut.send('anotheruser', { test: 'anotheruser bla1' }, function(error, data){});
-      sut.publish('demo2', { test: 'demo2 bla3' }, function(error, data){});
+      sut.send('otheruser', { test: 'otheruser bla1' });
+      sut.send('myuser', { test: 'second myuser bla1' });
+      sut.send('myuser', { test: 'second myuser bla2' });
+      sut.send('anotheruser', { test: 'anotheruser bla1' });
+      sut.publish('demo2', { test: 'demo2 bla3' });
     });
 
     sut.receiveAll('myuser', function(error, data){

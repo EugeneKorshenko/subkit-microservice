@@ -34,7 +34,7 @@
     }
   },
   "storageConfig": {
-    "dbPath": "./testdb",
+    "dbPath": "./masterdb",
     "rightsPath": "./rights.json",
     "filesPath": "./files/jobs",
     "backupPath": "./backups"

@@ -27,23 +27,23 @@ quickstart
 ```
 4. Loading data  
 	* all data in store  
-```
-quickstart
-	.get()
-	.error(function(error){
-	})
-	.done(function(data){
-	});
-```
+	```
+	quickstart
+		.get()
+		.error(function(error){
+		})
+		.done(function(data){
+		});
+	```
 	* data by item key  
-```
-quickstart
-	.get('itemKey')
-	.error(function(error){
-	})
-	.done(function(data){
-	});
-```
+	```
+	quickstart
+		.get('itemKey')
+		.error(function(error){
+		})
+		.done(function(data){
+		});
+	```
 
 
 #AngularJS

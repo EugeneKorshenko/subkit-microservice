@@ -24,7 +24,7 @@ quickstart
 	});
 `
 4. Loading data  
-** all data in store  
+	* all data in store  
 `
 quickstart
 	.get()
@@ -33,7 +33,7 @@ quickstart
 	.done(function(data){
 	});
 `
-** data by item key  
+	* data by item key  
 `
 quickstart
 	.get('itemKey')

@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         'lib/rights.module.js',
         'lib/file.module.js',
         
-
+        'lib/manage.js',
         'lib/store.js',
         'lib/pubsub.js',
 
@@ -52,7 +52,7 @@ module.exports = function(grunt) {
           reporter: 'spec',
           timeout: 10000
         },
-        src: ['test/*.module.spec.js', 'test/store.spec.js', 'test/identity.spec.js']
+        src: ['test/*.module.spec.js', 'test/manage.spec.js', 'test/store.spec.js', 'test/identity.spec.js']
       }
     },
     less: {

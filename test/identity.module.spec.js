@@ -6,7 +6,7 @@ var assert = require('assert'),
 describe('Module: Identity', function(){
   before(function(done) {
     sut = require('../lib/identity.module.js').init();
-    setTimeout(done, 1000);
+    done();
   });
   after(function(done){
     done();

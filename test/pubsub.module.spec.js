@@ -6,7 +6,7 @@ describe('Module: PubSub', function(){
 
   before(function(done) {
     sut = require('../lib/pubsub.module.js').init({ pollInterval: 1});
-    setTimeout(done, 1000);
+    done();
   });
   after(function(done){
     done();

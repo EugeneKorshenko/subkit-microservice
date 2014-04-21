@@ -15,13 +15,11 @@ describe('Module: Tasks', function(){
     var pubsub = require('../lib/pubsub.module.js').init({pollInterval: 1});
     var eventsource = require('../lib/eventsource.module.js').init(store, pubsub);
     sut = require('../lib/task.module.js').init({}, store, pubsub, null, eventsource, null);
-    setTimeout(done, 1800);
+    done();
   });
   after(function(done){
-    setTimeout(function(){
-        store.destroy(console.log);
-        done();
-    }, 1800);
+    store.destroy(console.log);
+    done();
   });
 
   describe('on ...', function(){

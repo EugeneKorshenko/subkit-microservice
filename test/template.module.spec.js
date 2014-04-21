@@ -6,7 +6,7 @@ var assert = require('assert'),
 describe('Module: Template', function(){
   before(function(done) {
     sut = require('../lib/template.module.js').init({});
-    setTimeout(done, 1000);
+    done();
   });
   after(function(done){
     done();

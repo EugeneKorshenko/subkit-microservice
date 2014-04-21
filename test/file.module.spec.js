@@ -9,7 +9,7 @@ describe('Module: File', function(){
     sut = require('../lib/file.module.js').init({ 
       rightsPath: path.join(__dirname, '../rights.json') 
     });
-    setTimeout(done, 1000);
+    done();
   });
   after(function(done){
     done();

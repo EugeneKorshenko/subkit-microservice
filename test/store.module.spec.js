@@ -39,13 +39,11 @@ describe('Module: JSON Key/Value Storage', function(){
     sut.create('deleteDemo', '3', {test: 'delete demo 3 test'});
     sut.create('deleteDemo', '4', {test: 'delete demo 4 test'});
 
-    setTimeout(done, 1800);
+    done();
   });
   after(function(done){
-    setTimeout(function(){
-      sut.destroy(console.log);
-      done();
-    }, 1800);
+    sut.destroy(console.log);
+    done();
   });
   
   describe('query', function(){

@@ -1,11 +1,21 @@
 #Store Module API
 
-## _getRights_
+### _Configuration_
+```
+var path = require('path');
+var store = require('./lib/store.module.js').init({
+	dbPath: path.join(__dirname, "./testdb"),
+	rightsPath: path.join(__dirname, "./rights.json"),
+	filesPath: path.join(__dirname, "./files/jobs"),
+	backupPath: path.join(__dirname, "./backups")
+});
+```
+### _getRights_
 Returns current rights settings.  
 ```
 store.getRights();
 ```
-## _setPublic_
+### _setPublic_
 Sets a store to public. 
 ```
 store.setPublic(<storeName>, <callback>);

@@ -112,3 +112,9 @@ GUIDES
 * Transactions & Idempotency
 * Caching
 * Develop Tasks - The custom JavaScript execution API
+
+DEVELOPMENT
+---
+* [JSON Key/Value Store Module](docs/modules/store_api.md)
+* [PubSub Module](docs/modules/pubsub_api.md)
+* [Manage Module](docs/modules/manage_api.md)

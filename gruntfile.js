@@ -47,7 +47,7 @@ module.exports = function(grunt) {
           reporter: 'spec',
           timeout: 10000
         },
-        src: ['test/*.spec.js']
+        src: ['test/*.module.spec.js', 'test/store.spec.js', 'test/identity.spec.js']
       }
     },
     less: {

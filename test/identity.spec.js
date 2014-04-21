@@ -10,12 +10,20 @@ var client = restify.createJsonClient({
 });
 
 describe('Integration: Identity', function(){
+  var server,
+      context;
   before(function(done) {
-    require('../server');
-    done();
+    setTimeout(function(){
+      server = require('../server.js');
+      context = server.init().getContext();
+      done();
+    }, 1800);
   });
   after(function(done){
-    done();
+    context.Server.close();
+    context.Storage.close();
+    delete require.cache[server];
+    setTimeout(done, 4000);
   });
   
   describe('on ...', function(){

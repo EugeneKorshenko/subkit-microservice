@@ -31,12 +31,12 @@
     "grunt-contrib-less": "*",
     "grunt-contrib-watch": "*"
   },
-  "main": "src/server.js",
+  "main": "index.js",
   "engines": {
     "node": ">0.10.0"
   },
   "scripts": {
-    "start": "node server",
+    "start": "node index",
     "test": "grunt test"
   },
   "author": "Mike Bild",

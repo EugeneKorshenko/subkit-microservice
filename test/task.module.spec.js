@@ -6,7 +6,7 @@ var assert = require('assert'),
 
 describe('Module: Tasks', function(){
   before(function(done) {
-    store = require('../lib/store-module.js').init({
+    store = require('../lib/store.module.js').init({
       dbPath:'./taskspecdb',
       rightsPath:'./rights.json',
       tasksPath:'./tasks',

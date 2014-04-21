@@ -60,7 +60,7 @@ if(!fs.existsSync(storageConfig.rightsPath))
 	fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');
 
 var	pubsub = require('./lib/pubsub-module.js').init({pollInterval: 1});
-var storage = require('./lib/store-module.js').init(storageConfig);
+var storage = require('./lib/store.module.js').init(storageConfig);
 var identity = require('./lib/identity-module.js');
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);
 var renderer = require('./lib/template-module.js').init({templatesPath: templateConfig.filesPath});

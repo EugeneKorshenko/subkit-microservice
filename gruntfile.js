@@ -17,6 +17,8 @@ module.exports = function(grunt) {
         'test/task.module.spec.js',
         'test/store.spec.js',
         'test/identity.spec.js',
+        'lib/store.js',
+        'lib/store.module.js',
         'server.js',
         'index.js'
       ],

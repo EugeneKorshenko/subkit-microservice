@@ -5,7 +5,7 @@ var assert = require('assert'),
 
 describe('Module: JSON Key/Value Storage', function(){
   before(function(done) {
-    sut = require('../lib/store-module.js').init({
+    sut = require('../lib/store.module.js').init({
       dbPath:'./storespecdb',
       rightsPath:'./rights.json',
       tasksPath:'./tasks',

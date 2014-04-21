@@ -6,7 +6,6 @@ var path = require('path');
 var store = require('./lib/store.module.js').init({
 	dbPath: path.join(__dirname, "./mydb"),
 	rightsPath: path.join(__dirname, "./rights.json"),
-	filesPath: path.join(__dirname, "./files/jobs"),
 	backupPath: path.join(__dirname, "./backups")
 });
 ```

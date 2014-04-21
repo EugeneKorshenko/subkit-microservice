@@ -25,7 +25,7 @@ module.exports.init = function(){
 	var hooks = nconf.get('hooks');
 	storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
 	storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
-	storageConfig.filesPath = path.join(__dirname, storageConfig.filesPath);
+	storageConfig.backupPath = path.join(__dirname, storageConfig.backupPath);
 	storageConfig.hooks = hooks;
 
 	var staticConfig = nconf.get('staticConfig');

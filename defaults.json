@@ -36,7 +36,6 @@
   "storageConfig": {
     "dbPath": "./masterdb",
     "rightsPath": "./rights.json",
-    "filesPath": "./files/jobs",
     "backupPath": "./backups"
   },
   "staticConfig": {

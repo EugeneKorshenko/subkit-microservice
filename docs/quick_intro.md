@@ -3,18 +3,18 @@ Quick Intro
 Subkits goal is simplicity to build web and mobile apps. But how easy it is?  
 
 #JavaScript
-1. Include our JavaScript library in the `<head>`
+1. Include our JavaScript library in the `<head>`  
 `<script type='text/javascript' src='https://try.subkit.io/sdk/subkit.js'></script>`
-2. Create a Subkit instance
+2. Create a Subkit instance  
 ```
 var subkit = new Subkit({
 	baseUrl: 'https://try.subkit.io',
 	apiKey: '4220c6c2-5125-45ac-9b1a-37ae127c4545'
 });
 ```
-3. Create a Subkit store instance
+3. Create a Subkit store instance  
 `var quickstart = new subkit.store('quickstart');`
-4. Storing data
+4. Storing data  
 ```
 quickstart
 	.set('itemKey', {
@@ -25,8 +25,8 @@ quickstart
 	.done(function(data){
 	});
 ```
-5. Loading data
-	4.1. all data in store
+5. Loading data  
+	* all data in store  
 	```
 	quickstart
 		.get()
@@ -35,7 +35,7 @@ quickstart
 		.done(function(data){
 		});
 	```
-	4.2. data by item key
+	* data by item key  
 	```
 	quickstart
 		.get('itemKey')

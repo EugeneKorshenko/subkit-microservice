@@ -176,23 +176,26 @@ var Subkit = function(config){
 		      xhr.setRequestHeader(header, headers[header]);
 		    }
 		  }
-
+		  xhr.onerror = function(){
+			callback(xhr.status, {
+				text: function () {
+				  return xhr.statusText;
+				}
+			});
+		  };
 		  xhr.onreadystatechange = function () {
-		    if(xhr.readyState === 4) {
+		    if(xhr.readyState === 4 && xhr.status !== 0) {
+		      if(!callback) return;
 		      var data = xhr.responseText || '';
-		      if(!callback) {
-		        return;
-		      }
 		      callback(xhr.status, {
 		        text: function () {
 		          return data;
 		        },
-
 		        json: function () {
 		          return JSON.parse(data);
 		        }
 		      });
-		    }
+		    };
 		  };
 
 		  xhr.send(payload);
@@ -302,41 +305,76 @@ var Subkit = function(config){
 			});
 		}
 	};
-	self.stores = {
-		set: function(key, value, callback){
-			key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-			var url = self.baseUrl + "/stores/" + key;
+	self.store = function(store){
+		var _prepareUrl = function(key){
+			if(store && !key) return self.baseUrl + '/stores/' + store;
+			if(store && key) return self.baseUrl + '/stores/' + store + '/' + key;
+			if(!store && key && key.indexOf('!') !== -1) {
+				key = key.replace(/^[a-zA-z0-9]\/\//, '!');
+				return self.baseUrl + '/stores/' + key;
+			}
+			return self.baseUrl + '/stores';
+		};
+		var Continuation = function(){
+			var self = this;
+			self.doneResult = function(){};
+			self.errorResult = function(){};
+			self.done = function(callback){
+				self.doneResult = callback;
+				return self;
+			};
+			self.error = function(callback){
+				self.errorResult = callback;
+				return self;
+			};
+		};
+		this.set = function(key, value, callback){
+			var url = _prepareUrl(key);
+			var continueWith = new Continuation();
 			var msg = JSON.parse(JSON.stringify(self.options));
-			msg["data"] = value;
+			msg['data'] = value;
+			
 			httpRequest.post(url, msg, function(status, result){
 				if(status!==200 && status!==201) {
-					if(callback) _changeStatus(result);
+					continueWith.errorResult(result.text());
+					_changeStatus(result.text());
+					if(callback) callback(result.text());
 				}else{
+					continueWith.doneResult(result.json());
 					if(callback) callback(null, result.json());
 				}
 			});
-		},
-		get: function(key, callback){
-			key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-			var url = self.baseUrl + "/stores/" + key;
-			httpRequest.get(url, self.options, function(status, result){
-				if(!callback) return;
-				if(status === 0) return callback({message: "Lost network connection."});
-				if(status !== 200) return callback(result.json());
-				callback(null, result.json());
-			});
-		},
-		remove: function(key, callback){
-			key = key.replace(/^[a-zA-z0-9]\/\//, "!");
-			var url = self.baseUrl + "/stores/" + key;
-			httpRequest.del(url, self.options, function(status, result){
-				if(status!==200 && status !== 202) {
-					if(callback) callback(result);
+			return continueWith;
+		};
+		this.get = function(key, callback){
+			var continueWith = new Continuation();
+			httpRequest.get(_prepareUrl(key), self.options, function(status, result){
+				if(status===0 && status!==200) {
+					continueWith.errorResult(result.text());
+					_changeStatus(result.text());
+					if(callback) callback(result.text());
 				}else{
+					continueWith.doneResult(result.json());
 					if(callback) callback(null, result.json());
 				}
 			});
+			return continueWith;
+		};
+		this.remove = function(key, callback){
+			var continueWith = new Continuation();
+			httpRequest.del(_prepareUrl(key), self.options, function(status, result){
+				if(status!==200 && status!==202) {
+					continueWith.errorResult(result.text());
+					_changeStatus(result.text());
+					if(callback) callback(result.text());
+				}else{
+					continueWith.doneResult(result.json());
+					if(callback) callback(null, result.json());
+				}
+			});
+			return continueWith;
 		}
+		return this;
 	};
 	self.file = {
 		upload: function(file, type, callback){

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Subkit JavaScript Quick Start</title>
+		<script type='text/javascript' src='http://localhost:8080/sdk/subkit.js'></script>
+	</head>
+	<body>
+		<input type="text"/><button>Save</button>
+		<h1>Items</h1>
+		<ul id="items">
+		</ul>
+		<h1>History</h1>
+		<ul id="history">
+		</ul>
+		<script>
+			var saveBtn = document.getElementsByTagName('button')[0];
+			var valueTxt = document.getElementsByTagName('input')[0];
+			var outputList = document.getElementById('items');
+			var historyList = document.getElementById('history');
+			var appendToList = function(list, text){
+				var newLI = document.createElement('li');
+				newLI.innerHTML = text;
+				list.appendChild(newLI);
+			};
+			var clearList = function(list){
+				while(list.firstChild) list.removeChild(list.firstChild);
+			};
+			var reloadQuickStart = function(){
+				quickstart
+					.get()
+					.done(function(data){
+						clearList(outputList);
+						data.forEach(function(itm){
+							appendToList(outputList, itm.value.title);
+						});
+					});
+			};
+
+			var subkit = new Subkit({
+				baseUrl: 'http://localhost:8080',
+				apiKey: '6654edc5-82a3-4006-967f-97d5817d7fe2'
+			});
+			
+			var quickstart = new subkit.store('quickstart');
+
+			saveBtn.addEventListener('click', function(){
+				quickstart
+					.set(subkit.UUID(), {
+						title: valueTxt.value
+					})
+					.error(function(error){
+						appendToList(historyList, "Error: " + error);
+					})
+					.done(function(data){
+						appendToList(historyList, "New item added: " + valueTxt.value);
+						reloadQuickStart();
+					});
+			});
+
+			reloadQuickStart();
+
+		</script>
+	</body>
+</html>

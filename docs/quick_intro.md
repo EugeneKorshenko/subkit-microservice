@@ -25,7 +25,7 @@ quickstart
 	.done(function(data){
 	});
 ```
-4. Loading data  
+5. Loading data  
 	4.1. all data in store  
 	```
 	quickstart

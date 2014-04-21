@@ -17,6 +17,8 @@ module.exports = function(grunt) {
         'test/task.module.spec.js',
         'test/template.module.spec.js',
         'test/eventsource.module.spec.js',
+        'test/rights.module.spec.js',
+        'test/file.module.spec.js',
 
         'test/store.spec.js',
         'test/identity.spec.js',
@@ -29,6 +31,9 @@ module.exports = function(grunt) {
         'lib/eventsource.module.js',
         'lib/template.module.js',
         'lib/task.module.js',
+        'lib/rights.module.js',
+        'lib/file.module.js',
+        
 
         'lib/store.js',
         'lib/pubsub.js',

@@ -29,7 +29,7 @@ quickstart
 	.done(function(data){
 	});
 ```
-5) Loading data  
+5) Loading    
 * all data in store  
 ```
 quickstart

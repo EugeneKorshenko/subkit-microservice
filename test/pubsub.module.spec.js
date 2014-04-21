@@ -5,7 +5,7 @@ var assert = require('assert'),
 
 describe('Module: PubSub', function(){
   before(function(done) {
-    sut = require('../lib/pubsub-module.js').init({ pollInterval: 1});
+    sut = require('../lib/pubsub.module.js').init({ pollInterval: 1});
     setTimeout(done, 1000);
   });
   after(function(done){

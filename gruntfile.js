@@ -19,6 +19,8 @@ module.exports = function(grunt) {
         'test/identity.spec.js',
         'lib/store.js',
         'lib/store.module.js',
+        'lib/pubsub.js',
+        'lib/pubsub.module.js',
         'server.js',
         'index.js'
       ],

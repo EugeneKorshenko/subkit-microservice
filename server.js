@@ -59,7 +59,7 @@ pushConfig.MPNS_Pfx = (pushConfig.MPNS_Pfx && fs.existsSync(path.join(__dirname,
 if(!fs.existsSync(storageConfig.rightsPath))
 	fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');
 
-var	pubsub = require('./lib/pubsub-module.js').init({pollInterval: 1});
+var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1});
 var storage = require('./lib/store.module.js').init(storageConfig);
 var identity = require('./lib/identity-module.js');
 var es = require('./lib/eventsource-module.js').init(storage, pubsub);

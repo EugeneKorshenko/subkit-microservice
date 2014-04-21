@@ -11,7 +11,7 @@ INSTALL
 
 BASICS
 ---
-
+* [Quick Intro](docs/quick_intro.md)
 * [RESTful JSON API](docs/restful_api.md)
 * [Configuration Options](docs/service_config.md)
 * [Custom Plugin Development](docs/plugin_dev.md)
@@ -100,6 +100,10 @@ X			  | PhoneGap/Cordova|
 -			  | Erlang/Elixir   |
 -			  | PowerShell      |
 X			  | AngularJS       | included
+
+ROADMAP
+---
+* [Roadmap](docs/roadmap.md)
 
 GUIDES
 ---

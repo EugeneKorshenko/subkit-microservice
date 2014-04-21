@@ -1,9 +1,9 @@
 'use strict';
-
-var assert = require('assert'),
-    sut;
+var assert = require('assert');
 
 describe('Module: PubSub', function(){
+  var sut;
+
   before(function(done) {
     sut = require('../lib/pubsub.module.js').init({ pollInterval: 1});
     setTimeout(done, 1000);

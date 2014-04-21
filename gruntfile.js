@@ -15,12 +15,24 @@ module.exports = function(grunt) {
         'test/identity.module.spec.js',
         'test/pubsub.module.spec.js',
         'test/task.module.spec.js',
+        'test/template.module.spec.js',
+        'test/eventsource.module.spec.js',
+
         'test/store.spec.js',
         'test/identity.spec.js',
-        'lib/store.js',
+        
+        'lib/helper.js',
+        'lib/doc.module.js',
         'lib/store.module.js',
-        'lib/pubsub.js',
         'lib/pubsub.module.js',
+        'lib/identity.module.js',
+        'lib/eventsource.module.js',
+        'lib/template.module.js',
+        'lib/task.module.js',
+
+        'lib/store.js',
+        'lib/pubsub.js',
+
         'server.js',
         'index.js'
       ],

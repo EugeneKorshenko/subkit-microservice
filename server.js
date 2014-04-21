@@ -59,16 +59,22 @@ pushConfig.MPNS_Pfx = (pushConfig.MPNS_Pfx && fs.existsSync(path.join(__dirname,
 if(!fs.existsSync(storageConfig.rightsPath))
 	fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');
 
+var utils = require('./lib/helper.js');
+var doc = require('./lib/doc.module.js');
 var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1});
 var storage = require('./lib/store.module.js').init(storageConfig);
-var identity = require('./lib/identity-module.js');
-var es = require('./lib/eventsource-module.js').init(storage, pubsub);
-var renderer = require('./lib/template-module.js').init({templatesPath: templateConfig.filesPath});
+var identity = require('./lib/identity.module.js');
+var es = require('./lib/eventsource.module.js').init(storage, pubsub);
+var template = require('./lib/template.module.js');
+var task = require('./lib/task.module.js').init(taskConfig, storage, pubsub, push, es);
+
+var renderer = template.init({templatesPath: templateConfig.filesPath});
+
+
 var pushIdentity = identity.init('push', storage);
 var push = require('./lib/push-module.js').init(pushConfig, storage, pushIdentity);
 var accountIdentity = identity.init('account', storage);
 var account = require('./lib/account-module.js').init(accountIdentity);
-var task = require('./lib/task-module.js').init(taskConfig, storage, pubsub, push, es);
 var location = require('./lib/location-module.js').init(storage);
 
 var options = { name: 'subkit microservice' };
@@ -119,22 +125,22 @@ server.opts(/\.*/, function (req, res, next) {
 });
 
 //handle errors
-server.on('uncaughtException', function (req, res, route, err) {
-	console.log('A uncought exception was thrown: ' + route + ' -> ' + err.message);
-	res.send(500, err.message);
-});
-process.on('uncaughtException', function(err){
-	console.log('A uncought exception was thrown: ' + err.message);
-});
+// server.on('uncaughtException', function (req, res, route, err) {
+// 	console.log('A uncought exception was thrown: ' + route + ' -> ' + err.message);
+// 	res.send(500, err.message);
+// });
+// process.on('uncaughtException', function(err){
+// 	console.log('A uncought exception was thrown: ' + err.message);
+// });
 
 //JSON doc
-var doc = require('./lib/doc-module.js').configure(server, {
+doc = doc.configure(server, {
 	discoveryUrl: '/docs',
 	version:      '1.2',
 	basePath:     api.url
 });
 //docu
-var rendererDevCenter = require('./lib/template-module.js').init({
+var rendererDevCenter = template.init({
 	templatesPath: path.join(__dirname, 'files/mobile')
 });
 server.get('/doc', function(req, res, next){
@@ -153,7 +159,7 @@ server.get('/doc', function(req, res, next){
 });
 
 //development center
-var rendererMobileCenter = require('./lib/template-module.js').init({
+var rendererMobileCenter = template.init({
 	templatesPath: path.join(__dirname, 'files/mobile')
 });
 server.get('/', function(req, res, next){
@@ -182,7 +188,7 @@ server.listen(app.port, function(){
 	http.globalAgent.maxSockets = 50000;
 });
 
-var helper = require('./lib/helper.js').init(admin, api, etag, lastModified, storage);
+var helper = utils.init(admin, api, etag, lastModified, storage);
 helper.setNewETag();
 
 require('./lib/manage.js').init(nconf, api, app, server, storage, helper, doc);

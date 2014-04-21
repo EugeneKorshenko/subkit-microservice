@@ -3,9 +3,9 @@
 var assert = require('assert'),
     sut;
 
-describe('Module: Identity', function(){
+describe('Module: Template', function(){
   before(function(done) {
-    sut = require('../lib/identity.module.js').init();
+    sut = require('../lib/template.module.js').init();
     setTimeout(done, 1000);
   });
   after(function(done){

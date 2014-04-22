@@ -37,7 +37,7 @@ To complete this step, create a reference to the root of your Subkit as shown be
 ```
 
 _Great job!_
-_subkit_ now references your Subkit data at https://try.subkit.io/. While _quickstrart_ now references your Subkit data store named "quickstart".
+_subkit_ now references your Subkit data at https://try.subkit.io/. While _quickstart_ is now referencing your Subkit's data store named "quickstart".
 A core concept of Subkit is that every piece of data has its very own URL. You can use this URL to access your data in several ways:
 * From any Subkit client library
 * From our [REST API](https://try.subkit.io/doc)

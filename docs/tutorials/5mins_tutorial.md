@@ -49,7 +49,7 @@ You can use the Subkit reference you have just created to write data to Subkit b
 To make things easy, we've already added input text boxes for the chatter's name and message as well as a keypress handler that will fire whenever someone tries to send a message.
 
 
-For this step, write a message to Subkit using the set() function as shown here:
+For this step, write a message to Subkit by using the set() function as shown here:
 ```
 quickstart
 	.set('ItemKey', {
@@ -110,7 +110,7 @@ Subkit can handle objects of arbitrary complexity. If it can be represented as J
 When objects are written to Subkit, the structure of the object is mapped to Subkit locations. In this example here, when the object {title: valueTxt.value, text: 'Subkit 5 mins tutorial.'} is set, locations for name and text are automatically created as children of the location referenced by _quickstart_.
 
 ### 5. Reading Data
-Now we are trying to get data from Subkit and display the messages on a page. 
+Let's try to get some data from Subkit and display messages on a page, shall we? 
 
 The specific Subkit response for the 'quickstart' store is an array of items. So first you need to extract the data from the response by calling the value property and assign its payload to a variable in our code. Then, call the reloadQuickStart() function to display the message as shown below:
 
@@ -197,34 +197,37 @@ quickstart
 Well Done!
 
 ### 6. Change Notifications
-Now let's receive messages.  
-We need to tell Subkit to notify us when messages arrive. We do this by adding a callback to the list of messages using the on() method, as shown below:
+Now, let's receive messages.  
+We need to tell Subkit to notify us when messages arrive. We do this by adding a callback to the list of messages by using the on() method, as shown below:
 ```
 quickstart.on('item_added', function(snapshot) {
-  //We'll fill this in later.
+  //We'll complete this later.
 });
 ```
-This method takes two arguments: the event type and the callback function. We'll use the 'item_added' event so that we are notified of the arrival of individual messages.
+This method takes two arguments: the event type and the callback function. We'll use the 'item_added' event so that we are getting notified the moment individual messages arrive.
 
-Now you're handling real-time updates!  
-With Subkit, you always read data using callbacks. This allows us to guarantee that Subkit applications always update in real-time.
-Note that when your app starts, Subkit will call your callback for all existing messages and then continue to call it for any new messages that arrive. There's intentionally no distinction between "initial" data and "new" data. This allows you to write your message handling logic once rather than having to handle these two cases separately.
-Tip: In addition to 'item_added' events, Subkit has 4 other event types.  
+Now you're handling real-time updates! Great stuff, eh?
+
+With Subkit, you always read data by using callbacks. This allows us to guarantee that Subkit applications can always update in real-time.
+Note that when your app starts, Subkit will call your callback for all existing messages and then continues to call it for any new message that arrives. There's intentionally no distinction between "initial" data and "new" data. This allows you to write your message handling logic only once instead of having to handle these two cases separately.
+
+Hint: In addition to 'item_added' events, Subkit offers 4 other event types:  
 
 1. Value ('item_value')
 2. Item Added ('item_added')
 3. Item Changed ('item_changed')
 4. Item Removed ('item_removed')
 
-Now we need to display the messages on the page in real-time.  
-For each message, Subkit will call your callback with containing the message's data.
-Extract the message data from the by calling the value property and assign it to a variable. Then, call the displayMessage() function to display the message as shown:
+Now we need to display the messages on the page in real-time. 
+
+For each message, Subkit will call your callback and forwards the message's actual data.
+To do this, you need to extract the message data from the response by calling the value property and assign it to a variable as learned earlier. Then simply call the displayMessage() function to display the message as shown here:
 
 ```
 ```
 
 _Congratulations!_  
-You've completed the guided portion of this tutorial.  
+You've completed the guided portion of this tutorial!  
 On the next page you'll be able to run your working app right here in your browser. You'll also be able to edit your application and (if you like) share it with others.
 
 

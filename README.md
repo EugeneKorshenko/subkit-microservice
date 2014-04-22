@@ -49,7 +49,7 @@ X		 	  | WebHooks      | User-defined HTTP callbacks
 X		 	  | JSON Storage  | A JSON key/value store
 X		 	  | PubSub		  | Real-Time topic based and storage changes Pub/Sub
 X		 	  | Tasks 		  | RESTful/Scheduler/Event-Driven server side JavaScript execution engine
-X		 	  | Identity  	  | Manage N:M relations like groups to identities and visa vis
+X		 	  | Identity  	  | Manage N:M relations like groups to identities and vice versa
 X			  | Statistics    | Usage statistics and monitoring
 -		 	  | Hooks         | Request/Response custom code hooks
 -		 	  | WebSockets    | Web-Socket support for real-time notifications
@@ -67,10 +67,10 @@ STATUS		  | Name 	 		  | Comments
 ------------- | ----------------- | ---------------
 X		 	  | Files			  | Binary Up/Download
 X			  | Analytics   	  | Event-Source data analytics engine
-X		 	  | Templates		  | JSHTML based template engine (more comming soon)
+X		 	  | Templates		  | JSHTML based template engine (more - soon)
 X			  | EMail 			  | Organize EMail subscriptions and send EMails 
-X			  | Mobile Push 	  | Mobile push notification to iOS, Android, WP8
-X			  | Location    	  | Organize and query Geolocations
+X			  | Mobile Push 	  | Mobile push notifications to iOS, Android, WP8
+X			  | Location    	  | Organize and query geolocations
 X			  | Proxy	    	  | A HTTP(S) request proxy
 X			  | Environment	   	  | Host environment statistics and moinoring like CPU and Memory usage
 -			  | MDM       		  | [Mobile Device Management Plugin](https://www.npmjs.org/package/subkit-mdm-plugin)

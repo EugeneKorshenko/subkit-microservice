@@ -17,10 +17,10 @@ API Return Codes
 ---
 Success
 --
-* 200	Ok - The request was successful.
-* 201	Created - The request was successful and resulted in a new resource that has been created instantly.
-* 202	Accepted - The request has been accepted for further processing, but the processing itself has not been completed yet.
-* 204	No Content - The server has performed the request successfully but does not need to return an entity-body.
+* 200	Ok - Request was successful.
+* 201	Created - Request was successful and resulted in a new resource that has been created instantly.
+* 202	Accepted - Request has been accepted for further processing, but the processing itself has not been completed yet.
+* 204	No Content - Server performed the request successfully, but does return an entity-body.
 
 Failure
 --

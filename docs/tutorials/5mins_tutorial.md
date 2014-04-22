@@ -15,7 +15,7 @@ This 5 minute tutorial will teach you the basics of Subkit.
 ```
 
 ### 2. Accessing Data
-You'll need a reference to access data inside your Subkit backend instance. Subkit references are created using a URL that specifies which data you want to access. We've already created a Subkit specifically for you at this URL:
+You'll need a reference to access all the data that is hosted at your Subkit backend instance. Basically, Subkit references are created by using a URL that specifies which data you want to access actually. We've already created a Subkit showcase just for you at this URL:
 https://try.subkit.io
 To complete this step, create a reference to the root of your Subkit as shown below:
 

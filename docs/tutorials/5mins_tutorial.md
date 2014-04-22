@@ -37,14 +37,14 @@ To complete this step, create a reference to the root of your Subkit as shown be
 ```
 
 _Great job!_
-_subkit_ now references your Subkit data at https://try.subkit.io/. _quickstrart_ now references your Subkit data store "quickstart".
-A core concept of Subkit is that every piece of data has its own URL. You can use this URL to access your data in several ways:
+_subkit_ now references your Subkit data at https://try.subkit.io/. While _quickstrart_ now references your Subkit data store named "quickstart".
+A core concept of Subkit is that every piece of data has its very own URL. You can use this URL to access your data in several ways:
 * From any Subkit client library
 * From our [REST API](https://try.subkit.io/doc)
-* By entering it in any browser (Try clicking the [link](https://try.subkit.io/store/quickstart) above).
+* By entering the URL directly into any browser's addressbar (Try it and click the [link](https://try.subkit.io/store/quickstart) above).
 
 ### 3. Writing Data
-Let's send a message  
+Let's send a message now 
 You can use the Subkit reference you just created to write data to Subkit using the set() function.
 To make things easy, we've already added input text boxes for the chatter's name and message as well as a keypress handler that will fire whenever someone tries to send a message.
 

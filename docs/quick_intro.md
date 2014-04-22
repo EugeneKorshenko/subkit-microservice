@@ -1,6 +1,6 @@
 Quick Intro
 ----
-Subkit's goal is to bring simplicity into building web and mobile apps. But how easy is it really?  
+Subkit's goal is to bring simplicity into building web and mobile apps. But how easy is it actually?
 
 #JavaScript
 1) Include our JavaScript library in the `<head>`  

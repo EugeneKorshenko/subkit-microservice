@@ -44,7 +44,7 @@ A core concept of Subkit is that every piece of data has its very own URL. You c
 * By typing the URL directly into any browser's addressbar (Try it and click the [link](https://try.subkit.io/store/quickstart) above).
 
 ### 3. Writing Data
-Let's send a message now 
+Let's send a message now. 
 You can use the Subkit reference you have just created to write data to Subkit by simply using the set() function.
 To make things easy, we've already added input text boxes for the chatter's name and message as well as a keypress handler that will fire whenever someone tries to send a message.
 

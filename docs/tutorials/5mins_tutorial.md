@@ -110,9 +110,12 @@ Subkit can handle objects of arbitrary complexity. If it can be represented as J
 When objects are written to Subkit, the structure of the object is mapped to Subkit locations. In this example, when the object {title: valueTxt.value, text: 'Subkit 5 mins tutorial.'} is set, locations for name and text are automatically created as children of the location referenced by _quickstart_.
 
 ### 5. Reading Data
-Now we get data from Subkit.  
+Now we get data from Subkit and display the messages on the page. 
 
-Subkit response from the 'quickstart' store is a array of items. Let's look how to get items from a store.
+Subkit response from the 'quickstart' store is a array of items. Extract the data from the by calling the value property and assign it to a variable. Then, call the reloadQuickStart() function to display the message as shown:
+
+Let's look how to get items from a store.
+
 ```
 quickstart
 	.get()
@@ -203,13 +206,25 @@ quickstart.on('item_added', function(snapshot) {
 ```
 This method takes two arguments: the event type and the callback function. We'll use the 'item_added' event so that we are notified of the arrival of individual messages.
 
-
-Now you're handling real-time updates!
+Now you're handling real-time updates!  
 With Subkit, you always read data using callbacks. This allows us to guarantee that Subkit applications always update in real-time.
-Note that when your app starts, Subkit will call your callback for all existing chat messages and then continue to call it for any new messages that arrive. There's intentionally no distinction between "initial" data and "new" data. This allows you to write your message handling logic once rather than having to handle these two cases separately.
+Note that when your app starts, Subkit will call your callback for all existing messages and then continue to call it for any new messages that arrive. There's intentionally no distinction between "initial" data and "new" data. This allows you to write your message handling logic once rather than having to handle these two cases separately.
 Tip: In addition to 'item_added' events, Subkit has 4 other event types.  
 
 1. Value ('item_value')
 2. Item Added ('item_added')
 3. Item Changed ('item_changed')
 4. Item Removed ('item_removed')
+
+Now we need to display the messages on the page in real-time.  
+For each message, Subkit will call your callback with containing the message's data.
+Extract the message data from the by calling the value property and assign it to a variable. Then, call the displayMessage() function to display the message as shown:
+
+```
+```
+
+_Congratulations!_  
+You've completed the guided portion of this tutorial.  
+On the next page you'll be able to run your working app right here in your browser. You'll also be able to edit your application and (if you like) share it with others.
+
+

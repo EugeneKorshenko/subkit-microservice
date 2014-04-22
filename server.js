@@ -120,7 +120,7 @@ module.exports.init = function(){
 	server.opts(/\.*/, function (req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');
 		res.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, HEAD, OPTION');
-		res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type, api_key, apikey, readkey, writekey, read_key, write_key, X-Requested-With');
+		res.header('Access-Control-Allow-Headers', 'authorization, content-type, x-requested-with, x-auth-token, api_key, apikey');
 		res.send(200);
 		return next();
 	});

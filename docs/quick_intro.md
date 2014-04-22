@@ -1,6 +1,6 @@
 Quick Intro
 ----
-Subkits goal is simplicity to build web and mobile apps. But how easy it is?  
+Subkit's goal is to bring simplicity into building web and mobile apps. But how easy is it actually?
 
 #JavaScript
 1) Include our JavaScript library in the `<head>`  
@@ -18,7 +18,7 @@ var subkit = new Subkit({
 ```
 var quickstart = new subkit.store('quickstart');
 ```
-4) Storing data  
+4) Store data  
 ```
 quickstart
 	.set('itemKey', {
@@ -29,7 +29,7 @@ quickstart
 	.done(function(data){
 	});
 ```
-5) Loading    
+5) Load
 * all data in store  
 ```
 quickstart

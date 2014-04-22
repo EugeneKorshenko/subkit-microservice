@@ -41,7 +41,7 @@ _subkit_ now references your Subkit data at https://try.subkit.io/. While _quick
 A core concept of Subkit is that every piece of data has its very own URL. You can use this URL to access your data in several ways:
 * From any Subkit client library
 * From our [REST API](https://try.subkit.io/doc)
-* By entering the URL directly into any browser's addressbar (Try it and click the [link](https://try.subkit.io/store/quickstart) above).
+* By typing the URL directly into any browser's addressbar (Try it and click the [link](https://try.subkit.io/store/quickstart) above).
 
 ### 3. Writing Data
 Let's send a message now 

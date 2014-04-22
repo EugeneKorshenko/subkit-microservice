@@ -2,16 +2,16 @@ Roadmap
 ----
 
 * Completed
-  * JavaScript and JSON in every component
-  * Ultra fast Key/Value Storage with JavaScript/JSON query engine
-  * Event-Driven: easily listen for changes in the data to trigger view updates
-  * RESTful API with interactive API DOC
-  * Secure sandboxed JavaScript custom code execution engine
-  * Flexible cron based JavaScript Task-scheduler
-  * Event-Sourcing for state change tracking and time based data correlation
+  * JavaScript and JSON for every component
+  * Ultra fast key/value storage queryable by a JavaScript/JSON engine
+  * Event-Driven: listen easily to changes inside stored data and trigger view updates
+  * RESTful API with intuitive and interactive API documentation
+  * Secure sandboxed JavaScript execution engine for custom code 
+  * Flexible cron based JavaScript task scheduler
+  * Eventsourcing for state change tracking and time based data correlation
   * Usage statistics and analysics
-  * Heardbeat monitoring
-  * All components are build in. Subkit is self contained with a minimal deploy effort.
+  * Heartbeat monitoring
+  * All components are built-in. Subkit is self contained with a minimal effort when it comes to deploy scenarios
   * Flexible, npm-based plugin system in case you need more capability
   * JavaScript SDK
 
@@ -22,10 +22,10 @@ Roadmap
   * .NET SDK
   * Windows Phone SDK
   * Android SDK
-  * Cloud Hosting for easy deployment
+  * Cloud hosting for easy deployment
 
 * Planned
- * Authenticate with other services (Twitter, GitHub, etc.)
- * Powerful, fine-grained right settings
+ * Authenticate with 3rd party services (Twitter, GitHub, etc.)
+ * Powerful, fine-grained rights managment
  * more plugins
  * more SDKs

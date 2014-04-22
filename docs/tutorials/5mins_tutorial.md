@@ -45,11 +45,11 @@ A core concept of Subkit is that every piece of data has its very own URL. You c
 
 ### 3. Writing Data
 Let's send a message now 
-You can use the Subkit reference you just created to write data to Subkit using the set() function.
+You can use the Subkit reference you have just created to write data to Subkit by simply using the set() function.
 To make things easy, we've already added input text boxes for the chatter's name and message as well as a keypress handler that will fire whenever someone tries to send a message.
 
 
-For this step, write a message to Subkit using the set() function as shown:
+For this step, write a message to Subkit using the set() function as shown here:
 ```
 quickstart
 	.set('ItemKey', {
@@ -104,15 +104,15 @@ quickstart
 ```
 _Nice Work!_
 Writing data into Subkit is as easy as calling set() on a Subkit Store reference.
-Subkit can support number, boolean, and string data types — the same as a normal JavaScript object.
+Subkit supports numbers, booleans and string data types — as well as simple JavaScript objects.
 
-Subkit can handle objects of arbitrary complexity. If it can be represented as JSON, it can fit in Subkit.
-When objects are written to Subkit, the structure of the object is mapped to Subkit locations. In this example, when the object {title: valueTxt.value, text: 'Subkit 5 mins tutorial.'} is set, locations for name and text are automatically created as children of the location referenced by _quickstart_.
+Subkit can handle objects of arbitrary complexity. If it can be represented as JSON, it can be stored in Subkit.
+When objects are written to Subkit, the structure of the object is mapped to Subkit locations. In this example here, when the object {title: valueTxt.value, text: 'Subkit 5 mins tutorial.'} is set, locations for name and text are automatically created as children of the location referenced by _quickstart_.
 
 ### 5. Reading Data
-Now we get data from Subkit and display the messages on the page. 
+Now we are trying to get data from Subkit and display the messages on a page. 
 
-Subkit response from the 'quickstart' store is a array of items. Extract the data from the by calling the value property and assign it to a variable. Then, call the reloadQuickStart() function to display the message as shown:
+The specific Subkit response for the 'quickstart' store is an array of items. So first you need to extract the data from the response by calling the value property and assign its payload to a variable in our code. Then, call the reloadQuickStart() function to display the message as shown below:
 
 Let's look how to get items from a store.
 

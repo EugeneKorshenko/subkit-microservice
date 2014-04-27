@@ -224,7 +224,8 @@ module.exports.init = function(){
 		PubSub: pubsub,
 		Identity: identity,
 		EventSource: es,
-		Template: template
+		Template: template,
+		Serve: restify.serveStatic
 	};
 	for(var pluginName in plugins){
 		console.log('Loading plugin: ' + pluginName);

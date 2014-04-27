@@ -16,7 +16,6 @@
     "procstreams": "*",
     "randomstring": "*",
     "restify": "*",
-    "stripe": "*",
     "swagger-doc": "*",
     "underscore": "*",
     "wrench": "*"

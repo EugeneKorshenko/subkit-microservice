@@ -68,10 +68,8 @@ module.exports.init = function(){
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var template = require('./lib/template.module.js');
 	var task = require('./lib/task.module.js').init(taskConfig, storage, pubsub, push, es);
-
+	
 	var renderer = template.init({templatesPath: templateConfig.filesPath});
-
-
 	var pushIdentity = identity.init('push', storage);
 	var push = require('./lib/push-module.js').init(pushConfig, storage, pushIdentity);
 	var accountIdentity = identity.init('account', storage);
@@ -219,14 +217,14 @@ module.exports.init = function(){
 	var plugins = require('./package.json').optionalDependencies;
 	var pluginContext = {
 		Server: server,
-		NConf: nconf,
+		Configuration: nconf,
 		Helper: helper,
 		Doc: doc,
 		Storage: storage,
 		PubSub: pubsub,
 		Identity: identity,
-		EventSource: es, 
-		Renderer: renderer
+		EventSource: es,
+		Template: template
 	};
 	for(var pluginName in plugins){
 		console.log('Loading plugin: ' + pluginName);

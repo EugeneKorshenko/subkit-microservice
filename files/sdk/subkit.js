@@ -206,49 +206,38 @@ var Subkit = function(config){
 		  httpRequest.headers({});
 		  ajax.headers['Authorization'] = 'Basic ' + base64(username + ':' + password);
 		},
-
 		connect: function (url, options, callback) {
 		  return ajax('CONNECT', url, options, callback);      
 		},
-
 		del: function (url, options, callback) {
 		  return ajax('DELETE', url, options, callback);      
 		},
-
 		get: function (url, options, callback) {
 		  return ajax('GET', url, options, callback);
 		},
-
 		head: function (url, options, callback) {
 		  return ajax('HEAD', url, options, callback);
 		},
-
 		headers: function (headers) {
 		  ajax.headers = headers || {};
 		},
-
 		isAllowed: function (url, verb, callback) {
 		  this.options(url, function (status, data) {
 		    callback(data.text().indexOf(verb) !== -1);
 		  });
 		},
-
 		options: function (url, options, callback) {
 		  return ajax('OPTIONS', url, options, callback);
 		},
-
 		patch: function (url, options, callback) {
 		  return ajax('PATCH', url, options, callback);      
 		},
-
 		post: function (url, options, callback) {
 		  return ajax('POST', url, options, callback);      
 		},
-
 		put: function (url, options, callback) {
 		  return ajax('PUT', url, options, callback);      
 		},
-
 		trace: function (url, options, callback) {
 		  return ajax('TRACE', url, options, callback);
 		}
@@ -263,7 +252,7 @@ var Subkit = function(config){
 		return clientId;
 	};
 	self.clientId = config.clientId || _init();
-	self.baseUrl = config.baseUrl || "http://try.subkit.io";
+	self.baseUrl = config.baseUrl || "http://localhost:8080";
     self.options = { 
     	apiKey: config.apiKey || "",
     	username: config.username || "",
@@ -625,6 +614,7 @@ var Subkit = function(config){
 			});
 		}
 	};
+	self.httpRequest = httpRequest;
 	
 	//private pubsub
 	var _get = function(path, callback){

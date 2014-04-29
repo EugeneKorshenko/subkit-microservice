@@ -92,13 +92,7 @@
 						<go data-view="templates" class="tileButton largeTile" title="SubKit Template Engine">templates</go>
 						<go data-view="tasks" class="tileButton largeTile" title="SubKit Task Engine">tasks</go>
 						<go data-view="statistics" class="tileButton largeTile" title="SubKit Statistics">stats</go>
-					</div>
-					<div class="centerMenu">
-						<go data-view="identity" class="tileButton largeTile" title="SubKit User Department">identity</go>
-						<go data-view="email" class="tileButton largeTile" title="SubKit Email Service">email</go>
-						<go data-view="pushnotify" class="tileButton largeTile" title="SubKit Push Notifications">push notify</go>
-						<go data-view="location" class="tileButton largeTile" title="SubKit Geo Locations">location</go>
-						<go data-view="files" class="tileButton largeTile" title="SubKit File Administration">files</go>
+						<go data-view="identity" class="tileButton largeTile" title="SubKit Identity Department">identity</go>
 					</div>
 					<div class="centerMenu">
 						<span data-ng-repeat="plugin in plugins">

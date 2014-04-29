@@ -591,8 +591,8 @@ var Subkit = function(config){
 		}
 	};
 	self.task = {
-		run: function(pluginName, callback){
-			var url = self.baseUrl + "/plugins/run/" + pluginName;
+		run: function(taskName, callback){
+			var url = self.baseUrl + '/task/run/' + taskName;
 			httpRequest.get(url, self.options, function(status, result){
 				if(status !== 200) {
 					if(callback) callback(result.json());
@@ -601,12 +601,24 @@ var Subkit = function(config){
 				}
 			});
 		},
-		exec: function(pluginName, value, callback){
-			var url = self.baseUrl + "/plugins/run/" + pluginName;
+		exec: function(taskName, value, callback){
+			var url = self.baseUrl + '/task/run/' + taskName;
 			var msg = JSON.parse(JSON.stringify(self.options));
-			msg["data"] = value;
+			msg['data'] = value;
 			httpRequest.post(url, msg, function(status, result){
 				if(status!==200 && status!==201) {
+					if(callback) callback(result.json());
+				}else{
+					if(callback) callback(null, result.json());
+				}
+			});
+		}
+	};
+	self.plugin = {
+		list: function(callback){
+			var url = self.baseUrl + '/plugin';
+			httpRequest.get(url, self.options, function(status, result){
+				if(status !== 200) {
 					if(callback) callback(result.json());
 				}else{
 					if(callback) callback(null, result.json());

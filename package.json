@@ -24,7 +24,7 @@
     "mocha": "*",
     "grunt-cli": "*",
     "grunt": "*",
-    "grunt-contrib-jshint":"*",
+    "grunt-contrib-jshint": "*",
     "grunt-mocha-test": "*",
     "grunt-contrib-less": "*",
     "grunt-contrib-watch": "*"

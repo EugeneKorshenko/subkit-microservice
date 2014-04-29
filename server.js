@@ -214,8 +214,9 @@ module.exports.init = function(){
 	require('./lib/location.js').init(server, location, helper, doc);
 
 	//plugins
-	var plugins = require('./package.json').optionalDependencies;
+	var availablePlugins = require('./package.json').optionalDependencies;
 	var pluginContext = {
+		AvailablePlugins: availablePlugins,
 		Server: server,
 		Configuration: nconf,
 		Helper: helper,
@@ -224,13 +225,12 @@ module.exports.init = function(){
 		PubSub: pubsub,
 		Identity: identity,
 		EventSource: es,
-		Template: template,
-		Serve: restify.serveStatic
+		Template: template
 	};
-	for(var pluginName in plugins){
-		console.log('Loading plugin: ' + pluginName);
-		require(pluginName).init(pluginContext);
-	}
+
+	var plugin = require('./lib/plugin.module.js').init(pluginContext);
+	plugin.loadAll();
+	require('./lib/plugin.js').init(server, plugin, helper, doc);
 
 	//all other resources
 	server.get(/\/css\/.+/, restify.serveStatic({

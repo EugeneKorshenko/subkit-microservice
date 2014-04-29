@@ -7,9 +7,8 @@ var slideOpts = {
 };
 var Slide = function (slideType, vin, vout, callback) {
     if(vin === "undefined" || vout === "undefined") return callback();
-
-    var vIn = document.getElementById(vin),
-        vOut = document.getElementById(vout),
+    var vIn = document.querySelector('view[data-content="'+ vin + '"]'),
+        vOut = document.querySelector('view[data-content="'+ vout + '"]'),
         onAnimationEnd = function () {
             if(vin !== vout) vOut.classList.add('hidden');
             if(vin !== vout) vIn.classList.remove(slideOpts[slideType][0]);
@@ -87,7 +86,7 @@ var app = angular
           require: '^views',
           restrict: 'E',
           transclude: true,
-          scope:{},
+          scope:true,
           link: function(scope, element, attrs, viewsCtrl) {
             viewsCtrl.addView(attrs.content, scope);
           },
@@ -100,7 +99,6 @@ var app = angular
                 nextElement = "",
                 backElement = "";
 
-            element[0].id = attrs.content;
             if(backText) backElement = '<back data-view="'+backTarget+'" class="left">'+backText+'</back>';
             if(nextText) nextElement = '<go data-view="'+nextTarget+'" class="right">'+nextText+'</go>';
             return '<section><header><h1>'+headerText+'</h1>'+backElement+nextElement+'</header><div class="scrollMask"></div><div class="scrollWrap"><div class="scroll"><div class="content" data-ng-transclude></div></div></div></section>';
@@ -134,7 +132,34 @@ var app = angular
             return "<button>" + element[0].innerHTML + "</button>";
           }
         };
-    });
+    })
+    app.directive('script', function() {
+      return {
+        restrict: 'E',
+        scope: true,
+        link: function(scope, elem, attr) {
+          if (attr.type=='text/javascript-lazy') {
+            loadjscssfile(attr.name + '/www/' + attr.script + '.js','js');
+        }
+      }
+    };
+  });
+
+function loadjscssfile(filename, filetype){
+  if (filetype=="js"){ //if filename is a external JavaScript file
+    var fileref=document.createElement('script')
+    fileref.setAttribute("type","text/javascript")
+    fileref.setAttribute("src", filename)
+  }
+  else if (filetype=="css"){ //if filename is an external CSS file
+    var fileref=document.createElement("link")
+    fileref.setAttribute("rel", "stylesheet")
+    fileref.setAttribute("type", "text/css")
+    fileref.setAttribute("href", filename)
+  }
+  if (typeof fileref!="undefined")
+    document.getElementsByTagName("head")[0].appendChild(fileref)
+}
 
 app.config(['$httpProvider', function($httpProvider) {
         $httpProvider.defaults.useXDomain = true;

@@ -84,22 +84,37 @@
 				</view>
 			</div>
 
-			<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="SubKit Center">
-				<div class="centerMenu">
-					<go data-view="storage" class="tileButton largeTile" title="SubKit Data Storage">store</go>
-					<go data-view="pubsub" class="tileButton largeTile" title="SubKit Publish/Subscribe">pubsub</go>
-					<go data-view="files" class="tileButton largeTile" title="SubKit File Administration">files</go>
-					<go data-view="templates" class="tileButton largeTile" title="SubKit Template Engine">templates</go>
-					<go data-view="tasks" class="tileButton largeTile" title="SubKit Task Engine">tasks</go>
-				</div>
-				<div class="centerMenu">
-					<go data-view="identity" class="tileButton largeTile" title="SubKit User Department">identity</go>
-					<go data-view="email" class="tileButton largeTile" title="SubKit Email Service">email</go>
-					<go data-view="pushnotify" class="tileButton largeTile" title="SubKit Push Notifications">push notify</go>
-					<go data-view="location" class="tileButton largeTile" title="SubKit Geo Locations">location</go>
-					<go data-view="statistics" class="tileButton largeTile" title="SubKit Statistics">stats</go>
-				</div>
-			</view>
+			<div data-ng-controller="MainCtrl">
+				<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="SubKit Center">
+					<div class="centerMenu">
+						<go data-view="storage" class="tileButton largeTile" title="SubKit Data Storage">store</go>
+						<go data-view="pubsub" class="tileButton largeTile" title="SubKit Publish/Subscribe">pubsub</go>
+						<go data-view="templates" class="tileButton largeTile" title="SubKit Template Engine">templates</go>
+						<go data-view="tasks" class="tileButton largeTile" title="SubKit Task Engine">tasks</go>
+						<go data-view="statistics" class="tileButton largeTile" title="SubKit Statistics">stats</go>
+					</div>
+					<div class="centerMenu">
+						<go data-view="identity" class="tileButton largeTile" title="SubKit User Department">identity</go>
+						<go data-view="email" class="tileButton largeTile" title="SubKit Email Service">email</go>
+						<go data-view="pushnotify" class="tileButton largeTile" title="SubKit Push Notifications">push notify</go>
+						<go data-view="location" class="tileButton largeTile" title="SubKit Geo Locations">location</go>
+						<go data-view="files" class="tileButton largeTile" title="SubKit File Administration">files</go>
+					</div>
+					<div class="centerMenu">
+						<span data-ng-repeat="plugin in plugins">
+							<go data-view="{{plugin.name}}" class="tileButton largeTile" title="{{plugin.name}}">{{plugin.name}}</go>
+						</span>
+					</div>
+				</view>
+
+				<span data-ng-repeat="plugin in plugins" >
+					<view data-content="{{plugin.name}}" class="hidden" headertext="{{plugin.name}}" backtext="back" back="center">
+						<script type="text/javascript-lazy" data-name="{{plugin.name}}" data-script="{{plugin.script}}"></script>
+						<ng-include src="templateUrl(plugin)"></ng-include>
+					</view>
+				</span>
+
+			</div>
 
 			<div data-ng-controller="StorageCtrl">
 				<view data-content="storage" class="hidden" backtext="center" headertext="Store">
@@ -674,6 +689,7 @@
 				<view data-content="location" class="hidden" headertext="GeoLocation" backtext="back" back="center">
 				</view>
 			</div>
+
 		</views>
 	</body>
 </html>

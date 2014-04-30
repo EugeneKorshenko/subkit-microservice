@@ -51,11 +51,6 @@ module.exports.init = function(){
 	taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
 	taskConfig.hooks = hooks;
 
-	var pushConfig = nconf.get('pushConfig');
-	pushConfig.APN_Sandbox_Pfx = path.join(__dirname, pushConfig.APN_Sandbox_Pfx);
-	pushConfig.APN_Pfx = pushConfig.APN_Pfx ? path.join(__dirname, pushConfig.APN_Pfx) : '';
-	pushConfig.MPNS_Pfx = (pushConfig.MPNS_Pfx && fs.existsSync(path.join(__dirname, pushConfig.MPNS_Pfx))) ? path.join(__dirname, pushConfig.MPNS_Pfx) : '';
-
 	//init
 	if(!fs.existsSync(storageConfig.rightsPath))
 		fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');
@@ -67,11 +62,9 @@ module.exports.init = function(){
 	var identity = require('./lib/identity.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var template = require('./lib/template.module.js');
-	var task = require('./lib/task.module.js').init(taskConfig, storage, pubsub, push, es);
+	var task = require('./lib/task.module.js').init(taskConfig, storage, pubsub, es);
 	
 	var renderer = template.init({templatesPath: templateConfig.filesPath});
-	var pushIdentity = identity.init('push', storage);
-	var push = require('./lib/push-module.js').init(pushConfig, storage, pushIdentity);
 	var accountIdentity = identity.init('account', storage);
 	var account = require('./lib/account-module.js').init(accountIdentity);
 
@@ -208,9 +201,7 @@ module.exports.init = function(){
 	require('./lib/eventsource.js').init(server, es, helper, doc);
 
 	require('./lib/static.js').init(server, staticConfig, helper, doc);
-	require('./lib/account.js').init(server, account, helper, doc);
-	require('./lib/push.js').init(server, nconf, pushConfig, push, helper, doc);
-	
+	require('./lib/account.js').init(server, account, helper, doc);	
 
 	//plugins
 	var availablePlugins = require('./package.json').optionalDependencies;

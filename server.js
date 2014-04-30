@@ -74,7 +74,6 @@ module.exports.init = function(){
 	var push = require('./lib/push-module.js').init(pushConfig, storage, pushIdentity);
 	var accountIdentity = identity.init('account', storage);
 	var account = require('./lib/account-module.js').init(accountIdentity);
-	var location = require('./lib/location-module.js').init(storage);
 
 	var options = { name: 'subkit microservice' };
 	//configure HTTPS/SSL
@@ -211,7 +210,7 @@ module.exports.init = function(){
 	require('./lib/static.js').init(server, staticConfig, helper, doc);
 	require('./lib/account.js').init(server, account, helper, doc);
 	require('./lib/push.js').init(server, nconf, pushConfig, push, helper, doc);
-	require('./lib/location.js').init(server, location, helper, doc);
+	
 
 	//plugins
 	var availablePlugins = require('./package.json').optionalDependencies;

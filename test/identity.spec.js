@@ -25,12 +25,6 @@ describe('Integration: Identity', function(){
   });
   
   describe('on ...', function(){
-    before(function(done){
-      done();
-    });
-    after(function(done){
-      done();
-    }),
     it('should be ...', function(done){
       done();
     });

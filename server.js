@@ -22,21 +22,13 @@ module.exports.init = function(){
 
 	//correct root path
 	var storageConfig = nconf.get('storageConfig');
-	var hooks = nconf.get('hooks');
 	storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
 	storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
 	storageConfig.backupPath = path.join(__dirname, storageConfig.backupPath);
-	storageConfig.hooks = hooks;
-
-	var staticConfig = nconf.get('staticConfig');
-	staticConfig.filesPath = path.join(__dirname, staticConfig.filesPath);
-	staticConfig.rightsPath = path.join(__dirname, staticConfig.rightsPath);
-	staticConfig.hooks = hooks;
 
 	var templateConfig = nconf.get('templateConfig');
 	templateConfig.filesPath = path.join(__dirname, templateConfig.filesPath);
 	templateConfig.rightsPath = path.join(__dirname, templateConfig.rightsPath);
-	templateConfig.hooks = hooks;
 	templateConfig.templateData = {
 		url: api.url,
 		apiKey: api.apiKey,
@@ -49,7 +41,6 @@ module.exports.init = function(){
 	taskConfig.jobsPath = path.join(__dirname, taskConfig.jobsPath);
 	taskConfig.mapreducePath = path.join(__dirname, taskConfig.mapreducePath);
 	taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
-	taskConfig.hooks = hooks;
 
 	//init
 	if(!fs.existsSync(storageConfig.rightsPath))
@@ -59,12 +50,12 @@ module.exports.init = function(){
 	var doc = require('./lib/doc.module.js');
 	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1});
 	var storage = require('./lib/store.module.js').init(storageConfig);
-	var identity = require('./lib/identity.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var template = require('./lib/template.module.js');
-	var task = require('./lib/task.module.js').init(taskConfig, storage, pubsub, es);
-	
 	var renderer = template.init({templatesPath: templateConfig.filesPath});
+	
+	var task = require('./lib/task.module.js').init(taskConfig, storage, pubsub, es);	
+	var identity = require('./lib/identity.module.js');
 	var accountIdentity = identity.init('account', storage);
 	var account = require('./lib/account-module.js').init(accountIdentity);
 
@@ -81,7 +72,6 @@ module.exports.init = function(){
 		admin = nconf.get('admin');
 		app = nconf.get('app');
 		api = nconf.get('api');
-		hooks = nconf.get('hooks');
 	};
 	fs.watchFile(path.join(__dirname, 'config.json'), reloadConf);
 	fs.watchFile(path.join(__dirname, 'defaults.json'), reloadConf);
@@ -197,10 +187,9 @@ module.exports.init = function(){
 	require('./lib/pubsub.js').init(server, pubsub, helper, doc);
 	require('./lib/template.js').init(server, templateConfig, renderer, helper, doc);
 	require('./lib/task.js').init(server, storage, taskConfig, task, helper, doc);
-	require('./lib/statistics.js').init(server, storage, staticConfig, pubsub, helper, doc);
+	require('./lib/statistics.js').init(server, storage, pubsub, helper, doc);
 	require('./lib/eventsource.js').init(server, es, helper, doc);
 
-	require('./lib/static.js').init(server, staticConfig, helper, doc);
 	require('./lib/account.js').init(server, account, helper, doc);	
 
 	//plugins

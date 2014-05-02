@@ -73,7 +73,7 @@ X			  | [S3](https://github.com/SubKit/subkit-S3-plugin.git)			  | Manage Amazon
 X		 	  | [Template](https://github.com/SubKit/subkit-template-plugin.git)		  | JSHTML based template engine
 -			  | [Payment](https://github.com/SubKit/subkit-payment-plugin.git)   		  | Payment provider support
 -		 	  | [Account](https://github.com/SubKit/subkit-account-plugin.git)			  | Manage accounts
-O			  | BaaS			  | Subkit as cloud based BaaS
+O			  | BaaS			  | Manage Subkit as BaaS or MEAP
 O			  | ETL				  | Extract-Transform-Load data flow engine
 O			  | MDM       		  | Mobile Device Management Plugin
 O			  | Analytics   	  | Real-Time event-driven data analytics engine

@@ -5,6 +5,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-jsdoc');
+  grunt.loadNpmTasks('grunt-markdox');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -76,6 +78,22 @@ module.exports = function(grunt) {
     watch: {
         files: ['files/mobile/css/custom.less'],
         tasks: ['less']
+    },
+     jsdoc : {
+        dist : {
+            src: ['lib/store.module.js'], 
+            options: {
+                destination: 'docs/modules/html',
+                configure : 'jsdoc_conf.json'
+            }
+        }
+    },
+    markdox: {
+      target: {
+        files: [
+          {src: 'lib/store.module.js', dest: 'docs/modules/store.md'}
+        ]
+      }
     }
   });
   grunt.registerTask('default', []);
@@ -84,4 +102,5 @@ module.exports = function(grunt) {
     'jshint',
     'mochaTest'
   ]);
+  grunt.registerTask('doc', ['jsdoc', 'markdox']);
 };

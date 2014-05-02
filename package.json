@@ -18,13 +18,15 @@
     "wrench": "*"
   },
   "devDependencies": {
-    "mocha": "*",
-    "grunt-cli": "*",
     "grunt": "*",
+    "grunt-cli": "*",
     "grunt-contrib-jshint": "*",
-    "grunt-mocha-test": "*",
     "grunt-contrib-less": "*",
-    "grunt-contrib-watch": "*"
+    "grunt-contrib-watch": "*",
+    "grunt-jsdoc": "*",
+    "grunt-markdox": "^1.2.1",
+    "grunt-mocha-test": "*",
+    "mocha": "*"
   },
   "main": "index.js",
   "engines": {
@@ -45,6 +47,5 @@
       "url": ""
     }
   ],
-  "optionalDependencies": {
-  }
+  "optionalDependencies": {}
 }

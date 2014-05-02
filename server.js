@@ -56,7 +56,6 @@ module.exports.init = function(){
 	var template = require('./lib/template.module.js');
 	var renderer = template.init({templatesPath: templateConfig.filesPath});
 	
-
 	var identity = require('./lib/identity.module.js');
 	var accountIdentity = identity.init('account', storage);
 	var account = require('./lib/account-module.js').init(accountIdentity);

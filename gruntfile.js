@@ -79,14 +79,13 @@ module.exports = function(grunt) {
         files: ['files/mobile/css/custom.less'],
         tasks: ['less']
     },
-     jsdoc : {
-        dist : {
-            src: ['lib/store.module.js'], 
-            options: {
-                destination: 'docs/modules/html',
-                configure : 'jsdoc_conf.json'
-            }
-        }
+    jsdoc : {
+      dist : {
+          src: ['lib/store.module.js'], 
+          options: {
+              destination: 'docs/modules/html'
+          }
+      }
     },
     markdox: {
       target: {

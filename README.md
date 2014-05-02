@@ -20,7 +20,7 @@ BASICS
 GETTING STARTED
 ---
 
-* [5 mins Subkit Tutorial](docs/tutorials/5mins_tutorial.md)
+* [5 mins Subkit JS Tutorial](docs/tutorials/5mins_js_tutorial.md)
 
 
 ARCHITECTURE

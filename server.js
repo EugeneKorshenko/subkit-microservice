@@ -26,16 +26,6 @@ module.exports.init = function(){
 	storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
 	storageConfig.backupPath = path.join(__dirname, storageConfig.backupPath);
 
-	var templateConfig = nconf.get('templateConfig');
-	templateConfig.filesPath = path.join(__dirname, templateConfig.filesPath);
-	templateConfig.rightsPath = path.join(__dirname, templateConfig.rightsPath);
-	templateConfig.templateData = {
-		url: api.url,
-		apiKey: api.apiKey,
-		username: admin.username,
-		password: admin.password
-	};
-
 	var workerConfig = nconf.get('taskConfig');
 	workerConfig.tasksPath = path.join(__dirname, workerConfig.tasksPath);
 	workerConfig.jobsPath = path.join(__dirname, workerConfig.jobsPath);
@@ -54,7 +44,6 @@ module.exports.init = function(){
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es);
 	var template = require('./lib/template.module.js');
-	var renderer = template.init({templatesPath: templateConfig.filesPath});
 	
 	var options = { name: 'subkit microservice' };
 	//configure HTTPS/SSL

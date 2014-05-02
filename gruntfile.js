@@ -14,22 +14,18 @@ module.exports = function(grunt) {
       files: [
         'Gruntfile.js',
         'test/store.module.spec.js',
-        'test/identity.module.spec.js',
         'test/pubsub.module.spec.js',
         'test/worker.module.spec.js',
         'test/template.module.spec.js',
         'test/eventsource.module.spec.js',
         'test/rights.module.spec.js',
         'test/file.module.spec.js',
-
         'test/store.spec.js',
-        'test/identity.spec.js',
         
         'lib/helper.js',
         'lib/doc.module.js',
         'lib/store.module.js',
         'lib/pubsub.module.js',
-        'lib/identity.module.js',
         'lib/eventsource.module.js',
         'lib/template.module.js',
         'lib/worker.module.js',
@@ -59,8 +55,7 @@ module.exports = function(grunt) {
         src: [
           'test/*.module.spec.js',
           'test/manage.spec.js',
-          'test/store.spec.js',
-          'test/identity.spec.js'
+          'test/store.spec.js'
         ]
       }
     },

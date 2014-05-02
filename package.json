@@ -2,7 +2,6 @@
   "name": "subkit",
   "version": "0.0.3",
   "dependencies": {
-    "commander": "*",
     "cron": "*",
     "jshtml-express": "*",
     "json-stringify-safe": "*",
@@ -10,12 +9,10 @@
     "level": "*",
     "nconf": "*",
     "node-uuid": "*",
-    "procstreams": "*",
     "randomstring": "*",
     "restify": "*",
     "swagger-doc": "*",
-    "underscore": "*",
-    "wrench": "*"
+    "underscore": "*"
   },
   "devDependencies": {
     "grunt": "*",

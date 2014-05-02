@@ -189,9 +189,9 @@ module.exports.init = function(){
 	worker.scheduler.scheduleMapReduce();	
 	//start jobs scheduler
 	worker.scheduler.schedule({
-		jobName: "periodic",
-		cronTime: "* * * * *",
-		payload: {name: "payload value"}
+		jobName: 'periodic',
+		cronTime: '* * * * *',
+		payload: {name: 'payload value'}
 	});
 
 	require('./lib/manage.js').init(nconf, api, app, server, storage, helper, doc);

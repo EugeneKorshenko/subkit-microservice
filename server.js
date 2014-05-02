@@ -56,10 +56,6 @@ module.exports.init = function(){
 	var template = require('./lib/template.module.js');
 	var renderer = template.init({templatesPath: templateConfig.filesPath});
 	
-	var identity = require('./lib/identity.module.js');
-	var accountIdentity = identity.init('account', storage);
-	var account = require('./lib/account-module.js').init(accountIdentity);
-
 	var options = { name: 'subkit microservice' };
 	//configure HTTPS/SSL
 	if(app.key) options.key = fs.readFileSync(app.key);
@@ -198,11 +194,8 @@ module.exports.init = function(){
 	require('./lib/store.js').init(server, storage, helper, doc);
 	require('./lib/pubsub.js').init(server, pubsub, helper, doc);
 	require('./lib/statistics.js').init(server, storage, pubsub, helper, doc);
-
 	require('./lib/eventsource.js').init(server, es, helper, doc);
-	require('./lib/template.js').init(server, templateConfig, renderer, helper, doc);
-	require('./lib/account.js').init(server, account, helper, doc);	
-
+	
 	//plugins
 	var availablePlugins = require('./package.json').optionalDependencies;
 	var pluginContext = {

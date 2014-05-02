@@ -17,7 +17,7 @@ JSON key/value storage module.
 
 ### Params: 
 
-* **object** *config* 
+* **Object** *config* 
 
 ## stores(callback)
 

@@ -17,7 +17,7 @@ PubSub module.
 
 ### Params: 
 
-* **object** *config* 
+* **Object** *config* 
 
 ## unsubscribe(channel, clientId)
 

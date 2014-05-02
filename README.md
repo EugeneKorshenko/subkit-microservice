@@ -43,7 +43,7 @@ X		 	  | ETag Versions | ETag / version based concurrency control
 X		 	  | API DOC       | Interactive REST documentation
 X		 	  | JSON Queries  | Advanced JSON Queries
 X		 	  | Worker		  | Scheduled Background Worker
-X		 	  | Mointoring	  | Heartbeats for Web-Service Monitoring
+X		 	  | Monitoring	  | Heartbeats for Web-Service Monitoring
 X		 	  | Statistics	  | Useful statistics and usage analysis
 X		 	  | History		  | Track and query all state changes
 X		 	  | WebHooks      | User-defined HTTP callbacks

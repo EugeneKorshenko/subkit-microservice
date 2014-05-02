@@ -78,9 +78,9 @@ O			  | MDM       		  | Mobile Device Management Plugin
 O			  | Analytics   	  | Real-Time event-driven data analytics engine
 O			  | Transcoder		  | Transcoding images and videos
 
-X = available
-- = planed
-O = commercial
+X = available  
+\- = planed  
+O = commercial  
 
 SDKS
 ---

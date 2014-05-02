@@ -50,9 +50,6 @@
 					<div class="row center">
 						<span class="error" data-ng-bind="error"></span>
 					</div>
-					<div class="row center">
-						<go data-view="registration" class="rotateButton" title="Create new Account">+</go>
-					</div>
 				</view>
 				<view data-content="registration" class="hidden" back="login" backtext="back" headertext="New Account">
 					<div data-ng-show="hasEnter" class="rowtext" style="text-align: center; width: 100%;">
@@ -85,14 +82,11 @@
 			</div>
 
 			<div data-ng-controller="MainCtrl">
-				<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="SubKit Center">
+				<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="dev center">
 					<div class="centerMenu">
 						<go data-view="storage" class="tileButton largeTile" title="SubKit Data Storage">store</go>
 						<go data-view="pubsub" class="tileButton largeTile" title="SubKit Publish/Subscribe">pubsub</go>
-						<go data-view="templates" class="tileButton largeTile" title="SubKit Template Engine">templates</go>
-						<go data-view="tasks" class="tileButton largeTile" title="SubKit Task Engine">tasks</go>
 						<go data-view="statistics" class="tileButton largeTile" title="SubKit Statistics">stats</go>
-						<go data-view="identity" class="tileButton largeTile" title="SubKit Identity Department">identity</go>
 					</div>
 					<div class="centerMenu">
 						<span data-ng-repeat="plugin in plugins">
@@ -107,7 +101,6 @@
 						<ng-include src="templateUrl(plugin)"></ng-include>
 					</view>
 				</span>
-
 			</div>
 
 			<div data-ng-controller="StorageCtrl">
@@ -245,11 +238,6 @@
 							<span class="light">DB</span>
 							<span class="light">KB</span>
 							<div class="big" data-ng-bind="dbSizeKBytes" title="Your Subkit's storage size in KiB"></div>
-						</div>
-						<div class="tileButton largeTile">
-							<span class="light">Statics</span>
-							<span class="light">KB</span>
-							<div class="big" data-ng-bind="staticsDirSizeKBytes" title="Statistics' weight in KiB"></div>
 						</div>
 					</div>
 					<div style="clear: both;" title="Overall URL requested from your SubKit">

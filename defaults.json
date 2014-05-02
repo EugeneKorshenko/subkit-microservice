@@ -1,6 +1,6 @@
 {
   "api": {
-    "url": "http://localhost:8080",
+    "url": "//localhost:8080",
     "apiKey": "6654edc5-82a3-4006-967f-97d5817d7fe2"
   },
   "admin": {
@@ -13,7 +13,9 @@
     "type": "lite",
     "domain": "subkit.io",
     "ip": "127.0.0.1",
-    "port": 8080
+    "port": 8080,
+    "key":"./certs/www/server.key",
+    "cert":"./certs/www/server.crt"
   },
   "hooks": {
     "error": {

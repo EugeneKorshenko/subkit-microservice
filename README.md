@@ -39,6 +39,7 @@ X		 	  | Dashboard     | Web-Admin-Dashboard
 X		 	  | Backups	      | Backup and Restore your data
 X		 	  | JSON Im/Export| JSON data import and export
 X		 	  | ETag Caching  | ETag based content caching
+X		 	  | ETag Versions | ETag / version based concurrency control
 X		 	  | API DOC       | Interactive REST documentation
 X		 	  | JSON Queries  | Advanced JSON Queries
 X		 	  | Worker		  | Scheduled Background Worker
@@ -48,9 +49,7 @@ X		 	  | History		  | Track and query all state changes
 X		 	  | WebHooks      | User-defined HTTP callbacks
 X		 	  | JSON Storage  | A JSON key/value store
 X		 	  | PubSub		  | Real-Time topic based and storage changes Pub/Sub
-X		 	  | Tasks 		  | RESTful/Scheduler/Event-Driven server side JavaScript execution engine
-X		 	  | Identity  	  | Manage N:M relations like groups to identities and vice versa
-X			  | Statistics    | Usage statistics and monitoring
+X			  | Statistics    | Instance resource and usage statistics
 -		 	  | Hooks         | Request/Response custom code hooks
 -		 	  | WebSockets    | Web-Socket support for real-time notifications
 -		 	  | Authorization | Advanced resource based authorization
@@ -62,26 +61,27 @@ Extend the Subkit mirco service instance by installing plugins.
 
 `npm install <plugin> --save-optional`
 
-
 STATUS		  | Name 	 		  | Comments
 ------------- | ----------------- | ---------------
-X		 	  | Files			  | Binary Up/Download
-X			  | Analytics   	  | Event-Source data analytics engine
+X		 	  | [File](https://github.com/SubKit/subkit-file-plugin.git)			  | Binary Up/Download
 X		 	  | Templates		  | JSHTML based template engine (more - soon)
-X			  | EMail 			  | Organize EMail subscriptions and send EMails 
-X			  | Mobile Push 	  | Mobile push notifications to iOS, Android, WP8
-X			  | Location    	  | Organize and query geolocations
-X			  | Proxy	    	  | A HTTP(S) request proxy
+X			  | [EMail](https://github.com/SubKit/subkit-email-plugin.git) 			  | Organize EMail subscriptions and send EMails 
+X			  | [Mobile Push](https://github.com/SubKit/subkit-push-plugin.git)	  | Mobile push notifications to iOS, Android, WP8
+X			  | [Task](https://github.com/SubKit/subkit-task-plugin.git)	    	  | Manage, execute and schedule custom JavaScript tasks
+X			  | [Geolocation](https://github.com/SubKit/subkit-geolocation-plugin.git)    	  | Organize and query geolocations
 X			  | Environment	   	  | Host environment statistics and moinoring like CPU and Memory usage
--			  | MDM       		  | [Mobile Device Management Plugin](https://www.npmjs.org/package/subkit-mdm-plugin)
--			  | Shell      		  | [Shell Plugin](https://www.npmjs.org/package/subkit-shell-plugin)
--			  | Payment   		  | Payment provider support
--			  | Transcoder		  | Transcoding images and videos
--			  | AWS S3			  | [Amazon S3 Plugin](https://www.npmjs.org/package/subkit-s3-plugin)
--		 	  | MySQL connector   | MySQL DB import/export connector
--		 	  | MSSQL Connector   | MSSQL DB import/export connector
--		 	  | HTML scraping     | Scraping HTML
+X			  | [S3](https://github.com/SubKit/subkit-S3-plugin.git)			  | Manage Amazon S3 buckets and items
+-			  | [Payment](https://github.com/SubKit/subkit-payment-plugin.git)   		  | Payment provider support
+-		 	  | [Account](https://github.com/SubKit/subkit-account-plugin.git)			  | Manage accounts
+O			  | BaaS			  | Subkit as cloud based BaaS
+O			  | ETL				  | Extract-Transform-Load data flow engine
+O			  | MDM       		  | Mobile Device Management Plugin
+O			  | Analytics   	  | Real-Time event-driven data analytics engine
+O			  | Transcoder		  | Transcoding images and videos
 
+X = available
+- = planed
+O = commercial
 
 SDKS
 ---
@@ -118,6 +118,14 @@ GUIDES
 
 DEVELOPMENT
 ---
-* [JSON Key/Value Store Module](docs/modules/store_api.md)
-* [PubSub Module](docs/modules/pubsub_api.md)
-* [Manage Module](docs/modules/manage_api.md)
+* [Manage Module](docs/modules/manage.md)
+* [JSON Key/Value Store Module](docs/modules/store.md)
+* [PubSub Module](docs/modules/pubsub.md)
+* [Worker Module](docs/modules/worker.md)
+* [Template Module](docs/modules/template.md)
+* [EventSource Module](docs/modules/eventsource.md)
+* [File Module](docs/modules/file.md)
+* [Doc Module](docs/modules/doc.md)
+* [Utils Module](docs/modules/helper.md)
+* [Rights Module](docs/modules/rights.md)
+* [Configuration Module](docs/modules/configuration.md)

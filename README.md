@@ -5,9 +5,9 @@ INSTALL
 
 1. `npm install`
 2. `npm test`
-3. `node server.js` || `npm start`
+3. `node index.js` || `npm start`
 4. `npm install forever -g`
-5. `forever start -p <path to service> <path to service>/server.js`
+5. `forever start -p <path to service> <path to service>/index.js`
 
 BASICS
 ---
@@ -24,9 +24,6 @@ GETTING STARTED
 
 
 ARCHITECTURE
----
-
-Mobile Backend as a Service (MBaaS)
 ---
 
 FEATURES
@@ -57,7 +54,7 @@ X			  | Statistics    | Instance resource and usage statistics
 PLUGINS
 ---
 
-Extend the Subkit mirco service instance by installing plugins.
+Extend the Subkit mirco service instance with plugins.
 
 `npm install <plugin> --save-optional`
 

@@ -5,7 +5,7 @@ INSTALL
 
 1. `npm install`
 2. `npm test`
-3. `node index.js` || `npm start`
+3. `npm start`
 
 Open your browser http://localhost:8080.
 

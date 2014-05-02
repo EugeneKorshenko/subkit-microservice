@@ -4,7 +4,7 @@ var assert = require('assert'),
     store,
     sut;
 
-describe('Module: Tasks', function(){
+describe('Module: Worker', function(){
   before(function(done) {
     store = require('../lib/store.module.js').init({
       dbPath:'./taskspecdb',
@@ -14,7 +14,7 @@ describe('Module: Tasks', function(){
     });
     var pubsub = require('../lib/pubsub.module.js').init({pollInterval: 1});
     var eventsource = require('../lib/eventsource.module.js').init(store, pubsub);
-    sut = require('../lib/task.module.js').init({}, store, pubsub, eventsource);
+    sut = require('../lib/worker.module.js').init({}, store, pubsub, eventsource);
     done();
   });
   after(function(done){

@@ -36,11 +36,11 @@ module.exports.init = function(){
 		password: admin.password
 	};
 
-	var taskConfig = nconf.get('taskConfig');
-	taskConfig.tasksPath = path.join(__dirname, taskConfig.tasksPath);
-	taskConfig.jobsPath = path.join(__dirname, taskConfig.jobsPath);
-	taskConfig.mapreducePath = path.join(__dirname, taskConfig.mapreducePath);
-	taskConfig.rightsPath = path.join(__dirname, taskConfig.rightsPath);
+	var workerConfig = nconf.get('taskConfig');
+	workerConfig.tasksPath = path.join(__dirname, workerConfig.tasksPath);
+	workerConfig.jobsPath = path.join(__dirname, workerConfig.jobsPath);
+	workerConfig.mapreducePath = path.join(__dirname, workerConfig.mapreducePath);
+	workerConfig.rightsPath = path.join(__dirname, workerConfig.rightsPath);
 
 	//init
 	if(!fs.existsSync(storageConfig.rightsPath))
@@ -52,10 +52,10 @@ module.exports.init = function(){
 	var storage = require('./lib/store.module.js').init(storageConfig);
 	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
+	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es);
 	var template = require('./lib/template.module.js');
 	var renderer = template.init({templatesPath: templateConfig.filesPath});
 	
-	var task = require('./lib/task.module.js').init(taskConfig, storage, pubsub, es);
 
 	var identity = require('./lib/identity.module.js');
 	var accountIdentity = identity.init('account', storage);
@@ -185,25 +185,23 @@ module.exports.init = function(){
 	helper.setNewETag();
 
 	//start task scheduler
-	task.scheduler.scheduleTasks();
+	worker.scheduler.scheduleTasks();
 	//start mapreduce tasks
-	task.scheduler.scheduleMapReduce();	
+	worker.scheduler.scheduleMapReduce();	
 	//start jobs scheduler
-	task.scheduler.schedule({
+	worker.scheduler.schedule({
 		jobName: "periodic",
 		cronTime: "* * * * *",
 		payload: {name: "payload value"}
 	});
 
-
-
 	require('./lib/manage.js').init(nconf, api, app, server, storage, helper, doc);
 	require('./lib/store.js').init(server, storage, helper, doc);
 	require('./lib/pubsub.js').init(server, pubsub, helper, doc);
-	require('./lib/template.js').init(server, templateConfig, renderer, helper, doc);
 	require('./lib/statistics.js').init(server, storage, pubsub, helper, doc);
-	require('./lib/eventsource.js').init(server, es, helper, doc);
 
+	require('./lib/eventsource.js').init(server, es, helper, doc);
+	require('./lib/template.js').init(server, templateConfig, renderer, helper, doc);
 	require('./lib/account.js').init(server, account, helper, doc);	
 
 	//plugins
@@ -219,6 +217,7 @@ module.exports.init = function(){
 		EventSource: es,
 		File: file,
 		Template: template,
+		Worker: worker
 	};
 
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);

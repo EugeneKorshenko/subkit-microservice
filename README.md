@@ -6,8 +6,13 @@ INSTALL
 1. `npm install`
 2. `npm test`
 3. `node index.js` || `npm start`
-4. `npm install forever -g`
-5. `forever start -p <path to service> <path to service>/index.js`
+
+Open your browser http://localhost:8080.
+
+Forever service install.  
+
+1. `npm install forever -g`
+2. `forever start -p <path to service> <path to service>/index.js`
 
 BASICS
 ---
@@ -15,7 +20,6 @@ BASICS
 * [Quick Intro JavaScript Sample](docs/quick_start_javascript_sample.html)
 * [RESTful JSON API](docs/restful_api.md)
 * [Configuration Options](docs/service_config.md)
-* [Custom Plugin Development](docs/plugin_dev.md)
 
 GETTING STARTED
 ---
@@ -113,6 +117,11 @@ GUIDES
 * Develop Tasks - The custom JavaScript execution API
 
 DEVELOPMENT
+---
+* [Custom Plugin Development](docs/plugin_dev.md)
+
+
+MODULE DOCUMENTATION
 ---
 * [Manage Module](docs/modules/manage.md)
 * [JSON Key/Value Store Module](docs/modules/store.md)

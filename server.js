@@ -50,11 +50,13 @@ module.exports.init = function(){
 	var doc = require('./lib/doc.module.js');
 	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1});
 	var storage = require('./lib/store.module.js').init(storageConfig);
+	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var template = require('./lib/template.module.js');
 	var renderer = template.init({templatesPath: templateConfig.filesPath});
 	
-	var task = require('./lib/task.module.js').init(taskConfig, storage, pubsub, es);	
+	var task = require('./lib/task.module.js').init(taskConfig, storage, pubsub, es);
+
 	var identity = require('./lib/identity.module.js');
 	var accountIdentity = identity.init('account', storage);
 	var account = require('./lib/account-module.js').init(accountIdentity);
@@ -182,11 +184,23 @@ module.exports.init = function(){
 	var helper = utils.init(admin, api, etag, lastModified, storage);
 	helper.setNewETag();
 
+	//start task scheduler
+	task.scheduler.scheduleTasks();
+	//start mapreduce tasks
+	task.scheduler.scheduleMapReduce();	
+	//start jobs scheduler
+	task.scheduler.schedule({
+		jobName: "periodic",
+		cronTime: "* * * * *",
+		payload: {name: "payload value"}
+	});
+
+
+
 	require('./lib/manage.js').init(nconf, api, app, server, storage, helper, doc);
 	require('./lib/store.js').init(server, storage, helper, doc);
 	require('./lib/pubsub.js').init(server, pubsub, helper, doc);
 	require('./lib/template.js').init(server, templateConfig, renderer, helper, doc);
-	require('./lib/task.js').init(server, storage, taskConfig, task, helper, doc);
 	require('./lib/statistics.js').init(server, storage, pubsub, helper, doc);
 	require('./lib/eventsource.js').init(server, es, helper, doc);
 
@@ -202,9 +216,9 @@ module.exports.init = function(){
 		Doc: doc,
 		Storage: storage,
 		PubSub: pubsub,
-		Identity: identity,
 		EventSource: es,
-		Template: template
+		File: file,
+		Template: template,
 	};
 
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);

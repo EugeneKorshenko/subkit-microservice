@@ -76,7 +76,10 @@ module.exports = function(grunt) {
     },
     jsdoc : {
       dist : {
-          src: ['lib/store.module.js'], 
+          src: [
+            'lib/store.module.js',
+            'lib/pubsub.module.js'
+          ], 
           options: {
               destination: 'docs/modules/html'
           }
@@ -85,7 +88,8 @@ module.exports = function(grunt) {
     markdox: {
       target: {
         files: [
-          {src: 'lib/store.module.js', dest: 'docs/modules/store.md'}
+          {src: 'lib/store.module.js', dest: 'docs/modules/store.md'},
+          {src: 'lib/pubsub.module.js', dest: 'docs/modules/pubsub.md'}
         ]
       }
     }

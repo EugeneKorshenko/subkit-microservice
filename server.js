@@ -114,7 +114,7 @@ module.exports.init = function(){
 	doc = doc.configure(server, {
 		discoveryUrl: '/docs',
 		version:      '1.2',
-		basePath:     api.url
+		basePath:     (app.key && app.cert) ? 'https:' + api.url : 'http:' + api.url
 	});
 	//docu
 	var rendererDevCenter = template.init({

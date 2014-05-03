@@ -23,12 +23,19 @@ BASICS
 
 GETTING STARTED
 ---
-
 * [5 mins Subkit JS Tutorial](docs/tutorials/5mins_js_tutorial.md)
 
 
 ARCHITECTURE
 ---
+* Reliable, Responsible & Partitioning
+* Temporal consistency, Idempotency & Transactions
+* Data structure design
+* Integration-Points, Composites & Aggregation
+* Caching
+* Scale-Up & Scale-Down
+* Offline & Sync strategies
+* Conventions and practice
 
 FEATURES
 ---
@@ -111,11 +118,10 @@ ROADMAP
 
 GUIDES
 ---
-* RESTFul API
-* Transactions & Idempotency
-* Caching
-* Data structure design
-* Conventions and practice
+* Rights
+* Queries
+* Aggregation
+* Metadata
 
 DEVELOPMENT
 ---

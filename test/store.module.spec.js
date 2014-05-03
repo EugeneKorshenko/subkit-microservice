@@ -11,16 +11,16 @@ describe('Module: JSON Key/Value Storage', function(){
       tasksPath:'./tasks',
       backupPath:'./backups'
     });
-    sut.create('ademo', '1', {test: 'ademo 1 test'});
+    sut.create('ademo', '1', {test: 'ademo 1 test', group: 'B'});
     sut.create('bdemoa', '1', {test: 'bdemoa 1 test'});
-    sut.create('bdemob', '1', {test: 'bdemob 1 test'});
+    sut.create('bdemob', '1', {test: 'bdemob 1 test', group: 'A'});
     sut.create('bdemob', '2', {test: 'bdemob 2 test'});
-    sut.create('bdemob', '3', {test: 'bdemob 3 test', test2: 'bdemob 3 test2'});
+    sut.create('bdemob', '3', {test: 'bdemob 3 test', test2: 'bdemob 3 test2', group: 'C'});
     sut.create('bdemob', '4', {test: 'bdemob 4 test'});
-    sut.create('bdemob', '5', {test: 'bdemob 5 test'});
+    sut.create('bdemob', '5', {test: 'bdemob 5 test', group: 'B'});
     sut.create('bdemob', '6', {test: 'bdemob 6 test'});
     sut.create('bdemoc', '1', {test: 'bdemoc 1 test'});
-    sut.create('cdemoc', '1', {test: 'cdemoc 1 test'});
+    sut.create('cdemoc', '1', {test: 'cdemoc 1 test', group: 'A'});
     sut.create('rangequery', '1!a', {test: 'bdemob 1!a test'});
     sut.create('rangequery', '1!b', {test: 'bdemob 1!b test'});
     sut.create('rangequery', '1!c', {test: 'bdemob 1!c test'});
@@ -86,7 +86,7 @@ describe('Module: JSON Key/Value Storage', function(){
         done();
       });
     }),
-    it('by more specific store name "rangequery" from key "2!b" should return 4 item', function(done){
+    it('by more specific store name "rangequery" from key "2!b" should return 4 items', function(done){
       sut.read('rangequery', {from: '2!b'}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 4);
@@ -174,7 +174,7 @@ describe('Module: JSON Key/Value Storage', function(){
         done();
       });
     });
-  }),
+  });
   describe('stores', function(){
     it('should return 7 stores', function(done){
       sut.stores(function(error, data){
@@ -183,7 +183,7 @@ describe('Module: JSON Key/Value Storage', function(){
         done();
       });
     });
-  }),
+  });
   describe('write changes', function(){
     it('create should add a item', function(done){
       sut.create('change_test_item', '1', {test: 'change_test_item 1 test'}, function(error){
@@ -238,7 +238,12 @@ describe('Module: JSON Key/Value Storage', function(){
 
       });
     });
-  }),
+  });
+  describe('grouping', function(){
+    it('by specific store name with group name "content"', function(done){
+      done();
+    })
+  });
   describe('public/private stores', function(){
     it('set public should return all public stores', function(done){
       sut.setPublic('ademo', function(error, data){

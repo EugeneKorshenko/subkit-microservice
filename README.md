@@ -114,12 +114,13 @@ GUIDES
 * RESTFul API
 * Transactions & Idempotency
 * Caching
-* Develop Tasks - The custom JavaScript execution API
+* Data structure design
+* Conventions and practice
 
 DEVELOPMENT
 ---
 * [Custom Plugin Development](docs/plugin_dev.md)
-
+* Develop Tasks - The custom JavaScript execution API
 
 MODULE DOCUMENTATION
 ---

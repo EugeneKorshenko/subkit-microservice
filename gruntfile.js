@@ -79,6 +79,7 @@ module.exports = function(grunt) {
           src: [
             'lib/store.module.js',
             'lib/pubsub.module.js',
+            'lib/eventsource.module.js',
             'lib/worker.module.js'
           ], 
           options: {
@@ -91,7 +92,8 @@ module.exports = function(grunt) {
         files: [
           {src: 'lib/store.module.js', dest: 'docs/modules/store.md'},
           {src: 'lib/pubsub.module.js', dest: 'docs/modules/pubsub.md'},
-          {src: 'lib/worker.module.js', dest: 'docs/modules/worker.md'}
+          {src: 'lib/worker.module.js', dest: 'docs/modules/worker.md'},
+          {src: 'lib/eventsource.module.js', dest: 'docs/modules/eventsource.md'}
         ]
       }
     }

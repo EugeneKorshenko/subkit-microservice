@@ -7,13 +7,13 @@
     "json-stringify-safe": "*",
     "jsonquery": "*",
     "level": "*",
+    "microtime": "*",
     "nconf": "*",
     "node-uuid": "*",
     "randomstring": "*",
     "restify": "*",
     "swagger-doc": "*",
-    "underscore": "*",
-    "microtime": "*"
+    "underscore": "*"
   },
   "devDependencies": {
     "grunt": "*",

@@ -28,6 +28,7 @@ GETTING STARTED
 
 ARCHITECTURE
 ---
+* Micro-Services - Autonomous Components
 * Reliable, Responsible & Partitioning
 * Temporal consistency, Idempotency & Transactions
 * Data structure design
@@ -35,6 +36,7 @@ ARCHITECTURE
 * Caching
 * Scale-Up & Scale-Down
 * Offline & Sync strategies
+* Environment, Monitoring & Usages
 * Conventions and practice
 
 FEATURES

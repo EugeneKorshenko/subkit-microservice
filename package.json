@@ -12,7 +12,8 @@
     "randomstring": "*",
     "restify": "*",
     "swagger-doc": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "microtime": "*"
   },
   "devDependencies": {
     "grunt": "*",

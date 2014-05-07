@@ -37,8 +37,8 @@ module.exports.init = function(){
 
 	var utils = require('./lib/helper.js');
 	var doc = require('./lib/doc.module.js');
-	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1});
 	var storage = require('./lib/store.module.js').init(storageConfig);
+	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1}, storage);
 	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es);

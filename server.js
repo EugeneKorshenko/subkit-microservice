@@ -17,8 +17,7 @@ module.exports.init = function(){
 	var admin = nconf.get('admin'),
 		app = nconf.get('app'),
 		api = nconf.get('api'),
-		etag = null,
-		lastModified = null;
+		etag = {etag:'', lastModified:''};
 
 	//correct root path
 	var storageConfig = nconf.get('storageConfig');
@@ -47,8 +46,8 @@ module.exports.init = function(){
 	
 	var options = { name: 'subkit microservice' };
 	//configure HTTPS/SSL
-	if(app.key) options.key = fs.readFileSync(app.key);
-	if(app.cert) options.certificate = fs.readFileSync(app.cert);
+	if(app.key && fs.existsSync(app.key)) options.key = fs.readFileSync(app.key);
+	if(app.cert && fs.existsSync(app.cert)) options.certificate = fs.readFileSync(app.cert);
 	var	server = restify.createServer(options);
 
 	//conf reload
@@ -62,6 +61,9 @@ module.exports.init = function(){
 	fs.watchFile(path.join(__dirname, 'config.json'), reloadConf);
 	fs.watchFile(path.join(__dirname, 'defaults.json'), reloadConf);
 
+	var helper = utils.init(admin, api, etag, storage);
+	helper.setNewETag();
+
 	//server middleware
 	server.acceptable.push('text/html');
 	server.use(restify.acceptParser(server.acceptable));
@@ -74,8 +76,9 @@ module.exports.init = function(){
 
 	//etag
 	server.use(function (req, res, next) {
-		res.header('ETag', etag);
-		res.header('Last-Modified', lastModified);
+		console.log("response eTag");
+		res.header('ETag', etag.etag);
+		res.header('Last-Modified', etag.lastModified);
 		return next();
 	});
 	server.use(restify.conditionalRequest());
@@ -164,9 +167,6 @@ module.exports.init = function(){
 		console.log('PID: ' + process.pid);
 		http.globalAgent.maxSockets = 50000;
 	});
-
-	var helper = utils.init(admin, api, etag, lastModified, storage);
-	helper.setNewETag();
 
 	//start task scheduler
 	worker.scheduler.scheduleTasks();

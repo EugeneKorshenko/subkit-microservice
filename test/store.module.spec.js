@@ -11,33 +11,33 @@ describe('Module: JSON Key/Value Storage', function(){
       tasksPath:'./tasks',
       backupPath:'./backups'
     });
-    sut.create('ademo', '1', {test: 'ademo 1 test', group: 'B'});
-    sut.create('bdemoa', '1', {test: 'bdemoa 1 test'});
-    sut.create('bdemob', '1', {test: 'bdemob 1 test', group: 'A'});
-    sut.create('bdemob', '2', {test: 'bdemob 2 test'});
-    sut.create('bdemob', '3', {test: 'bdemob 3 test', test2: 'bdemob 3 test2', group: 'C'});
-    sut.create('bdemob', '4', {test: 'bdemob 4 test'});
-    sut.create('bdemob', '5', {test: 'bdemob 5 test', group: 'B'});
-    sut.create('bdemob', '6', {test: 'bdemob 6 test'});
-    sut.create('bdemoc', '1', {test: 'bdemoc 1 test'});
-    sut.create('cdemoc', '1', {test: 'cdemoc 1 test', group: 'A'});
-    sut.create('rangequery', '1!a', {test: 'bdemob 1!a test'});
-    sut.create('rangequery', '1!b', {test: 'bdemob 1!b test'});
-    sut.create('rangequery', '1!c', {test: 'bdemob 1!c test'});
-    sut.create('rangequery', '2!a', {test: 'bdemob 2!a test'});
-    sut.create('rangequery', '2!b', {test: 'bdemob 2!b test'});
-    sut.create('rangequery', '2!b!1', {test: 'bdemob 2!b!1 test'});
-    sut.create('rangequery', '2!b!2', {test: 'bdemob 2!b!2 test'});
-    sut.create('rangequery', '2!b!3', {test: 'bdemob 2!b!3 test'});
-    sut.create('rangequery', '2!c', {test: 'bdemob 2!c test'});
-    sut.create('rangequery', '3!a', {test: 'bdemob 3!a test'});
-    sut.create('rangequery', '3!b', {test: 'bdemob 3!b test'});
-    sut.create('rangequery', '3!c', {test: 'bdemob 3!c test'});
+    sut.upsert('ademo', '1', {test: 'ademo 1 test', group: 'B'});
+    sut.upsert('bdemoa', '1', {test: 'bdemoa 1 test'});
+    sut.upsert('bdemob', '1', {test: 'bdemob 1 test', group: 'A'});
+    sut.upsert('bdemob', '2', {test: 'bdemob 2 test'});
+    sut.upsert('bdemob', '3', {test: 'bdemob 3 test', test2: 'bdemob 3 test2', group: 'C'});
+    sut.upsert('bdemob', '4', {test: 'bdemob 4 test'});
+    sut.upsert('bdemob', '5', {test: 'bdemob 5 test', group: 'B'});
+    sut.upsert('bdemob', '6', {test: 'bdemob 6 test'});
+    sut.upsert('bdemoc', '1', {test: 'bdemoc 1 test'});
+    sut.upsert('cdemoc', '1', {test: 'cdemoc 1 test', group: 'A'});
+    sut.upsert('rangequery', '1!a', {test: 'bdemob 1!a test'});
+    sut.upsert('rangequery', '1!b', {test: 'bdemob 1!b test'});
+    sut.upsert('rangequery', '1!c', {test: 'bdemob 1!c test'});
+    sut.upsert('rangequery', '2!a', {test: 'bdemob 2!a test'});
+    sut.upsert('rangequery', '2!b', {test: 'bdemob 2!b test'});
+    sut.upsert('rangequery', '2!b!1', {test: 'bdemob 2!b!1 test'});
+    sut.upsert('rangequery', '2!b!2', {test: 'bdemob 2!b!2 test'});
+    sut.upsert('rangequery', '2!b!3', {test: 'bdemob 2!b!3 test'});
+    sut.upsert('rangequery', '2!c', {test: 'bdemob 2!c test'});
+    sut.upsert('rangequery', '3!a', {test: 'bdemob 3!a test'});
+    sut.upsert('rangequery', '3!b', {test: 'bdemob 3!b test'});
+    sut.upsert('rangequery', '3!c', {test: 'bdemob 3!c test'});
 
-    sut.create('deleteDemo', '1', {test: 'delete demo 1 test'});
-    sut.create('deleteDemo', '2', {test: 'delete demo 2 test'});
-    sut.create('deleteDemo', '3', {test: 'delete demo 3 test'});
-    sut.create('deleteDemo', '4', {test: 'delete demo 4 test'});
+    sut.upsert('deleteDemo', '1', {test: 'delete demo 1 test'});
+    sut.upsert('deleteDemo', '2', {test: 'delete demo 2 test'});
+    sut.upsert('deleteDemo', '3', {test: 'delete demo 3 test'});
+    sut.upsert('deleteDemo', '4', {test: 'delete demo 4 test'});
 
     done();
   });
@@ -186,7 +186,7 @@ describe('Module: JSON Key/Value Storage', function(){
   });
   describe('write changes', function(){
     it('create should add a item', function(done){
-      sut.create('change_test_item', '1', {test: 'change_test_item 1 test'}, function(error){
+      sut.upsert('change_test_item', '1', {test: 'change_test_item 1 test'}, function(error){
         assert.equal(error, undefined);
 
         sut.read('change_test_item', { key: '1' }, function(error, data){
@@ -197,7 +197,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     }),
     it('update should change the item', function(done){
-      sut.update('change_test_item', '1', {test: 'new change_test_item 1 test'}, function(error){
+      sut.upsert('change_test_item', '1', {test: 'new change_test_item 1 test'}, function(error){
         assert.equal(error, undefined);
 
         sut.read('change_test_item', { key: '1' }, function(error, data){
@@ -356,7 +356,7 @@ describe('Module: JSON Key/Value Storage', function(){
       sut.onChange(function(changed){
         assert.equal(changed.key, 'notifications!first');
       });
-      sut.create('notifications', 'first', {test: 'notifications test 1'}, function(error){
+      sut.upsert('notifications', 'first', {test: 'notifications test 1'}, function(error){
         sut.del('notifications', 'first', function(error){
         });
       });

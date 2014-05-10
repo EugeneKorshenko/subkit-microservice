@@ -196,7 +196,8 @@ module.exports.init = function(){
 		EventSource: es,
 		File: file,
 		Template: template,
-		Worker: worker
+		Worker: worker,
+		ServeStatic: restify.serveStatic
 	};
 
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);

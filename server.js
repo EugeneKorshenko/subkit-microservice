@@ -98,7 +98,6 @@ module.exports.init = function(){
 	process.stdin.resume();
 	server.on('uncaughtException', function (req, res, route, err) {
 		console.log('A uncought exception was thrown: ' + route + ' -> ' + err.message);
-		res.send(500, err.message);
 	});
 	function exitHandler(options, err) {
 	    if (options.cleanup) {

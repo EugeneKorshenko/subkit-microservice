@@ -56,10 +56,10 @@ X		 	  | Worker		  | Scheduled Background Worker
 X		 	  | Monitoring	  | Heartbeats for Web-Service Monitoring
 X		 	  | Statistics	  | Useful statistics and usage analysis
 X		 	  | History		  | Track and query all state changes
-X		 	  | WebHooks      | User-defined HTTP callbacks
-X		 	  | JSON Storage  | A JSON key/value store
-X		 	  | PubSub		  | Real-Time topic based and storage changes Pub/Sub
+X		 	  | JSON Storage  | A Lightweight JSON key/value persistence
+X		 	  | Message Bus	  | Lightweight Message Bus for Real-Time topic based and storage changes
 X			  | Statistics    | Instance resource and usage statistics
+-		 	  | WebHooks      | User-defined HTTP callbacks
 -		 	  | Hooks         | Request/Response custom code hooks
 -		 	  | WebSockets    | Web-Socket support for real-time notifications
 -		 	  | Authorization | Advanced resource based authorization

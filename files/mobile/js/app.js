@@ -73,29 +73,15 @@ var mobilecenter = angular
 		$scope.domain = "";
 		
 		var nav = new Navigation();
-			
-		$scope.register = function(){
-			notify.PostMessage('Registering crashed!', 5000, 'faulty');
-			$scope.hasEnter = true;
-			var counter = $scope.loading = 5;
-			var ref = setInterval(function(){
-				$scope.loading = --counter;
-				$scope.$apply();
-				if(counter === 0) {
-					clearInterval(ref);
-					nav.back("login");
-				}
-			}, 1000);
-		};
 
 		$scope.login = function(){
 			shared.username = $scope.username;
 			shared.password = $scope.password;
-			shared.domain = $scope.domain;
+			shared.domain = document.URL;
 
 			AUTH.username = $scope.username;
 			AUTH.password = $scope.password;
-			AUTH.domain = $scope.domain;
+			AUTH.domain = document.URL;
 
 			var subkit = new Subkit({ baseUrl: shared.domain, username: shared.username, password: shared.password });
 			subkit.manage.login(function(err, data){
@@ -252,87 +238,6 @@ var mobilecenter = angular
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				$scope.fileName = "";
 				_load();
-			});
-		};
-	}])
-	.controller("TasksCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
-		var nav = new Navigation();
-		nav.onChanged(function(name){
-			if(name === "tasks") _load();
-		});
-
-		function _load(){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.list("tasks", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.tasks = data;
-				$scope.$apply();
-			});
-		}
-
-		$scope.show = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.download(fileName, "tasks", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.valueData = data || "";
-				$scope.keyData = fileName;
-				$scope.$apply();
-				nav.go("taskeditor");
-			});
-		};
-
-		$scope.save = function(){
-	        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			var file = new Blob([$scope.valueData]);
-	        file.name = $scope.keyData;
-	        subkit.file.upload(file, "tasks", function(err, data){
-	        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-	        });
-		};
-
-		$scope.upload = function(elementId){
-			var fileInput = document.getElementById(elementId);
-			fileInput.addEventListener('change', function(e) {
-				var files = fileInput.files;
-				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-				for (var i = 0; i < files.length; i++) {
-					subkit.file.upload(files[i], "tasks", function(err, data){
-						_load();
-					});
-				};
-			});
-			fileInput.click();
-		};
-
-		$scope.remove = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.delete(fileName, "tasks", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				_load();
-			});
-		};
-
-		$scope.create = function(fileName){
-	        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			var file = new Blob([]);
-	        file.name = fileName;
-	        subkit.file.upload(file, "tasks", function(err, data){
-	        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-	        	$scope.fileName = "";
-	        	_load();
-	        });
-		};
-
-		$scope.schedule = function(taskName){
-			nav.go("scheduletask");
-		};
-
-		$scope.run = function(taskName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.task.run(taskName, function(err, data){
-				$scope.previewOutput = err ? err.message : JSON.stringify(data, null, 4);
-				$scope.$apply();
-				nav.go("taskpreview");
 			});
 		};
 	}])
@@ -968,69 +873,6 @@ var mobilecenter = angular
 	        }
 	    };
 	});
-
-	angular
-		.module("jv-NotificationBar", [])
-		.service("NotificationBar", function($timeout, $compile, $rootScope) {
-		    var domElement;
-		    this.PostMessage = function(message, timeToLinger, cssToApply) {
-		        var template = angular.element("<div class=\"notification-message " + (cssToApply || "") +  "\" time=\""+timeToLinger+"\">"+message+"</div>");
-		        var newScope = $rootScope.$new();
-		        domElement.append($compile(template)(newScope));
-		    };
-		    
-		    this.RegisterDOM = function(element) {
-		    	domElement = element;
-		    };   
-		})
-		.directive("notificationBar", function(NotificationBar) {
-		    return {
-		        restrict:"C",
-		        link: function(sc, el) {
-		            NotificationBar.RegisterDOM(el);
-		        }
-		    }
-		})
-		.directive("notificationMessage", function($timeout) {
-		    return {
-		        restrict:"C",
-		        transclude:true,
-		        template: "<a href=\"javascript:void(0)\" ng-click=\"close()\">x</a><div ng-transclude></div>",
-		        link: function(scope, el, attr) {
-		            var promiseToEnd,
-		                promiseToDestroy;
-		            //ugly hack to get css styling to be interpreted correctly by browser.  Blech!
-		            $timeout(function() {
-		            	el.addClass("show");
-		            }, 1);
-		            scope.close = function() {
-		                el.remove();
-		                scope.$destroy();
-		            };
-		            
-		            function cancelTimeouts() {
-		                if(promiseToDestroy) {
-		                    $timeout.cancel(promiseToDestroy);
-		                    promiseToDestroy = undefined;
-		                }
-		                $timeout.cancel(promiseToEnd);
-		                el.addClass("show");
-		            }
-		            
-		            function startTimeouts() {
-		            	promiseToEnd = $timeout(function() {
-		                	el.removeClass("show");
-		                	promiseToDestroy = $timeout(scope.close, 1010);
-		            	}, attr.time);
-		            }
-		            
-		            el.bind("mouseenter", cancelTimeouts);
-		            el.bind("mouseleave", startTimeouts);
-		            
-		            startTimeouts();
-		        }
-		    };
-		});
 
 
 var App = {

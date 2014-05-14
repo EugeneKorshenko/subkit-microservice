@@ -26,17 +26,16 @@
 		<script defer src="@locals.url/sdk/subkit.js"></script>
 		<script defer src="@locals.url/sdk/angularsubkit.js"></script>
 		<script defer src="@locals.url/js/nav.js"></script>
+		<script defer src="@locals.url/js/notification.js"></script>
 		<script defer src="@locals.url/js/app.js"></script>
 	</head>
 	<body class="flat">
 		<views style="width: 100%;">
 			<div class="notification-bar"></div>
+
 			<div data-ng-controller="LoginCtrl">
 				<view data-content="login" next="info" nexttext="info" headertext="dev center">
 					<form name="loginf">
-						<div class="row">
-							<input type="text" class="input" name="ldomain" placeholder="domain" data-ng-model="$parent.domain" data-ng-init="$parent.domain='@locals.url'" required valid-domain>
-						</div>
 						<div class="row">
 							<input type="text" class="input" name="lusername" placeholder="username" data-ng-model="$parent.username" required>
 						</div>
@@ -46,31 +45,6 @@
 					</form>
 					<div class="row">
 						<button class="flatButton" data-ng-click="login()" ng-disabled="!loginf.$valid" title="Sign in">Sign In</button>
-					</div>
-					<div class="row center">
-						<span class="error" data-ng-bind="error"></span>
-					</div>
-				</view>
-				<view data-content="registration" class="hidden" back="login" backtext="back" headertext="New Account">
-					<div data-ng-show="hasEnter" class="rowtext" style="text-align: center; width: 100%;">
-						<h1 data-ng-bind="loading"></h1>
-					</div>
-					<div data-ng-hide="hasEnter">
-						<form name="signupf">
-							<div class="row">
-								<button class="flatButton" data-ng-click="register()" ng-disabled="!signupf.$valid" title="Create new Account">Register</button>
-							</div>								
-							<div class="row">
-								<input type="text" class="input" placeholder="give a new username" name="newusername" data-ng-model="$parent.newUsername" ng-required="true" ng-minlength="5" ng-maxlength="20">
-							</div>
-							<div class="row">
-								<input type="password" class="input" placeholder="set a complex password containing 8-20 lower- and upper-case as well as special characters" name="newpassword" id="newpassword" data-ng-model="$parent.newPassword" ng-required="true" ng-minlength="8" ng-maxlength="20" valid-password>
-							</div>
-							<div class="row">
-								<input type="password" class="input" placeholder="repeat the defined password once more just to be sure" name="newpasswordverify" data-ng-model="$parent.newPasswordv" ng-required="true" repeat-password="newpassword">
-							</div>
-						</form>
-				
 					</div>
 				</view>
 				<view data-content="info" class="hidden" back="login" backtext="back" headertext="info">
@@ -316,57 +290,6 @@
 				<view data-content="filepreview" class="hidden" headertext="Files/Editor/Preview" backtext="editor">
 					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
 				</view>
-			</div>
-
-			<div data-ng-controller="TasksCtrl">
-				<view data-content="tasks" class="hidden" back="center" backtext="back" headertext="Tasks">
-					<div class="menu">
-						<input type="file" multiple id="fileUpload" style="display: none;">
-						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile" title="Upload a taskfile">upload</button>
-					</div>
-					<form name="tasksfnew">
-						<div class="table">
-							<div class="tablerow">
-								<div class="tablecell">
-									<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addtask" required>
-								</div>
-								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!tasksfnew.$valid" title="Create a new Task">+</button>
-								</div>
-							</div>
-						</div>
-					</form>
-					<div class="table">
-						<div class="tablerow" data-ng-repeat="task in tasks">
-							<div class="tablecell pointer" data-ng-click="show(task)" title="Edit Task '{{task}}'">
-								<span data-ng-bind="task"></span>
-							</div>
-							<div class="tablecell30">
-								<button class="rotateButton" data-ng-click="remove(task)" title="Remove Task '{{task}}'">&ndash;</button>
-							</div>
-						</div>
-					</div>
-				</view>
-				<view data-content="taskeditor" class="hidden" headertext="Tasks/Editor" backtext="tasks">
-					<form name="tasksfeditor">
-						<div class="row">
-							<button class="flatButton" data-ng-click="save()" ng-disabled="!tasksfeditor.$valid" title="Save Task changes">save</button>
-						</div>
-						<div class="table">
-							<div class="tablerow">
-								<div class="tablecell">Task:&nbsp;<span data-ng-bind="keyData"></span></div>
-								<div class="tablecell60"><button class="tileButton" data-ng-click="run(keyData)" ng-disabled="!tasksfeditor.$valid" title="Run Task '{{keyData}}'">run</button></div>
-								<div class="tablecell80"><button class="tileButton" data-ng-click="schedule(keyData)" ng-disabled="!tasksfeditor.$valid" title="Schedule Task '{{keyData}}'">schedule</button></div>
-							</div>
-						</div>
-						<textarea id="taskeditor" data-ng-model="$parent.valueData" class="codeeditor" rows="20" name="taskeditor" required></textarea>
-					</form>
-				</view>
-				<view data-content="taskpreview" class="hidden" headertext="Tasks/Editor/Run" backtext="editor">
-					<div data-ng-bind="previewOutput" class="codepreview"></div>
-				</view>
-				<view data-content="scheduletask" class="hidden" headertext="Tasks/Editor/Schedule" backtext="editor">					
-				</view>	
 			</div>
 
 			<div data-ng-controller="TemplatesCtrl">

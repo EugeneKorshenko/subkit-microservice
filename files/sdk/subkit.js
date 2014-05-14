@@ -630,7 +630,7 @@ var Subkit = function(config){
 			});
 		},
 		list: function(callback){
-			var url = self.baseUrl + "/";
+			var url = self.baseUrl + "/task";
 			httpRequest.get(url, self.options, function(status, result){
 				if(!callback) return;
 				if(status === 0) return callback({message: "Lost network connection."});

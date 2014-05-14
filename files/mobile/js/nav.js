@@ -6,7 +6,9 @@ var slideOpts = {
     popout: ['noanim', 'popout'],    
 };
 var Slide = function (slideType, vin, vout, callback) {
+    if(!callback) callback = function(){ return; }
     if(vin === "undefined" || vout === "undefined") return callback();
+    console.log(vin);
     var vIn = document.querySelector('view[data-content="'+ vin + '"]'),
         vOut = document.querySelector('view[data-content="'+ vout + '"]'),
         onAnimationEnd = function () {
@@ -16,13 +18,12 @@ var Slide = function (slideType, vin, vout, callback) {
             vOut.removeEventListener('webkitAnimationEnd', onAnimationEnd, false);
             vOut.removeEventListener('animationend',       onAnimationEnd);
         };
-
+    console.log(vIn);
     vOut.addEventListener('webkitAnimationEnd', onAnimationEnd, false);
     vOut.addEventListener('animationend',       onAnimationEnd);
-    if (callback && typeof(callback) === 'function') {
-        callback();
-    }
-    vIn.classList.remove('hidden');
+    
+    if(callback && typeof(callback) === 'function') callback();
+    if(vIn) vIn.classList.remove('hidden');
     if(vin !== vout) vIn.classList.add(slideOpts[slideType][0]);
     if(vin !== vout) vOut.classList.add(slideOpts[slideType][1]);
 };
@@ -47,6 +48,7 @@ var app = angular
             Slide('popin', "notify", current);
             current = "notify";
             changed(current);
+            document.querySelector('view[data-content]').classList.remove('hidden');
         };
         this.go = function(name) {
             Slide('sl', name, current);

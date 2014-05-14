@@ -46,7 +46,6 @@ var app = angular
             Slide('popin', "notify", current);
             current = "notify";
             changed(current);
-            document.querySelector('view[data-content]').classList.remove('hidden');
         };
         this.go = function(name) {
             Slide('sl', name, current);
@@ -64,6 +63,7 @@ var app = angular
             view.name = name;
             views[name] = view;
             if(Object.keys(views).length===1) current = name;
+            document.querySelector('view[data-content]').classList.remove('hidden');
         };
         if($rootScope) {
           $rootScope.views = views;

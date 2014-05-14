@@ -96,10 +96,8 @@
 				</view>
 
 				<span data-ng-repeat="plugin in plugins" >
-					<view data-content="{{plugin.name}}" class="hidden" headertext="{{plugin.name}}" backtext="back" back="center">
-						<script type="text/javascript-lazy" data-name="{{plugin.name}}" data-script="{{plugin.script}}"></script>
-						<ng-include src="templateUrl(plugin)"></ng-include>
-					</view>
+					<script type="text/javascript-lazy" data-name="{{plugin.name}}" data-script="{{plugin.script}}"></script>
+					<ng-include src="templateUrl(plugin)"></ng-include>
 				</span>
 			</div>
 

@@ -8,7 +8,6 @@ var slideOpts = {
 var Slide = function (slideType, vin, vout, callback) {
     if(!callback) callback = function(){ return; }
     if(vin === "undefined" || vout === "undefined") return callback();
-    console.log(vin);
     var vIn = document.querySelector('view[data-content="'+ vin + '"]'),
         vOut = document.querySelector('view[data-content="'+ vout + '"]'),
         onAnimationEnd = function () {
@@ -18,7 +17,6 @@ var Slide = function (slideType, vin, vout, callback) {
             vOut.removeEventListener('webkitAnimationEnd', onAnimationEnd, false);
             vOut.removeEventListener('animationend',       onAnimationEnd);
         };
-    console.log(vIn);
     vOut.addEventListener('webkitAnimationEnd', onAnimationEnd, false);
     vOut.addEventListener('animationend',       onAnimationEnd);
     

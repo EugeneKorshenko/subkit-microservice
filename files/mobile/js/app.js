@@ -373,84 +373,78 @@ var mobilecenter = angular
 			}
 		});
 	}])
-	.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
+	.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
+		var nav = new Navigation();
+		var subkit = null;
+		nav.onChanged(function(name){
+			if(name === "email") _loadGroups();
+		});
+		var _loadGroups = $scope.loadGroups = function(){
+			subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+			subkit.identity.groups(null, function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.items = data;
+				$scope.$apply();
+			});
+		};
+
+		$scope.preview = function(){
+			subkit.template.open($scope.template, "templates", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.previewOutput = $sce.trustAsHtml(data) || "";
+				$scope.$apply();
+				nav.go("emailpreview");
+			});
+		};
+		$scope.open = function(emailgroup){
+			$scope.emailgroup = emailgroup;
+			subkit.identity.groups($scope.emailgroup.key, function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.items = data;
+
+				subkit.file.list("templates", function(err, data){
+					if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+					$scope.templates = data;
+					$scope.$apply();
+				});
+			})
+			nav.go("emailgroupeditor");
+		};
+		$scope.use = function(){
+			try{
+				$scope.templateData = JSON.parse($scope.templateJson);
+				nav.back("emailgroupeditor");
+			}catch(error){}
+		};
+		$scope.send = function(){
+			console.log($scope.template);
+			console.log($scope.templateData);
+			console.log($scope.emailgroup.key);
+
+			subkit.email.send({
+				"recipients": ["mike@mikebild.com", "go@subkit.io"],
+				"templateid": $scope.template,
+				"subject": $scope.subject,
+				"data": $scope.templateData
+			}, function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				notify.PostMessage("Push message sent.", 5000, 'success');
+			});
+		};
+	}])
+	.controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
 		var nav = new Navigation();
 		nav.onChanged(function(name){
-			if(name === "files") _load();
+			if(name === "location") _load();
 		});
 
 		function _load(){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.list("file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.files = data;
-				$scope.$apply();
-			});
-		}
-
-		$scope.preview = function(templateName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.template.open(templateName, "file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.previewOutput = $sce.trustAsHtml(data) || "";
-				$scope.keyData = templateName;
-				$scope.$apply();
-				nav.go("filepreview");
-			});
-		};
-
-		$scope.open = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.download(fileName, "file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.valueData = data || "";
-				$scope.keyData = fileName;
-				$scope.$apply();
-				nav.go("fileeditor");
-			});
+			console.log("load location");
+			$scope.$apply();
 		};
 
 		$scope.save = function(){
-	        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			var file = new Blob([$scope.valueData]);
-	        file.name = $scope.keyData;
-	        subkit.file.upload(file, "file", function(err, data){
-	        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-	        	nav.back("files");
-	        });
-		};
-
-		$scope.upload = function(elementId){
-			var fileInput = document.getElementById(elementId);
-			fileInput.addEventListener('change', function(e) {
-				var files = fileInput.files;
-				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-				for (var i = 0; i < files.length; i++) {
-					subkit.file.upload(files[i], "file", function(err, data){
-						_load();
-					});
-				};
-			});
-			fileInput.click();
-		};
-
-		$scope.remove = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.delete(fileName, "file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				_load();
-			});
-		};
-
-		$scope.create = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			var file = new Blob([]);
-			file.name = fileName;
-			subkit.file.upload(file, "file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.fileName = "";
-				_load();
-			});
+			console.log("save location");
 		};
 	}])
 	.controller("IdentityCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
@@ -544,163 +538,6 @@ var mobilecenter = angular
 				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
 				nav.back("identity");
 			});
-		};
-	}])
-	.controller("EMailCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
-		var nav = new Navigation();
-		var subkit = null;
-		nav.onChanged(function(name){
-			if(name === "email") _loadGroups();
-		});
-		var _loadGroups = $scope.loadGroups = function(){
-			subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-			subkit.identity.groups(null, function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.items = data;
-				$scope.$apply();
-			});
-		};
-
-		$scope.preview = function(){
-			subkit.template.open($scope.template, "templates", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.previewOutput = $sce.trustAsHtml(data) || "";
-				$scope.$apply();
-				nav.go("emailpreview");
-			});
-		};
-		$scope.open = function(emailgroup){
-			$scope.emailgroup = emailgroup;
-			subkit.identity.groups($scope.emailgroup.key, function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.items = data;
-
-				subkit.file.list("templates", function(err, data){
-					if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-					$scope.templates = data;
-					$scope.$apply();
-				});
-			})
-			nav.go("emailgroupeditor");
-		};
-		$scope.use = function(){
-			try{
-				$scope.templateData = JSON.parse($scope.templateJson);
-				nav.back("emailgroupeditor");
-			}catch(error){}
-		};
-		$scope.send = function(){
-			console.log($scope.template);
-			console.log($scope.templateData);
-			console.log($scope.emailgroup.key);
-
-			subkit.email.send({
-				"recipients": ["mike@mikebild.com", "go@subkit.io"],
-				"templateid": $scope.template,
-				"subject": $scope.subject,
-				"data": $scope.templateData
-			}, function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				notify.PostMessage("Push message sent.", 5000, 'success');
-			});
-		};
-	}])
-	.controller("PushNotifyCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
-		var nav = new Navigation();
-		var subkit = null;
-
-		$scope.messageAlert = "";
-		$scope.messageSound = "";
-		$scope.messageBadge = "";
-		$scope.messagePayload = "";
-
-		$scope.gcmKey = "";
-		$scope.apnSandbox = false;
-
-		nav.onChanged(function(name){
-			subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			if(name === "pushnotify") {
-				_loadGroups();
-				_loadSettings();
-			}
-		});
-		var _loadGroups = $scope.loadGroups = function(){
-			subkit.identity.groups(null, function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.items = data;
-				$scope.$apply();
-			});
-		};
-
-		var _loadSettings = $scope.loadSettings = function(){
-			subkit.notify.settings.load(function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.gcmKey = data.GCMKey;
-				$scope.apnSandbox = data.APNSandbox;
-			});
-		}
-
-		$scope.upload = function(provider, env, elementId){
-			var fileInput = document.getElementById(elementId);
-			fileInput.addEventListener('change', function(e) {
-				var file = fileInput.files[0];
-				subkit.notify.upload(provider, env, file, function(err, data){
-					console.log(err);
-					console.log(data);
-				});
-			});
-			fileInput.click();
-	    };
-
-	    $scope.saveSettings = function(){
-	    	var settings = { GCMKey: $scope.gcmKey, APNSandbox: $scope.apnSandbox };
-			subkit.notify.settings.save(settings, function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				console.log(err);
-				console.log(data);
-			});
-	    };
-
-		$scope.open = function(pushnotifygroup){
-			$scope.pushnotifygroup = pushnotifygroup;
-			subkit.identity.groups($scope.pushnotifygroup.key, function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.items = data;
-				$scope.$apply();
-			})
-			nav.go("pushnotifygroupeditor");
-		};
-
-		$scope.send = function(){
-			console.log($scope.pushnotifygroup);
-			var payload = {
-				Text1: $scope.messageAlert,
-				Text2: $scope.messagePayload,
-				"alert": $scope.messageAlert,
-				"sound": $scope.messageSound,
-				"badge": $scope.messageBadge,
-				"payload": $scope.messagePayload
-			};
-			console.log(payload);
-			subkit.notify.send(payload, function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				notify.PostMessage("Push message sent.", 5000, 'success');
-			});
-		};
-	}])
-	.controller("LocationCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
-		var nav = new Navigation();
-		nav.onChanged(function(name){
-			if(name === "location") _load();
-		});
-
-		function _load(){
-			console.log("load location");
-			$scope.$apply();
-		};
-
-		$scope.save = function(){
-			console.log("save location");
 		};
 	}])
 	.directive('validPassword',function(){

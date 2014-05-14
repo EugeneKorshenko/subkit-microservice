@@ -292,56 +292,6 @@
 				</view>
 			</div>
 
-			<div data-ng-controller="TemplatesCtrl">
-				<view data-content="templates" class="hidden" back="center" backtext="back" headertext="Templates">
-					<div class="menu">
-						<input type="file" multiple id="fileUpload" style="display: none;">
-						<button data-ng-click="upload('fileUpload')" class="tileButton mediumTile" title="Upload template">upload</button>
-					</div>
-					<form name="templatefnew">
-						<div class="table">
-							<div class="tablerow">
-								<div class="tablecell">
-									<input type="text" class="input" placeholder="new" data-ng-model="$parent.fileName" name="addtemplate" required ng-minlength="2">
-								</div>
-								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="create(fileName)" ng-disabled="!templatefnew.$valid" title="Create new template">+</button>
-								</div>
-							</div>
-						</div>
-					</form>
-					<div class="table">
-						<div class="tablerow" data-ng-repeat="template in templates">
-							<div class="tablecell pointer" data-ng-click="show(template)" title="Edit Template '{{$parent.fileName}}'">
-								<span data-ng-bind="template"></span>
-							</div>
-							<div class="tablecell30">
-								<button class="rotateButton" data-ng-click="remove(template)" title="Remove Template '{{$parent.fileName}}'">&ndash;</button>
-							</div>								
-						</div>
-					</div>
-				</view>
-				<view data-content="templateeditor" class="hidden" headertext="Templates/Editor" backtext="templates">
-					<form name="templateeditor">
-						<div class="row">
-							<button class="flatButton" data-ng-click="save()" ng-disabled="!templateeditor.$valid" title="Save template">save</button>
-						</div>
-						<div class="table">
-							<div class="tablerow">
-								<div class="tablecell">Template:&nbsp;<span data-ng-bind="keyData"></span></div>
-								<div class="tablecell60">
-									<button class="tileButton" data-ng-click="preview(keyData)" ng-disabled="!templateeditor.$valid" title="Preview template '{{keyData}}'">preview</button>
-								</div>
-							</div>
-						</div>
-						<textarea data-ng-model="$parent.valueData" class="codeeditor" rows="20" required></textarea>
-					</form>
-				</view>
-				<view data-content="templatepreview" class="hidden" headertext="Templates/Editor/Preview" backtext="editor">
-					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
-				</view>				
-			</div>
-
 			<div data-ng-controller="AccountCtrl" name="account">
 				<view data-content="account" class="hidden" back="center" backtext="back" headertext="Account">
 					<form name="account">

@@ -111,265 +111,6 @@ var mobilecenter = angular
 
 		$scope.save = function(){
 			notify.PostMessage("Data saved successfully.", 6000, "success");
-			console.log("save account");
-			console.log("$scope.username-> "+$scope.username);
-			console.log("$scope.password-> "+$scope.password);
-			console.log("$scope.passwordValidation-> "+$scope.passwordValidation);
-			console.log("$scope.piName-> "+$scope.piName);
-			console.log("$scope.piLastname-> "+$scope.piLastname);
-			console.log("$scope.piAddress-> "+$scope.piAddress);
-			console.log("$scope.piZip-> "+$scope.piZip);
-			console.log("$scope.piCountry-> "+$scope.piCountry);
-			console.log("$scope.biName-> "+$scope.biName);
-			console.log("$scope.biLastname-> "+$scope.biLastname);
-			console.log("$scope.biAddress-> "+$scope.biAddress);
-			console.log("$scope.biZip-> "+$scope.biZip);
-			console.log("$scope.biCountry-> "+$scope.biCountry)
-		};
-	}])
-	.controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
-		var nav = new Navigation();
-		nav.onChanged(function(name){
-			if(name === "statistics") {
-				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-				subkit.statistics.usage(function(err, data){
-					if(err) { $rootScope.error = "network error"; nav.show("notify"); }
-
-					$scope.lastUpdate = data.timestamp;
-					$scope.connections = data.connections;
-					$scope.requestNumber = data.transfer.count;
-					$scope.totalKBytes = data.transfer.totalKBytes;
-					$scope.dbSizeKBytes = data.dbSizeKBytes;
-					$scope.staticsDirSizeKBytes = data.staticsDirSizeKBytes;
-					$scope.$apply();
-				});
-				subkit.statistics.analytics(function(err, data){
-					$scope.urls = [];
-					for (var property in data.urls) {
-					    $scope.urls.push({key: property, value: data.urls[property]});
-					}
-					$scope.agents = [];
-					for (var property in data.agents) {
-					    $scope.agents.push({key: property, value: data.agents[property]});
-					}
-					$scope.transfers = [];
-					for (var property in data.http) {
-					    $scope.transfers.push({key: property, value: data.http[property]});
-					}
-					$scope.$apply();
-				});
-			}
-		});
-	}])
-	.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
-		var nav = new Navigation();
-		nav.onChanged(function(name){
-			if(name === "files") _load();
-		});
-
-		function _load(){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.list("file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.files = data;
-				$scope.$apply();
-			});
-		}
-
-		$scope.preview = function(templateName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.template.open(templateName, "file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.previewOutput = $sce.trustAsHtml(data) || "";
-				$scope.keyData = templateName;
-				$scope.$apply();
-				nav.go("filepreview");
-			});
-		};
-
-		$scope.open = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.download(fileName, "file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.valueData = data || "";
-				$scope.keyData = fileName;
-				$scope.$apply();
-				nav.go("fileeditor");
-			});
-		};
-
-		$scope.save = function(){
-	        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			var file = new Blob([$scope.valueData]);
-	        file.name = $scope.keyData;
-	        subkit.file.upload(file, "file", function(err, data){
-	        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-	        	nav.back("files");
-	        });
-		};
-
-		$scope.upload = function(elementId){
-			var fileInput = document.getElementById(elementId);
-			fileInput.addEventListener('change', function(e) {
-				var files = fileInput.files;
-				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-				for (var i = 0; i < files.length; i++) {
-					subkit.file.upload(files[i], "file", function(err, data){
-						_load();
-					});
-				};
-			});
-			fileInput.click();
-		};
-
-		$scope.remove = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.delete(fileName, "file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				_load();
-			});
-		};
-
-		$scope.create = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			var file = new Blob([]);
-			file.name = fileName;
-			subkit.file.upload(file, "file", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.fileName = "";
-				_load();
-			});
-		};
-	}])
-	.controller("TemplatesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
-		var nav = new Navigation();
-		nav.onChanged(function(name){
-			if(name === "templates") _load();
-		});
-
-		function _load(){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.list("templates", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.templates = data;
-				$scope.$apply();
-			});
-		}
-
-		$scope.show = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.download(fileName, "templates", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.valueData = data || "";
-				$scope.keyData = fileName;
-				$scope.$apply();
-				nav.go("templateeditor");
-			});
-		};
-
-		$scope.save = function(){
-	        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			var file = new Blob([$scope.valueData]);
-	        file.name = $scope.keyData;
-	        subkit.file.upload(file, "templates", function(err, data){
-	        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-	        });
-		};
-
-		$scope.upload = function(elementId){
-			var fileInput = document.getElementById(elementId);
-			fileInput.addEventListener('change', function(e) {
-				var files = fileInput.files;
-				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-				for (var i = 0; i < files.length; i++) {
-					subkit.file.upload(files[i], "templates", function(err, data){
-						_load();
-					});
-				};
-			});
-			fileInput.click();
-		};
-
-		$scope.remove = function(fileName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.file.delete(fileName, "templates", function(err, data){
-				if(err) { $rootScope.error = "network error"; natrv.show("notify"); return; }
-				_load();
-			});
-		};
-
-		$scope.create = function(fileName){
-	        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			var file = new Blob([]);
-	        file.name = fileName;
-	        subkit.file.upload(file, "templates", function(err, data){
-	        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-	        	$scope.fileName = "";
-	        	_load();
-	        });
-		};
-
-		$scope.preview = function(templateName){
-			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
-			subkit.template.open(templateName, "templates", function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.previewOutput = $sce.trustAsHtml(data) || "";
-				$scope.keyData = templateName;
-				$scope.$apply();
-				nav.go("templatepreview");
-			});
-		};
-	}])
-	.controller("PubSubCtrl",['$scope', '$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify) {	
-		var nav = new Navigation();
-		var subkit = null;
-		var subscription = null;
-
-		nav.onChanged(function(name){
-			if(name === "pubsub") {
-				if(subscription) subscription.off($scope.keyData);
-				_load();
-			}
-		});
-
-		var _load = function(){
-			subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
-			subkit.pubsub.channels(function(err, data){
-				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
-				$scope.channels = data.map(function(itm){
-					return itm.channel;
-				});
-				$scope.$apply();
-			});
-		};
-		
-		$scope.open = function(channelName){
-			$scope.keyData = channelName;
-			nav.go("channeleditor");
-		};
-		$scope.subscribe = function(channelName){
-			$scope.messageLog = [];
-			if(subscription) $scope.unsubscribe(channelName);
-			$scope.channelStatus = "subscribed";
-			subscription = subkit.pubsub.on(channelName, function(error, data){
-				var logMsg = JSON.stringify({timestamp: new Date(), value: data}, null, 4);
-				$scope.messageLog.unshift(logMsg);
-				$scope.$apply();
-			});
-		};
-		$scope.unsubscribe = function(channelName){
-			subscription.off(channelName);
-			subscription = null;
-			$scope.channelStatus = "unsubscribed";
-		};
-		$scope.create = function(channelName){
-			subkit.pubsub.push(channelName, {value: "created"}, function(){
-				_load();
-			});
-		};
-		$scope.publish = function(channelName, value){
-			if(!subscription) $scope.channelStatus = "subscribe to channel please";
-			else subscription.push({value: value || new Date()});
 		};
 	}])
 	.controller("StorageCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify) {
@@ -387,9 +128,7 @@ var mobilecenter = angular
 			var key = previous.join('/');
 			$scope.key = key;
 			$scope.stores = [];
-
 			var segment = (obj && obj[previous[previous.length-1]]) || segments[key];
-
 			if(shared.rawObj && segment) {
 				segments[key] = segment;
 				obj = segment;
@@ -546,6 +285,251 @@ var mobilecenter = angular
 					_load();
 				});
 			}
+		};
+	}])		
+	.controller("PubSubCtrl",['$scope', '$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify) {	
+		var nav = new Navigation();
+		var subkit = null;
+		var subscription = null;
+
+		nav.onChanged(function(name){
+			if(name === "pubsub") {
+				if(subscription) subscription.off($scope.keyData);
+				_load();
+			}
+		});
+
+		var _load = function(){
+			subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });	
+			subkit.pubsub.channels(function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.channels = data.map(function(itm){
+					return itm.channel;
+				});
+				$scope.$apply();
+			});
+		};
+		
+		$scope.open = function(channelName){
+			$scope.keyData = channelName;
+			nav.go("channeleditor");
+		};
+		$scope.subscribe = function(channelName){
+			$scope.messageLog = [];
+			if(subscription) $scope.unsubscribe(channelName);
+			$scope.channelStatus = "subscribed";
+			subscription = subkit.pubsub.on(channelName, function(error, data){
+				var logMsg = JSON.stringify({timestamp: new Date(), value: data}, null, 4);
+				$scope.messageLog.unshift(logMsg);
+				$scope.$apply();
+			});
+		};
+		$scope.unsubscribe = function(channelName){
+			subscription.off(channelName);
+			subscription = null;
+			$scope.channelStatus = "unsubscribed";
+		};
+		$scope.create = function(channelName){
+			subkit.pubsub.push(channelName, {value: "created"}, function(){
+				_load();
+			});
+		};
+		$scope.publish = function(channelName, value){
+			if(!subscription) $scope.channelStatus = "subscribe to channel please";
+			else subscription.push({value: value || new Date()});
+		};
+	}])
+	.controller("StatisticsCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){
+		var nav = new Navigation();
+		nav.onChanged(function(name){
+			if(name === "statistics") {
+				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+				subkit.statistics.usage(function(err, data){
+					if(err) { $rootScope.error = "network error"; nav.show("notify"); }
+
+					$scope.lastUpdate = data.timestamp;
+					$scope.connections = data.connections;
+					$scope.requestNumber = data.transfer.count;
+					$scope.totalKBytes = data.transfer.totalKBytes;
+					$scope.dbSizeKBytes = data.dbSizeKBytes;
+					$scope.staticsDirSizeKBytes = data.staticsDirSizeKBytes;
+					$scope.$apply();
+				});
+				subkit.statistics.analytics(function(err, data){
+					$scope.urls = [];
+					for (var property in data.urls) {
+					    $scope.urls.push({key: property, value: data.urls[property]});
+					}
+					$scope.agents = [];
+					for (var property in data.agents) {
+					    $scope.agents.push({key: property, value: data.agents[property]});
+					}
+					$scope.transfers = [];
+					for (var property in data.http) {
+					    $scope.transfers.push({key: property, value: data.http[property]});
+					}
+					$scope.$apply();
+				});
+			}
+		});
+	}])
+	.controller("TemplatesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
+		var nav = new Navigation();
+		nav.onChanged(function(name){
+			if(name === "templates") _load();
+		});
+
+		function _load(){
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.file.list("templates", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.templates = data;
+				$scope.$apply();
+			});
+		}
+
+		$scope.show = function(fileName){
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.file.download(fileName, "templates", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.valueData = data || "";
+				$scope.keyData = fileName;
+				$scope.$apply();
+				nav.go("templateeditor");
+			});
+		};
+
+		$scope.save = function(){
+	        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			var file = new Blob([$scope.valueData]);
+	        file.name = $scope.keyData;
+	        subkit.file.upload(file, "templates", function(err, data){
+	        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+	        });
+		};
+
+		$scope.upload = function(elementId){
+			var fileInput = document.getElementById(elementId);
+			fileInput.addEventListener('change', function(e) {
+				var files = fileInput.files;
+				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+				for (var i = 0; i < files.length; i++) {
+					subkit.file.upload(files[i], "templates", function(err, data){
+						_load();
+					});
+				};
+			});
+			fileInput.click();
+		};
+
+		$scope.remove = function(fileName){
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.file.delete(fileName, "templates", function(err, data){
+				if(err) { $rootScope.error = "network error"; natrv.show("notify"); return; }
+				_load();
+			});
+		};
+
+		$scope.create = function(fileName){
+	        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			var file = new Blob([]);
+	        file.name = fileName;
+	        subkit.file.upload(file, "templates", function(err, data){
+	        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+	        	$scope.fileName = "";
+	        	_load();
+	        });
+		};
+
+		$scope.preview = function(templateName){
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.template.open(templateName, "templates", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.previewOutput = $sce.trustAsHtml(data) || "";
+				$scope.keyData = templateName;
+				$scope.$apply();
+				nav.go("templatepreview");
+			});
+		};
+	}])
+	.controller("FilesCtrl", ['$scope','$rootScope', 'Navigation', 'shared', '$sce', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, $sce, notify){
+		var nav = new Navigation();
+		nav.onChanged(function(name){
+			if(name === "files") _load();
+		});
+
+		function _load(){
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.file.list("file", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.files = data;
+				$scope.$apply();
+			});
+		}
+
+		$scope.preview = function(templateName){
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.template.open(templateName, "file", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.previewOutput = $sce.trustAsHtml(data) || "";
+				$scope.keyData = templateName;
+				$scope.$apply();
+				nav.go("filepreview");
+			});
+		};
+
+		$scope.open = function(fileName){
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.file.download(fileName, "file", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.valueData = data || "";
+				$scope.keyData = fileName;
+				$scope.$apply();
+				nav.go("fileeditor");
+			});
+		};
+
+		$scope.save = function(){
+	        var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			var file = new Blob([$scope.valueData]);
+	        file.name = $scope.keyData;
+	        subkit.file.upload(file, "file", function(err, data){
+	        	if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+	        	nav.back("files");
+	        });
+		};
+
+		$scope.upload = function(elementId){
+			var fileInput = document.getElementById(elementId);
+			fileInput.addEventListener('change', function(e) {
+				var files = fileInput.files;
+				var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+				for (var i = 0; i < files.length; i++) {
+					subkit.file.upload(files[i], "file", function(err, data){
+						_load();
+					});
+				};
+			});
+			fileInput.click();
+		};
+
+		$scope.remove = function(fileName){
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			subkit.file.delete(fileName, "file", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				_load();
+			});
+		};
+
+		$scope.create = function(fileName){
+			var subkit = new Subkit({ baseUrl: shared.domain, apiKey: shared.apiKey });
+			var file = new Blob([]);
+			file.name = fileName;
+			subkit.file.upload(file, "file", function(err, data){
+				if(err) return notify.PostMessage(err.message, 5000, 'faulty');
+				$scope.fileName = "";
+				_load();
+			});
 		};
 	}])
 	.controller("IdentityCtrl", ['$scope','$rootScope', 'Navigation', 'shared', 'NotificationBar', function ($scope, $rootScope, Navigation, shared, notify){

@@ -5,7 +5,7 @@
 
   SwaggerApi = (function() {
 
-    SwaggerApi.prototype.url = "http://api.wordnik.com/v4/resources.json";
+    SwaggerApi.prototype.url = "";
 
     SwaggerApi.prototype.debug = false;
 
@@ -414,7 +414,7 @@
 
     SwaggerResource.prototype.sanitize = function(nickname) {
       var op;
-      op = nickname.replace(/[\s!@#$%^&*()_+=\[{\]};:<>|./?,\\'""-]/g, '_');
+      op = nickname.replace(/[\s!@#$%^&*()_+=\[{\]};:<>|.\/?,\\'""-]/g, '_');
       op = op.replace(/((_){2,})/g, '_');
       op = op.replace(/^(_)*/g, '');
       op = op.replace(/([_])*$/g, '');

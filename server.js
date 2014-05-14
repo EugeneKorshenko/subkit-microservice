@@ -115,7 +115,8 @@ module.exports.init = function(){
 	//JSON doc
 	doc = doc.configure(server, {
 		discoveryUrl: '/docs',
-		version:      '1.2'
+		version: '1.2',
+		basePath: app.key ? 'https:' + api.url : 'http:' + api.url
 	});
 	//docu
 	var rendererDevCenter = template.init({

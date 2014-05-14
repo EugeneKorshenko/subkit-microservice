@@ -302,6 +302,7 @@ var Subkit = function(config){
 				key = key.replace(/^[a-zA-z0-9]\/\//, '!');
 				return self.baseUrl + '/stores/' + key;
 			}
+			if(!store && key) return self.baseUrl + '/stores/' + key;
 			return self.baseUrl + '/stores';
 		};
 		var Continuation = function(){

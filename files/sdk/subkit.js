@@ -591,6 +591,53 @@ var Subkit = function(config){
 		}
 	};
 	self.task = {
+		upload: function(file, callback){
+			var msg = JSON.parse(JSON.stringify(self.options));
+			msg.headers = {
+			  'Content-Type': 'application/octed-stream',
+			  apiKey: config.apiKey
+			};
+			msg["data"] = file;
+			var url = self.baseUrl + "/task/upload/" + file.name;
+			httpRequest.post(url, msg, function(status, result){
+				if(status!==201) {
+					if(callback) _changeStatus(result);
+				}else{
+					if(callback) callback();
+				}
+			});
+		},
+		download: function(fileName, callback){
+			var url = self.baseUrl + "/task/download/" + fileName;
+			httpRequest.get(url, self.options, function(status, result){
+				if(status!==200) {
+					if(callback) _changeStatus(result);
+				}else{
+					var data = result.text();
+					if(callback && data != "undefined") return callback(null, data);
+					callback();
+				}
+			});
+		},
+		delete: function(fileName, callback){
+			var url = self.baseUrl + "/task/" + fileName;
+			httpRequest.del(url, self.options, function(status, result){
+				if(status!==200 && status!==202) {
+					if(callback) _changeStatus(result);
+				}else{
+					if(callback) callback(null, result.text());
+				}
+			});
+		},
+		list: function(callback){
+			var url = self.baseUrl + "/";
+			httpRequest.get(url, self.options, function(status, result){
+				if(!callback) return;
+				if(status === 0) return callback({message: "Lost network connection."});
+				if(status !== 200) return callback(result.json());
+				callback(null, result.json());
+			});
+		},
 		run: function(taskName, callback){
 			var url = self.baseUrl + '/task/run/' + taskName;
 			httpRequest.get(url, self.options, function(status, result){

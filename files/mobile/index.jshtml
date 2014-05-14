@@ -32,7 +32,6 @@
 	<body class="flat">
 		<views style="width: 100%;">
 			<div class="notification-bar"></div>
-
 			<div data-ng-controller="LoginCtrl">
 				<view data-content="login" next="info" nexttext="info" headertext="dev center">
 					<form name="loginf">
@@ -54,7 +53,6 @@
 					<a href="/doc" target="_blank">API Documentation</a>
 				</view>
 			</div>
-
 			<div data-ng-controller="MainCtrl">
 				<view data-content="center" class="hidden" back="login" backtext="logout" nexttext="account" next="account" headertext="dev center">
 					<div class="centerMenu">
@@ -74,7 +72,6 @@
 					<ng-include src="templateUrl(plugin)"></ng-include>
 				</span>
 			</div>
-
 			<div data-ng-controller="StorageCtrl">
 				<view data-content="storage" class="hidden" backtext="center" headertext="Store">
 					<div class="menu">
@@ -125,7 +122,6 @@
 					</form>
 				</view>
 			</div>
-
 			<div data-ng-controller="PubSubCtrl">
 				<view data-content="pubsub" class="hidden" back="center" backtext="center" headertext="PubSub">
 					<div class="menu"></div>
@@ -189,7 +185,6 @@
 					</div>
 				</view>
 			</div>
-			
 			<div data-ng-controller="StatisticsCtrl">
 				<view data-content="statistics" class="hidden" back="center" backtext="center" headertext="Statistics">
 					<div class="menu">
@@ -243,7 +238,6 @@
 					</div>
 				</view>	
 			</div>
-
 			<div data-ng-controller="AccountCtrl" name="account">
 				<view data-content="account" class="hidden" back="center" backtext="back" headertext="Account">
 					<form name="account">
@@ -273,137 +267,6 @@
 					</form>
 				</view>
 			</div>
-			
-			<div data-ng-controller="IdentityCtrl">
-				<view data-content="identity" class="hidden" headertext="Identity" backtext="back" back="center">
-					<form name="identiyfnew">
-						<div class="table">
-							<div class="tablerow">
-								<div class="tablecell">
-									<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId" name="addidentity" required ng-minlength="2">
-								</div>
-								<div class="tablecell60">
-									<button class="rotateButton" data-ng-click="create(userId)" ng-disabled="!identiyfnew.$valid" title="Create new Identity">+</button>
-								</div>
-							</div>
-						</div>
-					</form>
-					<div class="table">
-						<div class="tablerow" data-ng-repeat="item in items">
-							<div class="tablecell pointer" data-ng-click="open(item)" title="Administer Identity '{{item.key}}'">
-								<span data-ng-bind="item.key"></span>
-							</div>
-							<div class="tablecell60">
-								<button class="rotateButton" data-ng-click="remove(item.key)" title="Remove Identity '{{item.key}}'">&ndash;</button>
-							</div>
-						</div>
-					</div>
-				</view>
-				<view data-content="identityeditor" class="hidden" headertext="Identity/Edit" backtext="identity">
-					<form name="identiyfacc">
-						<div class="row">
-							<button class="flatButton" data-ng-click="save()" ng-disabled="!identiyfacc.idusername.$valid || !identiyfacc.idpassword.$valid">save</button>
-						</div>
-						<div class="row">
-							<input type="text" data-ng-model="identity.username" placeholder="Give a username" name="idusername" required ng-minlength="2" ng-maxlength="20" maxlength="20">
-						</div>
-						<div class="row">
-							<input type="password" data-ng-model="identity.password" placeholder="set a complex password containing 8-20 lower- and upper-case as well as special characters" name="idpassword" required ng-minlength="8" ng-maxlength="20" valid-password maxlength="20">
-						</div>
-						<div class="row">
-							<input type="text" data-ng-model="identity.email.address" placeholder="Enter a valid Emailaddress" name="idemail" required ng-minlength="7" ng-maxlength="40" maxlength="40">
-						</div>
-						<div class="row">
-							<div class="verified">
-								<span>Verified</span>
-								<input type="checkbox" data-ng-model="identity.email.verified">
-							</div>
-						</div>
-						<h3 class="subHead">Groups</h3>
-						<div class="table">
-							<div class="tablerow">
-								<div class="tablecell">
-									<input type="text" class="input" placeholder="new" data-ng-model="$parent.newGroupName" name="addgroup" required ng-minlength="2">
-								</div>
-								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="addToGroup(newGroupName)" ng-disabled="!identiyfacc.addgroup.$valid" title="Add new Group">+</button>
-								</div>
-							</div>
-							<div class="tablerow" data-ng-repeat="group in identity.groups">
-								<div class="tablecell">
-									<span data-ng-bind="group.key"></span>
-								</div>
-								<div class="tablecell30">
-									<input type="checkbox" data-ng-model="group.value">
-								</div>
-							</div>
-						</div>
-					</form>
-				</view>
-			</div>
-
-			<div data-ng-controller="EMailCtrl">
-				<view data-content="email" class="hidden" headertext="Email" backtext="back" back="center" next="emailsettings" nexttext="settings">
-					<form name="emailfnewtemplate">
-						<div class="table">
-							<div class="tablerow">
-								<div class="tablecell">
-									<input type="text" class="input" placeholder="new" data-ng-model="$parent.userId" required>
-								</div>
-								<div class="tablecell30">
-									<button class="rotateButton" data-ng-click="create(userId)" title="Create new Emailtemplate" ng-disabled="!emailfnewtemplate.$valid">+</button>
-								</div>
-							</div>
-						</div>
-					</form>
-					<div class="table">
-						<div class="tablerow" data-ng-repeat="item in items">
-							<div class="tablecell pointer" data-ng-click="open(item)" title="Administer Emailtemplate '{{item.key}}'">
-								<span data-ng-bind="item.key"></span>
-							</div>
-							<div class="tablecell30">
-								<button class="rotateButton" data-ng-click="remove(item.key)" title="Remove Emailtemplate '{{item.key}}'">&ndash;</button>
-							</div>
-						</div>
-					</div>
-				</view>
-				<view data-content="emailgroupeditor" class="hidden" headertext="Email/GroupEditor" backtext="email">
-					<div class="rowtext">
-						<select data-ng-model="$parent.template" data-ng-options="t for t in templates">
-							<option value="">-- choose template --</option>
-						</select>
-						<input type="text" placeholder="subject" data-ng-model="$parent.subject">
-						<go data-view="templatedata" class="tileButton">json</go>
-						<button data-ng-click="preview()" class="tileButton" data-ng-show="$parent.template">preview</button>
-					</div>
-					<ul class="arrowlist">
-						<li data-ng-repeat="item in items">
-							<span class="item" data-ng-bind="item.key"></span>
-							<button class="rotateButton" data-ng-click="remove(item.key)">&ndash;</button>
-						</li>
-					</ul>
-				</view>
-				<view data-content="templatedata" class="hidden" headertext="Email/GroupEditor/Template" backtext="back" back="emailgroupeditor">
-					<form name="storefjeditor">
-						<div class="row">
-							<button class="flatButton" data-ng-click="use()" ng-disabled="!storefjeditor.$valid" title="Use this template">Save</button>
-						</div>
-						<textarea data-ng-model="$parent.templateJson" class="codeeditor" rows="20" name="storejeditor" required valid-json></textarea>
-					</form>
-				</view>
-				<view data-content="emailpreview" class="hidden" headertext="Email/GroupEditor/Template/Preview" backtext="back" back="emailgroupeditor">
-					<button class="flatButton" data-ng-click="send()" ng-disabled="!storefjeditor.$valid" title="Send to clients">send</button>
-					<div data-ng-bind-html="previewOutput" class="codepreview"></div>
-				</view>
-				<view data-content="emailsettings" class="hidden" headertext="Settings" backtext="back" back="email">
-				</view>
-			</div>
-
-			<div data-ng-controller="LocationCtrl">
-				<view data-content="location" class="hidden" headertext="GeoLocation" backtext="back" back="center">
-				</view>
-			</div>
-
 		</views>
 	</body>
 </html>

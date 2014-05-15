@@ -12,8 +12,8 @@
     "node-uuid": "*",
     "randomstring": "*",
     "restify": "*",
-    "swagger-doc": "*",
-    "underscore": "*"
+    "underscore": "*",
+    "swagger-doc": "*"
   },
   "devDependencies": {
     "grunt": "*",

@@ -36,9 +36,9 @@ module.exports.init = function(){
 		fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');
 
 	var utils = require('./lib/helper.js');
-	var doc = require('./lib/doc.module.js');
 	var storage = require('./lib/store.module.js').init(storageConfig);
 	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1}, storage);
+	var doc = require('./lib/doc.module.js');
 	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es);
@@ -118,24 +118,25 @@ module.exports.init = function(){
 		version: '1.2',
 		basePath: app.key ? 'https:' + api.url : 'http:' + api.url
 	});
-	//docu
-	var rendererDoc = template.init({
-		templatesPath: path.join(__dirname, 'files/mobile')
-	});
-	server.get('/doc', function(req, res, next){
-		var consoleData = {
-		  url: api.url,
-		  apiKey: api.apiKey,
-		  username: admin.username,
-		  password: admin.password
-		};
-		rendererDoc.render('doc', consoleData, function(err, html){
-		  res.contentType = 'text/html';
-		  res.write(html);
-		  res.end();
-		});
-		return next();
-	});
+	
+	// //docu
+	// var rendererDoc = template.init({
+	// 	templatesPath: path.join(__dirname, 'files/mobile')
+	// });
+	// server.get('/doc', function(req, res, next){
+	// 	var consoleData = {
+	// 	  url: api.url,
+	// 	  apiKey: api.apiKey,
+	// 	  username: admin.username,
+	// 	  password: admin.password
+	// 	};
+	// 	rendererDoc.render('doc', consoleData, function(err, html){
+	// 	  res.contentType = 'text/html';
+	// 	  res.write(html);
+	// 	  res.end();
+	// 	});
+	// 	return next();
+	// });
 
 	//development center
 	// var rendererMobileCenter = template.init({

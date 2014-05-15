@@ -12,8 +12,8 @@
     "node-uuid": "*",
     "randomstring": "*",
     "restify": "*",
-    "underscore": "*",
-    "swagger-doc": "*"
+    "swagger-doc": "*",
+    "underscore": "*"
   },
   "devDependencies": {
     "grunt": "*",
@@ -45,5 +45,7 @@
       "url": ""
     }
   ],
-  "optionalDependencies": {}
+  "optionalDependencies": {
+    "subkit-dashboard": "git+https://github.com/SubKit/subkit-dashboard.git"
+  }
 }

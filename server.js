@@ -118,48 +118,6 @@ module.exports.init = function(){
 		version: '1.2',
 		basePath: app.key ? 'https:' + api.url : 'http:' + api.url
 	});
-	
-	// //docu
-	// var rendererDoc = template.init({
-	// 	templatesPath: path.join(__dirname, 'files/mobile')
-	// });
-	// server.get('/doc', function(req, res, next){
-	// 	var consoleData = {
-	// 	  url: api.url,
-	// 	  apiKey: api.apiKey,
-	// 	  username: admin.username,
-	// 	  password: admin.password
-	// 	};
-	// 	rendererDoc.render('doc', consoleData, function(err, html){
-	// 	  res.contentType = 'text/html';
-	// 	  res.write(html);
-	// 	  res.end();
-	// 	});
-	// 	return next();
-	// });
-
-	//development center
-	// var rendererMobileCenter = template.init({
-	// 	templatesPath: path.join(__dirname, 'files/mobile')
-	// });
-	// server.get('/', function(req, res, next){
-	// 	var consoleData = {
-	// 	  url: api.url,
-	// 	  apiKey: api.apiKey,
-	// 	  username: admin.username,
-	// 	  password: admin.password
-	// 	};
-	// 	rendererMobileCenter.render('index', consoleData, function(err, html){
-	// 	  res.contentType = 'text/html';
-	// 	  res.write(html);
-	// 	  res.end();
-	// 	});
-	// 	return next();
-	// });
-	//javascript SDKs
-	server.get(/\/sdk\/?.*/, restify.serveStatic({
-	  directory: path.join(__dirname, 'files')
-	}));
 
 	//start web server
 	server.listen(app.port, function(){
@@ -168,11 +126,8 @@ module.exports.init = function(){
 		http.globalAgent.maxSockets = 50000;
 	});
 
-	//start task scheduler
 	worker.scheduler.scheduleTasks();
-	//start mapreduce tasks
 	worker.scheduler.scheduleMapReduce();	
-	//start jobs scheduler
 	worker.scheduler.schedule({
 		jobName: 'periodic',
 		cronTime: '* * * * *',
@@ -205,23 +160,6 @@ module.exports.init = function(){
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);
 	plugin.loadAll();
 	require('./lib/plugin.js').init(server, plugin, helper, doc);
-
-	//all other resources
-	// server.get(/\/css\/.+/, restify.serveStatic({
-	//   directory: path.join(__dirname, 'files/mobile')
-	// }));
-	// server.get(/\/libs\/.+/, restify.serveStatic({
-	//   directory: path.join(__dirname, 'files/mobile')
-	// }));
-	// server.get(/\/js\/.+/, restify.serveStatic({
-	//   directory: path.join(__dirname, 'files/mobile')
-	// }));
-	// server.get(/\/img\/.+/, restify.serveStatic({
-	//   directory: path.join(__dirname, 'files/mobile')
-	// }));
-	// server.get(/\/doc\/.+/, restify.serveStatic({
-	//   directory: path.join(__dirname, 'files/mobile')
-	// }));
 
 	return {
 		getContext: function(){

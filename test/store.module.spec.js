@@ -18,7 +18,7 @@ describe('Module: JSON Key/Value Storage', function(){
     sut.upsert('bdemob', '3', {test: 'bdemob 3 test', test2: 'bdemob 3 test2', group: 'C'});
     sut.upsert('bdemob', '4', {test: 'bdemob 4 test'});
     sut.upsert('bdemob', '5', {test: 'bdemob 5 test', group: 'B', demo22: { group: 'Z'}});
-    sut.upsert('bdemob', '6', {test: 'bdemob 6 test'});
+    sut.upsert('bdemob', '6', {test: 'bdemob 6 test', group: ['A','B','X']});
     sut.upsert('bdemoc', '1', {test: 'bdemoc 1 test'});
     sut.upsert('cdemoc', '1', {test: 'cdemoc 1 test', group: 'A'});
     sut.upsert('rangequery', '1!a', {test: 'bdemob 1!a test'});
@@ -242,10 +242,11 @@ describe('Module: JSON Key/Value Storage', function(){
     it('by range store name "bdemo" with groupingKey', function(done){
       sut.query('bdemo', { groupingKey: 'value.group' }, { }, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.undefined.length, 5);
-        assert.equal(data.A.length, 1);
-        assert.equal(data.B.length, 1);
+        assert.equal(data.undefined.length, 4);
+        assert.equal(data.A.length, 2);
+        assert.equal(data.B.length, 2);
         assert.equal(data.C.length, 1);
+        assert.equal(data.X.length, 1);
         done();
       });
     }),

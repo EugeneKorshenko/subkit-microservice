@@ -12,6 +12,11 @@ curl -X GET -H "api_Key: 6654edc5-82a3-4006-967f-97d5817d7fe2" -G --data-urlenco
 curl -X GET -H "api_Key: 6654edc5-82a3-4006-967f-97d5817d7fe2" -G --data-urlencode 'limit=10' --data-urlencode 'where={"$not":{ "value.password":"ofT6IM3I"}}' http://localhost:8080/stores/identities | python -m json.tool
 ```
 
+Grouping parameter
+===
+query options with grouping key (dot notation)
+```{ groupingKey: 'value.group' }```
+
 Query parameter
 ===
 ```?where={"value.FirstName":"John Doe"}```

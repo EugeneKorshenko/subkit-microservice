@@ -14,10 +14,10 @@ describe('Module: JSON Key/Value Storage', function(){
     sut.upsert('ademo', '1', {test: 'ademo 1 test', group: 'B'});
     sut.upsert('bdemoa', '1', {test: 'bdemoa 1 test'});
     sut.upsert('bdemob', '1', {test: 'bdemob 1 test', group: 'A'});
-    sut.upsert('bdemob', '2', {test: 'bdemob 2 test'});
+    sut.upsert('bdemob', '2', {test: 'bdemob 2 test', demo22: { group: 'Z'}});
     sut.upsert('bdemob', '3', {test: 'bdemob 3 test', test2: 'bdemob 3 test2', group: 'C'});
     sut.upsert('bdemob', '4', {test: 'bdemob 4 test'});
-    sut.upsert('bdemob', '5', {test: 'bdemob 5 test', group: 'B'});
+    sut.upsert('bdemob', '5', {test: 'bdemob 5 test', group: 'B', demo22: { group: 'Z'}});
     sut.upsert('bdemob', '6', {test: 'bdemob 6 test'});
     sut.upsert('bdemoc', '1', {test: 'bdemoc 1 test'});
     sut.upsert('cdemoc', '1', {test: 'cdemoc 1 test', group: 'A'});
@@ -45,7 +45,7 @@ describe('Module: JSON Key/Value Storage', function(){
     sut.destroy(done);
   });
   
-  describe.skip('query', function(){
+  describe('query', function(){
     it('by store name begins with "bdemo" should return 8 items', function(done){
       sut.read('bdemo', {}, function(error, data){
         assert.equal(error, undefined);
@@ -174,7 +174,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe.skip('stores', function(){
+  describe('stores', function(){
     it('should return 7 stores', function(done){
       sut.stores(function(error, data){
         assert.equal(error, undefined);
@@ -183,7 +183,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe.skip('write changes', function(){
+  describe('write changes', function(){
     it('create should add a item', function(done){
       sut.upsert('change_test_item', '1', {test: 'change_test_item 1 test'}, function(error){
         assert.equal(error, undefined);
@@ -239,15 +239,33 @@ describe('Module: JSON Key/Value Storage', function(){
     });
   });
   describe('grouping', function(){
-    it('by specific store name with group name "content"', function(done){
+    it('by range store name "bdemo" with groupingKey', function(done){
       sut.query('bdemo', { groupingKey: 'value.group' }, { }, function(error, data){
-        console.log(error);
-        console.log(data);
+        assert.equal(error, undefined);
+        assert.equal(data.undefined.length, 5);
+        assert.equal(data.A.length, 1);
+        assert.equal(data.B.length, 1);
+        assert.equal(data.C.length, 1);
+        done();
+      });
+    }),
+    it('by specific store "cdemoc" name with groupingKey', function(done){
+      sut.query('cdemoc', { groupingKey: 'value.group' }, { }, function(error, data){
+        assert.equal(error, undefined);
+        assert.equal(data.A.length, 1);
+        done();
+      });
+    }),
+    it('by specific store "bdemob" name with groupingKey', function(done){
+      sut.query('bdemob', { groupingKey: 'value.demo22.group' }, { }, function(error, data){
+        assert.equal(error, undefined);
+        assert.equal(data.undefined.length, 4);
+        assert.equal(data.Z.length, 2);
         done();
       });
     })
   });
-  describe.skip('public/private stores', function(){
+  describe('public/private stores', function(){
     it('set public should return all public stores', function(done){
       sut.setPublic('ademo', function(error, data){
         assert.equal(error, undefined);
@@ -281,7 +299,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe.skip('import/export', function(){
+  describe('import/export', function(){
     it('should import data to import1', function(done){
       var data = [
         { key: 'name', value: 'Yuri Irsenovich Kim' },
@@ -335,7 +353,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe.skip('backup/restore', function(){
+  describe('backup/restore', function(){
     it('should backup/restore the complete DB to path', function(done){
       sut.backup(function(error, data){
         assert.equal(error, undefined);
@@ -347,14 +365,14 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe.skip('statistics', function(){
+  describe('statistics', function(){
     it('should get the current db size', function(done){
       sut.statistics(function(error, data){
           done();
       });
     });
   });
-  describe.skip('notifications', function(){
+  describe('notifications', function(){
     it('on change should push changed data', function(done){
       sut.onChange(function(changed){
         assert.equal(changed.key, 'notifications!first');

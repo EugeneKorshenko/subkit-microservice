@@ -352,6 +352,11 @@
       "version": "1.6.0",
       "from": "underscore@*",
       "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.6.0.tgz"
+    },
+    "underscore-keypath": {
+      "version": "0.0.15",
+      "from": "underscore-keypath@",
+      "resolved": "https://registry.npmjs.org/underscore-keypath/-/underscore-keypath-0.0.15.tgz"
     }
   }
 }

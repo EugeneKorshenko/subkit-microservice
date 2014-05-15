@@ -45,7 +45,7 @@ describe('Module: JSON Key/Value Storage', function(){
     sut.destroy(done);
   });
   
-  describe('query', function(){
+  describe.skip('query', function(){
     it('by store name begins with "bdemo" should return 8 items', function(done){
       sut.read('bdemo', {}, function(error, data){
         assert.equal(error, undefined);
@@ -174,7 +174,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe('stores', function(){
+  describe.skip('stores', function(){
     it('should return 7 stores', function(done){
       sut.stores(function(error, data){
         assert.equal(error, undefined);
@@ -183,7 +183,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe('write changes', function(){
+  describe.skip('write changes', function(){
     it('create should add a item', function(done){
       sut.upsert('change_test_item', '1', {test: 'change_test_item 1 test'}, function(error){
         assert.equal(error, undefined);
@@ -240,10 +240,14 @@ describe('Module: JSON Key/Value Storage', function(){
   });
   describe('grouping', function(){
     it('by specific store name with group name "content"', function(done){
-      done();
+      sut.query('bdemo', { groupingKey: 'value.group' }, { }, function(error, data){
+        console.log(error);
+        console.log(data);
+        done();
+      });
     })
   });
-  describe('public/private stores', function(){
+  describe.skip('public/private stores', function(){
     it('set public should return all public stores', function(done){
       sut.setPublic('ademo', function(error, data){
         assert.equal(error, undefined);
@@ -277,7 +281,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe('import/export', function(){
+  describe.skip('import/export', function(){
     it('should import data to import1', function(done){
       var data = [
         { key: 'name', value: 'Yuri Irsenovich Kim' },
@@ -331,7 +335,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe('backup/restore', function(){
+  describe.skip('backup/restore', function(){
     it('should backup/restore the complete DB to path', function(done){
       sut.backup(function(error, data){
         assert.equal(error, undefined);
@@ -343,14 +347,14 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  describe('statistics', function(){
+  describe.skip('statistics', function(){
     it('should get the current db size', function(done){
       sut.statistics(function(error, data){
           done();
       });
     });
   });
-  describe('notifications', function(){
+  describe.skip('notifications', function(){
     it('on change should push changed data', function(done){
       sut.onChange(function(changed){
         assert.equal(changed.key, 'notifications!first');

@@ -44,6 +44,6 @@
     }
   ],
   "optionalDependencies": {
-    "subkit-dashboard": "git+https://github.com/SubKit/subkit-dashboard.git"
+    "subkit-dashboard": "*"
   }
 }

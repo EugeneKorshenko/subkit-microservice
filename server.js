@@ -76,7 +76,6 @@ module.exports.init = function(){
 
 	//etag
 	server.use(function (req, res, next) {
-		console.log("response eTag");
 		res.header('ETag', etag.etag);
 		res.header('Last-Modified', etag.lastModified);
 		return next();

@@ -3,8 +3,6 @@
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-markdox');
 
@@ -59,21 +57,6 @@ module.exports = function(grunt) {
         ]
       }
     },
-    less: {
-      development: {
-        options: {
-          paths: 'files/mobile/css',
-          cleancss: true
-        },
-        files: {
-          'files/mobile/css/style.css': 'files/mobile/css/style.less'
-        }
-      }
-    },
-    watch: {
-        files: ['files/mobile/css/custom.less'],
-        tasks: ['less']
-    },
     jsdoc : {
       dist : {
           src: [
@@ -99,7 +82,6 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', []);
-  grunt.registerTask('css', ['less']);
   grunt.registerTask('test', [
     'jshint',
     'mochaTest'

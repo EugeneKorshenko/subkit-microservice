@@ -9,6 +9,7 @@ rights.json
 config.json
 files/statics/
 files/tasks/
-files/templates/
+
 files/mapreduce/
+files/jobs/
 docs/modules/html/

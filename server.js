@@ -119,7 +119,7 @@ module.exports.init = function(){
 		basePath: app.key ? 'https:' + api.url : 'http:' + api.url
 	});
 	//docu
-	var rendererDevCenter = template.init({
+	var rendererDoc = template.init({
 		templatesPath: path.join(__dirname, 'files/mobile')
 	});
 	server.get('/doc', function(req, res, next){
@@ -129,7 +129,7 @@ module.exports.init = function(){
 		  username: admin.username,
 		  password: admin.password
 		};
-		rendererDevCenter.render('doc', consoleData, function(err, html){
+		rendererDoc.render('doc', consoleData, function(err, html){
 		  res.contentType = 'text/html';
 		  res.write(html);
 		  res.end();
@@ -138,23 +138,23 @@ module.exports.init = function(){
 	});
 
 	//development center
-	var rendererMobileCenter = template.init({
-		templatesPath: path.join(__dirname, 'files/mobile')
-	});
-	server.get('/', function(req, res, next){
-		var consoleData = {
-		  url: api.url,
-		  apiKey: api.apiKey,
-		  username: admin.username,
-		  password: admin.password
-		};
-		rendererMobileCenter.render('index', consoleData, function(err, html){
-		  res.contentType = 'text/html';
-		  res.write(html);
-		  res.end();
-		});
-		return next();
-	});
+	// var rendererMobileCenter = template.init({
+	// 	templatesPath: path.join(__dirname, 'files/mobile')
+	// });
+	// server.get('/', function(req, res, next){
+	// 	var consoleData = {
+	// 	  url: api.url,
+	// 	  apiKey: api.apiKey,
+	// 	  username: admin.username,
+	// 	  password: admin.password
+	// 	};
+	// 	rendererMobileCenter.render('index', consoleData, function(err, html){
+	// 	  res.contentType = 'text/html';
+	// 	  res.write(html);
+	// 	  res.end();
+	// 	});
+	// 	return next();
+	// });
 	//javascript SDKs
 	server.get(/\/sdk\/?.*/, restify.serveStatic({
 	  directory: path.join(__dirname, 'files')
@@ -206,21 +206,21 @@ module.exports.init = function(){
 	require('./lib/plugin.js').init(server, plugin, helper, doc);
 
 	//all other resources
-	server.get(/\/css\/.+/, restify.serveStatic({
-	  directory: path.join(__dirname, 'files/mobile')
-	}));
-	server.get(/\/libs\/.+/, restify.serveStatic({
-	  directory: path.join(__dirname, 'files/mobile')
-	}));
-	server.get(/\/js\/.+/, restify.serveStatic({
-	  directory: path.join(__dirname, 'files/mobile')
-	}));
-	server.get(/\/img\/.+/, restify.serveStatic({
-	  directory: path.join(__dirname, 'files/mobile')
-	}));
-	server.get(/\/doc\/.+/, restify.serveStatic({
-	  directory: path.join(__dirname, 'files/mobile')
-	}));
+	// server.get(/\/css\/.+/, restify.serveStatic({
+	//   directory: path.join(__dirname, 'files/mobile')
+	// }));
+	// server.get(/\/libs\/.+/, restify.serveStatic({
+	//   directory: path.join(__dirname, 'files/mobile')
+	// }));
+	// server.get(/\/js\/.+/, restify.serveStatic({
+	//   directory: path.join(__dirname, 'files/mobile')
+	// }));
+	// server.get(/\/img\/.+/, restify.serveStatic({
+	//   directory: path.join(__dirname, 'files/mobile')
+	// }));
+	// server.get(/\/doc\/.+/, restify.serveStatic({
+	//   directory: path.join(__dirname, 'files/mobile')
+	// }));
 
 	return {
 		getContext: function(){

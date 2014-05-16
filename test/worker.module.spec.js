@@ -18,8 +18,7 @@ describe('Module: Worker', function(){
     done();
   });
   after(function(done){
-    store.destroy(console.log);
-    done();
+    store.destroy(done);
   });
 
   describe('on ...', function(){

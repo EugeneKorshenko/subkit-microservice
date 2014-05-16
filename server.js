@@ -43,6 +43,7 @@ module.exports.init = function(){
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es);
 	var template = require('./lib/template.module.js');
+	var identity = require('./lib/identity.module.js');
 	
 	var options = { name: 'subkit microservice' };
 	//configure HTTPS/SSL
@@ -153,6 +154,7 @@ module.exports.init = function(){
 		File: file,
 		Template: template,
 		Worker: worker,
+		Identity: identity,
 		ServeStatic: restify.serveStatic
 	};
 

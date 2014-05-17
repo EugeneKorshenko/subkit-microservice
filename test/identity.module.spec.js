@@ -36,7 +36,6 @@ describe('Module: Identity', function(){
       });
     });
   });
-
   describe('list', function(){
     it('should be list all keys', function(done){
       sut.listAll(function(error, data){
@@ -47,7 +46,6 @@ describe('Module: Identity', function(){
       });
     });
   });
-
   describe('findAll', function(){
     it('should be list all items', function(done){
       sut.findAll({},{},function(error, data){
@@ -75,7 +73,6 @@ describe('Module: Identity', function(){
       });
     });
   });
-
   describe('update', function(){
     it('by update item should be changed item', function(done){
       sut.get('ident6@subkit.io', function(error, data){
@@ -97,7 +94,6 @@ describe('Module: Identity', function(){
       });
     });
   });
-
   describe('find', function(){
     it('should be grouped by group property', function(done){
       sut.find({groupingKey: 'value.group'}, {}, function(error, data){
@@ -136,5 +132,24 @@ describe('Module: Identity', function(){
       });
     })
   });
+  describe('remove', function(){
+    it('should be remove a items', function(done){
+      sut.remove('ident1@subkit.io',function(error, data){
+        assert.ifError(error);
+        
+        sut.listAll(function(error, data){
+          assert.ifError(error);
+          assert.equal(data.length, 5);          
+        });
 
+        sut.get('ident1@subkit.io', function(error, data){
+          assert.notEqual(error, null);
+          assert.equal(data, null);
+          done();
+        });
+
+      });
+      
+    });
+  });
 });

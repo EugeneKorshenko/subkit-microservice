@@ -51,7 +51,7 @@ X		 	  | JSON Im/Export| JSON data import and export
 X		 	  | ETag Caching  | ETag based content caching
 X		 	  | ETag Versions | ETag / version based concurrency control
 X		 	  | API DOC       | Interactive REST documentation
-X		 	  | JSON Queries  | Advanced JSON Queries
+X		 	  | JSON Queries  | [MongoDB like JSON Queries](docs/store_queries.md)
 X		 	  | Worker		  | Scheduled Background Worker
 X		 	  | Monitoring	  | Heartbeats for Web-Service Monitoring
 X		 	  | Statistics	  | Useful statistics and usage analysis
@@ -80,8 +80,8 @@ X			  | [Task](https://github.com/SubKit/subkit-task-plugin.git)	    	  | Manage
 X			  | [Geolocation](https://github.com/SubKit/subkit-geolocation-plugin.git)    	  | Organize and query geolocations
 X			  | [S3](https://github.com/SubKit/subkit-S3-plugin.git)			  | Manage Amazon S3 buckets and items
 X		 	  | [Template](https://github.com/SubKit/subkit-template-plugin.git)		  | JSHTML based template engine
+X		 	  | [Account](https://github.com/SubKit/subkit-account-plugin.git)			  | Manage accounts
 -			  | [Payment](https://github.com/SubKit/subkit-payment-plugin.git)   		  | Payment provider support
--		 	  | [Account](https://github.com/SubKit/subkit-account-plugin.git)			  | Manage accounts
 O			  | BaaS			  | Manage Subkit as BaaS or MEAP
 O			  | ETL				  | Extract-Transform-Load data flow engine
 O			  | MDM       		  | Mobile Device Management Plugin
@@ -121,7 +121,7 @@ ROADMAP
 GUIDES
 ---
 * Rights
-* Queries
+* [Queries](docs/store_queries.md)
 * Aggregation
 * Metadata
 
@@ -143,3 +143,4 @@ MODULE DOCUMENTATION
 * [Utils Module](docs/modules/helper.md)
 * [Rights Module](docs/modules/rights.md)
 * [Configuration Module](docs/modules/configuration.md)
+* [Identity Module](docs/modules/identity.md)

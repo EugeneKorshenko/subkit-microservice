@@ -1,5 +1,5 @@
 {
-  "name": "subkit-microservice",
+  "name": "subkit",
   "version": "0.0.3",
   "dependencies": {
     "cron": {
@@ -340,8 +340,8 @@
       }
     },
     "subkit-dashboard": {
-      "version": "0.0.1",
-      "from": "subkit-dashboard@"
+      "version": "0.0.2",
+      "from": "subkit-dashboard@*"
     },
     "swagger-doc": {
       "version": "0.2.0",

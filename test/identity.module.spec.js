@@ -130,6 +130,16 @@ describe('Module: Identity', function(){
         assert.equal(data.X[0].key, 'account!ident5@subkit.io');
         done();
       });
+    }),
+    it('should be grouped by group property and filter by group name "X"', function(done){
+      sut.find({groupingKey: 'value.group'},{"value.group":{$in:['X']}}, function(error, data){
+        assert.ifError(error);
+        assert.equal(data.A1.length, 1);
+        assert.equal(data.X.length, 1);
+        assert.equal(data.A1[0].key, 'account!ident5@subkit.io');
+        assert.equal(data.X[0].key, 'account!ident5@subkit.io');
+        done();
+      });
     })
   });
   describe('remove', function(){

@@ -11,13 +11,14 @@ Async result callback.
 * **Object** *error* 
 * **Object** *data* 
 
-## exports(config)
+## exports(config, storage)
 
 PubSub module.
 
 ### Params: 
 
-* **Object** *config* 
+* **Object** *config* - Configuration dependency.
+* **Object** *storage* - Storage module dependency.
 
 ## unsubscribe(channel, clientId)
 
@@ -106,6 +107,17 @@ Get clients grouped by channel name.
 
 * **String** *channel* 
 * **callback** *callback* 
+
+## getTranscript		(resource, options, queryString, callback)
+
+Get messages from a channel by using a json query. 
+
+### Params: 
+
+* **String** *resource* - Name of channel.
+* **Object** *options* - Query options.
+* **String** *queryString* - JSON Query options.
+* **callback** *callback* - Done handler.
 
 <!-- End lib/pubsub.module.js -->
 

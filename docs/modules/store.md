@@ -39,7 +39,7 @@ Gets items from a store.
 
 ## query		(resource, options, queryString, callback)
 
-Description
+Get items from a store by using a json query.
 
 ### Params: 
 
@@ -48,20 +48,9 @@ Description
 * **String** *queryString* - JSON Query options.
 * **callback** *callback* - Done handler.
 
-## create(resource, key, payload, callback)
+## upsert		(resource, key, payload, callback)
 
-Add an item in a store.
-
-### Params: 
-
-* **String** *resource* - Name of store.
-* **String** *key* - Store item key.
-* **Object** *payload* - New data object.
-* **callback** *callback* - Done handler.
-
-## update		(resource, key, payload, callback)
-
-Change an item in a store.
+Add or change an item in a store.
 
 ### Params: 
 

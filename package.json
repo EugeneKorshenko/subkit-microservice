@@ -38,6 +38,17 @@
     "type": "git",
     "url": "git@github.com:SubKit/subkit-microservice.git"
   },
+  "bugs": {
+    "url": "https://github.com/SubKit/subkit-microservice/issues"
+  },
+  "keywords": [
+    "microservice",
+    "subkit",
+    "nobackend",
+    "enterprise",
+    "mobile",
+    "baas"
+  ],
   "licenses": [
     {
       "type": "",

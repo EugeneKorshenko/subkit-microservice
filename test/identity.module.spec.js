@@ -20,12 +20,10 @@ describe('Module: Identity', function(){
     sut.add('ident3@subkit.io', {test: 'ident3 test', group: 'A2'});
     sut.add('ident4@subkit.io', {test: 'ident4 test', group: 'A2'});
     sut.add('ident5@subkit.io', {test: 'ident5 test', group: ['A1','X']});
-    done();
+    setTimeout(done, 1000);
   });
   after(function(done){
-    setTimeout(function(){
-      store.destroy(done);
-    }, 1000);
+    store.destroy(done);
   });
   
   describe('get', function(){
@@ -67,7 +65,7 @@ describe('Module: Identity', function(){
           done();
         });
       });
-    }),
+    });
     it('by duplicate key should be an error', function(done){
       sut.add('ident3@subkit.io', {}, function(error, data){
         assert.notEqual(error, null);
@@ -106,7 +104,7 @@ describe('Module: Identity', function(){
         assert.equal(data.X.length, 1);
         done();
       });
-    }),
+    });
     it('should be grouped by group property and filter by group name "Z"', function(done){
       sut.find({groupingKey: 'value.group'},{"value.group":'Z'}, function(error, data){
         assert.ifError(error);
@@ -114,7 +112,7 @@ describe('Module: Identity', function(){
         assert.equal(data.Z.length, 1);
         done();
       });
-    }),
+    });
     it('should be grouped by group property and filter by group name "Z" or "A2"', function(done){
       sut.find({groupingKey: 'value.group'},{$or:[{"value.group":'A2'},{"value.group":'Z'}]}, function(error, data){
         assert.ifError(error);
@@ -122,7 +120,7 @@ describe('Module: Identity', function(){
         assert.equal(data.Z.length, 1);
         done();
       });
-    })
+    });
     it('should be grouped by group property and filter by group name "A1" and "X"', function(done){
       sut.find({groupingKey: 'value.group'},{$and:[{"value.group":'A1'},{"value.group":'X'}]}, function(error, data){
         assert.ifError(error);
@@ -132,7 +130,7 @@ describe('Module: Identity', function(){
         assert.equal(data.X[0].key, 'account!ident5@subkit.io');
         done();
       });
-    }),
+    });
     it('should be grouped by group property and filter by group name "X"', function(done){
       sut.find({groupingKey: 'value.group'},{"value.group":{$in:['X']}}, function(error, data){
         assert.ifError(error);

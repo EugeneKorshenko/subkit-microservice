@@ -1,6 +1,6 @@
 {
-  "name": "subkit",
-  "version": "0.0.3",
+  "name": "subkit-microservice",
+  "version": "0.0.4",
   "dependencies": {
     "cron": {
       "version": "1.0.4",
@@ -146,19 +146,19 @@
       }
     },
     "microtime": {
-      "version": "0.5.1",
+      "version": "0.6.0",
       "from": "microtime@*",
-      "resolved": "https://registry.npmjs.org/microtime/-/microtime-0.5.1.tgz",
+      "resolved": "https://registry.npmjs.org/microtime/-/microtime-0.6.0.tgz",
       "dependencies": {
         "bindings": {
-          "version": "1.1.1",
-          "from": "bindings@1.1.1",
-          "resolved": "https://registry.npmjs.org/bindings/-/bindings-1.1.1.tgz"
+          "version": "1.2.0",
+          "from": "bindings@1.2.0",
+          "resolved": "https://registry.npmjs.org/bindings/-/bindings-1.2.0.tgz"
         },
         "nan": {
-          "version": "0.6.0",
-          "from": "nan@0.6.0",
-          "resolved": "https://registry.npmjs.org/nan/-/nan-0.6.0.tgz"
+          "version": "1.0.0",
+          "from": "nan@1.0.0",
+          "resolved": "https://registry.npmjs.org/nan/-/nan-1.0.0.tgz"
         }
       }
     },
@@ -207,9 +207,9 @@
       "resolved": "https://registry.npmjs.org/randomstring/-/randomstring-1.0.3.tgz"
     },
     "restify": {
-      "version": "2.8.0",
+      "version": "2.8.1",
       "from": "restify@*",
-      "resolved": "https://registry.npmjs.org/restify/-/restify-2.8.0.tgz",
+      "resolved": "https://registry.npmjs.org/restify/-/restify-2.8.1.tgz",
       "dependencies": {
         "assert-plus": {
           "version": "0.1.5",
@@ -355,7 +355,7 @@
     },
     "underscore-keypath": {
       "version": "0.0.15",
-      "from": "underscore-keypath@",
+      "from": "underscore-keypath@*",
       "resolved": "https://registry.npmjs.org/underscore-keypath/-/underscore-keypath-0.0.15.tgz"
     }
   }

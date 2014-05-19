@@ -36,7 +36,7 @@
   "author": "Mike Bild",
   "repository": {
     "type": "git",
-    "url": "git@github.com:SubKit/subkit.git"
+    "url": "git@github.com:SubKit/subkit-microservice.git"
   },
   "licenses": [
     {

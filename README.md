@@ -1,4 +1,4 @@
-# Subkit Microservice Platform [![Build Status](https://travis-ci.org/SubKit/subkit.svg?branch=master)](https://travis-ci.org/SubKit/subkit)
+# Subkit Microservice Platform [![Build Status](https://travis-ci.org/SubKit/subkit-microservice.svg?branch=master)](https://travis-ci.org/SubKit/subkit-microservice)
 
 INSTALL
 ---

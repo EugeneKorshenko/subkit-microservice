@@ -3,11 +3,16 @@
 INSTALL
 ---
 
-1. `npm install`
-2. `npm test`
-3. `npm start`
+via NPM  
+`npm install subkit-microservice`
 
-Open your browser http://localhost:8080.
+via Git  
+1. `git clone https://github.com/SubKit/subkit-microservice.git`
+2. `npm install`
+3. `npm test`
+4. `npm start`
+
+Open your browser https://localhost:8080.
 
 Forever service install.  
 

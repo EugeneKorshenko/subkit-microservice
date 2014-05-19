@@ -58,7 +58,7 @@
   "emailConfig": {
     "MTPUsername": "",
     "SMTPPassword": "",
-    "senderAddress": "hello@subkit.io",
+    "senderAddress": "go@subkit.io",
     "SMTPServer": "",
     "Port": "465",
     "TLS": true,
@@ -67,10 +67,10 @@
     "region": ""
   },
   "pushConfig": {
-    "APN_Pfx": "./certs/apn/prod.p12",
-    "APN_Sandbox_Pfx": "./certs/apn/dev.p12",
+    "APN_Pfx": "",
+    "APN_Sandbox_Pfx": "",
     "APN_Sandbox": true,
-    "MPNS_Pfx": "./certs/mpns/prod.p12",
+    "MPNS_Pfx": "",
     "GCM_APIKey": ""
   },
   "s3Config": {

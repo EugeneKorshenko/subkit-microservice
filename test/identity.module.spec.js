@@ -149,13 +149,13 @@ describe('Module: Identity', function(){
         
         sut.listAll(function(error, data){
           assert.ifError(error);
-          assert.equal(data.length, 5);          
-        });
+          assert.equal(data.length, 5);  
 
-        sut.get('ident1@subkit.io', function(error, data){
-          assert.notEqual(error, null);
-          assert.equal(data, null);
-          done();
+          sut.get('ident1@subkit.io', function(error, data){
+            assert.notEqual(error, null);
+            assert.equal(data, null);
+            done();
+          });
         });
 
       });

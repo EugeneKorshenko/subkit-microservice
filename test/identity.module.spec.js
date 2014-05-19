@@ -23,7 +23,9 @@ describe('Module: Identity', function(){
     done();
   });
   after(function(done){
-    store.destroy(done);
+    setTimeout(function(){
+      store.destroy(done);
+    }, 1000);
   });
   
   describe('get', function(){

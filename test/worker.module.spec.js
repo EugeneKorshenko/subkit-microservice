@@ -28,7 +28,7 @@ describe('Module: Worker', function(){
 
   describe('tasks', function(){
     it('should run a task in folder and success',function(done){
-      sut.runTask('success', {}, function(error, data, log){
+      sut.runTask('success', {}, function(error, data, contentType, log){
         assert.equal(error, null);
         assert.notEqual(data, null);
         assert.equal(data, 'success');
@@ -37,7 +37,7 @@ describe('Module: Worker', function(){
       });
     });
     it('should run a task in folder and failure',function(done){
-      sut.runTask('failure', {}, function(error, data, log){
+      sut.runTask('failure', {}, function(error, data, contentType, log){
         assert.notEqual(error, null);
         assert.equal(data, undefined);
         assert.deepEqual(error, new Error('failure'));
@@ -46,7 +46,7 @@ describe('Module: Worker', function(){
       });
     });
     it('should run a task in folder and throws new error',function(done){
-      sut.runTask("error", {}, function(error, data, log){
+      sut.runTask("error", {}, function(error, data, contentType, log){
         assert.notEqual(error, null);
         assert.equal(data, null);
         assert.throws(error, Error);
@@ -55,7 +55,7 @@ describe('Module: Worker', function(){
       });
     });
     it('should run a task in folder and throws syntax error',function(done){
-      sut.runTask("syntax_error", {}, function(error, data, log){
+      sut.runTask("syntax_error", {}, function(error, data, contentType, log){
         assert.notEqual(error, null);
         assert.equal(data, undefined);
         assert.throws(error, Error);

@@ -4,20 +4,20 @@ INSTALL
 ---
 
 via NPM  
-`npm install subkit-microservice`
-`cd node_modules/subkit-microservice`
-`npm start`
+`npm install subkit-microservice`  
+`cd node_modules/subkit-microservice`  
+`npm start`  
 
 Open your browser https://localhost:8080.  
 Default Username: subkit  
 Default Password: subkit  
 
 via Git  
-1. `git clone https://github.com/SubKit/subkit-microservice.git`
-2. `npm install grunt-cli -g`
-3. `npm install`
-4. `npm test`
-5. `npm start`
+`git clone https://github.com/SubKit/subkit-microservice.git`  
+`npm install grunt-cli -g`  
+`npm install`  
+`npm test`  
+`npm start`  
 
 Open your browser https://localhost:8080.  
 Default Username: subkit  
@@ -88,13 +88,13 @@ Extend the Subkit mirco service instance with plugins.
 STATUS		  | Name 	 		  | Comments
 ------------- | ----------------- | ---------------
 X		 	  | [File](https://github.com/SubKit/subkit-file-plugin.git)			  | Binary Up/Download
-X			  | [EMail](https://github.com/SubKit/subkit-email-plugin.git) 			  | Organize EMail subscriptions and send EMails 
-X			  | [Mobile Push](https://github.com/SubKit/subkit-push-plugin.git)	  | Mobile push notifications to iOS, Android, WP8
+-			  | [EMail](https://github.com/SubKit/subkit-email-plugin.git) 			  | Organize EMail subscriptions and send EMails 
+-			  | [Mobile Push](https://github.com/SubKit/subkit-push-plugin.git)	  | Mobile push notifications to iOS, Android, WP8
 X			  | [Task](https://github.com/SubKit/subkit-task-plugin.git)	    	  | Manage, execute and schedule custom JavaScript tasks
 X			  | [Geolocation](https://github.com/SubKit/subkit-geolocation-plugin.git)    	  | Organize and query geolocations
-X			  | [S3](https://github.com/SubKit/subkit-S3-plugin.git)			  | Manage Amazon S3 buckets and items
+-			  | [S3](https://github.com/SubKit/subkit-S3-plugin.git)			  | Manage Amazon S3 buckets and items
 X		 	  | [Template](https://github.com/SubKit/subkit-template-plugin.git)		  | JSHTML based template engine
-X		 	  | [Account](https://github.com/SubKit/subkit-account-plugin.git)			  | Manage accounts
+X		 	  | [User](https://github.com/SubKit/subkit-user-plugin.git)			  | Manage accounts
 -			  | [Payment](https://github.com/SubKit/subkit-payment-plugin.git)   		  | Payment provider support
 O			  | BaaS			  | Manage Subkit as BaaS or MEAP
 O			  | ETL				  | Extract-Transform-Load data flow engine

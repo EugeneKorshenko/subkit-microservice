@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "dependencies": {
     "cron": "*",
     "jshtml-express": "*",

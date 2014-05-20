@@ -14,7 +14,7 @@ Default Password: subkit
 
 via Git  
 `git clone https://github.com/SubKit/subkit-microservice.git`  
-`cd subkit-microservice` 
+`cd subkit-microservice`  
 `npm install grunt-cli -g`  
 `npm install`  
 `npm test`  
@@ -163,4 +163,4 @@ MODULE DOCUMENTATION
 License
 ---
 No License  
-Copyright [2014] [Mike Bild]  
+Copyright 2014 Mike Bild  

@@ -28,26 +28,39 @@ describe('Module: Worker', function(){
 
   describe('tasks', function(){
     it('should run a task in folder and success',function(done){
-      sut.runTask('success', {}, function(error, data){
-        assert.equal(error, undefined);
-        assert.notEqual(data, undefined);
+      sut.runTask('success', {}, function(error, data, log){
+        assert.equal(error, null);
+        assert.notEqual(data, null);
         assert.equal(data, 'success');
+        assert.notEqual(log, null);
         done();
       });
     });
     it('should run a task in folder and failure',function(done){
-      sut.runTask('failure', {}, function(error, data){
-        assert.notEqual(error, undefined);
+      sut.runTask('failure', {}, function(error, data, log){
+        assert.notEqual(error, null);
         assert.equal(data, undefined);
-        assert.equal(error, 'failure');
+        assert.deepEqual(error, new Error('failure'));
+        assert.deepEqual(log, []);
         done();
       });
     });
-    it('should run a task in folder and error',function(done){
-      sut.runTask("error", {}, function(error, data){
-        assert.notEqual(error, undefined);
+    it('should run a task in folder and throws new error',function(done){
+      sut.runTask("error", {}, function(error, data, log){
+        assert.notEqual(error, null);
+        assert.equal(data, null);
+        assert.throws(error, Error);
+        assert.deepEqual(log, []);
+        done();
+      });
+    });
+    it('should run a task in folder and throws syntax error',function(done){
+      sut.runTask("syntax_error", {}, function(error, data, log){
+        assert.notEqual(error, null);
         assert.equal(data, undefined);
         assert.throws(error, Error);
+        assert.deepEqual(error, new Error('kk is not define'));
+        assert.deepEqual(log, []);
         done();
       });
     });

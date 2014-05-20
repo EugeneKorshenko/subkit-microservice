@@ -1,1 +1,1 @@
-response('failure');
+done(new Error('failure'));

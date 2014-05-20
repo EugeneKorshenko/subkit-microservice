@@ -5,14 +5,23 @@ INSTALL
 
 via NPM  
 `npm install subkit-microservice`
+`cd node_modules/subkit-microservice`
+`npm start`
+
+Open your browser https://localhost:8080.  
+Default Username: subkit  
+Default Password: subkit  
 
 via Git  
 1. `git clone https://github.com/SubKit/subkit-microservice.git`
-2. `npm install`
-3. `npm test`
-4. `npm start`
+2. `npm install grunt-cli -g`
+3. `npm install`
+4. `npm test`
+5. `npm start`
 
-Open your browser https://localhost:8080.
+Open your browser https://localhost:8080.  
+Default Username: subkit  
+Default Password: subkit  
 
 Forever service install.  
 
@@ -149,3 +158,8 @@ MODULE DOCUMENTATION
 * [Rights Module](docs/modules/rights.md)
 * [Configuration Module](docs/modules/configuration.md)
 * [Identity Module](docs/modules/identity.md)
+
+License
+---
+No License  
+Copyright [2014] [Mike Bild]  

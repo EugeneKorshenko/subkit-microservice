@@ -4,7 +4,7 @@ npm-debug.log
 backups
 testdb
 masterdb
-rights.json
+
 *.p12
 config.json
 files/statics/

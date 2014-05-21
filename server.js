@@ -4,7 +4,8 @@ var restify = require('restify'),
 	http = require('http'),
 	fs = require('fs'),
 	path = require('path'),
-	nconf = require('nconf');
+	nconf = require('nconf'),
+	subkitPackage = require('./package.json');
 
 module.exports.init = function(){
 	//config
@@ -18,7 +19,7 @@ module.exports.init = function(){
 		app = nconf.get('app'),
 		api = nconf.get('api'),
 		etag = {etag:'', lastModified:''};
-
+	
 	//correct root path
 	var storageConfig = nconf.get('storageConfig');
 	storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
@@ -112,17 +113,20 @@ module.exports.init = function(){
 	process.on('SIGINT', exitHandler.bind(null, {exit:true}));
 	process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
+	var os = require('os');
+	console.log(os.hostname());
 	//JSON doc
 	doc = doc.configure(server, {
 		discoveryUrl: '/docs',
 		version: '1.2',
-		basePath: app.key ? 'https:' + api.url : 'http:' + api.url
+		basePath: app.key ? 'https://localhost:'+app.port : 'http://localhost:'+app.port
 	});
 
 	//start web server
 	server.listen(app.port, function(){
-		console.log('subkit microservice listen on: ' + server.address().port);
-		console.log('PID: ' + process.pid);
+		console.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
+		console.log('PORT: '+server.address().port);
+		console.log('PID: '+process.pid);
 		http.globalAgent.maxSockets = 50000;
 	});
 
@@ -141,7 +145,7 @@ module.exports.init = function(){
 	require('./lib/eventsource.js').init(server, es, helper, doc);
 	
 	//plugins
-	var availablePlugins = require('./package.json').optionalDependencies;
+	var availablePlugins = subkitPackage.optionalDependencies;
 	var pluginContext = {
 		AvailablePlugins: availablePlugins,
 		Server: server,

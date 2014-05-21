@@ -21,6 +21,9 @@ module.exports.init = function(){
 		etag = {etag:'', lastModified:''};
 	
 	//correct root path
+	app.key = path.join(__dirname, app.key);
+	app.cert = path.join(__dirname, app.cert);
+
 	var storageConfig = nconf.get('storageConfig');
 	storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
 	storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
@@ -113,8 +116,6 @@ module.exports.init = function(){
 	process.on('SIGINT', exitHandler.bind(null, {exit:true}));
 	process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
-	var os = require('os');
-	console.log(os.hostname());
 	//JSON doc
 	doc = doc.configure(server, {
 		discoveryUrl: '/docs',
@@ -125,6 +126,7 @@ module.exports.init = function(){
 	//start web server
 	server.listen(app.port, function(){
 		console.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
+		console.log('SECURE: '+server.secure);
 		console.log('PORT: '+server.address().port);
 		console.log('PID: '+process.pid);
 		http.globalAgent.maxSockets = 50000;

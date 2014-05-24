@@ -16,8 +16,6 @@ describe('Module: Worker', function(){
     var eventsource = require('../lib/eventsource.module.js').init(store, pubsub);
     sut = require('../lib/worker.module.js').init({
       tasksPath: path.join(__dirname, './task_mock'),
-      jobsPath: path.join(__dirname, './job_mock'),
-      mapreducePath: path.join(__dirname, './mr_mock'),
       backupPath: './backups'
     }, store, pubsub, eventsource);
     done();
@@ -26,7 +24,7 @@ describe('Module: Worker', function(){
     store.destroy(done);
   });
 
-  describe('tasks', function(){
+  describe.skip('tasks', function(){
     it('should run a task in folder and success',function(done){
       sut.runTask('success', {}, function(error, data, contentType, log){
         assert.equal(error, null);
@@ -64,6 +62,35 @@ describe('Module: Worker', function(){
         done();
       });
     });
+  });
+
+  describe('tasks2', function(){
+    it('should create a task',function(done){
+      var newTask = new sut.Task('success', []);
+      newTask.TaskScript = 'log("Hello!"); done(null,{Message:"Hello world!"});';
+      sut.set(newTask.Name, newTask, function(error, data){
+        console.log(error);
+        console.log(data);
+        done();
+      });
+    }),
+    it('should run a task and success',function(done){
+      sut.run2('success', [], function(error, data, contentType, log){
+        // assert.equal(error, null);
+        console.log(error);
+        console.log(data);
+        console.log(contentType);
+        console.log(log);
+        done();
+      });
+    }),
+    it('should remove a task',function(done){
+      sut.remove('success', function(error, data){
+        console.log(error);
+        console.log(data);
+        done();
+      });
+    })
   });
 
 });

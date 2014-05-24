@@ -132,13 +132,13 @@ module.exports.init = function(){
 		http.globalAgent.maxSockets = 50000;
 	});
 
-	worker.scheduler.scheduleTasks();
-	worker.scheduler.scheduleMapReduce();	
-	worker.scheduler.schedule({
-		jobName: 'periodic',
-		cronTime: '* * * * *',
-		payload: {name: 'payload value'}
-	});
+	// worker.scheduler.scheduleTasks();
+	// worker.scheduler.scheduleMapReduce();	
+	// worker.scheduler.schedule({
+	// 	jobName: 'periodic',
+	// 	cronTime: '* * * * *',
+	// 	payload: {name: 'payload value'}
+	// });
 
 	require('./lib/manage.js').init(nconf, api, app, server, storage, helper, doc);
 	require('./lib/store.js').init(server, storage, helper, doc);

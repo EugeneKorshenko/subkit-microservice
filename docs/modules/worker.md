@@ -22,24 +22,67 @@ Worker module.
 * **Object** *pubsub* - PubSub module dependency.
 * **Object** *es* - EventSource module dependency.
 
-## runTask(resource, params, callback)
+## init(workerConfig)
 
-Get channels grouped by client key.
+(Re)init the worker modules.
 
 ### Params: 
 
-* **String** *resource* - Name of script.
+* **Object** *workerConfig* - The worker configuration.
+
+## Task(name, params)
+
+Creates a new Task.
+
+### Params: 
+
+* **String** *name* - Name of script.
+* **Object** *params* - Script parameters.
+
+## run(name, params, callback)
+
+Run a task.
+
+### Params: 
+
+* **String** *name* - Name of script.
 * **Object** *params* - Script parameters.
 * **callback** *callback* 
 
-## runJob(resource, params, callback)
+## set(name, task, callback)
 
-Get channels grouped by client key.
+Save a task.
 
 ### Params: 
 
-* **String** *resource* - Name of script.
-* **Object** *params* - Script parameters.
+* **String** *name* - Name of script.
+* **Object** *task* - A Task object.
+* **callback** *callback* 
+
+## remove(name, callback)
+
+Removes a task.
+
+### Params: 
+
+* **String** *name* - Name of script.
+* **callback** *callback* 
+
+## get(name, callback)
+
+Gets a task by name.
+
+### Params: 
+
+* **String** *name* - Name of script.
+* **callback** *callback* 
+
+## list(callback)
+
+List tasks.
+
+### Params: 
+
 * **callback** *callback* 
 
 <!-- End lib/worker.module.js -->

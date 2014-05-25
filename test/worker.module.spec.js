@@ -82,32 +82,65 @@ describe('Module: Worker', function(){
     })
   });
 
-  describe('on contiunous tasks', function(){
+  describe('on continuous tasks', function(){
     it('should create continuous task with parameters in parallel',function(done){
       
-      var newTask = new sut.Task('coninuoussuccess', {Msg:'Hello1-'});
+      var newTask = new sut.Task('continuoussuccess', {Msg:'Continuous-1-'});
       newTask.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 1000);';
       newTask.isContinuous = true;
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
-      var newTask2 = new sut.Task('coninuous2success', {Msg:'Hello2-'});
-      newTask2.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 1000);';
+      var newTask2 = new sut.Task('continuous2success', {Msg:'Continuous-2-'});
+      newTask2.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 2000);';
       newTask2.isContinuous = true;
       sut.set(newTask2.Name, newTask2, function(error, data){
         assert.equal(error, null);
-        setTimeout(done, 5000);
+        setTimeout(done, 6500);
       });
 
     }),
-    it('should remove parallel contiuous tasks',function(done){
+    it('should remove parallel continuous tasks',function(done){
       
-      sut.remove('coninuoussuccess', function(error, data){
+      sut.remove('continuoussuccess', function(error, data){
         assert.equal(error, null);
       });
 
-      sut.remove('coninuous2success', function(error, data){
+      sut.remove('continuous2success', function(error, data){
+        assert.equal(error, null);
+        done();
+      });
+
+    })
+  });
+
+  describe('on scheduled tasks', function(){
+    it('should create scheduled task with parameters in parallel',function(done){
+      
+      var newTask = new sut.Task('scheduledsuccess', {Msg:'Scheduled-1'});
+      newTask.TaskScript = 'debug(params.Msg);';
+      newTask.Schedule = "* * * * * *";
+      sut.set(newTask.Name, newTask, function(error, data){
+        assert.equal(error, null);
+      });
+
+      var newTask2 = new sut.Task('scheduled2success', {Msg:'Scheduled-2'});
+      newTask2.TaskScript = 'debug(params.Msg);';
+      newTask2.Schedule = "*/2 * * * * *";
+      sut.set(newTask2.Name, newTask2, function(error, data){
+        assert.equal(error, null);
+        setTimeout(done, 6500);
+      });
+
+    }),
+    it('should remove parallel scheduled tasks',function(done){
+      
+      sut.remove('scheduledsuccess', function(error, data){
+        assert.equal(error, null);
+      });
+
+      sut.remove('scheduled2success', function(error, data){
         assert.equal(error, null);
         done();
       });

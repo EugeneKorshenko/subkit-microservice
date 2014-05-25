@@ -24,73 +24,96 @@ describe('Module: Worker', function(){
     store.destroy(done);
   });
 
-  describe.skip('tasks', function(){
-    it('should run a task in folder and success',function(done){
-      sut.runTask('success', {}, function(error, data, contentType, log){
-        assert.equal(error, null);
-        assert.notEqual(data, null);
-        assert.equal(data, 'success');
-        assert.notEqual(log, null);
-        done();
-      });
-    });
-    it('should run a task in folder and failure',function(done){
-      sut.runTask('failure', {}, function(error, data, contentType, log){
-        assert.notEqual(error, null);
-        assert.equal(data, undefined);
-        assert.deepEqual(error, new Error('failure'));
-        assert.deepEqual(log, []);
-        done();
-      });
-    });
-    it('should run a task in folder and throws new error',function(done){
-      sut.runTask("error", {}, function(error, data, contentType, log){
-        assert.notEqual(error, null);
-        assert.equal(data, null);
-        assert.throws(error, Error);
-        assert.deepEqual(log, []);
-        done();
-      });
-    });
-    it('should run a task in folder and throws syntax error',function(done){
-      sut.runTask("syntax_error", {}, function(error, data, contentType, log){
-        assert.notEqual(error, null);
-        assert.equal(data, undefined);
-        assert.throws(error, Error);
-        assert.deepEqual(error, new Error('kk is not define'));
-        assert.deepEqual(log, []);
-        done();
-      });
-    });
-  });
-
-  describe('tasks2', function(){
+  describe('on tasks', function(){
     it('should create a task',function(done){
       var newTask = new sut.Task('success', []);
       newTask.TaskScript = 'log("Hello!"); done(null,{Message:"Hello world!"});';
       sut.set(newTask.Name, newTask, function(error, data){
-        console.log(error);
-        console.log(data);
+        assert.equal(error, null);
         done();
       });
     }),
     it('should run a task and success',function(done){
-      sut.run2('success', [], function(error, data, contentType, log){
-        // assert.equal(error, null);
-        console.log(error);
-        console.log(data);
-        console.log(contentType);
-        console.log(log);
+      sut.run('success', [], function(error, data, contentType, log){
+        assert.equal(error, null);
+        assert.notEqual(data, null);
+        assert.equal(data.Message, 'Hello world!');
+        assert.equal(log.length, 1);
+        assert.equal(log[0], 'Hello!');
         done();
       });
     }),
     it('should remove a task',function(done){
       sut.remove('success', function(error, data){
-        console.log(error);
-        console.log(data);
+        assert.equal(error, null);
         done();
       });
     })
   });
+
+  describe('on long running tasks', function(){
+    it('should create a task with parameters',function(done){
+      var newTask = new sut.Task('longrunningsuccess', {Msg:'Hello!!!'});
+      newTask.TaskScript = 'interval(function(){log(params.Msg);},1000); timeout(done,5500);';
+      sut.set(newTask.Name, newTask, function(error, data){
+        assert.equal(error, null);
+        done();
+      });
+    }),
+    it('should run long running tasks in parallel and success',function(done){
+      sut.run('longrunningsuccess', {Msg:'Hello--1'}, function(error, data, contentType, log){
+        assert.equal(error, null);
+        assert.equal(log.length, 5);
+        assert.equal(log[0], 'Hello--1');
+      });
+
+      sut.run('longrunningsuccess', {Msg:'Hello--2'}, function(error, data, contentType, log){
+        assert.equal(error, null);
+        assert.equal(log.length, 5);
+        assert.equal(log[0], 'Hello--2');
+        done();
+      });
+    }),
+    it('should remove task',function(done){
+      sut.remove('longrunningsuccess', function(error, data){
+        assert.equal(error, null);
+        done();
+      });
+    })
+  });
+
+  describe('on contiunous tasks', function(){
+    it('should create continuous task with parameters in parallel',function(done){
+      
+      var newTask = new sut.Task('coninuoussuccess', {Msg:'Hello1-'});
+      newTask.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 1000);';
+      newTask.isContinuous = true;
+      sut.set(newTask.Name, newTask, function(error, data){
+        assert.equal(error, null);
+      });
+
+      var newTask2 = new sut.Task('coninuous2success', {Msg:'Hello2-'});
+      newTask2.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 1000);';
+      newTask2.isContinuous = true;
+      sut.set(newTask2.Name, newTask2, function(error, data){
+        assert.equal(error, null);
+        setTimeout(done, 5000);
+      });
+
+    }),
+    it('should remove parallel contiuous tasks',function(done){
+      
+      sut.remove('coninuoussuccess', function(error, data){
+        assert.equal(error, null);
+      });
+
+      sut.remove('coninuous2success', function(error, data){
+        assert.equal(error, null);
+        done();
+      });
+
+    })
+  });
+
 
 });

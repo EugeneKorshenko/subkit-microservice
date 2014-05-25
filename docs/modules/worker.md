@@ -85,5 +85,13 @@ List tasks.
 
 * **callback** *callback* 
 
+## runScheduler(callback)
+
+Starts the scheduler.
+
+### Params: 
+
+* **callback** *callback* 
+
 <!-- End lib/worker.module.js -->
 

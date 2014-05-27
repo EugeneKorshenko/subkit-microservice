@@ -31,9 +31,6 @@ module.exports.init = function(){
 
 	var workerConfig = nconf.get('taskConfig');
 	workerConfig.tasksPath = path.join(__dirname, workerConfig.tasksPath);
-	workerConfig.jobsPath = path.join(__dirname, workerConfig.jobsPath);
-	workerConfig.mapreducePath = path.join(__dirname, workerConfig.mapreducePath);
-	workerConfig.rightsPath = path.join(__dirname, workerConfig.rightsPath);
 
 	//init
 	if(!fs.existsSync(storageConfig.rightsPath))

@@ -13,22 +13,6 @@
     "key":"./certs/www/server.key",
     "cert":"./certs/www/server.crt"
   },
-  "hooks": {
-    "error": {
-      "url": "http://localhost:8080",
-      "version": "*",
-      "headers": {
-        "api_key": "6654edc5-82a3-4006-967f-97d5817d7fe2"
-      }
-    },
-    "self": {
-      "url": "http://localhost:8080",
-      "version": "*",
-      "headers": {
-        "api_key": "6654edc5-82a3-4006-967f-97d5817d7fe2"
-      }
-    }
-  },
   "storageConfig": {
     "dbPath": "./masterdb",
     "rightsPath": "./rights.json",
@@ -45,10 +29,7 @@
     "backupPath": "./backups"
   },
   "taskConfig": {
-    "rightsPath": "./rights.json",
     "tasksPath": "./files/tasks",
-    "jobsPath": "./files/jobs",
-    "mapreducePath": "./files/mapreduce",
     "backupPath": "./backups"
   },
   "emailConfig": {

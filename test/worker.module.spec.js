@@ -82,6 +82,27 @@ describe('Module: Worker', function(){
     })
   });
 
+  describe.skip('on scheduled endless tasks', function(){
+    it('should create scheduled endless task with parameters',function(done){
+      
+      var newTask = new sut.Task('scheduledendlesssuccess', {Msg:'Endless-Scheduled'});
+      newTask.TaskScript = 'interval(function(){debug(params.Msg);}, 500);';
+      newTask.Schedule = "* * * * * *";
+      sut.set(newTask.Name, newTask, function(error, data){
+        assert.equal(error, null);
+      });
+
+    }),
+    it('should remove endless scheduled tasks',function(done){
+      
+      sut.remove('scheduledendlesssuccess', function(error, data){
+        assert.equal(error, null);
+      });
+
+    })
+  });
+
+
   describe('on continuous tasks', function(){
     it('should create continuous task with parameters in parallel',function(done){
       
@@ -147,6 +168,7 @@ describe('Module: Worker', function(){
 
     })
   });
+
 
 
 });

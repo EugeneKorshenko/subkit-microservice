@@ -29,6 +29,11 @@ Open your browser https://localhost:8080.
 Default Username: subkit  
 Default Password: subkit  
 
+SUPERVISOR
+---
+
+It's essential to monitor each micro service on its current execution state. We use forever for that.  
+
 Forever service install.  
 
 1. `npm install forever -g`

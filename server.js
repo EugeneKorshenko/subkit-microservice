@@ -130,10 +130,7 @@ module.exports.init = function(){
 	});
 
 	//starts the tasks scheduler
-	worker.runScheduler(function(error, data){
-		console.log(error);
-		console.log(data);
-	});
+	worker.runScheduler(true);
 
 	require('./lib/manage.js').init(nconf, api, app, server, storage, helper, doc);
 	require('./lib/store.js').init(server, storage, helper, doc);

@@ -102,7 +102,6 @@ describe('Module: Worker', function(){
     })
   });
 
-
   describe('on continuous tasks', function(){
     it('should create continuous task with parameters in parallel',function(done){
       
@@ -168,7 +167,5 @@ describe('Module: Worker', function(){
 
     })
   });
-
-
 
 });

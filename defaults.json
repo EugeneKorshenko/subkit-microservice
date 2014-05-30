@@ -19,40 +19,15 @@
     "backupPath": "./backups"
   },
   "staticConfig": {
-    "rightsPath": "./rights.json",
-    "filesPath": "./files/statics",
+    "staticsPath": "./files/statics",
     "backupPath": "./backups"
   },
   "templateConfig": {
-    "rightsPath": "./rights.json",
-    "filesPath": "./files/templates",
+    "templatesPath": "./files/templates",
     "backupPath": "./backups"
   },
   "taskConfig": {
     "tasksPath": "./files/tasks",
     "backupPath": "./backups"
-  },
-  "emailConfig": {
-    "MTPUsername": "",
-    "SMTPPassword": "",
-    "senderAddress": "go@subkit.io",
-    "SMTPServer": "",
-    "Port": "465",
-    "TLS": true,
-    "accessKeyId": "",
-    "secretAccessKey": "",
-    "region": ""
-  },
-  "pushConfig": {
-    "APN_Pfx": "",
-    "APN_Sandbox_Pfx": "",
-    "APN_Sandbox": true,
-    "MPNS_Pfx": "",
-    "GCM_APIKey": ""
-  },
-  "s3Config": {
-    "accessKeyId": "",
-    "secretAccessKey": "",
-    "region": ""
   }
 }

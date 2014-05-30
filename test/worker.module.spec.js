@@ -86,7 +86,7 @@ describe('Module: Worker', function(){
     it('should create scheduled endless task with parameters',function(done){
       
       var newTask = new sut.Task('scheduledendlesssuccess', {Msg:'Endless-Scheduled'});
-      newTask.TaskScript = 'interval(function(){debug(params.Msg);}, 500);';
+      newTask.TaskScript = 'interval(function(){debug(params.Msg);}, 500); done();';
       newTask.Schedule = "* * * * * *";
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
@@ -106,14 +106,14 @@ describe('Module: Worker', function(){
     it('should create continuous task with parameters in parallel',function(done){
       
       var newTask = new sut.Task('continuoussuccess', {Msg:'Continuous-1-'});
-      newTask.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 1000);';
+      newTask.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 1000); done();';
       newTask.isContinuous = true;
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
       var newTask2 = new sut.Task('continuous2success', {Msg:'Continuous-2-'});
-      newTask2.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 2000);';
+      newTask2.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 2000); done();';
       newTask2.isContinuous = true;
       sut.set(newTask2.Name, newTask2, function(error, data){
         assert.equal(error, null);
@@ -139,14 +139,14 @@ describe('Module: Worker', function(){
     it('should create scheduled task with parameters in parallel',function(done){
       
       var newTask = new sut.Task('scheduledsuccess', {Msg:'Scheduled-1'});
-      newTask.TaskScript = 'debug(params.Msg);';
+      newTask.TaskScript = 'debug(params.Msg); done();';
       newTask.Schedule = "* * * * * *";
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
       var newTask2 = new sut.Task('scheduled2success', {Msg:'Scheduled-2'});
-      newTask2.TaskScript = 'debug(params.Msg);';
+      newTask2.TaskScript = 'debug(params.Msg); done();';
       newTask2.Schedule = "*/2 * * * * *";
       sut.set(newTask2.Name, newTask2, function(error, data){
         assert.equal(error, null);

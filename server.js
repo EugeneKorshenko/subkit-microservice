@@ -32,6 +32,12 @@ module.exports.init = function(){
 	var workerConfig = nconf.get('taskConfig');
 	workerConfig.tasksPath = path.join(__dirname, workerConfig.tasksPath);
 
+	var templateConfig = nconf.get('templateConfig');
+	templateConfig.templatesPath = path.join(__dirname, templateConfig.templatesPath);
+	
+	var staticConfig = nconf.get('staticConfig');
+	staticConfig.staticsPath = path.join(__dirname, staticConfig.staticsPath);
+
 	//init
 	if(!fs.existsSync(storageConfig.rightsPath))
 		fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');

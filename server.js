@@ -76,6 +76,11 @@ module.exports.init = function(){
 	server.acceptable.push('text/html');
 	server.use(restify.acceptParser(server.acceptable));
 	server.use(restify.bodyParser({ mapParams: true }));
+	server.use(restify.CORS({
+		origins: ['*'],
+		credentials: true,
+		headers: ['authorization','content-type','x-requested-with','x-auth-token','api_key','apikey','subkit-log']
+	}));	
 	server.use(restify.fullResponse());
 	server.use(restify.authorizationParser());
 	server.use(restify.dateParser());
@@ -96,7 +101,7 @@ module.exports.init = function(){
 	server.opts(/\.*/, function (req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');
 		res.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, HEAD, OPTION');
-		res.header('Access-Control-Allow-Headers', 'authorization, content-type, x-requested-with, x-auth-token, api_key, apikey, Subkit-Log');
+		res.header('Access-Control-Allow-Headers', 'authorization, content-type, x-requested-with, x-auth-token, api_key, apikey, subkit-log');
 		res.send(200);
 		return next();
 	});

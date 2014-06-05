@@ -138,6 +138,7 @@ module.exports.init = function(){
 	//start web server
 	server.listen(app.port, function(){
 		console.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
+		console.log('ENVIRONMENT: '+process.env.NODE_ENV);
 		console.log('SECURE: '+server.secure);
 		console.log('PORT: '+server.address().port);
 		console.log('PID: '+process.pid);

@@ -1,16 +1,28 @@
 'use strict';
 
-var forever = require('forever'),
-    child = new(forever.Monitor)('index.js', {
-        'silent': false,
-        'pidFile': 'app.pid',
-        'watch': true,
-        'watchDirectory': '.',
-        'watchIgnoreDotFiles': true,
-        'watchIgnorePatterns': ['*.log.txt','*.pid','masterdb/*','files','node_modules'],
-        'logFile': 'proc.log.txt',
-        'outFile': 'out.log.txt',
-        'errFile': 'err.log.txt'
-    });
+var fs = require('fs'),
+    path = require('path'),
+    forever = require('forever'),
+    helper = require('./lib/helper.js').init();
+
+process.env.NODE_ENV = 'production';
+var logsPath = 'files/logs/';
+var logsFullPath = path.join(__dirname,logsPath);
+
+if(!fs.existsSync(logsFullPath))
+    helper.mkdirRecursive(logsFullPath)
+
+var child = new(forever.Monitor)('index.js', {
+    'silent': false,
+    'uid':'master',
+    'pidFile': 'app.pid',
+    'watch': true,
+    'watchDirectory': '.',
+    'watchIgnoreDotFiles': true,
+    'watchIgnorePatterns': ['rights.json','masterdb/**','files/**','node_modules/**','backups/**'],
+    'logFile': logsPath + 'proc.log.txt',
+    'outFile': logsPath + 'out.log.txt',
+    'errFile': logsPath + 'err.log.txt'
+});
 child.start();
 forever.startServer(child);

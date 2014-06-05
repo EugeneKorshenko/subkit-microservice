@@ -8,39 +8,53 @@ var restify = require('restify'),
 	subkitPackage = require('./package.json');
 
 module.exports.init = function(){
-	//config
-	nconf
-		.argv()
-		.env()
-		.file('config', path.join(__dirname, 'config.json'))
-	  	.file('defaults', path.join(__dirname, 'defaults.json'));
-
-	var admin = nconf.get('admin'),
-		app = nconf.get('app'),
-		api = nconf.get('api'),
+	var admin,
+		app,
+		api,
+		storageConfig,
+		workerConfig,
+		templateConfig,
+		staticConfig,
 		etag = {etag:'', lastModified:''};
-	
-	//correct root path
-	app.key = path.join(__dirname, app.key);
-	app.cert = path.join(__dirname, app.cert);
 
-	var storageConfig = nconf.get('storageConfig');
-	storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
-	storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
-	storageConfig.backupPath = path.join(__dirname, storageConfig.backupPath);
+	var _applyConfig = function(){
+	  	nconf.file('config', path.join(__dirname, 'config.json'));		
+	  	nconf.file('defaults', path.join(__dirname, 'defaults.json'));
 
-	var workerConfig = nconf.get('taskConfig');
-	workerConfig.tasksPath = path.join(__dirname, workerConfig.tasksPath);
+		admin = nconf.get('admin');
+		app = nconf.get('app');
+		api = nconf.get('api');
+		storageConfig = nconf.get('storageConfig');
+		workerConfig = nconf.get('workerConfig');
+		templateConfig = nconf.get('templateConfig');
+		staticConfig = nconf.get('staticConfig');
+		
+		nconf.remove('defaults');
+		nconf.set('admin', admin);
+		nconf.set('app', app);
+		nconf.set('api', api);
+		nconf.set('storageConfig', storageConfig);
+		nconf.set('workerConfig', workerConfig);
+		nconf.set('templateConfig', templateConfig);
+		nconf.set('staticConfig', staticConfig);
+		nconf.save();
+		
+		//correct root path
+		app.key = path.join(__dirname, app.key);
+		app.cert = path.join(__dirname, app.cert);
+		storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
+		storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
+		storageConfig.backupPath = path.join(__dirname, storageConfig.backupPath);
+		workerConfig.tasksPath = path.join(__dirname, workerConfig.tasksPath);
+		templateConfig.templatesPath = path.join(__dirname, templateConfig.templatesPath);
+		staticConfig.staticsPath = path.join(__dirname, staticConfig.staticsPath);
 
-	var templateConfig = nconf.get('templateConfig');
-	templateConfig.templatesPath = path.join(__dirname, templateConfig.templatesPath);
-	
-	var staticConfig = nconf.get('staticConfig');
-	staticConfig.staticsPath = path.join(__dirname, staticConfig.staticsPath);
-
-	//init
-	if(!fs.existsSync(storageConfig.rightsPath))
-		fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');
+		//init
+		if(!fs.existsSync(storageConfig.rightsPath))
+			fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');		
+	};
+	_applyConfig();
+	// fs.watchFile(path.join(__dirname, 'config.json'), _applyConfig);	
 
 	var utils = require('./lib/helper.js');
 	var storage = require('./lib/store.module.js').init(storageConfig);
@@ -57,17 +71,6 @@ module.exports.init = function(){
 	if(app.key && fs.existsSync(app.key)) options.key = fs.readFileSync(app.key);
 	if(app.cert && fs.existsSync(app.cert)) options.certificate = fs.readFileSync(app.cert);
 	var	server = restify.createServer(options);
-
-	//conf reload
-	var reloadConf = function(){
-		nconf.file('config', path.join(__dirname, 'config.json'));
-	  	nconf.file('defaults', path.join(__dirname, 'defaults.json'));
-		admin = nconf.get('admin');
-		app = nconf.get('app');
-		api = nconf.get('api');
-	};
-	fs.watchFile(path.join(__dirname, 'config.json'), reloadConf);
-	fs.watchFile(path.join(__dirname, 'defaults.json'), reloadConf);
 
 	var helper = utils.init(admin, api, etag, storage);
 	helper.setNewETag();

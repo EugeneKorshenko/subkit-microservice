@@ -98,11 +98,11 @@ Extend the Subkit mirco service instance with plugins.
 
 STATUS		  | Name 	 		  | Comments
 ------------- | ----------------- | ---------------
-X		 	  | [File](https://github.com/SubKit/subkit-file-plugin.git)			  | Binary Up/Download
--			  | [EMail](https://github.com/SubKit/subkit-email-plugin.git) 			  | Organize EMail subscriptions and send EMails 
+X		 	  | [File](https://github.com/SubKit/subkit-file-plugin.git)			  | Create, Upload, Download static files
+X			  | [EMail](https://github.com/SubKit/subkit-email-plugin.git) 			  | Templated EMails over SMTP 
 -			  | [Mobile Push](https://github.com/SubKit/subkit-push-plugin.git)	  | Mobile push notifications to iOS, Android, WP8
 X			  | [Task](https://github.com/SubKit/subkit-task-plugin.git)	    	  | Manage, execute and schedule custom JavaScript tasks
-X			  | [Geolocation](https://github.com/SubKit/subkit-geolocation-plugin.git)    	  | Organize and query geolocations
+-			  | [Geolocation](https://github.com/SubKit/subkit-geolocation-plugin.git)    	  | Organize and query geolocations
 -			  | [S3](https://github.com/SubKit/subkit-S3-plugin.git)			  | Manage Amazon S3 buckets and items
 X		 	  | [Template](https://github.com/SubKit/subkit-template-plugin.git)		  | JSHTML based template engine
 X		 	  | [User](https://github.com/SubKit/subkit-user-plugin.git)			  | Manage accounts

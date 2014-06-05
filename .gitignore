@@ -7,5 +7,6 @@ masterdb
 rights.json
 *.p12
 config.json
+*.log.txt
 files/
 docs/modules/html/

@@ -29,15 +29,17 @@ module.exports.init = function(){
 		templateConfig = nconf.get('templateConfig');
 		staticConfig = nconf.get('staticConfig');
 		
-		nconf.remove('defaults');
-		nconf.set('admin', admin);
-		nconf.set('app', app);
-		nconf.set('api', api);
-		nconf.set('storageConfig', storageConfig);
-		nconf.set('workerConfig', workerConfig);
-		nconf.set('templateConfig', templateConfig);
-		nconf.set('staticConfig', staticConfig);
-		nconf.save();
+		if(!fs.existsSync(path.join(__dirname, 'config.json'))){
+			nconf.remove('defaults');
+			nconf.set('admin', admin);
+			nconf.set('app', app);
+			nconf.set('api', api);
+			nconf.set('storageConfig', storageConfig);
+			nconf.set('workerConfig', workerConfig);
+			nconf.set('templateConfig', templateConfig);
+			nconf.set('staticConfig', staticConfig);
+			nconf.save();
+		}
 		
 		//correct root path
 		app.key = path.join(__dirname, app.key);
@@ -54,7 +56,6 @@ module.exports.init = function(){
 			fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');		
 	};
 	_applyConfig();
-	// fs.watchFile(path.join(__dirname, 'config.json'), _applyConfig);	
 
 	var utils = require('./lib/helper.js');
 	var storage = require('./lib/store.module.js').init(storageConfig);

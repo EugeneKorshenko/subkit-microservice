@@ -1,7 +1,8 @@
 {
   "name": "subkit-microservice",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "dependencies": {
+    "forever": "*",
     "cron": "*",
     "jshtml-express": "*",
     "json-stringify-safe": "*",
@@ -30,7 +31,7 @@
     "node": ">0.10.0"
   },
   "scripts": {
-    "start": "node index",
+    "start": "node supervisor",
     "test": "grunt test"
   },
   "author": "Mike Bild",

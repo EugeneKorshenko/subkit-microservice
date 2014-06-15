@@ -32,19 +32,22 @@ Default Password: subkit
 SUPERVISOR
 ---
 
-It's essential to monitor each micro service on its current execution state. We use forever for that.  
+It's essential to monitor the current execution state to each microservice instance. We use forever to start every instance via the 'supervisor.js' script.
 
-Forever service install.  
+Start a Subkit mirsoservice instance supervised.
 
-1. `npm install forever -g`
-2. `forever start -p <path to service> <path to service>/index.js`
+1. `npm start` || `node supervisor.js`
 
 BASICS
 ---
 * [Quick Intro](docs/quick_intro.md)
 * [Quick Intro JavaScript Sample](docs/quick_start_javascript_sample.html)
-* [RESTful JSON API](docs/restful_api.md)
 * [Configuration Options](docs/service_config.md)
+* [URI Style](docs/uri_style.md)
+* [Hypermedia Style](docs/hypermedia_style.md)
+* [Event Driven Style](docs/eventdriven_style.md)
+* [RESTful JSON API](docs/restful_api.md)
+
 
 GETTING STARTED
 ---

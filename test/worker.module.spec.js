@@ -42,7 +42,7 @@ describe('Module: Worker', function(){
         assert.equal(log[0], 'Hello!');
         done();
       });
-    }),
+    })
     it('should remove a task',function(done){
       sut.remove('success', function(error, data){
         assert.equal(error, null);

@@ -155,7 +155,7 @@ module.exports.init = function(){
 	require('./lib/store.js').init(server, storage, helper, doc);
 	require('./lib/pubsub.js').init(server, pubsub, helper, doc);
 	require('./lib/statistics.js').init(server, storage, pubsub, helper, doc);
-	require('./lib/eventsource.js').init(server, es, helper, doc);
+	require('./lib/eventsource.js').init(server, es, helper, worker, doc);
 	
 	//plugins
 	var availablePlugins = subkitPackage.optionalDependencies;

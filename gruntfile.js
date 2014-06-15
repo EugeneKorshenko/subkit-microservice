@@ -10,7 +10,6 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
       files: [
-        'Gruntfile.js',
         'test/store.module.spec.js',
         'test/pubsub.module.spec.js',
         'test/worker.module.spec.js',
@@ -19,7 +18,9 @@ module.exports = function(grunt) {
         'test/identity.module.spec.js',
         'test/rights.module.spec.js',
         'test/file.module.spec.js',
+
         'test/store.spec.js',
+        'test/eventsource.spec.js',
         
         'lib/helper.js',
         'lib/doc.module.js',
@@ -37,7 +38,10 @@ module.exports = function(grunt) {
         'lib/manage.js',
         'lib/store.js',
         'lib/pubsub.js',
+        'lib/eventsource.js',
 
+        'gruntfile.js',
+        'supervisor.js',
         'server.js',
         'index.js'
       ],
@@ -50,12 +54,14 @@ module.exports = function(grunt) {
       test: {
         options: {
           reporter: 'spec',
-          timeout: 10000
+          timeout: 10000,
+          clearRequireCache: true
         },
         src: [
           'test/*.module.spec.js',
           'test/manage.spec.js',
-          'test/store.spec.js'
+          'test/store.spec.js',
+          'test/eventsource.spec.js'
         ]
       }
     },

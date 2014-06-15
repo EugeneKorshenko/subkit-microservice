@@ -19,27 +19,31 @@ All messages that transmitted are partitioned via topics. A topic is the name of
 ###Publish
 Publish a message to a stream.
 ```
-eventsource
-.toStream(topic)
-.publish({key}, {value}, function(error, message){
+pubsub
+.publish(topic, key, value, function(error, message){
 	
 });
 ```
 
-Publish a message without checking the consistency of a stream.
+Publish a message without checking the consistency of a stream. (coming soon)
 ```
-eventsource
-.toStream(topic)
-.tryPublish({key}, {value}, function(error, message){
+pubsub
+.tryPublish(topic, key, value, function(error, message){
 	
 });
 ```
 
 ###Subscribe
 ```
-eventsource
-.fromStreams(topics)
-.on(JSONQuery, function(error, message){
+pubsub
+.subscribe(topic, clientId, function(error, message){
+	
+});
+```
+
+```
+pubsub
+.on(topic, JSONQuery, clientId, function(error, message){
 	
 });
 ```

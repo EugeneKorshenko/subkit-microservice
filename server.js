@@ -2,6 +2,7 @@
 
 var restify = require('restify'),
 	http = require('http'),
+	https = require('https'),
 	fs = require('fs'),
 	path = require('path'),
 	nconf = require('nconf'),
@@ -73,6 +74,7 @@ module.exports.init = function(){
 	if(app.cert && fs.existsSync(app.cert)) options.certificate = fs.readFileSync(app.cert);
 	var	server = restify.createServer(options);
 
+
 	var helper = utils.init(admin, api, etag, storage);
 	helper.setNewETag();
 
@@ -143,6 +145,7 @@ module.exports.init = function(){
 		console.log('PORT: '+server.address().port);
 		console.log('PID: '+process.pid);
 		http.globalAgent.maxSockets = 50000;
+		https.globalAgent.maxSockets = 50000;
 	});
 
 	//starts the tasks scheduler

@@ -5,21 +5,24 @@ var assert = require('assert'),
 
 var client = restify.createJsonClient({
   version: '*',
-  url: 'http://127.0.0.1:8080',
-  headers: {'api_key':'6654edc5-82a3-4006-967f-97d5817d7fe2'}
+  rejectUnauthorized: false,
+  url: 'https://127.0.0.1:8080',
+  headers: {'x-auth-token':'6654edc5-82a3-4006-967f-97d5817d7fe2'}
 });
 
 describe('Integration: Manage', function(){
   var server,
       context;
+
   before(function(done) {
     server = require('../server.js');
     context = server.init().getContext();
     done();
   });
+
   after(function(done){
-    context.Server.close();
     context.Storage.close();
+    context.Server.close();
     delete require.cache[server];
     done();
   });

@@ -14,30 +14,30 @@ Event-Driven style attributes include:
 * Events are transmitted as they occur via asynchronous messages 
 
 ##Publish/Subscribe
-All messages that transmitted are partitioned via a topics. A topic is the name of the channel, store or projection. A message partition is named by topic and is called stream.
+All messages that transmitted are partitioned via topics. A topic is the name of the channel, a store or a projection. A message partition is named by choosen topic and is called stream.
 
 ###Publish
 Publish a message to a stream.
 ```
-.eventsource
-.fromStreams(topics)
+eventsource
+.toStream(topic)
 .publish({key}, {value}, function(error, message){
 	
 });
 ```
 
-Publish a message without checking consistency of a stream.
+Publish a message without checking the consistency of a stream.
 ```
-.eventsource
-.fromStreams(topics)
-.tryPublish({name}, {key}, {value}, function(error, message){
+eventsource
+.toStream(topic)
+.tryPublish({key}, {value}, function(error, message){
 	
 });
 ```
 
 ###Subscribe
 ```
-.eventsource
+eventsource
 .fromStreams(topics)
 .on(JSONQuery, function(error, message){
 	
@@ -51,6 +51,7 @@ Publish a message without checking consistency of a stream.
 	source: 'store' || 'channel' || 'projection',
 	channel: {name},
 	store: {name},
+	key: {name},
 	timestamp: {datetime},
 	version: {number},
 	value: {object}
@@ -60,7 +61,7 @@ Publish a message without checking consistency of a stream.
 ##Event-Store
 Gets all messages from stream.
 ```
-.eventsource
+eventsource
 .fromStreams(topics)
 .stream(function(error, stream){
 	
@@ -68,11 +69,10 @@ Gets all messages from stream.
 ```
 
 ##Event Stream analytics with state transformations
-A stream of events is a representation of state changes over time. To get the current state of the event stream, you should use our Stream Projection API.
-
+A stream of events (messages) is a representation of state changes over time. To get the current state of the event stream, you should use our Stream Projection API. The Projection API iterate over the selected streams, gets the messages from each stream and you can filter, map and reduce them to a resulting state. 
 
 ```
-.eventsource
+eventsource
 .fromStreams(topics)
 .run(projection, isPersistentTask, function(error, data){
 	
@@ -81,11 +81,12 @@ A stream of events is a representation of state changes over time. To get the cu
 ```
 
 ###Projection API
-You can filter, map and reduce messages over the selected message streams to build a continuous resulting state by using the Projection API. 
-1. Use `fromStreams(topics)` to filter messages by channel, store or projection name.
-2. Use the message key identifier to filter and dispatch a message from the selected stream to a corresponding map/reduce (select/aggregate) function.
-3. Use `$init` to build an initial state.
-4. Use `$completed` to transform the resulting state.
+You can filter, map and reduce messages over the selected message streams to build a continuous resulting state by using the Projection API.  
+
+1. Use `fromStreams(topics)` to filter messages by channel, store or projection name.  
+2. Use the message key (message identifier) to filter (pattern match over message key) and dispatch a message from the selected stream to a corresponding map/reduce (select/aggregate) function.  
+3. Use `$init` to build an initial state.  
+4. Use `$completed` to transform the resulting state.  
 
 ```
 {
@@ -104,25 +105,30 @@ You can filter, map and reduce messages over the selected message streams to bui
 ###Projection API Filter/Map/Reduce Examples
 Run a non persistent projection over the streams "foo" and "bar". 
 ```
-.eventsource
+eventsource
 .fromStreams(['foo', 'bar'])
 .run('fooBarProjection', {
+	//Generate initial state
 	$init: function(state){
 		state.count = state.count || 0;
 		state.events = state.events || [];
 		return state;
 	},
+	//Transform the resulting state 
 	$completed: function(state){
 		res.end(JSON.stringify(state));
 	},
+	// Map/Reduce messages with message key "channel1"
 	channel1: function(state, message){
-		state.count++; //REDUCE
+		state.count++; 
 		state.events.push(message); // MAP
 	},
+	// Map/Reduce messages with message key "store1"
 	store1: function(state, message){
 		state.count++;
 		state.events.push(message);
 	},
+	// Map/Reduce messages with message key "projection1"
 	projection1: function(state, message){
 		state.count++;
 		state.events.push(message);
@@ -132,14 +138,14 @@ Run a non persistent projection over the streams "foo" and "bar".
 
 ### Get current state.
 ```
-.eventsource
+eventsource
 .get('fooBarProjection', function(error, data){
 	
 });
 ```
 ### Receive state continuously.
 ```
-.eventsource
+eventsource
 .fromStreams('fooBarProjection')
 .on(JSONQuery, function(error, data){
 	

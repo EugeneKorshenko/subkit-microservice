@@ -34,17 +34,32 @@ describe('Integration: EventSource', function(){
 
   describe('on projections', function(){
     it('should create a projection', function(done){
-      var task = {
-        TaskScript: "{ $init: function(state){ if(!state.count) state.count = 0; }, $complete: function(state){ return state; }, demo: function(state, message){ state.count += 1; return state; } }"
-      };
-      client.post('/eventsource/projections/demo1', task, function(err, req, res, obj) {
+      client.post('/eventsource/projections/demo1', null, function(err, req, res, obj) {
         assert.equal(null, err);
         assert.notEqual(null, obj);
         assert.equal('created', obj.message);
-        client.del('/eventsource/projections/demo1', function(err, req, res, obj) {
+        
+        client.get('/eventsource/projections/demo1', function(err, req, res, obj){
           assert.equal(null, err);
-          assert.notEqual(null, obj);
-          done();
+          assert.notEqual(null, obj); 
+          assert.notEqual('', obj.Name);
+
+          obj.TaskScript = "{ $init: function(state){ if(!state.count) state.count = 0; }, $complete: function(state){ return state; }, demo: function(state, message){ state.count += 1; return state; } }";
+          client.put('/eventsource/projections/demo1', obj, function(err, req, res, obj){
+            assert.equal(null, err);
+            assert.notEqual(null, obj);
+            assert.notEqual('', obj.TaskScript);
+            assert.equal('changed', obj.message);
+
+            client.del('/eventsource/projections/demo1', function(err, req, res, obj) {
+              assert.equal(null, err);
+              assert.notEqual(null, obj);
+              assert.equal('removed', obj.message);
+              done();
+            });
+
+          });
+
         });
       });
     });

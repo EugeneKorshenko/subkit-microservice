@@ -5,7 +5,7 @@ var path = require('path'),
     store,
     sut;
 
-describe.skip('Module: Worker', function(){
+describe('Module: Worker', function(){
   before(function(done) {
     store = require('../lib/store.module.js').init({
       dbPath:'./taskspecdb',

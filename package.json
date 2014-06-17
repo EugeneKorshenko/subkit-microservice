@@ -32,7 +32,7 @@
     "node": ">0.10.0"
   },
   "scripts": {
-    "start": "node supervisor",
+    "start": "node supervisor --expose_gc",
     "test": "grunt test"
   },
   "author": "Mike Bild",

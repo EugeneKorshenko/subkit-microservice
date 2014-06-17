@@ -98,16 +98,16 @@ describe('Module: EventSource', function(){
       //sample messages
       setTimeout(function(){
         store.upsert('demo1','g',{});
-      }, 1000);
+      }, 100);
       setTimeout(function(){
         store.upsert('demo2','t',{});
-      }, 2000);
+      }, 200);
       setTimeout(function(){
         store.upsert('demo5','t',{});
-      }, 3000);
+      }, 300);
       setTimeout(function(){
         store.upsert('demo15','t',{});
-      }, 4000);
+      }, 400);
 
       sut
       .fromStreams(['myNewProjection'])
@@ -148,7 +148,7 @@ describe('Module: EventSource', function(){
           return state;
         },
         demo2: function(state, message){
-          state.count += 2;
+          state.count += 1;
           state.events.push(message);
           return state;
         }
@@ -156,12 +156,10 @@ describe('Module: EventSource', function(){
         assert.equal(null, err);
         assert.notEqual(null, data);
         // console.log(data);
-        setTimeout(function(){
-          pubsub.publish('myNewProjection', data.count, data);
-        }, 0);
+        pubsub.publish('myNewProjection', data.count, data);
       });
       
-      setTimeout(done, 5000);
+      setTimeout(done, 500);
 
     });
 

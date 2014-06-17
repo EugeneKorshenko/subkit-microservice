@@ -10,7 +10,6 @@ describe('Module: Identity', function(){
     store = require('../lib/store.module.js').init({
       dbPath:'./identityspecdb',
       rightsPath:'./rights.json',
-      tasksPath:'./tasks',
       backupPath:'./backups'
     });
     sut = require('../lib/identity.module.js').init('account', store);

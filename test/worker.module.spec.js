@@ -24,7 +24,7 @@ describe.skip('Module: Worker', function(){
     store.destroy(done);
   });
 
-  describe('on tasks', function(){
+  describe('on simple tasks', function(){
     it('should create a task',function(done){
       var newTask = new sut.Task('success', []);
       newTask.TaskScript = 'log("Hello!"); done(null,{Message:"Hello world!"});';

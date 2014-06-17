@@ -11,7 +11,7 @@ var client = restify.createJsonClient({
   headers: {'x-auth-token':'6654edc5-82a3-4006-967f-97d5817d7fe2'}
 });
 
-describe('Integration: EventSource', function(){
+describe.skip('Integration: EventSource', function(){
   var server,
       context;
 
@@ -32,8 +32,8 @@ describe('Integration: EventSource', function(){
     done();
   });
 
-  describe('on projections', function(){
-    it('should create a projection', function(done){
+  describe('manage projections', function(){
+    it('should manage a projection', function(done){
       client.post('/eventsource/projections/demo1', null, function(err, req, res, obj) {
         assert.equal(null, err);
         assert.notEqual(null, obj);
@@ -64,4 +64,25 @@ describe('Integration: EventSource', function(){
       });
     });
   });
+
+
+  describe('run projections', function(){
+    it('should run a projection', function(done){
+
+      var taskScript = "{ $init: function(state){ if(!state.count) state.count = 0; }, $complete: function(state){ return state; }, demo: function(state, message){ state.count += 1; return state; } }";
+      client.post('/eventsource/projections/demo2', { TaskScript: taskScript }, function(err, req, res, obj) {
+        console.log(err);
+        console.log(obj);
+
+        client.get('/eventsource/projections/run/demo2', function(err, req, res, obj){
+          console.log(err);
+          console.log(obj);
+          done();
+        });
+
+      });
+
+    });
+  });
+
 });

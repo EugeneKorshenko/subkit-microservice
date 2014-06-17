@@ -18,6 +18,7 @@ module.exports.init = function(){
 		staticConfig,
 		etag = {etag:'', lastModified:''};
 
+	//load and apply configuration
 	var _applyConfig = function(){
 	  	nconf.file('config', path.join(__dirname, 'config.json'));		
 	  	nconf.file('defaults', path.join(__dirname, 'defaults.json'));
@@ -57,28 +58,14 @@ module.exports.init = function(){
 			fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');		
 	};
 	_applyConfig();
-
-	var utils = require('./lib/helper.js');
-	var storage = require('./lib/store.module.js').init(storageConfig);
-	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1}, storage);
-	var doc = require('./lib/doc.module.js');
-	var file = require('./lib/file.module.js');
-	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
-	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es);
-	var template = require('./lib/template.module.js');
-	var identity = require('./lib/identity.module.js');
 	
+	//configure HTTPS/SSL server
 	var options = { name: 'subkit microservice' };
-	//configure HTTPS/SSL
 	if(app.key && fs.existsSync(app.key)) options.key = fs.readFileSync(app.key);
 	if(app.cert && fs.existsSync(app.cert)) options.certificate = fs.readFileSync(app.cert);
 	var	server = restify.createServer(options);
 
-
-	var helper = utils.init(admin, api, etag, storage);
-	helper.setNewETag();
-
-	//server middleware
+	//Middleware
 	server.acceptable.push('text/html');
 	server.use(restify.acceptParser(server.acceptable));
 	server.use(restify.bodyParser({ mapParams: true }));
@@ -92,8 +79,6 @@ module.exports.init = function(){
 	server.use(restify.dateParser());
 	server.use(restify.queryParser());
 	server.use(restify.gzipResponse());
-
-	//etag
 	server.use(function (req, res, next) {
 		res.header('ETag', etag.etag);
 		res.header('Last-Modified', etag.lastModified);
@@ -103,7 +88,7 @@ module.exports.init = function(){
 	server.pre(restify.pre.sanitizePath());
 	server.pre(restify.pre.userAgentConnection());
 
-	//CORS
+	//handle CORS
 	server.opts(/\.*/, function (req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');
 		res.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, HEAD, OPTION');
@@ -131,11 +116,22 @@ module.exports.init = function(){
 	process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
 	//JSON doc
+	var doc = require('./lib/doc.module.js');
 	doc = doc.configure(server, {
 		discoveryUrl: '/docs',
 		version: '1.2',
 		basePath: app.key ? 'https://localhost:'+app.port : 'http://localhost:'+app.port
 	});
+	var storage = require('./lib/store.module.js').init(storageConfig);
+	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1}, storage);
+	var file = require('./lib/file.module.js');
+	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
+	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es, doc);
+	var template = require('./lib/template.module.js');
+	var identity = require('./lib/identity.module.js');
+	var utils = require('./lib/helper.js');
+	var helper = utils.init(admin, api, etag, storage);
+	helper.setNewETag();
 
 	//start web server
 	server.listen(app.port, function(){
@@ -147,15 +143,16 @@ module.exports.init = function(){
 		http.globalAgent.maxSockets = 50000;
 		https.globalAgent.maxSockets = 50000;
 	});
-
 	//starts the tasks scheduler
 	worker.runScheduler(true);
 
+	//starts external API
 	require('./lib/manage.js').init(nconf, api, app, server, storage, helper, doc);
 	require('./lib/store.js').init(server, storage, helper, doc);
 	require('./lib/pubsub.js').init(server, pubsub, helper, doc);
 	require('./lib/statistics.js').init(server, storage, pubsub, helper, doc);
 	require('./lib/eventsource.js').init(server, es, helper, worker, doc);
+	require('./lib/worker.js').init(server, worker, helper);
 	
 	//plugins
 	var availablePlugins = subkitPackage.optionalDependencies;

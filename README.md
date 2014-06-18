@@ -9,8 +9,8 @@ INSTALL
 
 Microsoft Windows Installation
 ---
-* [Python](https://www.python.org/)
-* [VS C++ Express 2010 32bit](http://go.microsoft.com/?linkid=9709949)
+* [Python 2.7.3](http://www.python.org/download/releases/2.7.3#download)
+* [Microsoft Visual Studio C++ 2012](http://go.microsoft.com/?linkid=9816758)
 
 via NPM  
 `npm install subkit-microservice`  

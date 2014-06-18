@@ -10,7 +10,6 @@ INSTALL
 
 via NPM  
 `npm install subkit-microservice`  
-`cd node_modules/subkit-microservice`  
 `npm start`  
 
 Open your browser https://localhost:8080.  

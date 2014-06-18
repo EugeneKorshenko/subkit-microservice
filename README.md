@@ -12,6 +12,18 @@ Microsoft Windows Installation
 * [Python 2.7.3](http://www.python.org/download/releases/2.7.3#download)
 * [Microsoft Visual Studio C++ 2012](http://go.microsoft.com/?linkid=9816758)
 
+Windows 7
+---
+* [Microsoft Windows SDK for Windows 7 and .NET Framework 4](http://www.microsoft.com/download/en/details.aspx?displayLang=en&id=8279)
+
+Windows 8/8.1
+---
+* [Windows Software Development Kit (SDK) für Windows 8](http://www.microsoft.com/click/services/Redirect2.ashx?CR_EAC=300105886)
+* [Windows Software Development Kit (SDK) for Windows 8.1](http://www.microsoft.com/click/services/Redirect2.ashx?CR_EAC=300135395)
+
+
+SUBKIT INSTALL
+---
 via NPM  
 `npm install subkit-microservice` 
 `cd node_modules/subkit-microservice`

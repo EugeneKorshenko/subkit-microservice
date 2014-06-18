@@ -4,12 +4,17 @@ PREAMBLE
 ---
 ATTENTION! Project is under heavy development and not ready for production yet.
 
-
 INSTALL
 ---
 
+Microsoft Windows Installation
+---
+* [Python 2.7.3](http://www.python.org/download/releases/2.7.3#download)
+* [Microsoft Visual Studio C++ 2012](http://go.microsoft.com/?linkid=9816758)
+
 via NPM  
-`npm install subkit-microservice`  
+`npm install subkit-microservice` 
+`cd node_modules/subkit-microservice`
 `npm start`  
 
 Open your browser https://localhost:8080.  

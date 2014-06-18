@@ -4,9 +4,13 @@ PREAMBLE
 ---
 ATTENTION! Project is under heavy development and not ready for production yet.
 
-
 INSTALL
 ---
+
+Microsoft Windows Installation
+---
+* [Python](https://www.python.org/)
+* [VS C++ Express 2010 32bit](http://go.microsoft.com/?linkid=9709949)
 
 via NPM  
 `npm install subkit-microservice`  

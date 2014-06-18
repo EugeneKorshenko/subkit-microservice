@@ -33,7 +33,8 @@
   },
   "scripts": {
     "start": "node supervisor --expose_gc",
-    "test": "grunt test"
+    "test": "grunt test",
+    "postinstall":"mv -f node_modules/subkit-microservice/ ./"
   },
   "author": "Mike Bild",
   "repository": {

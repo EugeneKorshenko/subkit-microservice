@@ -87,6 +87,30 @@ module.exports.init = function(){
 	server.use(restify.conditionalRequest());
 	server.pre(restify.pre.sanitizePath());
 	server.pre(restify.pre.userAgentConnection());
+	
+	var rawRoutes = [];
+	var rightsTable = [];
+	server.use(function(req, res, next){
+		if(rawRoutes.length === 0){
+			for(var idx in this.router.mounts){
+				rawRoutes.push(this.router.mounts[idx]);
+			};		
+		}
+		var matches = rawRoutes.filter(function(route){
+			if(route.spec.path === '/') return false;
+
+			var patt = new RegExp(route.spec.path);
+			return ((route.spec.method === req.method) && (patt.test(req.url)));
+		});
+		rightsTable = matches.map(function(route){
+			return {
+				Type: route.spec.method,
+				Resource: route.spec.path
+			}
+		});
+		// console.log(rightsTable);
+		next();
+	});
 
 	//handle CORS
 	server.opts(/\.*/, function (req, res, next) {
@@ -151,7 +175,6 @@ module.exports.init = function(){
 	require('./lib/store.js').init(server, storage, helper, doc);
 	require('./lib/pubsub.js').init(server, pubsub, helper, doc);
 	require('./lib/statistics.js').init(server, storage, pubsub, helper, doc);
-	require('./lib/eventsource.js').init(server, es, helper, worker, doc);
 	require('./lib/worker.js').init(server, worker, helper);
 	
 	//plugins

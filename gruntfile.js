@@ -20,7 +20,8 @@ module.exports = function(grunt) {
         'test/file.module.spec.js',
 
         'test/store.spec.js',
-        'test/eventsource.spec.js',
+        'test/worker.spec.js',
+        'test/manage.spec.js',
         
         'lib/helper.js',
         'lib/doc.module.js',
@@ -38,7 +39,7 @@ module.exports = function(grunt) {
         'lib/manage.js',
         'lib/store.js',
         'lib/pubsub.js',
-        'lib/eventsource.js',
+        'lib/worker.js',
 
         'gruntfile.js',
         'supervisor.js',
@@ -61,7 +62,7 @@ module.exports = function(grunt) {
           'test/*.module.spec.js',
           'test/manage.spec.js',
           'test/store.spec.js',
-          'test/eventsource.spec.js'
+          'test/worker.spec.js'
         ]
       }
     },

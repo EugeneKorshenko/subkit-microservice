@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.0.42",
+  "version": "0.0.43",
   "dependencies": {
     "cflow": "*",
     "forever": "*",
@@ -29,12 +29,11 @@
   },
   "main": "index.js",
   "engines": {
-    "node": ">0.10.0"
+    "node": ">=0.10.22"
   },
   "scripts": {
-    "start": "node supervisor --expose_gc",
-    "test": "grunt test",
-    "postinstall": "echo $NODE_ENV$"
+    "start": "node supervisor",
+    "test": "grunt test"
   },
   "author": "Mike Bild",
   "repository": {

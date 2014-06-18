@@ -1,7 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.0.38",
-  "type":"app",
+  "version": "0.0.42",
   "dependencies": {
     "cflow": "*",
     "forever": "*",
@@ -35,7 +34,7 @@
   "scripts": {
     "start": "node supervisor --expose_gc",
     "test": "grunt test",
-    "postinstall": "cp -rf ./* ./../../; rm -rf ./../subkit-microservice"
+    "postinstall": "echo $NODE_ENV$"
   },
   "author": "Mike Bild",
   "repository": {

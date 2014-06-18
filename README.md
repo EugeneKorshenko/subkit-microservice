@@ -25,8 +25,8 @@ Windows 8/8.1
 SUBKIT INSTALL
 ---
 via NPM  
-`npm install subkit-microservice` 
-`cd node_modules/subkit-microservice`
+`npm install subkit-microservice`  
+`cd node_modules/subkit-microservice`  
 `npm start`  
 
 Open your browser https://localhost:8080.  

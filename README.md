@@ -13,7 +13,8 @@ Microsoft Windows Installation
 * [Microsoft Visual Studio C++ 2012](http://go.microsoft.com/?linkid=9816758)
 
 via NPM  
-`npm install subkit-microservice`  
+`npm install subkit-microservice` 
+`cd node_modules/subkit-microservice`
 `npm start`  
 
 Open your browser https://localhost:8080.  

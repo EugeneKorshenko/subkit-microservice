@@ -4,36 +4,45 @@ PREAMBLE
 ---
 ATTENTION! Project is under heavy development and not ready for production yet.
 
-INSTALL
+Prerequisites
 ---
+__OS-X__
+* none
 
-Microsoft Windows Installation
----
+__Linux__
+* none
+
+__Microsoft Windows Installation__  
 * [Python 2.7.3](http://www.python.org/download/releases/2.7.3#download)
 * [Microsoft Visual Studio C++ 2012](http://go.microsoft.com/?linkid=9816758)
-
-Windows 7
----
+  
+__Windows 7__  
 * [Microsoft Windows SDK for Windows 7 and .NET Framework 4](http://www.microsoft.com/download/en/details.aspx?displayLang=en&id=8279)
-
-Windows 8/8.1
----
+  
+__Windows 8/8.1__  
 * [Windows Software Development Kit (SDK) für Windows 8](http://www.microsoft.com/click/services/Redirect2.ashx?CR_EAC=300105886)
 * [Windows Software Development Kit (SDK) for Windows 8.1](http://www.microsoft.com/click/services/Redirect2.ashx?CR_EAC=300135395)
 
 
-SUBKIT INSTALL
+Installation
 ---
-via NPM  
+__via Subkit-CLI__  
++ Install [Subkit-CLI](https://github.com/SubKit/subkit-cli/)  
+`npm install subkit-cli -g`  
++ Creates a new backend instance  
+`subkit new <appname>`  
++ Start the newly created backend instance  
+`subkit start <appname>`
++ Browser automatically opens https://localhost:8080  
+__Username: subkit__  
+__Password: subkit__  
+
+__via NPM__  
 `npm install subkit-microservice`  
 `cd node_modules/subkit-microservice`  
 `npm start`  
 
-Open your browser https://localhost:8080.  
-Default Username: subkit  
-Default Password: subkit  
-
-via Git  
+__via Git__  
 `git clone https://github.com/SubKit/subkit-microservice.git`  
 `cd subkit-microservice`  
 `npm install grunt-cli -g`  
@@ -41,11 +50,7 @@ via Git
 `npm test`  
 `npm start`  
 
-Open your browser https://localhost:8080.  
-Default Username: subkit  
-Default Password: subkit  
-
-SUPERVISOR
+SuperVisor
 ---
 
 It's essential to monitor the current execution state to each microservice instance. We use forever to start every instance via the 'supervisor.js' script.

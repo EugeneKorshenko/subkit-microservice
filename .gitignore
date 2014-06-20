@@ -9,4 +9,5 @@ rights.json
 config.json
 *.log.txt
 files/
+!files/shares/*
 docs/modules/html/

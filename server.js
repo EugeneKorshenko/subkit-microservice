@@ -6,7 +6,8 @@ var restify = require('restify'),
 	fs = require('fs'),
 	path = require('path'),
 	nconf = require('nconf'),
-	subkitPackage = require('./package.json');
+	subkitPackage = require('./package.json'),
+	utils = require('./lib/helper.js').init();
 
 module.exports.init = function(){
 	var admin,
@@ -20,7 +21,8 @@ module.exports.init = function(){
 
 	//load and apply configuration
 	var _applyConfig = function(){
-	  	nconf.file('config', path.join(__dirname, 'config.json'));		
+		var configFilePath = path.join(__dirname,'files','config');
+	  	nconf.file('config', path.join(configFilePath, 'config.json'));		
 	  	nconf.file('defaults', path.join(__dirname, 'defaults.json'));
 
 		admin = nconf.get('admin');
@@ -31,7 +33,9 @@ module.exports.init = function(){
 		templateConfig = nconf.get('templateConfig');
 		staticConfig = nconf.get('staticConfig');
 		
-		if(!fs.existsSync(path.join(__dirname, 'config.json'))){
+		if(!fs.existsSync(path.join(configFilePath,'config.json'))){
+			utils.mkdirRecursive(configFilePath);
+
 			nconf.remove('defaults');
 			nconf.set('admin', admin);
 			nconf.set('app', app);
@@ -158,9 +162,6 @@ module.exports.init = function(){
 	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es, doc);
 	var template = require('./lib/template.module.js');
 	var identity = require('./lib/identity.module.js');
-	var utils = require('./lib/helper.js');
-	var helper = utils.init(admin, api, etag, storage);
-	helper.setNewETag();
 
 	//start web server
 	server.listen(app.port, function(){
@@ -189,7 +190,7 @@ module.exports.init = function(){
 		AvailablePlugins: availablePlugins,
 		Server: server,
 		Configuration: nconf,
-		Helper: helper,
+		Utils: utils,
 		Doc: doc,
 		Storage: storage,
 		PubSub: pubsub,

@@ -2,11 +2,7 @@
 node_modules
 npm-debug.log
 backups
-testdb
-masterdb
-rights.json
-*.p12
-config.json
-*.log.txt
-files/
+!files/cert/server.crt
+!files/cert/server.key
+files
 docs/modules/html/

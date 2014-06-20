@@ -10,11 +10,11 @@
     "id": "713172f6-fd0e-498c-a7f7-0a1afcbf423d",
     "domain": "subkit.io",
     "port": 8080,
-    "key": "./certs/www/server.key",
-    "cert": "./certs/www/server.crt"
+    "key": "./files/cert/server.key",
+    "cert": "./files/cert/server.crt"
   },
   "storageConfig": {
-    "dbPath": "./masterdb",
+    "dbPath": "./files/masterdb",
     "backupPath": "./backups"
   },
   "staticConfig": {

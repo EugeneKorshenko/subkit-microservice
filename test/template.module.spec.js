@@ -25,7 +25,7 @@ describe('Module: Template', function(){
         assert.notEqual(data, null);
         done();
       });
-    })
+    });
 
   });
 });

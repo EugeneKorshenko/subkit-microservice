@@ -32,7 +32,7 @@ describe.skip('Module: Worker', function(){
         assert.equal(error, null);
         done();
       });
-    }),
+    });
     it('should run a task and success',function(done){
       sut.run('success', [], function(error, data, contentType, log){
         assert.equal(error, null);
@@ -42,13 +42,13 @@ describe.skip('Module: Worker', function(){
         assert.equal(log[0], 'Hello!');
         done();
       });
-    })
+    });
     it('should remove a task',function(done){
       sut.remove('success', function(error, data){
         assert.equal(error, null);
         done();
       });
-    })
+    });
   });
 
   describe('on long running tasks', function(){
@@ -59,7 +59,7 @@ describe.skip('Module: Worker', function(){
         assert.equal(error, null);
         done();
       });
-    }),
+    });
     it('should run long running tasks in parallel and success',function(done){
       sut.run('longrunningsuccess', {Msg:'Hello--1'}, function(error, data, contentType, log){
         assert.equal(error, null);
@@ -73,13 +73,13 @@ describe.skip('Module: Worker', function(){
         assert.equal(log[0], 'Hello--2');
         done();
       });
-    }),
+    });
     it('should remove task',function(done){
       sut.remove('longrunningsuccess', function(error, data){
         assert.equal(error, null);
         done();
       });
-    })
+    });
   });
 
   describe.skip('on scheduled endless tasks', function(){
@@ -87,19 +87,19 @@ describe.skip('Module: Worker', function(){
       
       var newTask = new sut.Task('scheduledendlesssuccess', {Msg:'Endless-Scheduled'});
       newTask.TaskScript = 'interval(function(){debug(params.Msg);}, 500); done();';
-      newTask.Schedule = "* * * * * *";
+      newTask.Schedule = '* * * * * *';
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
-    }),
+    });
     it('should remove endless scheduled tasks',function(done){
       
       sut.remove('scheduledendlesssuccess', function(error, data){
         assert.equal(error, null);
       });
 
-    })
+    });
   });
 
   describe('on continuous tasks', function(){
@@ -120,7 +120,7 @@ describe.skip('Module: Worker', function(){
         setTimeout(done, 6500);
       });
 
-    }),
+    });
     it('should remove parallel continuous tasks',function(done){
       
       sut.remove('continuoussuccess', function(error, data){
@@ -132,7 +132,7 @@ describe.skip('Module: Worker', function(){
         done();
       });
 
-    })
+    });
   });
 
   describe('on scheduled tasks', function(){
@@ -140,20 +140,20 @@ describe.skip('Module: Worker', function(){
       
       var newTask = new sut.Task('scheduledsuccess', {Msg:'Scheduled-1'});
       newTask.TaskScript = 'debug(params.Msg); done();';
-      newTask.Schedule = "* * * * * *";
+      newTask.Schedule = '* * * * * *';
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
       var newTask2 = new sut.Task('scheduled2success', {Msg:'Scheduled-2'});
       newTask2.TaskScript = 'debug(params.Msg); done();';
-      newTask2.Schedule = "*/2 * * * * *";
+      newTask2.Schedule = '*/2 * * * * *';
       sut.set(newTask2.Name, newTask2, function(error, data){
         assert.equal(error, null);
         setTimeout(done, 6500);
       });
 
-    }),
+    });
     it('should remove parallel scheduled tasks',function(done){
       
       sut.remove('scheduledsuccess', function(error, data){
@@ -165,7 +165,7 @@ describe.skip('Module: Worker', function(){
         done();
       });
 
-    })
+    });
   });
 
 });

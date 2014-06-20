@@ -137,7 +137,7 @@ module.exports.init = function(){
 					return next();
 				}
 			}
-		};
+		}
 		res.send(401);
 	});
 
@@ -176,11 +176,12 @@ module.exports.init = function(){
 	worker.runScheduler(true);
 
 	//starts external API
-	require('./lib/manage.js').init(nconf, api, app, server, storage, helper, doc);
-	require('./lib/store.js').init(server, storage, helper, doc);
-	require('./lib/pubsub.js').init(server, pubsub, helper, doc);
-	require('./lib/statistics.js').init(server, storage, pubsub, es, helper, doc);
-	require('./lib/worker.js').init(server, worker, helper);
+	require('./lib/manage.js').init(nconf, api, app, server, storage, doc);
+	require('./lib/store.js').init(server, storage, doc);
+	require('./lib/share.js').init(server, doc);
+	require('./lib/pubsub.js').init(server, pubsub, doc);
+	require('./lib/statistics.js').init(server, storage, pubsub, es, doc);
+	require('./lib/worker.js').init(server, worker);
 	
 	//plugins
 	var availablePlugins = subkitPackage.optionalDependencies;
@@ -202,7 +203,7 @@ module.exports.init = function(){
 
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);
 	plugin.loadAll();
-	require('./lib/plugin.js').init(server, plugin, helper, doc);
+	require('./lib/plugin.js').init(server, plugin, doc);
 
 	return {
 		getContext: function(){

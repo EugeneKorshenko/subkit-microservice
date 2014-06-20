@@ -10,7 +10,7 @@ var logsPath = 'files/logs/';
 var logsFullPath = path.join(__dirname,logsPath);
 
 if(!fs.existsSync(logsFullPath))
-    helper.mkdirRecursive(logsFullPath)
+    helper.mkdirRecursive(logsFullPath);
 
 var child = new(forever.Monitor)('index.js', {
     'silent': false,

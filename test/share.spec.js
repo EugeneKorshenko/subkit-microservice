@@ -10,7 +10,7 @@ var client = restify.createJsonClient({
   headers: {'x-auth-token':'6654edc5-82a3-4006-967f-97d5817d7fe2'}
 });
 
-describe('Integration: Manage', function(){
+describe('Integration: Share', function(){
   var server,
       context;
 
@@ -24,7 +24,7 @@ describe('Integration: Manage', function(){
     context.Storage.close();
     context.Server.close();
     delete require.cache[server];
-    setTimeout(done, 1000);;
+    done();
   });
 
   describe('on ...', function(){

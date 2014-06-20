@@ -4,11 +4,9 @@ var assert = require('assert'),
     path = require('path'),
     sut;
 
-describe('Module: Rights', function(){
+describe('Module: Share', function(){
   before(function(done) {
-    sut = require('../lib/rights.module.js').init({ 
-      rightsPath: path.join(__dirname, '../rights.json') 
-    });
+    sut = require('../lib/share.module.js').init({});
     done();
   });
   after(function(done){

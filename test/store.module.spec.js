@@ -266,40 +266,6 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     })
   });
-  describe('public/private stores', function(){
-    it('set public should return all public stores', function(done){
-      sut.setPublic('ademo', function(error, data){
-        assert.equal(error, undefined);
-        assert.equal(data.grant, true);
-        assert.equal(data.name, 'ademo');
-
-        var actualRights = sut.getRights().public;
-        assert.equal(actualRights.length, 1);
-        assert.equal(actualRights[0], 'ademo');
-        
-        done();
-      });
-    }),
-    it('set private should return only the public stores', function(done){
-      sut.setPrivate('ademo', function(error, data){
-        assert.equal(error, undefined);
-        assert.equal(data.grant, false);
-        assert.equal(data.name, 'ademo');
-
-        var actualRights = sut.getRights().public;
-        assert.equal(actualRights.length, 0);
-
-        done();
-      });
-    }),
-    it('a name that not found should return error message', function(done){
-      sut.setPrivate('notmatch', function(error, data){
-        assert.notEqual(error, undefined);
-        assert.equal(error.message, 'store not found');
-        done();
-      });
-    });
-  });
   describe('import/export', function(){
     it('should import data to import1', function(done){
       var data = [

@@ -67,7 +67,7 @@ module.exports.init = function(){
 	server.use(restify.CORS({
 		origins: ['*'],
 		credentials: true,
-		headers: ['authorization','content-type','x-requested-with','x-auth-token','api_key','apikey','subkit-log']
+		headers: ['authorization','content-type','x-auth-token','subkit-log']
 	}));	
 	server.use(restify.fullResponse());
 	server.use(restify.authorizationParser());
@@ -87,7 +87,7 @@ module.exports.init = function(){
 	server.opts(/\.*/, function (req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');
 		res.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, HEAD, OPTION');
-		res.header('Access-Control-Allow-Headers', 'authorization, content-type, x-requested-with, x-auth-token, api_key, apikey, subkit-log');
+		res.header('Access-Control-Allow-Headers', 'authorization','content-type','x-auth-token','subkit-log');
 		res.send(200);
 		return next();
 	});
@@ -112,7 +112,7 @@ module.exports.init = function(){
 
 	//handle share access
 	server.use(function(req, res, next){		
-		var apikey = req.headers['x-auth-token'] || req.params.apiKey || req.params.api_Key || req.headers.apikey || req.headers.api_key;
+		var apikey = req.headers['x-auth-token'] || req.params.apikey || req.params.api_key;
 		if(api.apiKey === apikey) {
 			return next();
 		}
@@ -178,7 +178,7 @@ module.exports.init = function(){
 	//starts external API
 	require('./lib/manage.js').init(nconf, api, app, server, storage, doc);
 	require('./lib/store.js').init(server, storage, doc);
-	require('./lib/share.js').init(server, doc);
+	require('./lib/share.js').init(server, share, doc);
 	require('./lib/pubsub.js').init(server, pubsub, doc);
 	require('./lib/statistics.js').init(server, storage, pubsub, es, doc);
 	require('./lib/worker.js').init(server, worker);

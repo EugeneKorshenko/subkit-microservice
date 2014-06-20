@@ -73,6 +73,17 @@ module.exports = function(grunt) {
           'test/identity.spec.js',
           'test/file.spec.js'
         ]
+      },
+      shareTests: {
+        options: {
+          reporter: 'spec',
+          timeout: 10000,
+          clearRequireCache: true
+        },
+        src: [
+          'test/share.module.spec.js',
+          'test/share.spec.js'
+        ]
       }
     },
     jsdoc : {
@@ -110,9 +121,7 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', []);
-  grunt.registerTask('test', [
-    'jshint',
-    'mochaTest'
-  ]);
+  grunt.registerTask('test', ['jshint','mochaTest']);
+  grunt.registerTask('shareTests', ['mochaTest:shareTests']);
   grunt.registerTask('doc', ['jsdoc', 'markdox']);
 };

@@ -1,5 +1,7 @@
 # Subkit Microservice Platform [![Build Status](https://travis-ci.org/SubKit/subkit-microservice.svg?branch=master)](https://travis-ci.org/SubKit/subkit-microservice)
 
+Backend application as simple and flexible as never before.  
+
 PREAMBLE
 ---
 ATTENTION! Project is under heavy development and not ready for production yet.

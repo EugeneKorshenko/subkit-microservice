@@ -87,30 +87,6 @@ module.exports.init = function(){
 	server.use(restify.conditionalRequest());
 	server.pre(restify.pre.sanitizePath());
 	server.pre(restify.pre.userAgentConnection());
-	
-	var rawRoutes = [];
-	var rightsTable = [];
-	server.use(function(req, res, next){
-		if(rawRoutes.length === 0){
-			for(var idx in this.router.mounts){
-				rawRoutes.push(this.router.mounts[idx]);
-			};		
-		}
-		var matches = rawRoutes.filter(function(route){
-			if(route.spec.path === '/') return false;
-
-			var patt = new RegExp(route.spec.path);
-			return ((route.spec.method === req.method) && (patt.test(req.url)));
-		});
-		rightsTable = matches.map(function(route){
-			return {
-				Type: route.spec.method,
-				Resource: route.spec.path
-			}
-		});
-		// console.log(rightsTable);
-		next();
-	});
 
 	//handle CORS
 	server.opts(/\.*/, function (req, res, next) {
@@ -139,6 +115,37 @@ module.exports.init = function(){
 	process.on('SIGINT', exitHandler.bind(null, {exit:true}));
 	process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
+	//handle share access
+	server.use(function(req, res, next){		
+		var apikey = req.headers['x-auth-token'] || req.params.apiKey || req.params.api_Key || req.headers.apikey || req.headers.api_key;
+		if(api.apiKey === apikey) {
+			return next();
+		}
+
+		if((req.authorization)
+			&& (req.authorization.basic)
+			&& (req.username === admin.username)
+			&& (req.authorization.basic.password === admin.password)){
+
+			return next();
+		}
+ 		
+		//check share access
+		var urlParts = req.url.split('/');
+		var shareIdent = '';
+		for (var i = 1; i < urlParts.length; i++) {
+			shareIdent = shareIdent + '/' + urlParts[i];
+			var shareItem = share.list()[shareIdent];
+			if(shareItem){
+				var username = apikey || req.username;
+				if(shareItem[req.method].indexOf(username) !== -1){
+					return next();
+				}
+			}
+		};
+		res.send(401);
+	});
+
 	//JSON doc
 	var doc = require('./lib/doc.module.js');
 	doc = doc.configure(server, {
@@ -146,8 +153,11 @@ module.exports.init = function(){
 		version: '1.2',
 		basePath: app.key ? 'https://localhost:'+app.port : 'http://localhost:'+app.port
 	});
+
+	//Modules
 	var storage = require('./lib/store.module.js').init(storageConfig);
 	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1}, storage);
+	var share = require('./lib/share.module.js').init({}, pubsub);
 	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es, doc);

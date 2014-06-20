@@ -192,7 +192,7 @@ MODULE DOCUMENTATION
 * [File Module](docs/modules/file.md)
 * [Doc Module](docs/modules/doc.md)
 * [Utils Module](docs/modules/helper.md)
-* [Rights Module](docs/modules/rights.md)
+* [Share Module](docs/modules/share.md)
 * [Configuration Module](docs/modules/configuration.md)
 * [Identity Module](docs/modules/identity.md)
 

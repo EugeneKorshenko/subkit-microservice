@@ -7,7 +7,7 @@ var restify = require('restify'),
 	path = require('path'),
 	nconf = require('nconf'),
 	subkitPackage = require('./package.json'),
-	utils = require('./lib/helper.js').init();
+	utils = require('./lib/helper.js').init();    
 
 module.exports.init = function(){
 	var admin,
@@ -115,16 +115,15 @@ module.exports.init = function(){
 	process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
 	//handle share access
-	server.use(function(req, res, next){		
+	server.use(function(req, res, next){
 		var apikey = req.headers['x-auth-token'] || req.params.apikey || req.params.api_key;
 		if(api.apiKey === apikey) {
 			return next();
 		}
-
 		if((req.authorization)
 			&& (req.authorization.basic)
 			&& (req.username === admin.username)
-			&& (req.authorization.basic.password === admin.password)){
+			&& (utils.validate(admin.password, req.authorization.basic.password))){
 
 			return next();
 		}

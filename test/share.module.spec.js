@@ -98,7 +98,6 @@ describe('Module: Share', function(){
       });
     });
 
-
     describe('access by /demo2 /demo3 /demo4 share', function(){
       before(function(done){
         sut.grantReadAccess('/', 'superIdent');

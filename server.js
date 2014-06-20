@@ -47,15 +47,10 @@ module.exports.init = function(){
 		app.key = path.join(__dirname, app.key);
 		app.cert = path.join(__dirname, app.cert);
 		storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
-		storageConfig.rightsPath = path.join(__dirname, storageConfig.rightsPath);
 		storageConfig.backupPath = path.join(__dirname, storageConfig.backupPath);
 		workerConfig.tasksPath = path.join(__dirname, workerConfig.tasksPath);
 		templateConfig.templatesPath = path.join(__dirname, templateConfig.templatesPath);
 		staticConfig.staticsPath = path.join(__dirname, staticConfig.staticsPath);
-
-		//init
-		if(!fs.existsSync(storageConfig.rightsPath))
-			fs.writeFileSync(storageConfig.rightsPath, '{"public":[]}');		
 	};
 	_applyConfig();
 	

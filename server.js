@@ -175,7 +175,7 @@ module.exports.init = function(){
 	worker.runScheduler(true);
 
 	//starts external API
-	require('./lib/manage.js').init(nconf, api, app, server, storage, doc);
+	require('./lib/manage.js').init(nconf, _applyConfig, server, storage, doc);
 	require('./lib/store.js').init(server, storage, doc);
 	require('./lib/share.js').init(server, share, doc);
 	require('./lib/pubsub.js').init(server, pubsub, doc);

@@ -16,10 +16,6 @@ var child = new(forever.Monitor)('index.js', {
     'silent': false,
     'uid':'master',
     'pidFile': 'app.pid',
-    'watch': true,
-    'watchDirectory': '.',
-    'watchIgnoreDotFiles': true,
-    'watchIgnorePatterns': ['rights.json','masterdb/**','files/**','node_modules/**','backups/**'],
     'logFile': logsPath + 'proc.log.txt',
     'outFile': logsPath + 'out.log.txt',
     'errFile': logsPath + 'err.log.txt'

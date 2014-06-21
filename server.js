@@ -109,7 +109,6 @@ module.exports.init = function(){
 	    if (err) console.log(err.stack);
 	    if (options.exit) process.exit();
 	}
-
 	process.on('exit', exitHandler.bind(null,{cleanup:true}));
 	process.on('SIGINT', exitHandler.bind(null, {exit:true}));
 	process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
@@ -192,6 +191,7 @@ module.exports.init = function(){
 		Utils: utils,
 		Doc: doc,
 		Storage: storage,
+		Share: share,
 		PubSub: pubsub,
 		EventSource: es,
 		File: file,

@@ -11,6 +11,7 @@ Roadmap
   * Eventsourcing for state change tracking and time based data correlation
   * Usage statistics and analysics
   * Heartbeat monitoring
+  * Powerful, fine-grained rights management
   * All components are built-in. Subkit is self contained with a minimal effort when it comes to deploy scenarios
   * Flexible, npm-based plugin system in case you need more capability
   * JavaScript SDK
@@ -26,6 +27,5 @@ Roadmap
 
 * Planned
  * Authenticate with 3rd party services (Twitter, GitHub, etc.)
- * Powerful, fine-grained rights managment
  * more plugins
  * more SDKs

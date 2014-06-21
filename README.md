@@ -1,6 +1,6 @@
 # Subkit Microservice Platform [![Build Status](https://travis-ci.org/SubKit/subkit-microservice.svg?branch=master)](https://travis-ci.org/SubKit/subkit-microservice)
 
-Backend application as simple and flexible as never before.  
+Backend applications as simple and flexible as never before.
 
 PREAMBLE
 ---
@@ -25,7 +25,6 @@ __Windows 8/8.1__
 * [Windows Software Development Kit (SDK) für Windows 8](http://www.microsoft.com/click/services/Redirect2.ashx?CR_EAC=300105886)
 * [Windows Software Development Kit (SDK) for Windows 8.1](http://www.microsoft.com/click/services/Redirect2.ashx?CR_EAC=300135395)
 
-
 Installation
 ---
 __via Subkit-CLI__  
@@ -39,60 +38,25 @@ __via Subkit-CLI__
 __Username: subkit__  
 __Password: subkit__  
 
-__via NPM__  
-`npm install subkit-microservice`  
-`cd node_modules/subkit-microservice`  
-`npm start`  
-
-__via Git__  
-`git clone https://github.com/SubKit/subkit-microservice.git`  
-`cd subkit-microservice`  
-`npm install grunt-cli -g`  
-`npm install`  
-`npm test`  
-`npm start`  
-
-SuperVisor
----
-
-It's essential to monitor the current execution state to each microservice instance. We use forever to start every instance via the 'supervisor.js' script.
-
-Start a Subkit mirsoservice instance supervised.
-
-1. `npm start` || `node supervisor.js`
-
 BASICS
 ---
 * [Quick Intro](docs/quick_intro.md)
 * [Quick Intro JavaScript Sample](docs/quick_start_javascript_sample.html)
 * [Configuration Options](docs/service_config.md)
-* [URI Style](docs/uri_style.md)
-* [Hypermedia Style](docs/hypermedia_style.md)
-* [Event Driven Style](docs/eventdriven_style.md)
-* [RESTful JSON API](docs/restful_api.md)
-
 
 GETTING STARTED
 ---
 * [5 mins Subkit JS Tutorial](docs/tutorials/5mins_js_tutorial.md)
 
-
-ARCHITECTURE
+DOCUMENTATION
 ---
-* Micro-Services - Autonomous Components
-* Reliable, Responsible & Partitioning
-* Temporal consistency, Idempotency & Transactions
-* Data structure design
-* Integration-Points, Composites & Aggregation
-* Caching
-* Scale-Up & Scale-Down
-* Offline & Sync strategies
-* Environment, Monitoring & Usages
-* Conventions and practice
+* [Shares & Access Control](docs/acl.md)
+* [Queries](docs/store_queries.md)
+* [Projections](docs/projections.md)
+* [Task API](docs/task_API.md)
 
 FEATURES
 ---
-
 STATUS		  | Feature 	  | Comments
 ------------- | ------------- | ---------------
 X		 	  | HTTP/HTTPS    | [Service Configuration](docs/service_config.md)
@@ -107,18 +71,17 @@ X		 	  | Worker		  | Scheduled Background Worker
 X		 	  | Monitoring	  | Heartbeats for Web-Service Monitoring
 X		 	  | Statistics	  | Useful statistics and usage analysis
 X		 	  | History		  | Track and query all state changes
-X		 	  | JSON Storage  | A Lightweight JSON key/value persistence
+X		 	  | JSON Storage  | Lightweight JSON key/value persistence
 X		 	  | Message Bus	  | Lightweight Message Bus for Real-Time topic based and storage changes
 X			  | Statistics    | Instance resource and usage statistics
+X		 	  | Shares        | Resource and ACL based authorization
 -		 	  | WebHooks      | User-defined HTTP callbacks
 -		 	  | Hooks         | Request/Response custom code hooks
 -		 	  | WebSockets    | Web-Socket support for real-time notifications
--		 	  | Authorization | Advanced resource based authorization
 
 PLUGINS
 ---
-
-Extend the Subkit mirco service instance with plugins.
+Extend the Subkit MircoService instance with plugins.
 
 `npm install <plugin> --save-optional`
 
@@ -126,13 +89,13 @@ STATUS		  | Name 	 		  | Comments
 ------------- | ----------------- | ---------------
 X		 	  | [File](https://github.com/SubKit/subkit-file-plugin.git)			  | Create, Upload, Download static files
 X			  | [EMail](https://github.com/SubKit/subkit-email-plugin.git) 			  | Templated EMails over SMTP 
--			  | [Mobile Push](https://github.com/SubKit/subkit-push-plugin.git)	  | Mobile push notifications to iOS, Android, WP8
 X			  | [Task](https://github.com/SubKit/subkit-task-plugin.git)	    	  | Manage, execute and schedule custom JavaScript tasks
--			  | [Geolocation](https://github.com/SubKit/subkit-geolocation-plugin.git)    	  | Organize and query geolocations
--			  | [S3](https://github.com/SubKit/subkit-S3-plugin.git)			  | Manage Amazon S3 buckets and items
 X		 	  | [Template](https://github.com/SubKit/subkit-template-plugin.git)		  | JSHTML based template engine
 X		 	  | [User](https://github.com/SubKit/subkit-user-plugin.git)			  | Manage accounts
 -			  | [Payment](https://github.com/SubKit/subkit-payment-plugin.git)   		  | Payment provider support
+-			  | [Geolocation](https://github.com/SubKit/subkit-geolocation-plugin.git)    	  | Organize and query geolocations
+-			  | [S3](https://github.com/SubKit/subkit-S3-plugin.git)			  | Manage Amazon S3 buckets and items
+-			  | [Mobile Push](https://github.com/SubKit/subkit-push-plugin.git)	  | Mobile push notifications to iOS, Android, WP8
 O			  | BaaS			  | Manage Subkit as BaaS or MEAP
 O			  | ETL				  | Extract-Transform-Load data flow engine
 O			  | MDM       		  | Mobile Device Management Plugin
@@ -145,8 +108,6 @@ O = commercial
 
 SDKS
 ---
-* HTTPS support
-* Offline support (coming soon)
 
 STATUS		  | Feature 		| Comments
 ------------- | --------------- | ---------------
@@ -165,21 +126,19 @@ X			  | PhoneGap/Cordova|
 -			  | PowerShell      |
 X			  | AngularJS       | included
 
+* HTTPS support
+* Offline support (coming soon)
+
 ROADMAP
 ---
 * [Roadmap](docs/roadmap.md)
 
 GUIDES
 ---
-* Rights
-* [Queries](docs/store_queries.md)
-* Aggregation
-* Metadata
-
-DEVELOPMENT
----
-* [Custom Plugin Development](docs/plugin_dev.md)
-* Develop Tasks - The custom JavaScript execution API
+* [URI Style](docs/uri_style.md)
+* [Hypermedia Style](docs/hypermedia_style.md)
+* [Event Driven Style](docs/eventdriven_style.md)
+* [RESTful JSON API](docs/restful_api.md)
 
 MODULE DOCUMENTATION
 ---
@@ -195,6 +154,47 @@ MODULE DOCUMENTATION
 * [Share Module](docs/modules/share.md)
 * [Configuration Module](docs/modules/configuration.md)
 * [Identity Module](docs/modules/identity.md)
+
+DEVELOPMENT
+---
+* [Custom Plugin Development](docs/plugin_dev.md)
+* Develop Tasks - The custom JavaScript execution API
+
+Alternative installations
+---
+__via NPM__  
+`npm install subkit-microservice`  
+`cd node_modules/subkit-microservice`  
+`npm start`  
+
+__via Git__  
+`git clone https://github.com/SubKit/subkit-microservice.git`  
+`cd subkit-microservice`  
+`npm install grunt-cli -g`  
+`npm install`  
+`npm test`  
+`npm start`  
+
+SuperVisor
+---
+It's essential to monitor the current execution state to each microservice instance. We use forever to start every instance via the 'supervisor.js' script.
+
+Start a Subkit mirsoservice instance supervised.
+
+1. `npm start` || `node supervisor.js`
+
+ARCHITECTURE
+---
+* Micro-Services - Autonomous Components
+* Reliable, Responsible & Partitioning
+* Temporal consistency, Idempotency & Transactions
+* Data structure design
+* Integration-Points, Composites & Aggregation
+* Caching
+* Scale-Up & Scale-Down
+* Offline & Sync strategies
+* Environment, Monitoring & Usages
+* Conventions and practice
 
 License
 ---

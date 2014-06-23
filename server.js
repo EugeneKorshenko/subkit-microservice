@@ -58,11 +58,24 @@ module.exports.init = function(){
 	};
 	_applyConfig();
 	
-	//configure HTTPS/SSL server
-	var options = { name: 'subkit microservice' };
-	if(app.key && fs.existsSync(app.key)) options.key = fs.readFileSync(app.key);
-	if(app.cert && fs.existsSync(app.cert)) options.certificate = fs.readFileSync(app.cert);
-	var	server = restify.createServer(options);
+	//configure and start HTTPS/SSL server
+	var _applyServer = function(){
+		var options = { name: 'subkit microservice' };
+		if(app.key && fs.existsSync(app.key)) options.key = fs.readFileSync(app.key);
+		if(app.cert && fs.existsSync(app.cert)) options.certificate = fs.readFileSync(app.cert);
+		var	srv = restify.createServer(options);
+		srv.listen(app.port, function(){
+			console.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
+			console.log('ENVIRONMENT: '+process.env.NODE_ENV || 'development');
+			console.log('SECURE: '+srv.secure);
+			console.log('PORT: '+srv.address().port);
+			console.log('PID: '+process.pid);
+			http.globalAgent.maxSockets = 50000;
+			https.globalAgent.maxSockets = 50000;
+		});
+		return srv;	
+	};
+	var server = _applyServer();
 
 	//Middleware
 	server.acceptable.push('text/html');
@@ -91,7 +104,7 @@ module.exports.init = function(){
 	server.opts(/\.*/, function (req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');
 		res.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, HEAD, OPTION');
-		res.header('Access-Control-Allow-Headers', 'authorization','content-type','x-auth-token','subkit-log');
+		res.header('Access-Control-Allow-Headers', 'authorization, content-type, x-auth-token, subkit-log');
 		res.send(200);
 		return next();
 	});
@@ -161,21 +174,11 @@ module.exports.init = function(){
 	var template = require('./lib/template.module.js');
 	var identity = require('./lib/identity.module.js');
 
-	//start web server
-	server.listen(app.port, function(){
-		console.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
-		console.log('ENVIRONMENT: '+process.env.NODE_ENV || 'development');
-		console.log('SECURE: '+server.secure);
-		console.log('PORT: '+server.address().port);
-		console.log('PID: '+process.pid);
-		http.globalAgent.maxSockets = 50000;
-		https.globalAgent.maxSockets = 50000;
-	});
 	//starts the tasks scheduler
 	worker.runScheduler(true);
 
 	//starts external API
-	require('./lib/manage.js').init(nconf, _applyConfig, server, storage, doc);
+	require('./lib/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, doc);
 	require('./lib/store.js').init(server, storage, doc);
 	require('./lib/share.js').init(server, share, doc);
 	require('./lib/pubsub.js').init(server, pubsub, doc);

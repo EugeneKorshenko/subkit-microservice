@@ -11,7 +11,7 @@ var client = restify.createJsonClient({
   headers: {'x-auth-token':'6654edc5-82a3-4006-967f-97d5817d7fe2'}
 });
 
-describe('Integration: Worker', function(){
+describe.skip('Integration: Worker', function(){
   var server,
       context;
 
@@ -30,7 +30,7 @@ describe('Integration: Worker', function(){
     done();
   });
 
-  describe.skip('manage workers', function(){
+  describe('manage workers', function(){
     it('should manage worker', function(done){
       client.post('/worker/demo1', null, function(err, req, res, obj) {
         assert.equal(null, err);

@@ -54,7 +54,7 @@ describe('Module: Worker', function(){
   describe('on long running tasks', function(){
     it('should create a task with parameters',function(done){
       var newTask = new sut.Task('longrunningsuccess', {Msg:'Hello!!!'});
-      newTask.TaskScript = 'interval(function(){log(params.Msg);},1000); timeout(done,5500);';
+      newTask.TaskScript = 'timeout(function(){log(params.Msg);},1000); timeout(done,5500);';
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
         done();
@@ -63,13 +63,13 @@ describe('Module: Worker', function(){
     it('should run long running tasks in parallel and success',function(done){
       sut.run('longrunningsuccess', {Msg:'Hello--1'}, function(error, data, contentType, log){
         assert.equal(error, null);
-        assert.equal(log.length, 5);
+        assert.equal(log.length, 1);
         assert.equal(log[0], 'Hello--1');
       });
 
       sut.run('longrunningsuccess', {Msg:'Hello--2'}, function(error, data, contentType, log){
         assert.equal(error, null);
-        assert.equal(log.length, 5);
+        assert.equal(log.length, 1);
         assert.equal(log[0], 'Hello--2');
         done();
       });
@@ -86,7 +86,7 @@ describe('Module: Worker', function(){
     it('should create scheduled endless task with parameters',function(done){
       
       var newTask = new sut.Task('scheduledendlesssuccess', {Msg:'Endless-Scheduled'});
-      newTask.TaskScript = 'interval(function(){debug(params.Msg);}, 500); done();';
+      newTask.TaskScript = 'timeout(function(){debug(params.Msg);}, 500); done();';
       newTask.Schedule = '* * * * * *';
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
@@ -106,14 +106,14 @@ describe('Module: Worker', function(){
     it('should create continuous task with parameters in parallel',function(done){
       
       var newTask = new sut.Task('continuoussuccess', {Msg:'Continuous-1-'});
-      newTask.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 1000); done();';
+      newTask.TaskScript = 'var count = 0; timeout(function(){debug(params.Msg+count++);}, 1000); done();';
       newTask.isContinuous = true;
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
       var newTask2 = new sut.Task('continuous2success', {Msg:'Continuous-2-'});
-      newTask2.TaskScript = 'var count = 0; interval(function(){debug(params.Msg+count++);}, 2000); done();';
+      newTask2.TaskScript = 'var count = 0; timeout(function(){debug(params.Msg+count++);}, 2000); done();';
       newTask2.isContinuous = true;
       sut.set(newTask2.Name, newTask2, function(error, data){
         assert.equal(error, null);

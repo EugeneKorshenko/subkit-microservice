@@ -1,15 +1,16 @@
 {
   "name": "subkit-microservice",
-  "version": "0.0.63",
+  "version": "0.0.64",
   "dependencies": {
     "cflow": "*",
-    "forever": "*",
     "cron": "*",
+    "forever": "*",
     "jshtml-express": "*",
     "json-stringify-safe": "*",
     "jsonquery": "*",
     "level": "*",
     "microtime": "*",
+    "moment": "^2.7.0",
     "nconf": "*",
     "node-uuid": "*",
     "randomstring": "*",

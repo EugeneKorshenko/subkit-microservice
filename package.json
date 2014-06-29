@@ -59,7 +59,6 @@
     }
   ],
   "optionalDependencies": {
-    "subkit-dashboard": "*",
-    "subkit-task-plugin": "0.0.14"
+    "subkit-dashboard": "*"
   }
 }

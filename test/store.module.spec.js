@@ -7,8 +7,6 @@ describe('Module: JSON Key/Value Storage', function(){
   before(function(done) {
     sut = require('../lib/store.module.js').init({
       dbPath:'./storespecdb',
-      rightsPath:'./rights.json',
-      tasksPath:'./tasks',
       backupPath:'./backups'
     });
     sut.upsert('ademo', '1', {test: 'ademo 1 test', group: 'B'});
@@ -39,7 +37,7 @@ describe('Module: JSON Key/Value Storage', function(){
     sut.upsert('deleteDemo', '3', {test: 'delete demo 3 test'});
     sut.upsert('deleteDemo', '4', {test: 'delete demo 4 test'});
 
-    done();
+    setTimeout(done,1000);
   });
   after(function(done){
     sut.destroy(done);
@@ -189,7 +187,9 @@ describe('Module: JSON Key/Value Storage', function(){
         assert.equal(error, undefined);
 
         sut.read('change_test_item', { key: '1' }, function(error, data){
+          assert.equal(error, undefined);
           assert.equal(data.test , 'change_test_item 1 test');
+          assert.notEqual(data.$version, null);
           done();  
         });
 
@@ -200,7 +200,9 @@ describe('Module: JSON Key/Value Storage', function(){
         assert.equal(error, undefined);
 
         sut.read('change_test_item', { key: '1' }, function(error, data){
+          assert.equal(error, undefined);
           assert.equal(data.test , 'new change_test_item 1 test');
+          assert.notEqual(data.$version, null);
           done();  
         });
 
@@ -238,6 +240,65 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
+  describe('versioned write changes', function(){
+    it('create should add a item', function(done){
+      sut.tryUpsert('try_change_test_item', '1', {test: 'try_change_test_item 1 test', $version: -1}, function(error){
+        assert.equal(error, undefined);
+
+        sut.read('try_change_test_item', { key: '1' }, function(error, data){
+          assert.equal(error, undefined);
+          assert.equal(data.test , 'try_change_test_item 1 test');
+          assert.notEqual(data.$version, null);
+          done();  
+        });
+
+      });
+    });
+    it('update should change the item', function(done){
+
+      sut.read('try_change_test_item', { key: '1' }, function(error, data){
+        var oldVersion = data.$version;
+
+        data.test = 'new try_change_test_item 1 test';
+        data.$version += 1;
+
+        sut.tryUpsert('try_change_test_item', '1', data, function(error){
+          assert.equal(error, undefined);
+
+          sut.read('try_change_test_item', { key: '1' }, function(error, afterChange){
+            assert.equal(error, undefined);
+            assert.equal(afterChange.test , 'new try_change_test_item 1 test');
+            assert.equal(oldVersion < afterChange.$version, true);
+            assert.notEqual(afterChange.$version, null);
+            done();  
+          });
+
+        });
+
+      });
+    });
+    it('update with the same version number should throw an error', function(done){
+        sut.read('try_change_test_item', { key: '1' }, function(error, data){
+          sut.tryUpsert('try_change_test_item', '1', data, function(err, data){
+            assert.equal(err.message, 'Item can not be changed. Version conflict exists.');
+            done();
+          });
+        });
+    });
+
+    it('delete should remove the item', function(done){
+      sut.del('try_change_test_item', '1', function(error){
+        assert.equal(error, undefined);
+
+        sut.read('change_test_item', { key: '1' }, function(error, data){
+          assert.equal(data, undefined);
+          done();  
+        });
+
+      });
+    });
+
+  });
   describe('grouping', function(){
     it('by range store name "bdemo" with groupingKey', function(done){
       sut.query('bdemo', { groupingKey: 'value.group' }, { }, function(error, data){
@@ -269,9 +330,9 @@ describe('Module: JSON Key/Value Storage', function(){
   describe('import/export', function(){
     it('should import data to import1', function(done){
       var data = [
-        { key: 'name', value: 'Yuri Irsenovich Kim' },
+        { key: 'name', value: 'Max Mustermann' },
         { key: 'dob', value: '16 February 1941' },
-        { key: 'spouse', value: 'Kim Young-sook' },
+        { key: 'spouse', value: 'Maxi' },
         { key: 'occupation', value: 'Clown' }
         ];
       sut.imports('import1', data, function(error){
@@ -286,9 +347,9 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('should import raw data', function(done){
       var data = [
-        { key: 'import2!name', value: 'Yuri Irsenovich Kim' },
+        { key: 'import2!name', value: 'Max Mustermann' },
         { key: 'import2!dob', value: '16 February 1941' },
-        { key: 'import2!spouse', value: 'Kim Young-sook' },
+        { key: 'import2!spouse', value: 'Maxi' },
         { key: 'import2!occupation', value: 'Clown' }
         ];
       sut.imports('', data, function(error){

@@ -1,6 +1,7 @@
 'use strict';
 
 var assert = require('assert'),
+    microtime = require('microtime'),
     sut;
 
 describe('Module: JSON Key/Value Storage', function(){
@@ -242,7 +243,7 @@ describe('Module: JSON Key/Value Storage', function(){
   });
   describe('versioned write changes', function(){
     it('create should add a item', function(done){
-      sut.tryUpsert('try_change_test_item', '1', {test: 'try_change_test_item 1 test', $version: -1}, function(error){
+      sut.tryUpsert('try_change_test_item', '1', {test: 'try_change_test_item 1 test'}, function(error){
         assert.equal(error, undefined);
 
         sut.read('try_change_test_item', { key: '1' }, function(error, data){
@@ -260,7 +261,6 @@ describe('Module: JSON Key/Value Storage', function(){
         var oldVersion = data.$version;
 
         data.test = 'new try_change_test_item 1 test';
-        data.$version += 1;
 
         sut.tryUpsert('try_change_test_item', '1', data, function(error){
           assert.equal(error, undefined);
@@ -278,16 +278,53 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
     it('update with the same version number should throw an error', function(done){
-        sut.read('try_change_test_item', { key: '1' }, function(error, data){
-          sut.tryUpsert('try_change_test_item', '1', data, function(err, data){
-            assert.equal(err.message, 'Item can not be changed. Version conflict exists.');
+
+      sut.read('try_change_test_item', { key: '1' }, function(error, existingItem){
+        assert.equal(error, undefined);
+
+        sut.tryUpsert('try_change_test_item', '1', existingItem, function(error, changedItem){
+          assert.equal(error, undefined);
+          assert.equal(existingItem.$version < changedItem.$version, true);
+
+          sut.tryUpsert('try_change_test_item', '1', existingItem, function(error, data){
+            assert.equal(error.message, 'Item can not be changed. Version conflict exists.');
             done();
           });
-        });
-    });
 
+        });
+
+      });
+
+    });
+    it('update with the same version number should update item', function(done){
+
+      sut.read('try_change_test_item', { key: '1' }, function(error, existingItem){
+        assert.equal(error, undefined);
+
+        sut.tryUpsert('try_change_test_item', '1', existingItem, function(error, changedItem){
+          assert.equal(error, undefined);
+          assert.equal(existingItem.$version < changedItem.$version, true);
+          
+          sut.tryUpsert('try_change_test_item', '1', changedItem, function(error, data){
+            assert.equal(error, undefined);
+            assert.equal(changedItem.$version < data.$version, true);
+            done();
+          });
+
+        });
+
+      });
+      
+    });
+    it('delete with same version should throw error', function(done){
+      sut.tryDel('try_change_test_item', '1', microtime.now()-1000000, function(error){
+        assert.equal(error.message, 'Item can not be deleted. Version conflict exists.');
+        done();
+      });
+    });
+    
     it('delete should remove the item', function(done){
-      sut.del('try_change_test_item', '1', function(error){
+      sut.tryDel('try_change_test_item', '1', microtime.now(), function(error){
         assert.equal(error, undefined);
 
         sut.read('change_test_item', { key: '1' }, function(error, data){

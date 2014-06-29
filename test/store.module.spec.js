@@ -334,7 +334,6 @@ describe('Module: JSON Key/Value Storage', function(){
 
       });
     });
-
   });
   describe('grouping', function(){
     it('by range store name "bdemo" with groupingKey', function(done){

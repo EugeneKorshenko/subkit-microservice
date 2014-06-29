@@ -59,26 +59,23 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: true
+          clearRequireCache: false
         },
         src: [
-          'test/*.module.spec.js',
           'test/manage.spec.js',
-          'test/store.spec.js',
-          'test/worker.spec.js',
-          'test/share.spec.js',
-          'test/plugin.spec.js',
-          'test/pubsub.spec.js',
-          'test/statistics.spec.js',
+          'test/pubsub.module.spec.js',
+          'test/template.module.spec.js',
+          'test/eventsource.module.spec.js',
           'test/identity.spec.js',
-          'test/file.spec.js'
+          'test/identity.module.spec.js',
+          'test/file.module.spec.js',
         ]
       },
       shareTests: {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: true
+          clearRequireCache: false
         },
         src: [
           'test/share.module.spec.js',
@@ -89,11 +86,22 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: true
+          clearRequireCache: false
         },
         src: [
           'test/store.module.spec.js',
           'test/store.spec.js'
+        ]
+      },
+      workerTests: {
+        options: {
+          reporter: 'spec',
+          timeout: 10000,
+          clearRequireCache: false
+        },
+        src: [
+          'test/worker.module.spec.js',
+          'test/worker.spec.js'
         ]
       }
     },
@@ -132,8 +140,9 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', []);
-  grunt.registerTask('test', ['jshint','mochaTest']);
+  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:workerTests']);
   grunt.registerTask('shareTests', ['mochaTest:shareTests']);
   grunt.registerTask('storeTests', ['mochaTest:storeTests']);
+  grunt.registerTask('wokerTests', ['mochaTest:workerTests']);
   grunt.registerTask('doc', ['jsdoc', 'markdox']);
 };

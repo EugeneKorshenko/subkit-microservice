@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.0.67",
+  "version": "0.0.68",
   "dependencies": {
     "cflow": "*",
     "cron": "*",
@@ -10,7 +10,7 @@
     "jsonquery": "*",
     "level": "*",
     "microtime": "*",
-    "moment": "^2.7.0",
+    "moment": "*",
     "nconf": "*",
     "node-uuid": "*",
     "randomstring": "*",

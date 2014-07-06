@@ -53,7 +53,7 @@ DOCUMENTATION
 * [Shares & Access Control](docs/acl.md)
 * [Queries](docs/store_queries.md)
 * [Projections](docs/projections.md)
-* [Task API](docs/task_API.md)
+* [Task API](docs/task_api.md)
 
 FEATURES
 ---

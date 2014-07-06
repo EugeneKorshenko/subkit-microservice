@@ -170,8 +170,8 @@ module.exports.init = function(){
 	var share = require('./lib/share.module.js').init({}, pubsub);
 	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
-	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es, doc);
 	var template = require('./lib/template.module.js');
+	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es, template.init(templateConfig), file.init(staticConfig), doc);
 	var identity = require('./lib/identity.module.js');
 
 	//starts the tasks scheduler

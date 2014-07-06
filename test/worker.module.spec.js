@@ -14,10 +14,13 @@ describe('Module: Worker', function(){
     });
     var pubsub = require('../lib/pubsub.module.js').init({pollInterval: 1});
     var eventsource = require('../lib/eventsource.module.js').init(store, pubsub);
+    var template = require('../lib/template.module.js').init({templatesPath:'./template_mock'});
+    var file = require('../lib/file.module.js').init({templatesPath:'./statics_mock'});
+
     sut = require('../lib/worker.module.js').init({
       tasksPath: path.join(__dirname, './task_mock'),
       backupPath: './backups'
-    }, store, pubsub, eventsource);
+    }, store, pubsub, eventsource, template, file);
     done();
   });
   after(function(done){

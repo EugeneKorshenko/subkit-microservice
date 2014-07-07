@@ -65,11 +65,12 @@ module.exports.init = function(){
 		if(app.cert && fs.existsSync(app.cert)) options.certificate = fs.readFileSync(app.cert);
 		var	srv = restify.createServer(options);
 		srv.listen(app.port, function(){
-			console.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
-			console.log('ENVIRONMENT: '+process.env.NODE_ENV || 'development');
-			console.log('SECURE: '+srv.secure);
-			console.log('PORT: '+srv.address().port);
-			console.log('PID: '+process.pid);
+			utils.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
+			utils.log('ENVIRONMENT: '+process.env.NODE_ENV || 'development');
+			utils.log('SECURE: '+srv.secure);
+			utils.log('PORT: '+srv.address().port);
+			utils.log('PID: '+process.pid);
+
 			http.globalAgent.maxSockets = 50000;
 			https.globalAgent.maxSockets = 50000;
 		});
@@ -109,22 +110,29 @@ module.exports.init = function(){
 		return next();
 	});
 
-	//handle errors
+
+	//handle errors	
 	process.stdin.resume();
 	server.on('uncaughtException', function (req, res, route, err) {
-		console.log('A uncought exception was thrown: ' + route + ' -> ' + err.message);
+		utils.trace(err, route);
 	});
 	function exitHandler(options, err) {
+	    if (err) {
+	    	utils.trace(err);
+	    }
 	    if (options.cleanup) {
 	    	storage.close();
-	    	console.log('clean up');
+	    	utils.log('Clean up resources.');
 	    }
-	    if (err) console.log(err.stack);
-	    if (options.exit) process.exit();
+	    if (options.exit) {
+	    	utils.log( 'Process exit.');
+	    	process.exit();
+	    }
 	}
-	process.on('exit', exitHandler.bind(null,{cleanup:true}));
-	process.on('SIGINT', exitHandler.bind(null, {exit:true}));
-	process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+	process.on('abort', exitHandler.bind(null,{cleanup:true, exit:true}));
+	process.on('exit', exitHandler.bind(null,{cleanup:true, exit:true}));
+	process.on('SIGINT', exitHandler.bind(null, {cleanup: true, exit:true}));
+	process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
 
 	//handle share access
 	server.use(function(req, res, next){

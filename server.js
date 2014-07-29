@@ -133,10 +133,22 @@ module.exports.init = function(){
 	process.on('exit', exitHandler.bind(null,{cleanup:true, exit:true}));
 	process.on('SIGINT', exitHandler.bind(null, {cleanup: true, exit:true}));
 	process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
+	
+	//Modules
+	var storage = require('./lib/store.module.js').init(storageConfig);
+	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1}, storage);
+	var share = require('./lib/share.module.js').init({}, pubsub);
+	var file = require('./lib/file.module.js');
+	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
+	var template = require('./lib/template.module.js');
+	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es, template.init(templateConfig), file.init(staticConfig), doc);
+	var identity = require('./lib/identity.module.js');
 
+    var usersIdent = identity.init(null, storage);
 	//handle share access
 	server.use(function(req, res, next){
 		var apikey = req.headers['x-auth-token'] || req.params.apikey || req.params.api_key;
+				
 		if(api.apiKey === apikey) {
 			return next();
 		}
@@ -148,20 +160,26 @@ module.exports.init = function(){
 			return next();
 		}
  		
-		//check share access
-		var urlParts = req.url.split('/');
-		var shareIdent = '';
-		for (var i = 1; i < urlParts.length; i++) {
-			shareIdent = shareIdent + '/' + urlParts[i];
-			var shareItem = share.list()[shareIdent];
-			if(shareItem){
-				var username = apikey || req.username;
-				if(shareItem[req.method].indexOf(username) !== -1){
-					return next();
+		usersIdent.validate(apikey, function(error, user){
+			//check share access
+			var urlParts = req.url.split('/');
+			var shareIdent = '';
+			for (var i = 1; i < urlParts.length; i++) {
+				shareIdent = shareIdent + '/' + urlParts[i];
+				var shareItem = share.list()[shareIdent];
+				if(shareItem){
+					var username = null;
+
+					if(user) username = user.id;
+					else username = req.username;
+
+					if(shareItem[req.method].indexOf(username) !== -1){
+						return next();
+					}
 				}
 			}
-		}
-		res.send(401);
+			res.send(401);
+		});
 	});
 
 	//JSON doc
@@ -172,15 +190,6 @@ module.exports.init = function(){
 		basePath: app.key ? 'https://localhost:'+app.port : 'http://localhost:'+app.port
 	});
 
-	//Modules
-	var storage = require('./lib/store.module.js').init(storageConfig);
-	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1}, storage);
-	var share = require('./lib/share.module.js').init({}, pubsub);
-	var file = require('./lib/file.module.js');
-	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
-	var template = require('./lib/template.module.js');
-	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es, template.init(templateConfig), file.init(staticConfig), doc);
-	var identity = require('./lib/identity.module.js');
 
 	//starts the tasks scheduler
 	worker.runScheduler(true);
@@ -192,7 +201,7 @@ module.exports.init = function(){
 	require('./lib/pubsub.js').init(server, pubsub, doc);
 	require('./lib/statistics.js').init(server, storage, pubsub, es, doc);
 	require('./lib/worker.js').init(server, worker);
-	
+
 	//plugins
 	var availablePlugins = subkitPackage.optionalDependencies;
 	var pluginContext = {

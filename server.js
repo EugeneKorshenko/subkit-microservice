@@ -148,7 +148,8 @@ module.exports.init = function(){
 	//handle share access
 	server.use(function(req, res, next){
 		var apikey = req.headers['x-auth-token'] || req.params.apikey || req.params.api_key;
-				
+		var token = null;
+
 		if(api.apiKey === apikey) {
 			return next();
 		}
@@ -159,8 +160,11 @@ module.exports.init = function(){
 
 			return next();
 		}
- 		
-		usersIdent.validate(apikey, function(error, user){
+ 		if(!apikey && req.username && req.authorization && req.authorization.basic && req.authorization.basic.password){
+ 			apikey = req.username;
+ 			token = req.authorization.basic.password;
+ 		}
+		usersIdent.validate(apikey,token,function(error, user){
 			//check share access
 			var urlParts = req.url.split('/');
 			var shareIdent = '';
@@ -175,6 +179,15 @@ module.exports.init = function(){
 
 					if(shareItem[req.method].indexOf(username) !== -1){
 						return next();
+					}
+					
+					if(user && user.groups){
+						for (var i = 0; i < user.groups.length; i++) {
+							var group = user.groups[i];
+							if(shareItem[req.method].indexOf(group) !== -1){
+								return next();
+							};
+						};
 					}
 				}
 			}

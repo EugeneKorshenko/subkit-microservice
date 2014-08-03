@@ -48,8 +48,8 @@ module.exports.init = function(){
 		}
 		
 		//correct root path
-		app.key = path.join(__dirname, app.key);
-		app.cert = path.join(__dirname, app.cert);
+		if(app.key) app.key = path.join(__dirname, app.key);
+		if(app.cert) app.cert = path.join(__dirname, app.cert);
 		storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
 		storageConfig.backupPath = path.join(__dirname, storageConfig.backupPath);
 		workerConfig.tasksPath = path.join(__dirname, workerConfig.tasksPath);

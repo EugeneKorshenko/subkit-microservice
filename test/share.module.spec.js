@@ -15,6 +15,14 @@ describe('Module: Share', function(){
   
   describe('share', function(){
 
+    describe('list all identities', function(){
+      it('should be get all identies', function(done){
+        var actual = sut.listIdentities();
+        assert.notEqual(actual.length, 0);
+        done();
+      });
+    });
+
     describe('list by identity', function(){
       it('should be only grant read access', function(done){
         var actual = sut.listByIdentity('anonymous');

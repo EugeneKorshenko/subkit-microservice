@@ -28,6 +28,14 @@ describe('Integration: Share', function(){
   });
 
   describe('on shares', function(){
+    it('should be get all identities', function(done){
+      client.get('/shares/identities', function(error, req, res, actual){
+        assert.ifError(error);
+        assert.equal(res.statusCode, 200, 'Wrong HTTP status code.');
+        assert.notEqual(actual.length, 0);
+        done();
+      });
+    });
     it('should be get shares by identity `anonymous`', function(done){
       client.get('/shares/anonymous', function(error, req, res, actual){
         assert.ifError(error);

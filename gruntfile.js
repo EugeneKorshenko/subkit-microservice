@@ -103,6 +103,16 @@ module.exports = function(grunt) {
           'test/worker.module.spec.js',
           'test/worker.spec.js'
         ]
+      },
+      fileTests: {
+        options: {
+          reporter: 'spec',
+          timeout: 10000,
+          clearRequireCache: false
+        },
+        src: [
+          'test/file.module.spec.js'
+        ]
       }
     },
     jsdoc : {
@@ -140,9 +150,10 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', []);
-  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:workerTests']);
+  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:workerTests','mochaTest:fileTests']);
   grunt.registerTask('shareTests', ['mochaTest:shareTests']);
   grunt.registerTask('storeTests', ['mochaTest:storeTests']);
   grunt.registerTask('wokerTests', ['mochaTest:workerTests']);
+  grunt.registerTask('fileTests', ['mochaTest:fileTests']);
   grunt.registerTask('doc', ['jsdoc', 'markdox']);
 };

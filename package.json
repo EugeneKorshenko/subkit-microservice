@@ -1,10 +1,11 @@
 {
   "name": "subkit-microservice",
-  "version": "0.0.82",
+  "version": "0.0.83",
   "dependencies": {
     "cflow": "*",
     "cron": "*",
     "forever": "*",
+    "fstream": "*",
     "jshtml-express": "*",
     "json-stringify-safe": "*",
     "jsonquery": "*",
@@ -15,7 +16,9 @@
     "node-uuid": "*",
     "randomstring": "*",
     "restify": "*",
+    "subkit-dashboard": "*",
     "swagger-doc": "*",
+    "tar": "*",
     "underscore": "*",
     "underscore-keypath": "*"
   },
@@ -36,7 +39,9 @@
     "start": "node supervisor",
     "test": "grunt test"
   },
-  "author": "Mike Bild",
+  "author": {
+    "name": "Mike Bild"
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:SubKit/subkit-microservice.git"

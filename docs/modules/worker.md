@@ -2,8 +2,6 @@
 
 <!-- Start lib/worker.module.js -->
 
-@module worker
-
 Async result callback.
 
 ### Params: 

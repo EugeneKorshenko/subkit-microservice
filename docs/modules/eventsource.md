@@ -2,8 +2,6 @@
 
 <!-- Start lib/eventsource.module.js -->
 
-@module eventsource
-
 Async result callback.
 
 ### Params: 

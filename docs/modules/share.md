@@ -2,8 +2,6 @@
 
 <!-- Start lib/share.module.js -->
 
-@module share
-
 Async result callback.
 
 ### Params: 

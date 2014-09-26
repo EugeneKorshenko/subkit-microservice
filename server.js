@@ -21,9 +21,9 @@ module.exports.init = function(){
 
 	//load and apply configuration
 	var _applyConfig = function(){
-		var configFilePath = path.join(__dirname,'files','config');
+		var configFilePath = path.join(process.cwd(),'files','config');
 	  	nconf.file('config', path.join(configFilePath, 'config.json'));		
-	  	nconf.file('defaults', path.join(__dirname, 'defaults.json'));
+	  	nconf.file('defaults', path.join(process.cwd(), 'defaults.json'));
 
 		admin = nconf.get('admin');
 		app = nconf.get('app');
@@ -47,14 +47,13 @@ module.exports.init = function(){
 			nconf.save();
 		}
 		
-		//correct root path
-		if(app.key) app.key = path.join(__dirname, app.key);
-		if(app.cert) app.cert = path.join(__dirname, app.cert);
-		storageConfig.dbPath = path.join(__dirname, storageConfig.dbPath);
-		storageConfig.backupPath = path.join(__dirname, storageConfig.backupPath);
-		workerConfig.tasksPath = path.join(__dirname, workerConfig.tasksPath);
-		templateConfig.templatesPath = path.join(__dirname, templateConfig.templatesPath);
-		staticConfig.staticsPath = path.join(__dirname, staticConfig.staticsPath);
+		if(app.key) app.key = path.join(process.cwd(), app.key);
+		if(app.cert) app.cert = path.join(process.cwd(), app.cert);
+		storageConfig.dbPath = path.join(process.cwd(), storageConfig.dbPath);
+		storageConfig.backupPath = path.join(process.cwd(), storageConfig.backupPath);
+		workerConfig.tasksPath = path.join(process.cwd(), workerConfig.tasksPath);
+		templateConfig.templatesPath = path.join(process.cwd(), templateConfig.templatesPath);
+		staticConfig.staticsPath = path.join(process.cwd(), staticConfig.staticsPath);
 	};
 	_applyConfig();
 	

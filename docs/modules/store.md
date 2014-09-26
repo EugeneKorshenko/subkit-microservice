@@ -2,8 +2,6 @@
 
 <!-- Start lib/store.module.js -->
 
-@module store
-
 Async result callback.
 
 ### Params: 
@@ -59,6 +57,17 @@ Add or change an item in a store.
 * **Object** *payload* - New data object.
 * **callback** *callback* - Done handler.
 
+## upsert		(resource, key, payload, callback)
+
+Try to add or change an item in a store.
+
+### Params: 
+
+* **String** *resource* - Name of store.
+* **String** *key* - Store item key.
+* **Object** *payload* - New data object.
+* **callback** *callback* - Done handler.
+
 ## del(resource, key, callback)
 
 Remove an item from the store.
@@ -69,6 +78,17 @@ Remove an item from the store.
 * **String** *key* - Store item key.
 * **callback** *callback* - Done handler.
 
+## del(resource, key, version, callback)
+
+Try to remove an item from the store.
+
+### Params: 
+
+* **String** *resource* - Name of store.
+* **String** *key* - Store item key.
+* **Number** *version* - Store item version.
+* **callback** *callback* - Done handler.
+
 ## batch(data, callback)
 
 Bulk update (add, change, remove).
@@ -76,15 +96,6 @@ Bulk update (add, change, remove).
 ### Params: 
 
 * **Array** *data* - Object array with store operations.
-* **callback** *callback* - Done handler.
-
-## first(resource, callback)
-
-Gets the first item in a store.
-
-### Params: 
-
-* **String** *resource* - Name of store.
 * **callback** *callback* - Done handler.
 
 ## imports(resource, payload, callback)

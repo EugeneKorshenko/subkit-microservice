@@ -2,8 +2,6 @@
 
 <!-- Start lib/pubsub.module.js -->
 
-@module pubsub
-
 Async result callback.
 
 ### Params: 

@@ -136,5 +136,13 @@ Zip a directory.
 * **String** *dstPath* - Zip file name in full destination path.
 * **callback** *callback* - Done handler.
 
+## cleanDirectories(path)
+
+Delete all empty directories.
+
+### Params: 
+
+* **String** *path* - Full source path.
+
 <!-- End lib/file.module.js -->
 

@@ -40,11 +40,10 @@ describe('Module: File', function(){
   });
 
   it('should read the complete directory', function(done){
-    var filePath = path.join(process.cwd(),'files','statics','test');
+    var filePath = path.join(process.cwd(),'files','statics');
     sut.readDir(filePath, function(err, data){
       assert.ifError(err);
-      assert.deepEqual(data,['css','index.html','js']);
-      done();
+      assert.deepEqual(data,[ 'test/css/style.css', 'test/index.html', 'test/js/app.js' ]); done();
     });
   });
 

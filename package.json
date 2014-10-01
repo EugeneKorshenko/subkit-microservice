@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.0.88",
+  "version": "0.0.89",
   "dependencies": {
     "yargs": "*",
     "shelljs":"*",
@@ -38,7 +38,7 @@
   },
   "main": "index.js",
   "engines": {
-    "node": ">=0.10.32"
+    "node": ">=0.10.29"
   },
   "scripts": {
     "start": "node supervisor",

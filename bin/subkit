@@ -22,7 +22,7 @@ console.log("\n\
 this.help = function(args, callback){
 	console.log('Subkit-CLI: v'+require('../package.json').version);
 	this.logo();
-	var basepath = path.join(process.cwd(),'doc-cli');
+	var basepath = path.join(__dirname,'doc-cli');
 	var filepath;
 	var data;
 

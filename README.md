@@ -28,8 +28,7 @@ __Windows 8/8.1__
 Installation
 ---
 __via Subkit-CLI__  
-+ Install [Subkit-CLI](https://github.com/SubKit/subkit-cli/)  
-`npm install subkit-cli -g`  
+`npm install subkit-microservice -g`  
 + Creates a new backend instance  
 `subkit new <appname>`  
 + Start the newly created backend instance  

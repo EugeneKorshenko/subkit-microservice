@@ -19,7 +19,6 @@
     "randomstring": "*",
     "restify": "*",
     "subkit-dashboard": "*",
-    "swagger-doc": "*",
     "tar": "*",
     "underscore": "*",
     "underscore-keypath": "*"

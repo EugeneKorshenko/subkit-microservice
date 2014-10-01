@@ -1,0 +1,7 @@
+Removes a Subkit MicroService instance at the provided path.
+
+Usage:
+  $0 remove <appname>
+  
+Options:
+  -v | --verbose              Verbose output.

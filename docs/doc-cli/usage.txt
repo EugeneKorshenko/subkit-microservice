@@ -1,0 +1,11 @@
+Subkit command-line tool.
+
+Base URL : https://localhost:8080
+Username : subkit
+Password : subkit
+API Key  : 6654edc5-82a3-4006-967f-97d5817d7fe2
+
+SDK HTML Script:
+<script src="https://localhost:8080“ type="text/javascript"></script>
+JavaScript SDK:
+var subkit = new Subkit({baseUrl: 'https://localhost:8080', apiKey: '6654edc5-82a3-4006-967f-97d5817d7fe2'});

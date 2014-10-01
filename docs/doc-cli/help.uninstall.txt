@@ -1,0 +1,13 @@
+Uninstalls Subkit plugin(s).
+
+Usage:
+  $0 uninstall <appname> <plugins>
+  $0 uninstall <appname> -p <plugins>
+  
+Options:
+  -p | --plugins  Plugin(s) to be uninstalled.
+  -v | --verbose  Verbose output.
+
+Arguments:
+  <appname>	       Name of instance.
+  <plugins>        Single plugin name or comma separated list.

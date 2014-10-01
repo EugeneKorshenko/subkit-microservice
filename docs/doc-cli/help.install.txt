@@ -1,0 +1,14 @@
+Installs Subkit plugin(s).
+
+Usage:
+  $0 install <appname>
+  $0 install <appname> <plugins>
+  $0 install <appname> -p <plugins>
+  
+Options:
+  -p | --plugins  Plugin(s) to be installed.
+  -v | --verbose  Verbose output.
+
+Arguments:
+  <appname>	       Name of instance.
+  <plugins>        Single plugin name or comma separated list.

@@ -1,0 +1,12 @@
+Creates a new Subkit MicroService instance at the provided path.
+
+Usage:
+  $0 new
+  $0 new <appname>
+  $0 new -n <appname>
+  $0 new -n <appname> [-p <plugins>]
+  
+Options:
+  -n | --name <appname>       Instance name.
+  -p | --plugins <plugins>    Installs Subkit plugin(s).
+  -v | --verbose              Verbose output.

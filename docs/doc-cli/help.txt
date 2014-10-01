@@ -1,0 +1,16 @@
+Subkit command-line tool.
+
+Usage:
+  $0 new <appname>
+  $0 start <appname>
+  $0 install <appname> <plugin>...
+  $0 uninstall <appname> <plugin>...
+  $0 remove <appname>
+  $0 usage
+  $0 reset
+  $0 -h | --help
+  $0 -v | --verbose
+
+Options:
+  -h --help     output usage information
+  -v --verbose  verbose output

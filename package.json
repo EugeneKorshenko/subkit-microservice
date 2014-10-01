@@ -1,7 +1,9 @@
 {
   "name": "subkit-microservice",
-  "version": "0.0.86",
+  "version": "0.0.87",
   "dependencies": {
+    "yargs": "*",
+    "shelljs":"*",
     "cflow": "*",
     "cron": "*",
     "forever": "*",
@@ -31,9 +33,12 @@
     "grunt-mocha-test": "*",
     "mocha": "*"
   },
+  "bin":{
+    "subkit": "./bin/subkit"
+  },
   "main": "index.js",
   "engines": {
-    "node": ">=0.10.22"
+    "node": ">=0.10.32"
   },
   "scripts": {
     "start": "node supervisor",

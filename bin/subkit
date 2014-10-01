@@ -1,0 +1,228 @@
+#!/usr/bin/env node
+'use strict';
+
+var argv = require('yargs').argv,
+	shelljs = require('shelljs'),
+	path = require('path'),
+	fs = require('fs'),
+	args = [],
+	callback = callback || function() {};
+
+this.logo = function(){
+console.log("\n\
+███████╗██╗   ██╗██████╗ ██╗  ██╗██╗████████╗\n\
+██╔════╝██║   ██║██╔══██╗██║ ██╔╝██║╚══██╔══╝\n\
+███████╗██║   ██║██████╔╝█████╔╝ ██║   ██║   \n\
+╚════██║██║   ██║██╔══██╗██╔═██╗ ██║   ██║   \n\
+███████║╚██████╔╝██████╔╝██║  ██╗██║   ██║   \n\
+╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝   ╚═╝   \n\
+");
+};
+
+this.help = function(args, callback){
+	console.log('Subkit-CLI: v'+require('../package.json').version);
+	this.logo();
+	console.log(process.cwd());
+	var basepath = path.join(process.cwd(), '..','docs','doc-cli');
+	var filepath;
+	var data;
+
+	filepath = argv._.slice(0);
+	filepath.push('txt');
+	filepath = filepath.join('.');
+	filepath = path.join(basepath, filepath);
+	data = fs.readFileSync(filepath, 'utf8');
+	data = data.trim().replace(/\$0/g, argv.$0);
+	console.log('\n' + data + '\n');
+};
+this.version = function(args, callback){
+	console.log('Subkit-CLI: v'+require('../package.json').version);
+};
+this.install = function(args, callback){
+	this.logo();
+	if (argv._.length <= 0) {
+		argv._.unshift('help');
+		this.argv(argv, callback);
+		return;
+	}
+	var data = {
+		app: argv._[1] || argv.app || argv.p,
+		plugins: argv._[2] || argv.plugins || argv.p,
+		verbose: argv.verbose || argv.v
+	};
+
+	if(!data.app) return console.log('Missing argument: <appname>.');
+	if(!data.plugins) return console.log('Missing argument: <[plugins]>.');
+	if(!shelljs.test('-e', data.app)) return console.log('App `'+data.app+'` not found.');
+
+	shelljs.cd(data.app);
+	data.plugins.split(',').forEach(function(plugin){
+		var done = shelljs.exec('npm install subkit-'+plugin+'-plugin --save-optional', {silent:!data.verbose});
+		if(done.code === 0) console.log('\nPlugin `subkit-'+plugin+'-plugin` installed.');
+		else console.log('\nERROR: Can not install Plugin `subkit-'+plugin+'-plugin`.');
+
+	});
+};
+this.uninstall = function(args, callback){
+	this.logo();
+	if (argv._.length <= 0) {
+		argv._.unshift('help');
+		this.argv(argv, callback);
+		return;
+	}
+	var data = {
+		app: argv._[1] || argv.app || argv.p,
+		plugins: argv._[2] || argv.plugins || argv.p,
+		verbose: argv.verbose || argv.v
+	};
+	if(!data.app) return console.log('Missing argument: <appname>.');
+	if(!data.plugins) return console.log('Missing argument: <[plugins]>.');
+	if(!shelljs.test('-e', data.app)) return console.log('App `'+data.app+'` not found.');
+
+	shelljs.cd(data.app);
+	data.plugins.split(',').forEach(function(plugin){
+		var done = shelljs.exec('npm remove subkit-'+plugin+'-plugin --save-optional', {silent:!data.verbose});
+		if(done.code === 0) console.log('\nPlugin `subkit-'+plugin+'-plugin` uninstalled.');
+		else console.log('\nERROR: Can not remove Plugin `subkit-'+plugin+'-plugin`.');
+	});
+};
+this.new = function(args, callback){
+	var self = this;
+
+	this.logo();
+	if (argv._.length <= 0) {
+		argv._.unshift('help');
+		this.argv(argv, callback);
+		return;
+	}
+
+	var data = { 
+		app: argv._[1] || argv.app || argv.p,
+		plugins: argv._[2] || argv.plugins || argv.p,
+		verbose: argv.verbose || argv.v
+	};
+
+	if(!data.app) return console.log('Missing argument: <appname>.');
+	if (shelljs.test('-d', data.app)) return console.log('\nApp `'+data.app+'` already exists. Remove the app before it can be reinstalled.');
+	
+	var ref = setInterval(function(){
+		process.stdout.write('#');
+	}, 1000);
+	
+	shelljs.mkdir(data.app);
+	shelljs.cd(data.app);
+	shelljs.exec('npm install subkit-microservice', {silent:!data.verbose}, function(){
+		shelljs.cp('-rf', './node_modules/subkit-microservice/*', '.');
+		shelljs.rm('-rf', './node_modules/subkit-microservice/');
+		clearInterval(ref);
+		console.log('\nNew Subkit instance installed in '+data.app+' done.');
+		if(data.plugins){
+			data.plugins.split(',').forEach(function(plugin){
+				var done = shelljs.exec('npm install subkit-'+plugin+'-plugin --save-optional', {silent:!data.verbose});
+				if(done.code === 0) console.log('\nPlugin `subkit-'+plugin+'-plugin` installed.');
+				else console.log('\nERROR: Can not install Plugin `subkit-'+plugin+'-plugin`.');
+			});
+		}
+		console.log('\nEnter `subkit start '+data.app+'` to start your instance.');
+	});
+};
+this.remove = function(args, callback){
+	this.logo();
+	if (argv._.length <= 0) {
+		argv._.unshift('help');
+		this.argv(argv, callback);
+		return;
+	}
+
+	var data = { 
+		app: argv._[1] || argv.app || argv.p,
+		verbose: argv.verbose || argv.v
+	};
+	if(!data.app) return console.log('Missing argument: <appname>.');
+	shelljs.rm('-Rf', data.app);
+	console.log('\nApp `'+data.app+'` removed.');
+}
+this.update = function(args, callback){
+	this.logo();
+	if (argv._.length <= 0) {
+		argv._.unshift('help');
+		this.argv(argv, callback);
+		return;
+	}
+	var data = { 
+		app: argv._[1] || argv.app || argv.p,
+		verbose: argv.verbose || argv.v
+	};
+	if(!data.app) return console.log('Missing argument: <appname>.');
+	if(!shelljs.test('-e', data.app)) return console.log('App `'+data.app+'` not found.');
+	
+	var ref = setInterval(function(){
+		process.stdout.write('#');
+	}, 1000);
+
+	shelljs.cd(data.app);
+	shelljs.rm('-rf', './node_modules/');
+	shelljs.rm('-rf', './package.json');
+	shelljs.exec('npm install subkit-microservice', {silent:!data.verbose}, function(){
+		shelljs.rm('-rf', './node_modules/subkit-microservice/certs/');
+		shelljs.cp('-rf', './node_modules/subkit-microservice/*', '.');
+		shelljs.rm('-rf', './node_modules/subkit-microservice/');
+		clearInterval(ref);
+		console.log('\nSubkit instance '+data.app+' updated.');
+	});
+};
+this.start = function(args, callback){
+	var self = this;
+	this.logo();
+	if (argv._.length <= 0) {
+		argv._.unshift('help');
+		this.argv(argv, callback);
+		return;
+	}
+
+	var data = {
+		noBrowser: argv.noBrowser || argv.n,
+		app: argv._[1] || argv.app || argv.p,
+		verbose: argv.verbose || argv.v
+	};
+	if(!data.app) return console.log('Missing argument: <appname>.');
+
+	var installTmpPath = path.join('./', data.app, '/');
+	if(!shelljs.test('-e', installTmpPath)) return console.log('App `'+data.app+'` not found.');
+
+	shelljs.cd(data.app);
+	shelljs.exec('npm start', {silent:false, async:true});
+
+	if(data.noBrowser) return;
+	setTimeout(function(){
+		var config = fs.readFileSync('./files/config/config.json');
+		config = JSON.parse(config.toString());
+		shelljs.exec('open https://localhost:'+config.app.port, {silent:true, async:true});
+		argv._ = ['usage'];
+		self.help(argv, callback);
+	}, 2000);
+};
+this.unknown = function(args, callback){
+	console.log('unknown action');
+};
+
+// --help
+// --help <action>
+if (argv.help || argv.h) {
+	argv._.unshift('help');
+}
+// no action displays help
+if (!argv._.length) {
+	argv._.unshift('help');
+}
+
+// lookup action to execute
+var action = this;
+for (var i = 0, l = argv._.length; i < l; i++) {
+	if (typeof action[argv._[i]] === 'function') action = action[argv._[i]];
+	else break;
+}
+
+// execute action
+if (action === this) this.unknown(argv, callback);
+else action.call(this, argv, callback);

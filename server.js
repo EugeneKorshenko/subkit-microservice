@@ -20,7 +20,7 @@ module.exports.init = function(){
 	var _applyConfig = function(){
 		var configFilePath = path.join(process.cwd(),'files','config');
 	  	nconf.file('config', path.join(configFilePath, 'config.json'));		
-	  	nconf.file('defaults', path.join(process.cwd(), 'defaults.json'));
+	  	nconf.file('defaults', path.join(__dirname, 'defaults.json'));
 
 		admin = nconf.get('admin');
 		app = nconf.get('app');

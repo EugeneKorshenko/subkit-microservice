@@ -8,7 +8,6 @@ describe('Module: EventSource', function(){
   before(function(done) {
     store = require('../lib/store.module.js').init({
       dbPath:'./eventsourcedb',
-      rightsPath:'./rights.json',
       backupPath:'./backups'
     });
     pubsub = require('../lib/pubsub.module.js').init({pollInterval: 1});

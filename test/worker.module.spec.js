@@ -9,7 +9,6 @@ describe('Module: Worker', function(){
   before(function(done) {
     store = require('../lib/store.module.js').init({
       dbPath:'./taskspecdb',
-      rightsPath:'./rights.json',
       backupPath:'./backups'
     });
     var pubsub = require('../lib/pubsub.module.js').init({pollInterval: 1});

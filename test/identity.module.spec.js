@@ -9,7 +9,6 @@ describe('Module: Identity', function(){
   before(function(done) {
     store = require('../lib/store.module.js').init({
       dbPath:'./identityspecdb',
-      rightsPath:'./rights.json',
       backupPath:'./backups'
     });
     sut = require('../lib/identity.module.js').init('account', store);

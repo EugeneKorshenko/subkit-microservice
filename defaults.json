@@ -13,20 +13,11 @@
     "key": "./files/cert/server.key",
     "cert": "./files/cert/server.crt"
   },
-  "storageConfig": {
+  "paths": {
+    "backupPath": "./backups",
     "dbPath": "./files/masterdb",
-    "backupPath": "./backups"
-  },
-  "staticConfig": {
     "staticsPath": "./files/statics",
-    "backupPath": "./backups"
-  },
-  "templateConfig": {
     "templatesPath": "./files/templates",
-    "backupPath": "./backups"
-  },
-  "workerConfig": {
-    "tasksPath": "./files/tasks",
-    "backupPath": "./backups"
+    "tasksPath": "./files/tasks"
   }
 }

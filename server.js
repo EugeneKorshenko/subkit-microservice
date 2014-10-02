@@ -13,10 +13,7 @@ module.exports.init = function(){
 	var admin,
 		app,
 		api,
-		storageConfig,
-		workerConfig,
-		templateConfig,
-		staticConfig,
+		paths,
 		etag = {etag:'', lastModified:''};
 
 	//load and apply configuration
@@ -28,10 +25,7 @@ module.exports.init = function(){
 		admin = nconf.get('admin');
 		app = nconf.get('app');
 		api = nconf.get('api');
-		storageConfig = nconf.get('storageConfig');
-		workerConfig = nconf.get('workerConfig');
-		templateConfig = nconf.get('templateConfig');
-		staticConfig = nconf.get('staticConfig');
+		paths = nconf.get('paths');
 		
 		if(!fs.existsSync(path.join(configFilePath,'config.json'))){
 			utils.mkdirRecursive(configFilePath);
@@ -40,32 +34,32 @@ module.exports.init = function(){
 			nconf.set('admin', admin);
 			nconf.set('app', app);
 			nconf.set('api', api);
-			nconf.set('storageConfig', storageConfig);
-			nconf.set('workerConfig', workerConfig);
-			nconf.set('templateConfig', templateConfig);
-			nconf.set('staticConfig', staticConfig);
+			nconf.set('paths', paths);
 			nconf.save();
 		}
 		
 		if(app.key) app.key = path.join(process.cwd(), app.key);
 		if(app.cert) app.cert = path.join(process.cwd(), app.cert);
-		storageConfig.dbPath = path.join(process.cwd(), storageConfig.dbPath);
-		storageConfig.backupPath = path.join(process.cwd(), storageConfig.backupPath);
-		workerConfig.tasksPath = path.join(process.cwd(), workerConfig.tasksPath);
-		templateConfig.templatesPath = path.join(process.cwd(), templateConfig.templatesPath);
-		staticConfig.staticsPath = path.join(process.cwd(), staticConfig.staticsPath);
+		paths.dbPath = path.join(process.cwd(), paths.dbPath);
+		paths.backupPath = path.join(process.cwd(), paths.backupPath);
+		paths.tasksPath = path.join(process.cwd(), paths.tasksPath);
+		paths.templatesPath = path.join(process.cwd(), paths.templatesPath);
+		paths.staticsPath = path.join(process.cwd(), paths.staticsPath);
 	};
 	_applyConfig();
 	
 	//configure and start HTTPS/SSL server
 	var _applyServer = function(){
 		var options = { name: 'subkit microservice' };
+
+		if(!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 		if(app.key && fs.existsSync(app.key)) options.key = fs.readFileSync(app.key);
 		if(app.cert && fs.existsSync(app.cert)) options.certificate = fs.readFileSync(app.cert);
+		
 		var	srv = restify.createServer(options);
 		srv.listen(app.port, function(){
 			utils.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
-			utils.log('ENVIRONMENT: '+process.env.NODE_ENV || 'development');
+			utils.log('ENVIRONMENT: '+process.env.NODE_ENV);
 			utils.log('SECURE: '+srv.secure);
 			utils.log('PORT: '+srv.address().port);
 			utils.log('PID: '+process.pid);
@@ -134,13 +128,13 @@ module.exports.init = function(){
 	process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
 	
 	//Modules
-	var storage = require('./lib/store.module.js').init(storageConfig);
+	var storage = require('./lib/store.module.js').init(paths);
 	var	pubsub = require('./lib/pubsub.module.js').init({pollInterval: 1}, storage);
 	var share = require('./lib/share.module.js').init({}, pubsub);
 	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, pubsub);
 	var template = require('./lib/template.module.js');
-	var worker = require('./lib/worker.module.js').init(workerConfig, storage, pubsub, es, template.init(templateConfig), file.init(staticConfig), doc);
+	var worker = require('./lib/worker.module.js').init(paths, storage, pubsub, es, template.init(paths), file.init(paths), doc);
 	var identity = require('./lib/identity.module.js');
 
     var usersIdent = identity.init(null, storage);

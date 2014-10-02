@@ -8,7 +8,6 @@ describe('Module: PubSub', function(){
   before(function(done) {
     storage = require('../lib/store.module.js').init({
       dbPath:'./pubsubspecdb',
-      rightsPath:'./rights.json',
       backupPath:'./backups'
     });
     sut = require('../lib/pubsub.module.js').init({ pollInterval: 1}, storage);

@@ -184,7 +184,7 @@ module.exports.init = function(){
 					}
 				}
 			}
-			res.send(401);
+			res.send(401, new Error('Unauthorized'));
 		});
 	});
 

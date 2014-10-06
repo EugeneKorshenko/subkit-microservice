@@ -12,13 +12,12 @@ var logsFullPath = path.join(__dirname,logsPath);
 if(!fs.existsSync(logsFullPath))
     helper.mkdirRecursive(logsFullPath);
 
-var child = new(forever.Monitor)('index.js', {
-    'silent': false,
-    'uid':'master',
-    'pidFile': 'app.pid',
-    'logFile': logsPath + 'proc.log.txt',
-    'outFile': logsPath + 'out.log.txt',
-    'errFile': logsPath + 'err.log.txt'
+forever.startDaemon(path.join(__dirname,'index.js'), {
+    silent: false,
+    uid: 'master',
+    cwd: path.join(__dirname),
+    pidFile: 'app.pid',
+    logFile: path.join(logsFullPath, 'proc.log.txt'),
+    outFile: path.join(logsFullPath, 'out.log.txt'),
+    errFile: path.join(logsFullPath, 'err.log.txt')
 });
-child.start();
-forever.startServer(child);

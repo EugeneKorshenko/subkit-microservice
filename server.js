@@ -72,7 +72,6 @@ module.exports.init = function(){
 	var server = _applyServer();
 
 	//Middleware
-	server.acceptable.push('text/html');
 	server.use(restify.acceptParser(server.acceptable));
 	server.use(restify.bodyParser({ mapParams: true }));
 	server.use(restify.CORS({

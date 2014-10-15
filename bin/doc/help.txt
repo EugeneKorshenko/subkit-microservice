@@ -2,6 +2,7 @@ Subkit command-line tool.
 
 Usage:
   $0 new <appname>
+  $0 run <appname>
   $0 start <appname>
   $0 install <appname> <plugin>...
   $0 uninstall <appname> <plugin>...

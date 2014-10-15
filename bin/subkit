@@ -111,8 +111,8 @@ this.new = function(args, callback){
 	shelljs.mkdir(data.app);
 	shelljs.cd(data.app);
 	shelljs.exec('npm install subkit-microservice', {silent:!data.verbose}, function(){
-		shelljs.cp('-rf', path.join(data.app, './node_modules/subkit-microservice/*'), '.');
-		shelljs.rm('-rf', path.join(data.app, './node_modules/subkit-microservice/'));
+		shelljs.cp('-rf', './node_modules/subkit-microservice/*', '.');
+		shelljs.rm('-rf', './node_modules/subkit-microservice/');
 		clearInterval(ref);
 		console.log('\nNew Subkit instance installed in '+data.app+' done.');
 		if(data.plugins){
@@ -190,6 +190,38 @@ this.start = function(args, callback){
 	if(!shelljs.test('-e', installTmpPath)) return console.log('App `'+data.app+'` not found.');
 
 	shelljs.cd(data.app);
+	shelljs.exec('node index.js', {silent:false, async:true});
+
+	if(data.noBrowser) return;
+	setTimeout(function(){
+		var config = fs.readFileSync('./files/config/config.json');
+		config = JSON.parse(config.toString());
+		shelljs.exec('open https://localhost:'+config.app.port, {silent:true, async:true});
+		argv._ = ['usage'];
+		self.help(argv, callback);
+	}, 2000);
+};
+
+this.run = function(args, callback){
+	var self = this;
+	this.logo();
+	if (argv._.length <= 0) {
+		argv._.unshift('help');
+		this.argv(argv, callback);
+		return;
+	}
+
+	var data = {
+		noBrowser: argv.noBrowser || argv.n,
+		app: argv._[1] || argv.app || argv.p,
+		verbose: argv.verbose || argv.v
+	};
+	if(!data.app) return console.log('Missing argument: <appname>.');
+
+	var installTmpPath = path.join('./', data.app, '/');
+	if(!shelljs.test('-e', installTmpPath)) return console.log('App `'+data.app+'` not found.');
+
+	shelljs.cd(data.app);
 	shelljs.exec('npm start', {silent:false, async:true});
 
 	if(data.noBrowser) return;
@@ -201,6 +233,7 @@ this.start = function(args, callback){
 		self.help(argv, callback);
 	}, 2000);
 };
+
 this.unknown = function(args, callback){
 	console.log('unknown action');
 };

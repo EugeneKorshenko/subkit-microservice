@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.1.2",
+  "version": "0.1.23",
   "dependencies": {
     "cron": "*",
     "forever": "*",
@@ -19,6 +19,7 @@
     "shelljs": "0.2.6",
     "subkit-dashboard": "*",
     "tar": "*",
+    "cflow": "*",
     "underscore": "*",
     "underscore-keypath": "*",
     "yargs": "*"

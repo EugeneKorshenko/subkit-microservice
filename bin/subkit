@@ -111,8 +111,8 @@ this.new = function(args, callback){
 	shelljs.mkdir(data.app);
 	shelljs.cd(data.app);
 	shelljs.exec('npm install subkit-microservice', {silent:!data.verbose}, function(){
-		shelljs.cp('-rf', './node_modules/subkit-microservice/*', '.');
-		shelljs.rm('-rf', './node_modules/subkit-microservice/');
+		shelljs.cp('-rf', path.join(data.app, './node_modules/subkit-microservice/*'), '.');
+		shelljs.rm('-rf', data.app(data.app, './node_modules/subkit-microservice/'));
 		clearInterval(ref);
 		console.log('\nNew Subkit instance installed in '+data.app+' done.');
 		if(data.plugins){

@@ -158,7 +158,8 @@ module.exports.init = function(){
  		}
 		usersIdent.validate(apikey,token,function(error, user){
 			//check share access
-			var urlParts = req.url.split('/');
+                        var cleanupUrl = req.url.substr(0, req.url.indexOf('?'));
+                        var urlParts = cleanupUrl.split('/');
 			var shareIdent = '';
 			for (var i = 1; i < urlParts.length; i++) {
 				shareIdent = shareIdent + '/' + urlParts[i];

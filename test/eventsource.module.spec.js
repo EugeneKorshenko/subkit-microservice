@@ -3,15 +3,15 @@
 var assert = require('assert');
 
 describe('Module: EventSource', function(){
-  var store, pubsub, sut;
+  var store, hook, sut;
 
   before(function(done) {
     store = require('../lib/store.module.js').init({
       dbPath:'./eventsourcedb',
       backupPath:'./backups'
     });
-    pubsub = require('../lib/pubsub.module.js').init({pollInterval: 1});
-    sut = require('../lib/eventsource.module.js').init(store, pubsub);
+    hook = require('../lib/hook.module.js').init({pollInterval: 1});
+    sut = require('../lib/eventsource.module.js').init(store, hook);
     store.upsert('demo1','a',{});
     store.upsert('demo2','d',{});
     store.upsert('demo1','b',{});
@@ -155,7 +155,7 @@ describe('Module: EventSource', function(){
         assert.equal(null, err);
         assert.notEqual(null, data);
         // console.log(data);
-        pubsub.publish('myNewProjection', data.count, data);
+        hook.publish('myNewProjection', data.count, data);
       });
       
       setTimeout(done, 500);

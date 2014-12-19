@@ -1,16 +1,16 @@
 'use strict';
 var assert = require('assert');
 
-describe('Module: PubSub', function(){
+describe('Module: Hook', function(){
   var storage,
       sut;
 
   before(function(done) {
     storage = require('../lib/store.module.js').init({
-      dbPath:'./pubsubspecdb',
+      dbPath:'./hookspecdb',
       backupPath:'./backups'
     });
-    sut = require('../lib/pubsub.module.js').init({ pollInterval: 1}, storage);
+    sut = require('../lib/hook.module.js').init({ pollInterval: 1}, storage);
     require('../lib/eventsource.module.js').init(storage, sut);
     done();
   });

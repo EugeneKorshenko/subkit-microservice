@@ -29,7 +29,7 @@ describe('Module: Worker', function(){
   describe('on simple tasks', function(){
     it('should create a task',function(done){
       var newTask = new sut.Task('success', []);
-      newTask.TaskScript = 'log("Hello!"); done(null,{Message:"Hello world!"});';
+      newTask.TaskScript = 'log("Hello!"); response(null,{Message:"Hello world!"});';
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
         done();
@@ -56,7 +56,7 @@ describe('Module: Worker', function(){
   describe('on long running tasks', function(){
     it('should create a task with parameters',function(done){
       var newTask = new sut.Task('longrunningsuccess', {Msg:'Hello!!!'});
-      newTask.TaskScript = 'timeout(function(){log(params.Msg);},1000); timeout(done,5500);';
+      newTask.TaskScript = 'timeout(function(){log(params.Msg);},1000); timeout(response,5500);';
       sut.set(newTask.Name, newTask, function(error, data){
         assert.equal(error, null);
         done();

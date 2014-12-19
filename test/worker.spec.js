@@ -42,7 +42,7 @@ describe.skip('Integration: Worker', function(){
           assert.notEqual(null, obj); 
           assert.notEqual('', obj.Name);
 
-          obj.TaskScript = "done(null,{});";
+          obj.TaskScript = "response(null,{});";
           client.put('/worker/demo1', obj, function(err, req, res, obj){
             assert.equal(null, err);
             assert.notEqual(null, obj);

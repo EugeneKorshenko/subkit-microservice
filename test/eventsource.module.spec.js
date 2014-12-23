@@ -12,13 +12,14 @@ describe('Module: EventSource', function(){
     });
     hook = require('../lib/hook.module.js').init({pollInterval: 1});
     sut = require('../lib/eventsource.module.js').init(store, hook);
-    store.upsert('demo1','a',{});
-    store.upsert('demo2','d',{});
-    store.upsert('demo1','b',{});
-    store.upsert('demo2','b',{});
-    store.upsert('demo2','a',{});
-    store.upsert('demo2','c',{});
-    store.upsert('demo3','a',{});
+    
+   hook.publish('demo1','a',{}, true);
+   hook.publish('demo2','d',{}, true);
+   hook.publish('demo1','b',{}, true);
+   hook.publish('demo2','b',{}, true);
+   hook.publish('demo2','a',{}, true);
+   hook.publish('demo2','c',{}, true);
+   hook.publish('demo3','a',{}, true);
     setTimeout(done, 1000);
   });
   after(function(done){
@@ -29,7 +30,7 @@ describe('Module: EventSource', function(){
 
     it('should be run a projection', function(done){
       sut
-      .fromStreams(['demo1','demo2', 'demo5'])
+      .fromStreams(['demo1','demo2','demo5'])
       .run({ 
         $init: function(state){
           if(!state.count) state.count = 0;
@@ -56,16 +57,16 @@ describe('Module: EventSource', function(){
     it('should be a live projection', function(done){
       //sample messages
       setTimeout(function(){
-        store.upsert('demo1','g',{});
+        hook.publish('demo1','g',{});
       }, 5);
       setTimeout(function(){
-        store.upsert('demo2','t',{});
+        hook.publish('demo2','t',{});
       }, 5);
       setTimeout(function(){
-        store.upsert('demo5','t',{});
+        hook.publish('demo5','t',{});
       }, 5);
       setTimeout(function(){
-        store.upsert('demo15','t',{});
+        hook.publish('demo15','t',{});
       }, 5);
 
       sut
@@ -96,16 +97,16 @@ describe('Module: EventSource', function(){
     it('should be a incremental live projection', function(done){
       //sample messages
       setTimeout(function(){
-        store.upsert('demo1','g',{});
+        hook.publish('demo1','g',{});
       }, 100);
       setTimeout(function(){
-        store.upsert('demo2','t',{});
+        hook.publish('demo2','t',{});
       }, 200);
       setTimeout(function(){
-        store.upsert('demo5','t',{});
+        hook.publish('demo5','t',{});
       }, 300);
       setTimeout(function(){
-        store.upsert('demo15','t',{});
+        hook.publish('demo15','t',{});
       }, 400);
 
       sut
@@ -155,7 +156,7 @@ describe('Module: EventSource', function(){
         assert.equal(null, err);
         assert.notEqual(null, data);
         // console.log(data);
-        hook.publish('myNewProjection', data.count, data);
+       hook.publish('myNewProjection', data.count, data);
       });
       
       setTimeout(done, 500);

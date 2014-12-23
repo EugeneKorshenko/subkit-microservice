@@ -48,70 +48,70 @@ describe('Module: JSON Key/Value Storage', function(){
     it('by store name begins with "bdemo" should return 8 items', function(done){
       sut.query('bdemo', {}, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 8);
+        assert.equal(data.results.length, 8);
         done();
       });
     }),
     it('by more specific store name "bdemob" should return only 6 items', function(done){
       sut.query('bdemob', {}, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 6);
-        assert.equal(data[0].key, '1');
+        assert.equal(data.results.length, 6);
+        assert.equal(data.results[0].$key, '1');
         done();
       });
     }),
     it('by more specific store name "rangequery" from key "3!" should return 3 items', function(done){
       sut.query('rangequery', {from: '3!'}, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 3);
-        assert.equal(data[0].key, '3!a');
+        assert.equal(data.results.length, 3);
+        assert.equal(data.results[0].$key, '3!a');
         done();
       });
     }),
     it('by more specific store name "rangequery" from key "3!b" should return 1 item', function(done){
       sut.query('rangequery', {from: '3!b'}, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 1);
-        assert.equal(data[0].key, '3!b');
+        assert.equal(data.results.length, 1);
+        assert.equal(data.results[0].$key, '3!b');
         done();
       });
     }),
     it('by more specific store name "rangequery" from key "2!" should return 6 item', function(done){
       sut.query('rangequery', {from: '2!'}, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 6);
-        assert.equal(data[0].key, '2!a');
+        assert.equal(data.results.length, 6);
+        assert.equal(data.results[0].$key, '2!a');
         done();
       });
     }),
     it('by more specific store name "rangequery" from key "2!b" should return 4 items', function(done){
       sut.query('rangequery', {from: '2!b'}, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 4);
-        assert.equal(data[0].key, '2!b');
+        assert.equal(data.results.length, 4);
+        assert.equal(data.results[0].$key, '2!b');
         done();
       });
     }),
     it('by more specific store name "rangequery" from key "2!b" with limit 2 should return 2 item', function(done){
       sut.query('rangequery', {from: '2!b', limit:2}, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 2);
-        assert.equal(data[0].key, '2!b');
+        assert.equal(data.results.length, 2);
+        assert.equal(data.results[0].$key, '2!b');
         done();
       });
     }),
     it('by more specific store name "rangequery" from key "2!b!2" should return 1 item', function(done){
       sut.query('rangequery', {from: '2!b!2'}, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 1);
-        assert.equal(data[0].key, '2!b!2');
+        assert.equal(data.results.length, 1);
+        assert.equal(data.results[0].$key, '2!b!2');
         done();
       });
     }),
     it('by not matching store name should return an empty array', function(done){
       sut.query('nomatch', {}, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 0);
+        assert.equal(data.results.length, 0);
         done();
       });
     }),
@@ -125,50 +125,50 @@ describe('Module: JSON Key/Value Storage', function(){
     it('by store name begins with "bdemo" and limit 3 should return 3 items', function(done){
       sut.query('bdemo', { limit: 3 }, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 3);
+        assert.equal(data.results.length, 3);
         done();
       });
     }),
     it('by store from key 3 with limit 3 should return 3 items', function(done){
       sut.query('bdemob', { from: '3', limit:3 }, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data[0].key, '3');
-        assert.equal(data[2].key, '5');
-        assert.equal(data.length, 3);
+        assert.equal(data.results[0].$key, '3');
+        assert.equal(data.results[2].$key, '5');
+        assert.equal(data.results.length, 3);
         done();
       });
     });
     it('by store from key 3 with limit 3 with cache should return 3 items', function(done){
       sut.query('bdemob', { from: '3', limit: 3 , cache: true }, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data[0].key, '3');
-        assert.equal(data[2].key, '5');
-        assert.equal(data.length, 3);
+        assert.equal(data.results[0].$key, '3');
+        assert.equal(data.results[2].$key, '5');
+        assert.equal(data.results.length, 3);
         done();
       });
     });
     it('by store with keysOnly should return 3 keys', function(done){
       sut.query('bdemo', { keysOnly: true }, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data[0].value, undefined);
-        assert.equal(data.length, 8);
+        assert.equal(data.results[0].$payload, undefined);
+        assert.equal(data.results.length, 8);
         done();
       });
     });
     it('by store from key 3 with limit 3 with keysOnly should return 3 keys', function(done){
       sut.query('bdemob', { from: '3', limit: 3 , keysOnly: true }, {}, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data[0].value, undefined);
-        assert.equal(data[0].key, '3');
-        assert.equal(data.length, 3);
+        assert.equal(data.results[0].$payload, undefined);
+        assert.equal(data.results[0].$key, '3');
+        assert.equal(data.results.length, 3);
         done();
       });
     });
     it('by store from literal query should return element', function(done){
-      sut.query('bdemob', { }, { 'value.test': /bdemob/i }, function(error, data){
+      sut.query('bdemob', { }, { 'test': /bdemob/i }, function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 6);
-        assert.equal(data[0].key, '1');
+        assert.equal(data.results.length, 6);
+        assert.equal(data.results[0].$key, '1');
         done();
       });
     });
@@ -177,7 +177,7 @@ describe('Module: JSON Key/Value Storage', function(){
     it('should return 7 stores', function(done){
       sut.stores(function(error, data){
         assert.equal(error, undefined);
-        assert.equal(data.length, 7);
+        assert.equal(data.results.length, 7);
         done();
       });
     });
@@ -225,7 +225,7 @@ describe('Module: JSON Key/Value Storage', function(){
         assert.equal(error, undefined);
 
         sut.query('deleteDemo', {}, {}, function(error, data){
-          assert.equal(data.length, 3);
+          assert.equal(data.results.length, 3);
           done();  
         });
 
@@ -235,6 +235,7 @@ describe('Module: JSON Key/Value Storage', function(){
       sut.del('deleteDemo', null, function(){
         sut.query('deleteDemo', {}, {}, function(error, data){
           assert.equal(error, undefined);
+          assert.equal(data.results.length, 0);
           done();  
         });
 
@@ -337,7 +338,7 @@ describe('Module: JSON Key/Value Storage', function(){
   });
   describe('grouping', function(){
     it('by range store name "bdemo" with groupingKey', function(done){
-      sut.query('bdemo', { groupingKey: 'value.group' }, { }, function(error, data){
+      sut.query('bdemo', { groupingKey: 'group' }, { }, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.undefined.length, 4);
         assert.equal(data.A.length, 2);
@@ -348,14 +349,14 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     }),
     it('by specific store "cdemoc" name with groupingKey', function(done){
-      sut.query('cdemoc', { groupingKey: 'value.group' }, { }, function(error, data){
+      sut.query('cdemoc', { groupingKey: 'group' }, { }, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.A.length, 1);
         done();
       });
     }),
     it('by specific store "bdemob" name with groupingKey', function(done){
-      sut.query('bdemob', { groupingKey: 'value.demo22.group' }, { }, function(error, data){
+      sut.query('bdemob', { groupingKey: 'demo22.group' }, { }, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.undefined.length, 4);
         assert.equal(data.Z.length, 2);
@@ -375,8 +376,8 @@ describe('Module: JSON Key/Value Storage', function(){
         assert.equal(error, undefined);
         sut.query('import1', {}, {}, function(error, data){
           assert.notEqual(data, undefined);
-          assert.equal(data.length, 4);
-          assert.equal(data[0].store, 'import1');
+          assert.equal(data.results.length, 4);
+          assert.equal(data.results[0].$store, 'import1');
           done();
         });
       });
@@ -392,8 +393,8 @@ describe('Module: JSON Key/Value Storage', function(){
         assert.equal(error, undefined);
         sut.query('import2', {}, {}, function(error, data){
           assert.notEqual(data, undefined);
-          assert.equal(data.length, 4);
-          assert.equal(data[0].store, 'import2');
+          assert.equal(data.results.length, 4);
+          assert.equal(data.results[0].$store, 'import2');
           done();
         });
       });

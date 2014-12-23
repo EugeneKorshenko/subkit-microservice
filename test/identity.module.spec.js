@@ -26,46 +26,46 @@ describe('Module: Identity', function(){
   
   describe('get', function(){
     it('should be get an item by key', function(done){
-      sut.get('ident3@subkit.io', function(error, data){
+      sut.get('ident3@subkit.io', function(error, identity){
         assert.ifError(error);
-        assert.notEqual(data, null);
-        assert.equal(data.id, 'ident3@subkit.io');
+        assert.notEqual(identity, null);
+        assert.equal(identity.id, 'ident3@subkit.io');
         done();
       });
     });
   });
   describe('list', function(){
     it('should be list all keys', function(done){
-      sut.listAll(function(error, data){
+      sut.listAll(function(error, identities){
         assert.ifError(error);
-        assert.equal(data.length, 5);
-        assert.equal(data[0].key, 'account!ident1@subkit.io');
+        assert.equal(identities.results.length, 5);
+        assert.equal(identities.results[0].$key, 'account!ident1@subkit.io');
         done();
       });
     });
   });
   describe('findAll', function(){
     it('should be list all items', function(done){
-      sut.findAll({},{},function(error, data){
+      sut.findAll({},{},function(error, identities){
         assert.ifError(error);
-        assert.equal(data.length, 5);
+        assert.equal(identities.results.length, 5);
         done();
       });
     });
   });
   describe('add', function(){
     it('by add should be one more item', function(done){
-      sut.add('ident6@subkit.io', {}, function(error, data){
+      sut.add('ident6@subkit.io', {}, function(error){
         assert.ifError(error);
-        sut.listAll(function(error, data){
-          assert.equal(data.length, 6);
-          assert.equal(data[5].key, 'account!ident6@subkit.io');
+        sut.listAll(function(error, identities){
+          assert.equal(identities.results.length, 6);
+          assert.equal(identities.results[5].$key, 'account!ident6@subkit.io');
           done();
         });
       });
     });
     it('by duplicate key should be an error', function(done){
-      sut.add('ident3@subkit.io', {}, function(error, data){
+      sut.add('ident3@subkit.io', {}, function(error){
         assert.notEqual(error, null);
         done();
       });
@@ -94,7 +94,7 @@ describe('Module: Identity', function(){
   });
   describe('find', function(){
     it('should be grouped by group property', function(done){
-      sut.find({groupingKey: 'value.group'}, {}, function(error, data){
+      sut.find({groupingKey: 'group'}, {}, function(error, data){
         assert.ifError(error);
         assert.equal(data.A1.length, 3);
         assert.equal(data.A2.length, 2);
@@ -104,7 +104,7 @@ describe('Module: Identity', function(){
       });
     });
     it('should be grouped by group property and filter by group name "Z"', function(done){
-      sut.find({groupingKey: 'value.group'},{"value.group":'Z'}, function(error, data){
+      sut.find({groupingKey: 'group'}, {'group': 'Z'}, function(error, data){
         assert.ifError(error);
         assert.equal(data['A2'], null);
         assert.equal(data.Z.length, 1);
@@ -112,7 +112,7 @@ describe('Module: Identity', function(){
       });
     });
     it('should be grouped by group property and filter by group name "Z" or "A2"', function(done){
-      sut.find({groupingKey: 'value.group'},{$or:[{"value.group":'A2'},{"value.group":'Z'}]}, function(error, data){
+      sut.find({groupingKey: 'group'},{$or:[{'group':'A2'},{'group':'Z'}]}, function(error, data){
         assert.ifError(error);
         assert.equal(data.A2.length, 2);
         assert.equal(data.Z.length, 1);
@@ -120,22 +120,22 @@ describe('Module: Identity', function(){
       });
     });
     it('should be grouped by group property and filter by group name "A1" and "X"', function(done){
-      sut.find({groupingKey: 'value.group'},{$and:[{"value.group":'A1'},{"value.group":'X'}]}, function(error, data){
+      sut.find({groupingKey: 'group'},{$and:[{'group':'A1'},{'group':'X'}]}, function(error, data){
         assert.ifError(error);
         assert.equal(data.A1.length, 1);
         assert.equal(data.X.length, 1);
-        assert.equal(data.A1[0].key, 'account!ident5@subkit.io');
-        assert.equal(data.X[0].key, 'account!ident5@subkit.io');
+        assert.equal(data.A1[0].$key, 'account!ident5@subkit.io');
+        assert.equal(data.X[0].$key, 'account!ident5@subkit.io');
         done();
       });
     });
     it('should be grouped by group property and filter by group name "X"', function(done){
-      sut.find({groupingKey: 'value.group'},{"value.group":{$in:['X']}}, function(error, data){
+      sut.find({groupingKey: 'group'},{'group':{$in:['X']}}, function(error, data){
         assert.ifError(error);
         assert.equal(data.A1.length, 1);
         assert.equal(data.X.length, 1);
-        assert.equal(data.A1[0].key, 'account!ident5@subkit.io');
-        assert.equal(data.X[0].key, 'account!ident5@subkit.io');
+        assert.equal(data.A1[0].$key, 'account!ident5@subkit.io');
+        assert.equal(data.X[0].$key, 'account!ident5@subkit.io');
         done();
       });
     })
@@ -147,7 +147,7 @@ describe('Module: Identity', function(){
         
         sut.listAll(function(error, data){
           assert.ifError(error);
-          assert.equal(data.length, 5);  
+          assert.equal(data.results.length, 5);  
 
           sut.get('ident1@subkit.io', function(error, data){
             assert.notEqual(error, null);

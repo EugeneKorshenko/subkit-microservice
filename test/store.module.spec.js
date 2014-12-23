@@ -46,14 +46,14 @@ describe('Module: JSON Key/Value Storage', function(){
   
   describe('query', function(){
     it('by store name begins with "bdemo" should return 8 items', function(done){
-      sut.read('bdemo', {}, function(error, data){
+      sut.query('bdemo', {}, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 8);
         done();
       });
     }),
     it('by more specific store name "bdemob" should return only 6 items', function(done){
-      sut.read('bdemob', {}, function(error, data){
+      sut.query('bdemob', {}, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 6);
         assert.equal(data[0].key, '1');
@@ -61,7 +61,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     }),
     it('by more specific store name "rangequery" from key "3!" should return 3 items', function(done){
-      sut.read('rangequery', {from: '3!'}, function(error, data){
+      sut.query('rangequery', {from: '3!'}, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 3);
         assert.equal(data[0].key, '3!a');
@@ -69,7 +69,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     }),
     it('by more specific store name "rangequery" from key "3!b" should return 1 item', function(done){
-      sut.read('rangequery', {from: '3!b'}, function(error, data){
+      sut.query('rangequery', {from: '3!b'}, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 1);
         assert.equal(data[0].key, '3!b');
@@ -77,7 +77,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     }),
     it('by more specific store name "rangequery" from key "2!" should return 6 item', function(done){
-      sut.read('rangequery', {from: '2!'}, function(error, data){
+      sut.query('rangequery', {from: '2!'}, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 6);
         assert.equal(data[0].key, '2!a');
@@ -85,7 +85,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     }),
     it('by more specific store name "rangequery" from key "2!b" should return 4 items', function(done){
-      sut.read('rangequery', {from: '2!b'}, function(error, data){
+      sut.query('rangequery', {from: '2!b'}, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 4);
         assert.equal(data[0].key, '2!b');
@@ -93,7 +93,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     }),
     it('by more specific store name "rangequery" from key "2!b" with limit 2 should return 2 item', function(done){
-      sut.read('rangequery', {from: '2!b', limit:2}, function(error, data){
+      sut.query('rangequery', {from: '2!b', limit:2}, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 2);
         assert.equal(data[0].key, '2!b');
@@ -101,7 +101,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     }),
     it('by more specific store name "rangequery" from key "2!b!2" should return 1 item', function(done){
-      sut.read('rangequery', {from: '2!b!2'}, function(error, data){
+      sut.query('rangequery', {from: '2!b!2'}, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 1);
         assert.equal(data[0].key, '2!b!2');
@@ -109,28 +109,28 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     }),
     it('by not matching store name should return an empty array', function(done){
-      sut.read('nomatch', {}, function(error, data){
+      sut.query('nomatch', {}, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 0);
         done();
       });
     }),
     it('by store key should return a single item', function(done){
-      sut.read('bdemoa', { key: '1' }, function(error, data){
+      sut.query('bdemoa', { key: '1' },{}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.test, 'bdemoa 1 test');
         done();
       });
     }),
     it('by store name begins with "bdemo" and limit 3 should return 3 items', function(done){
-      sut.read('bdemo', { limit: 3 }, function(error, data){
+      sut.query('bdemo', { limit: 3 }, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data.length, 3);
         done();
       });
     }),
     it('by store from key 3 with limit 3 should return 3 items', function(done){
-      sut.read('bdemob', { from: '3', limit:3 }, function(error, data){
+      sut.query('bdemob', { from: '3', limit:3 }, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data[0].key, '3');
         assert.equal(data[2].key, '5');
@@ -139,7 +139,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
     it('by store from key 3 with limit 3 with cache should return 3 items', function(done){
-      sut.read('bdemob', { from: '3', limit: 3 , cache: true }, function(error, data){
+      sut.query('bdemob', { from: '3', limit: 3 , cache: true }, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data[0].key, '3');
         assert.equal(data[2].key, '5');
@@ -148,7 +148,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
     it('by store with keysOnly should return 3 keys', function(done){
-      sut.read('bdemo', { keysOnly: true }, function(error, data){
+      sut.query('bdemo', { keysOnly: true }, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data[0].value, undefined);
         assert.equal(data.length, 8);
@@ -156,7 +156,7 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
     it('by store from key 3 with limit 3 with keysOnly should return 3 keys', function(done){
-      sut.read('bdemob', { from: '3', limit: 3 , keysOnly: true }, function(error, data){
+      sut.query('bdemob', { from: '3', limit: 3 , keysOnly: true }, {}, function(error, data){
         assert.equal(error, undefined);
         assert.equal(data[0].value, undefined);
         assert.equal(data[0].key, '3');
@@ -187,7 +187,7 @@ describe('Module: JSON Key/Value Storage', function(){
       sut.upsert('change_test_item', '1', {test: 'change_test_item 1 test'}, function(error){
         assert.equal(error, undefined);
 
-        sut.read('change_test_item', { key: '1' }, function(error, data){
+        sut.query('change_test_item', { key: '1' }, {}, function(error, data){
           assert.equal(error, undefined);
           assert.equal(data.test , 'change_test_item 1 test');
           assert.notEqual(data.$version, null);
@@ -200,7 +200,7 @@ describe('Module: JSON Key/Value Storage', function(){
       sut.upsert('change_test_item', '1', {test: 'new change_test_item 1 test'}, function(error){
         assert.equal(error, undefined);
 
-        sut.read('change_test_item', { key: '1' }, function(error, data){
+        sut.query('change_test_item', { key: '1' }, {}, function(error, data){
           assert.equal(error, undefined);
           assert.equal(data.test , 'new change_test_item 1 test');
           assert.notEqual(data.$version, null);
@@ -213,7 +213,7 @@ describe('Module: JSON Key/Value Storage', function(){
       sut.del('change_test_item', '1', function(error){
         assert.equal(error, undefined);
 
-        sut.read('change_test_item', { key: '1' }, function(error, data){
+        sut.query('change_test_item', { key: '1' }, {}, function(error, data){
           assert.equal(data, undefined);
           done();  
         });
@@ -224,7 +224,7 @@ describe('Module: JSON Key/Value Storage', function(){
       sut.del('deleteDemo', '2', function(error){
         assert.equal(error, undefined);
 
-        sut.read('deleteDemo', {}, function(error, data){
+        sut.query('deleteDemo', {}, {}, function(error, data){
           assert.equal(data.length, 3);
           done();  
         });
@@ -233,7 +233,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('delete should remove all items from a store', function(done){
       sut.del('deleteDemo', null, function(){
-        sut.read('deleteDemo', {}, function(error, data){
+        sut.query('deleteDemo', {}, {}, function(error, data){
           assert.equal(error, undefined);
           done();  
         });
@@ -246,7 +246,7 @@ describe('Module: JSON Key/Value Storage', function(){
       sut.tryUpsert('try_change_test_item', '1', {test: 'try_change_test_item 1 test'}, function(error){
         assert.equal(error, undefined);
 
-        sut.read('try_change_test_item', { key: '1' }, function(error, data){
+        sut.query('try_change_test_item', { key: '1' }, {}, function(error, data){
           assert.equal(error, undefined);
           assert.equal(data.test , 'try_change_test_item 1 test');
           assert.notEqual(data.$version, null);
@@ -257,7 +257,7 @@ describe('Module: JSON Key/Value Storage', function(){
     });
     it('update should change the item', function(done){
 
-      sut.read('try_change_test_item', { key: '1' }, function(error, data){
+      sut.query('try_change_test_item', { key: '1' }, {}, function(error, data){
         var oldVersion = data.$version;
 
         data.test = 'new try_change_test_item 1 test';
@@ -265,7 +265,7 @@ describe('Module: JSON Key/Value Storage', function(){
         sut.tryUpsert('try_change_test_item', '1', data, function(error){
           assert.equal(error, undefined);
 
-          sut.read('try_change_test_item', { key: '1' }, function(error, afterChange){
+          sut.query('try_change_test_item', { key: '1' }, {}, function(error, afterChange){
             assert.equal(error, undefined);
             assert.equal(afterChange.test , 'new try_change_test_item 1 test');
             assert.equal(oldVersion < afterChange.$version, true);
@@ -279,7 +279,7 @@ describe('Module: JSON Key/Value Storage', function(){
     });
     it('update with the same version number should throw an error', function(done){
 
-      sut.read('try_change_test_item', { key: '1' }, function(error, existingItem){
+      sut.query('try_change_test_item', { key: '1' }, {}, function(error, existingItem){
         assert.equal(error, undefined);
 
         sut.tryUpsert('try_change_test_item', '1', existingItem, function(error, changedItem){
@@ -298,7 +298,7 @@ describe('Module: JSON Key/Value Storage', function(){
     });
     it('update with the same version number should update item', function(done){
 
-      sut.read('try_change_test_item', { key: '1' }, function(error, existingItem){
+      sut.query('try_change_test_item', { key: '1' }, {}, function(error, existingItem){
         assert.equal(error, undefined);
 
         sut.tryUpsert('try_change_test_item', '1', existingItem, function(error, changedItem){
@@ -327,7 +327,7 @@ describe('Module: JSON Key/Value Storage', function(){
       sut.tryDel('try_change_test_item', '1', microtime.now(), function(error){
         assert.equal(error, undefined);
 
-        sut.read('change_test_item', { key: '1' }, function(error, data){
+        sut.query('change_test_item', { key: '1' }, {}, function(error, data){
           assert.equal(data, undefined);
           done();  
         });
@@ -373,7 +373,7 @@ describe('Module: JSON Key/Value Storage', function(){
         ];
       sut.imports('import1', data, function(error){
         assert.equal(error, undefined);
-        sut.read('import1', {}, function(error, data){
+        sut.query('import1', {}, {}, function(error, data){
           assert.notEqual(data, undefined);
           assert.equal(data.length, 4);
           assert.equal(data[0].store, 'import1');
@@ -390,7 +390,7 @@ describe('Module: JSON Key/Value Storage', function(){
         ];
       sut.imports('', data, function(error){
         assert.equal(error, undefined);
-        sut.read('import2', {}, function(error, data){
+        sut.query('import2', {}, {}, function(error, data){
           assert.notEqual(data, undefined);
           assert.equal(data.length, 4);
           assert.equal(data[0].store, 'import2');

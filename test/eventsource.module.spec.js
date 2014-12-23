@@ -128,7 +128,6 @@ describe('Module: EventSource', function(){
       }, function(err, data){
         assert.equal(null, err);
         assert.notEqual(null, data);
-        // console.log(data);
       });
       
       sut
@@ -155,8 +154,7 @@ describe('Module: EventSource', function(){
       }, function(err, data){
         assert.equal(null, err);
         assert.notEqual(null, data);
-        // console.log(data);
-       hook.publish('myNewProjection', data.count, data);
+        hook.publish('myNewProjection', data.count, data);
       });
       
       setTimeout(done, 500);

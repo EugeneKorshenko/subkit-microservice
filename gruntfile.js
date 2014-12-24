@@ -3,7 +3,6 @@
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-markdox');
 
   grunt.initConfig({
@@ -126,36 +125,18 @@ module.exports = function(grunt) {
         ]
       }
     },
-    jsdoc : {
-      dist : {
-          src: [
-            'lib/store.module.js',
-            'lib/pubsub.module.js',
-            'lib/eventsource.module.js',
-            'lib/plugin.module.js',
-            'lib/share.module.js',
-            'lib/task.module.js',
-            'lib/file.module.js',
-            'lib/template.module.js',
-            'lib/identity.module.js',
-          ], 
-          options: {
-              destination: 'docs/modules/html'
-          }
-      }
-    },
     markdox: {
       target: {
         files: [
-          {src: 'lib/store.module.js', dest: 'docs/modules/store.md'},
-          {src: 'lib/pubsub.module.js', dest: 'docs/modules/pubsub.md'},
-          {src: 'lib/task.module.js', dest: 'docs/modules/task.md'},
-          {src: 'lib/identity.module.js', dest: 'docs/modules/identity.md'},
-          {src: 'lib/file.module.js', dest: 'docs/modules/file.md'},
-          {src: 'lib/template.module.js', dest: 'docs/modules/template.md'},
-          {src: 'lib/plugin.module.js', dest: 'docs/modules/plugin.md'},
-          {src: 'lib/share.module.js', dest: 'docs/modules/share.md'},
-          {src: 'lib/eventsource.module.js', dest: 'docs/modules/eventsource.md'},
+          {src: 'lib/store.module.js', dest: 'docs/store.md'},
+          {src: 'lib/pubsub.module.js', dest: 'docs/pubsub.md'},
+          {src: 'lib/task.module.js', dest: 'docs/task.md'},
+          {src: 'lib/identity.module.js', dest: 'docs/identity.md'},
+          {src: 'lib/file.module.js', dest: 'docs/file.md'},
+          {src: 'lib/template.module.js', dest: 'docs/template.md'},
+          {src: 'lib/plugin.module.js', dest: 'docs/plugin.md'},
+          {src: 'lib/share.module.js', dest: 'docs/share.md'},
+          {src: 'lib/eventsource.module.js', dest: 'docs/eventsource.md'},
         ]
       }
     }
@@ -167,5 +148,5 @@ module.exports = function(grunt) {
   grunt.registerTask('taskTests', ['mochaTest:taskTests']);
   grunt.registerTask('fileTests', ['mochaTest:fileTests']);
   grunt.registerTask('identityTests', ['mochaTest:identityTests']);
-  grunt.registerTask('doc', ['jsdoc', 'markdox']);
+  grunt.registerTask('docs', ['markdox']);
 };

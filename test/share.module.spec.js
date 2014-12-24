@@ -68,12 +68,20 @@ describe('Module: Share', function(){
         assert.deepEqual(actual['/demo1'], {'GET':['myIdent'],'POST':[],'PUT':[],'DELETE':[]});
         done();
       });
-      it('should being grant write access on /demo1 share', function(done){
-        sut.grantWriteAccess('/demo1', 'myIdent');
+
+      it('should being grant insert access on /demo1 share', function(done){
+        sut.grantInsertAccess('/demo1', 'myIdent');
+        var actual = sut.list();
+        assert.deepEqual(actual['/demo1'], {'GET':['myIdent'],'POST':['myIdent'],'PUT':[],'DELETE':[]});
+        done();
+      });
+      it('should being grant update access on /demo1 share', function(done){
+        sut.grantUpdateAccess('/demo1', 'myIdent');
         var actual = sut.list();
         assert.deepEqual(actual['/demo1'], {'GET':['myIdent'],'POST':['myIdent'],'PUT':['myIdent'],'DELETE':[]});
         done();
       });
+
       it('should being grant delete access on /demo1 share', function(done){
         sut.grantDeleteAccess('/demo1', 'myIdent');
         var actual = sut.list();
@@ -86,12 +94,18 @@ describe('Module: Share', function(){
         assert.deepEqual(actual['/demo1'], {'GET':[],'POST':['myIdent'],'PUT':['myIdent'],'DELETE':['myIdent']});
         done();
       });
-      it('should being revoke write access on /demo1 share', function(done){
-        sut.revokeWriteAccess('/demo1', 'myIdent');
+      it('should being revoke insert access on /demo1 share', function(done){
+        sut.revokeInsertAccess('/demo1', 'myIdent');
+        var actual = sut.list();
+        assert.deepEqual(actual['/demo1'], {'GET':[],'POST':[],'PUT':['myIdent'],'DELETE':['myIdent']});
+        done();
+      });
+      it('should being revoke update access on /demo1 share', function(done){
+        sut.revokeUpdateAccess('/demo1', 'myIdent');
         var actual = sut.list();
         assert.deepEqual(actual['/demo1'], {'GET':[],'POST':[],'PUT':[],'DELETE':['myIdent']});
         done();
-      });
+      });      
       it('should being revoke delete access on /demo1 share', function(done){
         sut.revokeDeleteAccess('/demo1', 'myIdent');
         var actual = sut.list();
@@ -111,15 +125,18 @@ describe('Module: Share', function(){
         sut.grantReadAccess('/', 'superIdent');
         sut.grantDeleteAccess('/', 'superIdent');
         sut.grantReadAccess('/doc', 'superIdent');
-        sut.grantWriteAccess('/doc', 'superIdent');
+        sut.grantInsertAccess('/doc', 'superIdent');
+        sut.grantUpdateAccess('/doc', 'superIdent');
         sut.grantDeleteAccess('/doc', 'superIdent');
         sut.add('/demo2');
         sut.grantReadAccess('/demo2', 'superIdent');
         sut.grantDeleteAccess('/demo2', 'superIdent');
         sut.add('/demo3');
-        sut.grantWriteAccess('/demo3', 'superIdent');
+        sut.grantInsertAccess('/demo3', 'superIdent');
+        sut.grantUpdateAccess('/demo3', 'superIdent');
         sut.add('/demo4');
-        sut.grantWriteAccess('/demo4', 'superIdent');
+        sut.grantInsertAccess('/demo4', 'superIdent');
+        sut.grantUpdateAccess('/demo4', 'superIdent');
         sut.grantDeleteAccess('/demo4', 'superIdent');
         done();
       });
@@ -130,7 +147,8 @@ describe('Module: Share', function(){
         sut.revokeReadAccess('/', 'superIdent');
         sut.revokeDeleteAccess('/', 'superIdent');
         sut.revokeReadAccess('/doc', 'superIdent');
-        sut.revokeWriteAccess('/doc', 'superIdent');
+        sut.revokeInsertAccess('/doc', 'superIdent');
+        sut.revokeUpdateAccess('/doc', 'superIdent');
         sut.revokeDeleteAccess('/doc', 'superIdent');
         done();
       });

@@ -97,16 +97,34 @@ describe('Integration: Share', function(){
       });
     });
 
-    it('should be grant write access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/grantwrite/superIdent', function(error, req, res, actual){
+    it('should be grant insert access to `/demo1` share for `superIdent` identity', function(done){
+      client.put('/shares/demo1/actions/grantinsert/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
-        assert.deepEqual(actual, { GET: [], POST: ['superIdent'], PUT: ['superIdent'], DELETE: [] });
+        assert.deepEqual(actual, { GET: [], POST: ['superIdent'], PUT: [], DELETE: [] });
         done();
       });
     });
-    it('should be revoke write access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/revokewrite/superIdent', function(error, req, res, actual){
+    it('should be revoke insert access to `/demo1` share for `superIdent` identity', function(done){
+      client.put('/shares/demo1/actions/revokeinsert/superIdent', function(error, req, res, actual){
+        assert.ifError(error);
+        assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
+        assert.deepEqual(actual, { GET: [], POST: [], PUT: [], DELETE: [] });
+        done();
+      });
+    });
+
+
+    it('should be grant update access to `/demo1` share for `superIdent` identity', function(done){
+      client.put('/shares/demo1/actions/grantupdate/superIdent', function(error, req, res, actual){
+        assert.ifError(error);
+        assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
+        assert.deepEqual(actual, { GET: [], POST: [], PUT: ['superIdent'], DELETE: [] });
+        done();
+      });
+    });
+    it('should be revoke update access to `/demo1` share for `superIdent` identity', function(done){
+      client.put('/shares/demo1/actions/revokeupdate/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { GET: [], POST: [], PUT: [], DELETE: [] });

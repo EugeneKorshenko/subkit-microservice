@@ -3,23 +3,23 @@
 var assert = require('assert');
 
 describe('Module: EventSource', function(){
-  var store, hook, sut;
+  var store, event, sut;
 
   before(function(done) {
     store = require('../lib/store.module.js').init({
       dbPath:'./eventsourcedb',
       backupPath:'./backups'
     });
-    hook = require('../lib/hook.module.js').init({pollInterval: 1});
-    sut = require('../lib/eventsource.module.js').init(store, hook);
+    event = require('../lib/event.module.js').init({pollInterval: 1});
+    sut = require('../lib/eventsource.module.js').init(store, event);
     
-   hook.publishPersistent('demo1','a',{});
-   hook.publishPersistent('demo2','d',{});
-   hook.publishPersistent('demo1','b',{});
-   hook.publishPersistent('demo2','b',{});
-   hook.publishPersistent('demo2','a',{});
-   hook.publishPersistent('demo2','c',{});
-   hook.publishPersistent('demo3','a',{});
+   event.publishPersistent('demo1','a',{});
+   event.publishPersistent('demo2','d',{});
+   event.publishPersistent('demo1','b',{});
+   event.publishPersistent('demo2','b',{});
+   event.publishPersistent('demo2','a',{});
+   event.publishPersistent('demo2','c',{});
+   event.publishPersistent('demo3','a',{});
     setTimeout(done, 1000);
   });
   after(function(done){
@@ -57,16 +57,16 @@ describe('Module: EventSource', function(){
     it('should be a live projection', function(done){
       //sample messages
       setTimeout(function(){
-        hook.publish('demo1','g',{});
+        event.publish('demo1','g',{});
       }, 5);
       setTimeout(function(){
-        hook.publish('demo2','t',{});
+        event.publish('demo2','t',{});
       }, 5);
       setTimeout(function(){
-        hook.publish('demo5','t',{});
+        event.publish('demo5','t',{});
       }, 5);
       setTimeout(function(){
-        hook.publish('demo15','t',{});
+        event.publish('demo15','t',{});
       }, 5);
 
       sut
@@ -97,16 +97,16 @@ describe('Module: EventSource', function(){
     it('should be a incremental live projection', function(done){
       //sample messages
       setTimeout(function(){
-        hook.publish('demo1','g',{});
+        event.publish('demo1','g',{});
       }, 100);
       setTimeout(function(){
-        hook.publish('demo2','t',{});
+        event.publish('demo2','t',{});
       }, 200);
       setTimeout(function(){
-        hook.publish('demo5','t',{});
+        event.publish('demo5','t',{});
       }, 300);
       setTimeout(function(){
-        hook.publish('demo15','t',{});
+        event.publish('demo15','t',{});
       }, 400);
 
       sut
@@ -154,7 +154,7 @@ describe('Module: EventSource', function(){
       }, function(err, data){
         assert.equal(null, err);
         assert.notEqual(null, data);
-        hook.publish('myNewProjection', data.count, data);
+        event.publish('myNewProjection', data.count, data);
       });
       
       setTimeout(done, 500);

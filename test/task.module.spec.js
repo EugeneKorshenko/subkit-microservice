@@ -11,15 +11,15 @@ describe('Module: Task', function(){
       dbPath:'./taskspecdb',
       backupPath:'./backups'
     });
-    var hook = require('../lib/hook.module.js').init({pollInterval: 1});
-    var eventsource = require('../lib/eventsource.module.js').init(store, hook);
+    var event = require('../lib/event.module.js').init({pollInterval: 1});
+    var eventsource = require('../lib/eventsource.module.js').init(store, event);
     var template = require('../lib/template.module.js').init({templatesPath:'./test/template_mock'});
     var file = require('../lib/file.module.js').init({templatesPath:'./test/statics_mock'});
 
     sut = require('../lib/task.module.js').init({
       tasksPath: path.join(__dirname, './task_mock'),
       backupPath: './backups'
-    }, store, hook, eventsource, template, file);
+    }, store, event, eventsource, template, file);
     done();
   });
   after(function(done){

@@ -128,12 +128,12 @@ module.exports.init = function(){
 	
 	//Modules
 	var storage = require('./lib/store.module.js').init(paths);
-	var	hook = require('./lib/hook.module.js').init({pollInterval: 1}, storage);
-	var share = require('./lib/share.module.js').init({}, hook);
+	var	event = require('./lib/event.module.js').init({pollInterval: 1}, storage);
+	var share = require('./lib/share.module.js').init({}, event);
 	var file = require('./lib/file.module.js');
-	var es = require('./lib/eventsource.module.js').init(storage, hook);
+	var es = require('./lib/eventsource.module.js').init(storage, event);
 	var template = require('./lib/template.module.js');
-	var task = require('./lib/task.module.js').init(paths, storage, hook, es, template.init(paths), file.init(paths), doc);
+	var task = require('./lib/task.module.js').init(paths, storage, event, es, template.init(paths), file.init(paths), doc);
 	var identity = require('./lib/identity.module.js');
 
     var usersIdent = identity.init(null, storage);
@@ -204,8 +204,8 @@ module.exports.init = function(){
 	require('./lib/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, doc);
 	require('./lib/store.js').init(server, storage, doc);
 	require('./lib/share.js').init(server, share, doc);
-	require('./lib/hook.js').init(server, hook, doc);
-	require('./lib/statistics.js').init(server, storage, hook, es, doc);
+	require('./lib/event.js').init(server, event, doc);
+	require('./lib/statistics.js').init(server, storage, event, es, doc);
 	require('./lib/task.js').init(server, task);
 
 	//plugins
@@ -218,7 +218,7 @@ module.exports.init = function(){
 		Doc: doc,
 		Storage: storage,
 		Share: share,
-		Hook: hook,
+		event: event,
 		EventSource: es,
 		File: file,
 		Template: template,

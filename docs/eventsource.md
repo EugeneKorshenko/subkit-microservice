@@ -9,22 +9,22 @@ Async result callback.
 * **Object** *error* 
 * **Object** *data* 
 
-## exports(store, hook)
+## exports(store, event)
 
-eventsource module.
+Eventsource module.
 
 ### Params:
 
 * **Object** *store* - Store module dependency.
-* **Object** *hook* - Hook module dependency.
+* **Object** *event* - Event module dependency.
 
-## fromStreams(streams, callback)
+## from(stores, callback)
 
 Run a projection from streams.
 
 ### Params:
 
-* **String** *streams* - Stream as Array.
+* **String** *stores* - Stores as array of strings.
 * **callback** *callback* - The callback.
 
 <!-- End lib/eventsource.module.js -->

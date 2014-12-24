@@ -9,24 +9,24 @@ Async result callback.
 * **Object** *error* 
 * **Object** *data* 
 
-## exports(config, store, hook, es)
+## exports(config, store, event, es)
 
-Worker module.
+Task module.
 
 ### Params:
 
 * **Object** *config* - Configuration.
 * **Object** *store* - Store module dependency.
-* **Object** *hook* - Hook module dependency.
+* **Object** *event* - Event module dependency.
 * **Object** *es* - EventSource module dependency.
 
-## init(workerConfig)
+## init(taskConfig)
 
-(Re)init the worker modules.
+(Re)init the task modules.
 
 ### Params:
 
-* **Object** *workerConfig* - The worker configuration.
+* **Object** *taskConfig* - The task configuration.
 
 ## Task(name, params)
 

@@ -30,7 +30,7 @@ describe('Module: EventSource', function(){
 
     it('should be run a projection', function(done){
       sut
-      .fromStreams(['demo1','demo2','demo5'])
+      .from(['demo1','demo2','demo5'])
       .run({ 
         $init: function(state){
           if(!state.count) state.count = 0;
@@ -70,7 +70,7 @@ describe('Module: EventSource', function(){
       }, 5);
 
       sut
-      .fromStreams(['demo1','demo2','demo5'])
+      .from(['demo1','demo2','demo5'])
       .on({ 
         $init: function(state){
           if(!state.count) state.count = 0;
@@ -110,7 +110,7 @@ describe('Module: EventSource', function(){
       }, 400);
 
       sut
-      .fromStreams(['myNewProjection'])
+      .from(['myNewProjection'])
       .on({ 
         $init: function(state){
           if(!state.reducedCount) state.reducedCount = 0;
@@ -131,7 +131,7 @@ describe('Module: EventSource', function(){
       });
       
       sut
-      .fromStreams(['demo1','demo2','demo5'])
+      .from(['demo1','demo2','demo5'])
       .on({ 
         $init: function(state){
           if(!state.count) state.count = 0;

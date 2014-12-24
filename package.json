@@ -17,7 +17,6 @@
     "randomstring": "*",
     "restify": "*",
     "shelljs": "0.2.6",
-    "subkit-dashboard": "*",
     "tar": "*",
     "cflow": "*",
     "underscore": "*",
@@ -67,7 +66,5 @@
       "url": ""
     }
   ],
-  "optionalDependencies": {
-    "subkit-dashboard": "*"
-  }
+  "optionalDependencies": {}
 }

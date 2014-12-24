@@ -13,13 +13,13 @@ describe('Module: EventSource', function(){
     hook = require('../lib/hook.module.js').init({pollInterval: 1});
     sut = require('../lib/eventsource.module.js').init(store, hook);
     
-   hook.publish('demo1','a',{}, true);
-   hook.publish('demo2','d',{}, true);
-   hook.publish('demo1','b',{}, true);
-   hook.publish('demo2','b',{}, true);
-   hook.publish('demo2','a',{}, true);
-   hook.publish('demo2','c',{}, true);
-   hook.publish('demo3','a',{}, true);
+   hook.publishPersistent('demo1','a',{});
+   hook.publishPersistent('demo2','d',{});
+   hook.publishPersistent('demo1','b',{});
+   hook.publishPersistent('demo2','b',{});
+   hook.publishPersistent('demo2','a',{});
+   hook.publishPersistent('demo2','c',{});
+   hook.publishPersistent('demo3','a',{});
     setTimeout(done, 1000);
   });
   after(function(done){

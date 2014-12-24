@@ -218,7 +218,7 @@ module.exports.init = function(){
 		Doc: doc,
 		Storage: storage,
 		Share: share,
-		event: event,
+		Event: event,
 		EventSource: es,
 		File: file,
 		Template: template,

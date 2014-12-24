@@ -7,7 +7,7 @@ npm-debug.log
 /files/statics/
 /files/templates/
 /files/tasks/
-#/files/config/
+/files/config/
 /files/shares/
 /files/masterdb/
 /files/logs/

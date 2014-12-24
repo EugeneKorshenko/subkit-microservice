@@ -11,14 +11,14 @@ var client = restify.createJsonClient({
   headers: {'x-auth-token':'6654edc5-82a3-4006-967f-97d5817d7fe2'}
 });
 
-describe.skip('Integration: Worker', function(){
+describe.skip('Integration: Task', function(){
   var server,
       context;
 
   before(function(done) {
     server = require('../server.js');
     context = server.init().getContext();
-    context.Worker.init({
+    context.Task.init({
       tasksPath: path.join(__dirname, './task_mock'),
     });
     done();
@@ -30,26 +30,26 @@ describe.skip('Integration: Worker', function(){
     done();
   });
 
-  describe('manage workers', function(){
-    it('should manage worker', function(done){
-      client.post('/worker/demo1', null, function(err, req, res, obj) {
+  describe('Manage tasks', function(){
+    it('should manage task', function(done){
+      client.post('/task/demo1', null, function(err, req, res, obj) {
         assert.equal(null, err);
         assert.notEqual(null, obj);
         assert.equal('created', obj.message);
         
-        client.get('/worker/demo1', function(err, req, res, obj){
+        client.get('/task/demo1', function(err, req, res, obj){
           assert.equal(null, err);
           assert.notEqual(null, obj); 
           assert.notEqual('', obj.Name);
 
-          obj.TaskScript = "response(null,{});";
-          client.put('/worker/demo1', obj, function(err, req, res, obj){
+          obj.TaskScript = 'response(null,{});';
+          client.put('/task/demo1', obj, function(err, req, res, obj){
             assert.equal(null, err);
             assert.notEqual(null, obj);
             assert.notEqual('', obj.TaskScript);
             assert.equal('changed', obj.message);
 
-            client.del('/worker/demo1', function(err, req, res, obj) {
+            client.del('/task/demo1', function(err, req, res, obj) {
               assert.equal(null, err);
               assert.notEqual(null, obj);
               assert.equal('removed', obj.message);

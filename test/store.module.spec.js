@@ -362,7 +362,7 @@ describe('Module: JSON Key/Value Storage', function(){
         assert.equal(data.Z.length, 2);
         done();
       });
-    })
+    });
   });
   describe('import/export', function(){
     it('should import data to import1', function(done){

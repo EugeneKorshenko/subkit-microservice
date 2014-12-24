@@ -41,7 +41,7 @@ describe('Module: Share', function(){
       it('should being add a share', function(done){
         sut.add('/demo');
         var actual = sut.list();
-        assert.deepEqual(actual['/demo'], {"GET":[],"POST":[],"PUT":[],"DELETE":[]});
+        assert.deepEqual(actual['/demo'], {'GET':[],'POST':[],'PUT':[],'DELETE':[]});
         done();
       });
     });
@@ -59,43 +59,43 @@ describe('Module: Share', function(){
       it('should being add the /demo1 share', function(done){
         sut.add('/demo1');
         var actual = sut.list();
-        assert.deepEqual(actual['/demo1'], {"GET":[],"POST":[],"PUT":[],"DELETE":[]});
+        assert.deepEqual(actual['/demo1'], {'GET':[],'POST':[],'PUT':[],'DELETE':[]});
         done();
       });
       it('should being grant read access on /demo1 share', function(done){
         sut.grantReadAccess('/demo1', 'myIdent');
         var actual = sut.list();
-        assert.deepEqual(actual['/demo1'], {"GET":['myIdent'],"POST":[],"PUT":[],"DELETE":[]});
+        assert.deepEqual(actual['/demo1'], {'GET':['myIdent'],'POST':[],'PUT':[],'DELETE':[]});
         done();
       });
       it('should being grant write access on /demo1 share', function(done){
         sut.grantWriteAccess('/demo1', 'myIdent');
         var actual = sut.list();
-        assert.deepEqual(actual['/demo1'], {"GET":['myIdent'],"POST":['myIdent'],"PUT":['myIdent'],"DELETE":[]});
+        assert.deepEqual(actual['/demo1'], {'GET':['myIdent'],'POST':['myIdent'],'PUT':['myIdent'],'DELETE':[]});
         done();
       });
       it('should being grant delete access on /demo1 share', function(done){
         sut.grantDeleteAccess('/demo1', 'myIdent');
         var actual = sut.list();
-        assert.deepEqual(actual['/demo1'], {"GET":['myIdent'],"POST":['myIdent'],"PUT":['myIdent'],"DELETE":['myIdent']});
+        assert.deepEqual(actual['/demo1'], {'GET':['myIdent'],'POST':['myIdent'],'PUT':['myIdent'],'DELETE':['myIdent']});
         done();
       });
       it('should being revoke read access on /demo1 share', function(done){
         sut.revokeReadAccess('/demo1', 'myIdent');
         var actual = sut.list();
-        assert.deepEqual(actual['/demo1'], {"GET":[],"POST":['myIdent'],"PUT":['myIdent'],"DELETE":['myIdent']});
+        assert.deepEqual(actual['/demo1'], {'GET':[],'POST':['myIdent'],'PUT':['myIdent'],'DELETE':['myIdent']});
         done();
       });
       it('should being revoke write access on /demo1 share', function(done){
         sut.revokeWriteAccess('/demo1', 'myIdent');
         var actual = sut.list();
-        assert.deepEqual(actual['/demo1'], {"GET":[],"POST":[],"PUT":[],"DELETE":['myIdent']});
+        assert.deepEqual(actual['/demo1'], {'GET':[],'POST':[],'PUT':[],'DELETE':['myIdent']});
         done();
       });
       it('should being revoke delete access on /demo1 share', function(done){
         sut.revokeDeleteAccess('/demo1', 'myIdent');
         var actual = sut.list();
-        assert.deepEqual(actual['/demo1'], {"GET":[],"POST":[],"PUT":[],"DELETE":[]});
+        assert.deepEqual(actual['/demo1'], {'GET':[],'POST':[],'PUT':[],'DELETE':[]});
         done();
       });
       it('should being remove the /demo1 share', function(done){

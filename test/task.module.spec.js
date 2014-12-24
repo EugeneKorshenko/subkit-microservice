@@ -5,7 +5,7 @@ var path = require('path'),
     store,
     sut;
 
-describe('Module: Worker', function(){
+describe('Module: Task', function(){
   before(function(done) {
     store = require('../lib/store.module.js').init({
       dbPath:'./taskspecdb',
@@ -16,7 +16,7 @@ describe('Module: Worker', function(){
     var template = require('../lib/template.module.js').init({templatesPath:'./test/template_mock'});
     var file = require('../lib/file.module.js').init({templatesPath:'./test/statics_mock'});
 
-    sut = require('../lib/worker.module.js').init({
+    sut = require('../lib/task.module.js').init({
       tasksPath: path.join(__dirname, './task_mock'),
       backupPath: './backups'
     }, store, hook, eventsource, template, file);

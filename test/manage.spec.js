@@ -24,7 +24,7 @@ describe('Integration: Manage', function(){
     context.Storage.close();
     context.Server.close();
     delete require.cache[server];
-    setTimeout(done, 1000);;
+    setTimeout(done, 1000);
   });
 
   describe('on ...', function(){

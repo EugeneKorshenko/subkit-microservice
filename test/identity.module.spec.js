@@ -75,15 +75,15 @@ describe('Module: Identity', function(){
     it('by update item should be changed item', function(done){
       sut.get('ident6@subkit.io', function(error, data){
         assert.ifError(error);
-        assert.equal(data['group'], null);
+        assert.equal(data.group, null);
 
         sut.update('ident6@subkit.io', {group: 'Z'}, function(error, data){
           assert.ifError(error);
           
           sut.get('ident6@subkit.io', function(error, data){
             assert.ifError(error);
-            assert.notEqual(data['group'], null);
-            assert.equal(data['group'], 'Z');
+            assert.notEqual(data.group, null);
+            assert.equal(data.group, 'Z');
             done();
           });
 
@@ -106,7 +106,7 @@ describe('Module: Identity', function(){
     it('should be grouped by group property and filter by group name "Z"', function(done){
       sut.find({groupingKey: 'group'}, {'group': 'Z'}, function(error, data){
         assert.ifError(error);
-        assert.equal(data['A2'], null);
+        assert.equal(data.A2, null);
         assert.equal(data.Z.length, 1);
         done();
       });
@@ -138,7 +138,7 @@ describe('Module: Identity', function(){
         assert.equal(data.X[0].$key, 'account!ident5@subkit.io');
         done();
       });
-    })
+    });
   });
   describe('remove', function(){
     it('should be remove a items', function(done){

@@ -133,7 +133,7 @@ module.exports.init = function(){
 	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, hook);
 	var template = require('./lib/template.module.js');
-	var worker = require('./lib/worker.module.js').init(paths, storage, hook, es, template.init(paths), file.init(paths), doc);
+	var task = require('./lib/task.module.js').init(paths, storage, hook, es, template.init(paths), file.init(paths), doc);
 	var identity = require('./lib/identity.module.js');
 
     var usersIdent = identity.init(null, storage);
@@ -158,8 +158,8 @@ module.exports.init = function(){
  		}
 		usersIdent.validate(apikey,token,function(error, user){
 			//check share access
-                        var cleanupUrl = req.url.indexOf('?') !== -1 ? req.url.substr(0, req.url.indexOf('?')) : req.url;
-                        var urlParts = cleanupUrl.split('/');
+            var cleanupUrl = req.url.indexOf('?') !== -1 ? req.url.substr(0, req.url.indexOf('?')) : req.url;
+            var urlParts = cleanupUrl.split('/');
 			var shareIdent = '';
 			for (var i = 1; i < urlParts.length; i++) {
 				shareIdent = shareIdent + '/' + urlParts[i];
@@ -175,12 +175,12 @@ module.exports.init = function(){
 					}
 					
 					if(user && user.groups){
-						for (var i = 0; i < user.groups.length; i++) {
-							var group = user.groups[i];
+						for (var p = 0; p < user.groups.length; p++) {
+							var group = user.groups[p];
 							if(shareItem[req.method].indexOf(group) !== -1){
 								return next();
-							};
-						};
+							}
+						}
 					}
 				}
 			}
@@ -198,7 +198,7 @@ module.exports.init = function(){
 
 
 	//starts the tasks scheduler
-	worker.runScheduler(true);
+	task.runScheduler(true);
 
 	//starts external API
 	require('./lib/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, doc);
@@ -206,7 +206,7 @@ module.exports.init = function(){
 	require('./lib/share.js').init(server, share, doc);
 	require('./lib/hook.js').init(server, hook, doc);
 	require('./lib/statistics.js').init(server, storage, hook, es, doc);
-	require('./lib/worker.js').init(server, worker);
+	require('./lib/task.js').init(server, task);
 
 	//plugins
 	var availablePlugins = subkitPackage.optionalDependencies;
@@ -222,7 +222,7 @@ module.exports.init = function(){
 		EventSource: es,
 		File: file,
 		Template: template,
-		Worker: worker,
+		Task: task,
 		Identity: identity,
 		ServeStatic: restify.serveStatic
 	};

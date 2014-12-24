@@ -12,7 +12,7 @@ module.exports = function(grunt) {
       files: [
         'test/store.module.spec.js',
         'test/pubsub.module.spec.js',
-        'test/worker.module.spec.js',
+        'test/task.module.spec.js',
         'test/template.module.spec.js',
         'test/eventsource.module.spec.js',
         'test/identity.module.spec.js',
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         'test/file.module.spec.js',
 
         'test/store.spec.js',
-        'test/worker.spec.js',
+        'test/task.spec.js',
         'test/manage.spec.js',
         'test/share.spec.js',
         
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
         'lib/eventsource.module.js',
         'lib/identity.module.js',
         'lib/template.module.js',
-        'lib/worker.module.js',
+        'lib/task.module.js',
         'lib/share.module.js',
         'lib/file.module.js',
         'lib/plugin.module.js',
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
         'lib/manage.js',
         'lib/store.js',
         'lib/pubsub.js',
-        'lib/worker.js',
+        'lib/task.js',
         'lib/share.js',
         'lib/statistics.js',
 
@@ -93,15 +93,15 @@ module.exports = function(grunt) {
           'test/store.spec.js'
         ]
       },
-      workerTests: {
+      taskTests: {
         options: {
           reporter: 'spec',
           timeout: 10000,
           clearRequireCache: false
         },
         src: [
-          'test/worker.module.spec.js',
-          'test/worker.spec.js'
+          'test/task.module.spec.js',
+          'test/task.spec.js'
         ]
       },
       fileTests: {
@@ -121,7 +121,8 @@ module.exports = function(grunt) {
           clearRequireCache: false
         },
         src: [
-          'test/identity.module.spec.js'
+          'test/identity.module.spec.js',
+          'test/identity.spec.js'
         ]
       }
     },
@@ -133,7 +134,7 @@ module.exports = function(grunt) {
             'lib/eventsource.module.js',
             'lib/plugin.module.js',
             'lib/share.module.js',
-            'lib/worker.module.js',
+            'lib/task.module.js',
             'lib/file.module.js',
             'lib/template.module.js',
             'lib/identity.module.js',
@@ -148,7 +149,7 @@ module.exports = function(grunt) {
         files: [
           {src: 'lib/store.module.js', dest: 'docs/modules/store.md'},
           {src: 'lib/pubsub.module.js', dest: 'docs/modules/pubsub.md'},
-          {src: 'lib/worker.module.js', dest: 'docs/modules/worker.md'},
+          {src: 'lib/task.module.js', dest: 'docs/modules/task.md'},
           {src: 'lib/identity.module.js', dest: 'docs/modules/identity.md'},
           {src: 'lib/file.module.js', dest: 'docs/modules/file.md'},
           {src: 'lib/template.module.js', dest: 'docs/modules/template.md'},
@@ -160,10 +161,10 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', []);
-  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:workerTests','mochaTest:fileTests','mochaTest:identityTests']);
+  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:taskTests','mochaTest:fileTests','mochaTest:identityTests']);
   grunt.registerTask('shareTests', ['mochaTest:shareTests']);
   grunt.registerTask('storeTests', ['mochaTest:storeTests']);
-  grunt.registerTask('wokerTests', ['mochaTest:workerTests']);
+  grunt.registerTask('taskTests', ['mochaTest:taskTests']);
   grunt.registerTask('fileTests', ['mochaTest:fileTests']);
   grunt.registerTask('identityTests', ['mochaTest:identityTests']);
   grunt.registerTask('doc', ['jsdoc', 'markdox']);

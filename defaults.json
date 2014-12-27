@@ -11,7 +11,8 @@
     "domain": "subkit.io",
     "port": 8080,
     "key": "./files/cert/server.key",
-    "cert": "./files/cert/server.crt"
+    "cert": "./files/cert/server.crt",
+    "ca": "./files/cert/ca.crt"
   },
   "paths": {
     "backupPath": "./backups",

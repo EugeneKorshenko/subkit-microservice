@@ -81,7 +81,7 @@ describe('Integration: Share', function(){
     });
 
     it('should be grant read access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/grantread/superIdent', function(error, req, res, actual){
+      client.put('/shares/demo1/action/grantread/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { GET: [ 'superIdent' ], POST: [], PUT: [], DELETE: [] });
@@ -89,7 +89,7 @@ describe('Integration: Share', function(){
       });
     });
     it('should be revoke read access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/revokeread/superIdent', function(error, req, res, actual){
+      client.put('/shares/demo1/action/revokeread/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { GET: [], POST: [], PUT: [], DELETE: [] });
@@ -98,7 +98,7 @@ describe('Integration: Share', function(){
     });
 
     it('should be grant insert access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/grantinsert/superIdent', function(error, req, res, actual){
+      client.put('/shares/demo1/action/grantinsert/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { GET: [], POST: ['superIdent'], PUT: [], DELETE: [] });
@@ -106,7 +106,7 @@ describe('Integration: Share', function(){
       });
     });
     it('should be revoke insert access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/revokeinsert/superIdent', function(error, req, res, actual){
+      client.put('/shares/demo1/action/revokeinsert/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { GET: [], POST: [], PUT: [], DELETE: [] });
@@ -116,7 +116,7 @@ describe('Integration: Share', function(){
 
 
     it('should be grant update access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/grantupdate/superIdent', function(error, req, res, actual){
+      client.put('/shares/demo1/action/grantupdate/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { GET: [], POST: [], PUT: ['superIdent'], DELETE: [] });
@@ -124,7 +124,7 @@ describe('Integration: Share', function(){
       });
     });
     it('should be revoke update access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/revokeupdate/superIdent', function(error, req, res, actual){
+      client.put('/shares/demo1/action/revokeupdate/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { GET: [], POST: [], PUT: [], DELETE: [] });
@@ -133,7 +133,7 @@ describe('Integration: Share', function(){
     });
 
     it('should be grant delete access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/grantdelete/superIdent', function(error, req, res, actual){
+      client.put('/shares/demo1/action/grantdelete/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { GET: [], POST: [], PUT: [], DELETE: ['superIdent'] });
@@ -141,7 +141,7 @@ describe('Integration: Share', function(){
       });
     });
     it('should be revoke delete access to `/demo1` share for `superIdent` identity', function(done){
-      client.put('/shares/demo1/actions/revokedelete/superIdent', function(error, req, res, actual){
+      client.put('/shares/demo1/action/revokedelete/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { GET: [], POST: [], PUT: [], DELETE: [] });
@@ -150,7 +150,7 @@ describe('Integration: Share', function(){
     });
     
     it('should be revoke all access to all shares for `superIdent` identity', function(done){
-      client.put('/shares/actions/revoke/superIdent', function(error, req, res, actual){
+      client.put('/shares/action/revoke/superIdent', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { '/': [],

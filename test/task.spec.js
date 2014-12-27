@@ -32,24 +32,24 @@ describe.skip('Integration: Task', function(){
 
   describe('Manage tasks', function(){
     it('should manage task', function(done){
-      client.post('/task/demo1', null, function(err, req, res, obj) {
+      client.post('/tasks/demo1', null, function(err, req, res, obj) {
         assert.equal(null, err);
         assert.notEqual(null, obj);
         assert.equal('created', obj.message);
         
-        client.get('/task/demo1', function(err, req, res, obj){
+        client.get('/tasks/demo1', function(err, req, res, obj){
           assert.equal(null, err);
           assert.notEqual(null, obj); 
           assert.notEqual('', obj.Name);
 
-          obj.TaskScript = 'response(null,{});';
-          client.put('/task/demo1', obj, function(err, req, res, obj){
+          obj.taskScript = 'response(null,{});';
+          client.put('/tasks/demo1', obj, function(err, req, res, obj){
             assert.equal(null, err);
             assert.notEqual(null, obj);
-            assert.notEqual('', obj.TaskScript);
+            assert.notEqual('', obj.taskScript);
             assert.equal('changed', obj.message);
 
-            client.del('/task/demo1', function(err, req, res, obj) {
+            client.del('/tasks/demo1', function(err, req, res, obj) {
               assert.equal(null, err);
               assert.notEqual(null, obj);
               assert.equal('removed', obj.message);

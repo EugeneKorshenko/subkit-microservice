@@ -29,8 +29,8 @@ describe('Module: Task', function(){
   describe('on simple tasks', function(){
     it('should create a task',function(done){
       var newTask = new sut.Task('success', []);
-      newTask.TaskScript = 'log("Hello!"); response(null,{Message:"Hello world!"});';
-      sut.set(newTask.Name, newTask, function(error, data){
+      newTask.taskScript = 'log("Hello!"); response(null,{Message:"Hello world!"});';
+      sut.set(newTask.name, newTask, function(error, data){
         assert.equal(error, null);
         done();
       });
@@ -56,8 +56,8 @@ describe('Module: Task', function(){
   describe('on long running tasks', function(){
     it('should create a task with parameters',function(done){
       var newTask = new sut.Task('longrunningsuccess', {Msg:'Hello!!!'});
-      newTask.TaskScript = 'timeout(function(){log(params.Msg);},1000); timeout(response,5500);';
-      sut.set(newTask.Name, newTask, function(error, data){
+      newTask.taskScript = 'timeout(function(){log(params.Msg);},1000); timeout(response,5500);';
+      sut.set(newTask.name, newTask, function(error, data){
         assert.equal(error, null);
         done();
       });
@@ -88,9 +88,9 @@ describe('Module: Task', function(){
     it('should create scheduled endless task with parameters',function(done){
       
       var newTask = new sut.Task('scheduledendlesssuccess', {Msg:'Endless-Scheduled'});
-      newTask.TaskScript = 'timeout(function(){debug(params.Msg);}, 500); done();';
-      newTask.Schedule = '* * * * * *';
-      sut.set(newTask.Name, newTask, function(error, data){
+      newTask.taskScript = 'timeout(function(){debug(params.Msg);}, 500); done();';
+      newTask.schedule = '* * * * * *';
+      sut.set(newTask.name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
@@ -108,16 +108,16 @@ describe('Module: Task', function(){
     it('should create continuous task with parameters in parallel',function(done){
       
       var newTask = new sut.Task('continuoussuccess', {Msg:'Continuous-1-'});
-      newTask.TaskScript = 'var count = 0; timeout(function(){debug(params.Msg+count++);}, 1000); done();';
+      newTask.taskScript = 'var count = 0; timeout(function(){debug(params.Msg+count++);}, 1000); done();';
       newTask.isContinuous = true;
-      sut.set(newTask.Name, newTask, function(error, data){
+      sut.set(newTask.name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
       var newTask2 = new sut.Task('continuous2success', {Msg:'Continuous-2-'});
-      newTask2.TaskScript = 'var count = 0; timeout(function(){debug(params.Msg+count++);}, 2000); done();';
+      newTask2.taskScript = 'var count = 0; timeout(function(){debug(params.Msg+count++);}, 2000); done();';
       newTask2.isContinuous = true;
-      sut.set(newTask2.Name, newTask2, function(error, data){
+      sut.set(newTask2.name, newTask2, function(error, data){
         assert.equal(error, null);
         setTimeout(done, 6500);
       });
@@ -141,16 +141,16 @@ describe('Module: Task', function(){
     it('should create scheduled task with parameters in parallel',function(done){
       
       var newTask = new sut.Task('scheduledsuccess', {Msg:'Scheduled-1'});
-      newTask.TaskScript = 'debug(params.Msg); done();';
-      newTask.Schedule = '* * * * * *';
-      sut.set(newTask.Name, newTask, function(error, data){
+      newTask.taskScript = 'debug(params.Msg); done();';
+      newTask.schedule = '* * * * * *';
+      sut.set(newTask.name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
       var newTask2 = new sut.Task('scheduled2success', {Msg:'Scheduled-2'});
-      newTask2.TaskScript = 'debug(params.Msg); done();';
-      newTask2.Schedule = '*/2 * * * * *';
-      sut.set(newTask2.Name, newTask2, function(error, data){
+      newTask2.taskScript = 'debug(params.Msg); done();';
+      newTask2.schedule = '*/2 * * * * *';
+      sut.set(newTask2.name, newTask2, function(error, data){
         assert.equal(error, null);
         setTimeout(done, 1000);
       });

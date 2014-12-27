@@ -36,9 +36,19 @@ Get items from a store by using a json query.
 * **String** *queryString* - JSON Query options.
 * **callback** *callback* - Done handler.
 
-## upsert(resource, key, payload, callback)
+## insert(resource, payload, callback)
 
-Add or change an item in a store.
+Add an item in a store.
+
+### Params:
+
+* **String** *resource* - Name of store.
+* **Object** *payload* - New data object.
+* **callback** *callback* - Done handler.
+
+## update(resource, key, payload, callback)
+
+Update an item in a store.
 
 ### Params:
 
@@ -47,7 +57,7 @@ Add or change an item in a store.
 * **Object** *payload* - New data object.
 * **callback** *callback* - Done handler.
 
-## upsert(resource, key, payload, callback)
+## tryUpdate(resource, key, payload, callback)
 
 Try to add or change an item in a store.
 

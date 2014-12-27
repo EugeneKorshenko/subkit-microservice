@@ -17,6 +17,7 @@ module.exports = function(grunt) {
         'test/identity.module.spec.js',
         'test/share.module.spec.js',
         'test/file.module.spec.js',
+        'test/plugin.module.spec.js',
 
         'test/store.spec.js',
         'test/task.spec.js',
@@ -62,11 +63,8 @@ module.exports = function(grunt) {
         },
         src: [
           'test/manage.spec.js',
-          'test/event.module.spec.js',
           'test/template.module.spec.js',
-          'test/eventsource.module.spec.js',
-          'test/identity.module.spec.js',
-          'test/file.module.spec.js',
+          'test/eventsource.module.spec.js'
         ]
       },
       shareTests: {
@@ -132,7 +130,17 @@ module.exports = function(grunt) {
         src: [
           'test/identity.module.spec.js'
         ]
-      }
+      },
+      pluginTests: {
+        options: {
+          reporter: 'spec',
+          timeout: 10000,
+          clearRequireCache: false
+        },
+        src: [
+          'test/plugin.module.spec.js'
+        ]
+      }      
     },
     markdox: {
       target: {
@@ -151,12 +159,13 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', []);
-  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:eventTests','mochaTest:taskTests','mochaTest:fileTests','mochaTest:identityTests']);
+  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:eventTests','mochaTest:taskTests','mochaTest:fileTests','mochaTest:identityTests','mochaTest:pluginTests']);
   grunt.registerTask('shareTests', ['mochaTest:shareTests']);
   grunt.registerTask('storeTests', ['mochaTest:storeTests']);
   grunt.registerTask('eventTests', ['mochaTest:eventTests']);
   grunt.registerTask('taskTests', ['mochaTest:taskTests']);
   grunt.registerTask('fileTests', ['mochaTest:fileTests']);
   grunt.registerTask('identityTests', ['mochaTest:identityTests']);
+  grunt.registerTask('pluginTests', ['mochaTest:pluginTests']);
   grunt.registerTask('docs', ['markdox']);
 };

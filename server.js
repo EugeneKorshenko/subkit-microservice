@@ -209,7 +209,7 @@ module.exports.init = function(){
 	require('./lib/share.js').init(server, share, doc);
 	require('./lib/event.js').init(server, event, doc);
 	require('./lib/statistics.js').init(server, storage, event, es, doc);
-	require('./lib/task.js').init(server, task);
+	require('./lib/task.js').init(server, task, doc);
 
 	//plugins
 	var availablePlugins = subkitPackage.optionalDependencies;

@@ -1,4 +1,4 @@
-# Subkit Microservice Platform [![Build Status](https://travis-ci.org/SubKit/subkit-microservice.svg?branch=master)](https://travis-ci.org/SubKit/subkit-microservice)
+# Microservice Template [![Build Status](https://travis-ci.org/SubKit/subkit-microservice.svg?branch=master)](https://travis-ci.org/SubKit/subkit-microservice)
 
 Backend applications as simple and flexible as never before.
 
@@ -71,11 +71,10 @@ X		 	  | Monitoring	  | Heartbeats for Web-Service Monitoring
 X		 	  | Statistics	  | Useful statistics and usage analysis
 X		 	  | History		  | Track and query all state changes
 X		 	  | JSON Storage  | Lightweight JSON key/value persistence
-X		 	  | Message Bus	  | Lightweight Message Bus for Real-Time topic based and storage changes
+X		 	  | Messaging	  | Lightweight Message Bus for Real-Time topic based and storage changes
 X			  | Statistics    | Instance resource and usage statistics
 X		 	  | Shares        | Resource and ACL based authorization
 -		 	  | WebHooks      | User-defined HTTP callbacks
--		 	  | Hooks         | Request/Response custom code hooks
 -		 	  | WebSockets    | Web-Socket support for real-time notifications
 
 PLUGINS
@@ -105,54 +104,23 @@ X = available
 \- = planed  
 O = commercial  
 
-SDKS
----
-
-STATUS		  | Feature 		| Comments
-------------- | --------------- | ---------------
-X		 	  | iOS 			| [Try Subkit iOS](https://github.com/SubKit/try_subkit_ios)
-X		 	  | Android			| [Try Subkit Android](https://github.com/SubKit/try_subkit_android)
-X		 	  | WP8				| [Try Subkit WP8](https://github.com/SubKit/try_subkit_wp8)
--			  | Xamarin			| 
-X		 	  | JavaScript		| included
-X			  | PhoneGap/Cordova| 
--			  | NodeJS		    |
--			  | Python		    | 
--			  | Ruby            |
--			  | Java		    | 
--			  | .NET (C#)   	|
--			  | Erlang/Elixir   |
--			  | PowerShell      |
-X			  | AngularJS       | included
-
-* HTTPS support
-* Offline support (coming soon)
-
 ROADMAP
 ---
 * [Roadmap](docs/roadmap.md)
 
-GUIDES
----
-* [URI Style](docs/uri_style.md)
-* [Hypermedia Style](docs/hypermedia_style.md)
-* [Event Driven Style](docs/eventdriven_style.md)
-* [RESTful JSON API](docs/restful_api.md)
-
 MODULE DOCUMENTATION
 ---
-* [Manage Module](docs/modules/manage.md)
-* [JSON Key/Value Store Module](docs/modules/store.md)
-* [PubSub Module](docs/modules/pubsub.md)
-* [Worker Module](docs/modules/worker.md)
-* [Template Module](docs/modules/template.md)
-* [EventSource Module](docs/modules/eventsource.md)
-* [File Module](docs/modules/file.md)
-* [Doc Module](docs/modules/doc.md)
-* [Utils Module](docs/modules/helper.md)
-* [Share Module](docs/modules/share.md)
-* [Configuration Module](docs/modules/configuration.md)
-* [Identity Module](docs/modules/identity.md)
+* [Manage Module](docs/manage.md)
+* [JSON Key/Value Store Module](docs/store.md)
+* [Event Module](docs/event.md)
+* [Task Module](docs/task.md)
+* [Template Module](docs/template.md)
+* [EventSource Module](docs/eventsource.md)
+* [File Module](docs/file.md)
+* [Doc Module](docs/doc.md)
+* [Utils Module](docs/helper.md)
+* [Share Module](docs/share.md)
+* [Identity Module](docs/identity.md)
 
 DEVELOPMENT
 ---
@@ -182,20 +150,7 @@ Start a Subkit mirsoservice instance supervised.
 
 1. `npm start` || `node supervisor.js`
 
-ARCHITECTURE
----
-* Micro-Services - Autonomous Components
-* Reliable, Responsible & Partitioning
-* Temporal consistency, Idempotency & Transactions
-* Data structure design
-* Integration-Points, Composites & Aggregation
-* Caching
-* Scale-Up & Scale-Down
-* Offline & Sync strategies
-* Environment, Monitoring & Usages
-* Conventions and practice
-
 License
 ---
 No License  
-Copyright 2014 Mike Bild  
+Copyright 2015 Mike Bild  

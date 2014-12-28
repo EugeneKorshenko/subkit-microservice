@@ -73,7 +73,9 @@ module.exports.init = function(){
 		return srv;	
 	};
 	var server = _applyServer();
-
+	server.formatters['text/html'] = function(req, res, body){
+		return body;
+	};
 	//Middleware
 	server.use(restify.acceptParser(server.acceptable));
 	server.use(restify.bodyParser({ mapParams: true }));

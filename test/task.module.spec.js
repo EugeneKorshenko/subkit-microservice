@@ -109,14 +109,14 @@ describe('Module: Task', function(){
       
       var newTask = new sut.Task('continuoussuccess', {Msg:'Continuous-1-'});
       newTask.taskScript = 'var count = 0; timeout(function(){debug(params.Msg+count++);}, 1000); done();';
-      newTask.isContinuous = true;
+      newTask.continuous = true;
       sut.set(newTask.name, newTask, function(error, data){
         assert.equal(error, null);
       });
 
       var newTask2 = new sut.Task('continuous2success', {Msg:'Continuous-2-'});
       newTask2.taskScript = 'var count = 0; timeout(function(){debug(params.Msg+count++);}, 2000); done();';
-      newTask2.isContinuous = true;
+      newTask2.continuous = true;
       sut.set(newTask2.name, newTask2, function(error, data){
         assert.equal(error, null);
         setTimeout(done, 6500);

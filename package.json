@@ -1,7 +1,8 @@
 {
   "name": "subkit-microservice",
-  "version": "0.1.24",
+  "version": "0.1.25",
   "dependencies": {
+    "cflow": "*",
     "cron": "*",
     "forever": "*",
     "fstream": "*",
@@ -9,16 +10,18 @@
     "json-stringify-safe": "*",
     "jsonquery": "*",
     "level": "*",
+    "level-fix-range": "^2.0.0",
     "microtime": "*",
     "moment": "*",
     "nconf": "*",
     "node-uuid": "*",
+    "offset-stream": "^1.0.2",
+    "ordered-through": "0.0.3",
     "q": "^1.0.1",
     "randomstring": "*",
     "restify": "*",
     "shelljs": "0.2.6",
     "tar": "*",
-    "cflow": "*",
     "underscore": "*",
     "underscore-keypath": "*",
     "yargs": "*"
@@ -36,7 +39,7 @@
   },
   "main": "index.js",
   "engines": {
-    "node": ">=0.10.25"
+    "node": ">=0.10.28"
   },
   "scripts": {
     "start": "node supervisor",

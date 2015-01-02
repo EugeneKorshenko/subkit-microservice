@@ -7,7 +7,7 @@ var client = restify.createJsonClient({
   version: '*',
   rejectUnauthorized: false,
   url: 'https://127.0.0.1:8080',
-  headers: {'x-auth-token':'6654edc5-82a3-4006-967f-97d5817d7fe2'}
+  headers: {'x-auth-token':'66LOHAiB8Zeod1bAeLYW'}
 });
 
 describe('Integration: Manage', function(){

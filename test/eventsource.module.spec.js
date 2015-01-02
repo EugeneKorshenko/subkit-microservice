@@ -13,13 +13,13 @@ describe('Module: EventSource', function(){
     event = require('../lib/event.module.js').init({pollInterval: 1});
     sut = require('../lib/eventsource.module.js').init(store, event);
     
-   event.publishPersistent('demo1','a',{});
-   event.publishPersistent('demo2','d',{});
-   event.publishPersistent('demo1','b',{});
-   event.publishPersistent('demo2','b',{});
-   event.publishPersistent('demo2','a',{});
-   event.publishPersistent('demo2','c',{});
-   event.publishPersistent('demo3','a',{});
+   event.emit('demo1',{},{},true);
+   event.emit('demo2',{},{},true);
+   event.emit('demo1',{},{},true);
+   event.emit('demo2',{},{},true);
+   event.emit('demo2',{},{},true);
+   event.emit('demo2',{},{},true);
+   event.emit('demo3',{},{},true);
     setTimeout(done, 1000);
   });
   after(function(done){
@@ -57,16 +57,16 @@ describe('Module: EventSource', function(){
     it('should be a live projection', function(done){
       //sample messages
       setTimeout(function(){
-        event.publish('demo1','g',{});
+        event.emit('demo1',{},{});
       }, 5);
       setTimeout(function(){
-        event.publish('demo2','t',{});
+        event.emit('demo2',{},{});
       }, 5);
       setTimeout(function(){
-        event.publish('demo5','t',{});
+        event.emit('demo5',{},{});
       }, 5);
       setTimeout(function(){
-        event.publish('demo15','t',{});
+        event.emit('demo15',{},{});
       }, 5);
 
       sut
@@ -97,16 +97,16 @@ describe('Module: EventSource', function(){
     it('should be a incremental live projection', function(done){
       //sample messages
       setTimeout(function(){
-        event.publish('demo1','g',{});
+        event.emit('demo1',{},{});
       }, 100);
       setTimeout(function(){
-        event.publish('demo2','t',{});
+        event.emit('demo2',{},{});
       }, 200);
       setTimeout(function(){
-        event.publish('demo5','t',{});
+        event.emit('demo5',{},{});
       }, 300);
       setTimeout(function(){
-        event.publish('demo15','t',{});
+        event.emit('demo15',{},{});
       }, 400);
 
       sut
@@ -154,7 +154,7 @@ describe('Module: EventSource', function(){
       }, function(err, data){
         assert.equal(null, err);
         assert.notEqual(null, data);
-        event.publish('myNewProjection', data.count, data);
+        event.emit('myNewProjection', data);
       });
       
       setTimeout(done, 500);

@@ -29,7 +29,7 @@ describe('Module: Identity', function(){
       sut.get('ident3@subkit.io', function(error, identity){
         assert.ifError(error);
         assert.notEqual(identity, null);
-        assert.equal(identity.id, 'ident3@subkit.io');
+        assert.equal(identity.$payload.id, 'ident3@subkit.io');
         done();
       });
     });
@@ -82,8 +82,8 @@ describe('Module: Identity', function(){
           
           sut.get('ident6@subkit.io', function(error, data){
             assert.ifError(error);
-            assert.notEqual(data.group, null);
-            assert.equal(data.group, 'Z');
+            assert.notEqual(data.$payload.group, null);
+            assert.equal(data.$payload.group, 'Z');
             done();
           });
 
@@ -94,7 +94,7 @@ describe('Module: Identity', function(){
   });
   describe('find', function(){
     it('should be grouped by group property', function(done){
-      sut.find({groupingKey: 'group'}, {}, function(error, data){
+      sut.find({groupBy: 'group'}, {}, function(error, data){
         assert.ifError(error);
         assert.equal(data.A1.length, 3);
         assert.equal(data.A2.length, 2);
@@ -104,7 +104,7 @@ describe('Module: Identity', function(){
       });
     });
     it('should be grouped by group property and filter by group name "Z"', function(done){
-      sut.find({groupingKey: 'group'}, {'group': 'Z'}, function(error, data){
+      sut.find({groupBy: 'group'}, {'group': 'Z'}, function(error, data){
         assert.ifError(error);
         assert.equal(data.A2, null);
         assert.equal(data.Z.length, 1);
@@ -112,7 +112,7 @@ describe('Module: Identity', function(){
       });
     });
     it('should be grouped by group property and filter by group name "Z" or "A2"', function(done){
-      sut.find({groupingKey: 'group'},{$or:[{'group':'A2'},{'group':'Z'}]}, function(error, data){
+      sut.find({groupBy: 'group'},{$or:[{'group':'A2'},{'group':'Z'}]}, function(error, data){
         assert.ifError(error);
         assert.equal(data.A2.length, 2);
         assert.equal(data.Z.length, 1);
@@ -120,7 +120,7 @@ describe('Module: Identity', function(){
       });
     });
     it('should be grouped by group property and filter by group name "A1" and "X"', function(done){
-      sut.find({groupingKey: 'group'},{$and:[{'group':'A1'},{'group':'X'}]}, function(error, data){
+      sut.find({groupBy: 'group'},{$and:[{'group':'A1'},{'group':'X'}]}, function(error, data){
         assert.ifError(error);
         assert.equal(data.A1.length, 1);
         assert.equal(data.X.length, 1);
@@ -130,7 +130,7 @@ describe('Module: Identity', function(){
       });
     });
     it('should be grouped by group property and filter by group name "X"', function(done){
-      sut.find({groupingKey: 'group'},{'group':{$in:['X']}}, function(error, data){
+      sut.find({groupBy: 'group'},{'group':{$in:['X']}}, function(error, data){
         assert.ifError(error);
         assert.equal(data.A1.length, 1);
         assert.equal(data.X.length, 1);

@@ -20,96 +20,62 @@ describe('Module: Event', function(){
     }, 2000);
   });
   
-  it('should send to a single user', function(done){
-    var count = 0;
-    sut.subscribePersistent('demo','demouser', function(error, data){
-      count++;
+  it('should emit message to channels', function(done){
+    var count1 = 0;
+    var count2 = 0;
+    sut.bindPersistent('demo1','demouser', function(error, data){
+      count1++;
       assert.equal(error, null);
       assert.notEqual(data, null);
-      assert.equal(data.$clientId, 'demouser');
     });
-    sut.subscribePersistent('demo','otheruser', function(error, data){
-      count++;
+    sut.bindPersistent('demo2','otheruser', function(error, data){
+      count2++;
       assert.equal(error, null);
       assert.notEqual(data, null);
-      assert.equal(data.$clientId, 'otheruser');
     });    
-    sut.send('otheruser', { test: 'foo1' });
-    sut.send('demouser', { test: 'foo1' });
-    sut.send('anotheruser', { test: 'foo1' });
-    sut.send('demouser', { test: 'foo2' });
+    sut.emit('demo1', { test: 'demo1 foo1' });
+    sut.emit('demo2', { test: 'demo2 foo1' });
+    sut.emit('demo1', { test: 'demo1 foo3' });
+    sut.emit('demo1', { test: 'demo1 foo2' });
+    sut.emit('demo2', { test: 'demo2 foo2' });
 
-    assert.equal(count, 3);
-    done();
+    setTimeout(function(){
+      assert.equal(count1, 3);
+      assert.equal(count2, 2);
+      done();
+    }, 100);
+    
   });
 
   it('should receive messages from a user by single channel', function(done){
-    sut.publishPersistent('demo1', { test: 'foo1' });
-    sut.publishPersistent('demo1', { test: 'foo2' });
-    sut.publishPersistent('demo1', { test: 'foo3' });
+    sut.emit('demo1', { test: 'foo1' }, {}, true);
+    sut.emit('demo1', { test: 'foo2' }, {}, true);
+    sut.emit('demo1', { test: 'foo3' }, {}, true);
 
-    sut.publishPersistent('demo2', { test: 'foo4' });
-    sut.publishPersistent('demo2', { test: 'foo5' });
-    sut.publishPersistent('demo2', { test: 'foo6' });
+    sut.emit('demo2', { test: 'foo4' }, {}, true);
+    sut.emit('demo2', { test: 'foo5' }, {}, true);
+    sut.emit('demo2', { test: 'foo6' }, {}, true);
 
     setTimeout(function(){
 
-      sut.history('demo', {}, {},function(error, data){
-        assert.equal(error, null);
-        assert.notEqual(data.results, null);
-        assert.equal(data.results.length, 6);
-        assert.equal(data.results[0].$payload.test, 'foo6');
-      });
-
-      sut.history('demo1!', {}, {},function(error, data){
+      sut.log('demo1', {}, {}, function(error, data){
         assert.equal(error, null);
         assert.notEqual(data.results, null);
         assert.equal(data.results.length, 3);
-        assert.equal(data.results[0].$payload.test, 'foo3');
+        assert.equal(data.results[0].$payload.test, 'foo1');
+        assert.equal(data.results[2].$payload.test, 'foo3');
       });
 
-      sut.history('demo2!', {}, {},function(error, data){
+      sut.log('demo2', {}, {},function(error, data){
         assert.equal(error, null);
         assert.notEqual(data.results, null);
         assert.equal(data.results.length, 3);
-        assert.equal(data.results[0].$payload.test, 'foo6');
+        assert.equal(data.results[0].$payload.test, 'foo4');
+        assert.equal(data.results[2].$payload.test, 'foo6');
         done();
       });
 
-    }, 1000);
+    }, 100);
   });
 
-  it('should receive messages from a user by multiple channels', function(done){
-    sut.subscribe('demo1','myuser', function(error, data){
-      assert.equal(error, null);
-      assert.notEqual(data, null);
-      sut.send('otheruser', { test: 'otheruser foo1' });
-      sut.send('myuser', { test: 'first myuser foo1' });
-      sut.send('myuser', { test: 'first myuser foo2' });
-      sut.send('anotheruser', { test: 'anotheruser foo1' });
-      sut.publishPersistent('demo1', { test: 'demo1 foo3' });
-    });
-
-    sut.subscribe('demo2','myuser', function(error, data){
-      assert.equal(error, null);
-      assert.notEqual(data, null);
-      sut.send('otheruser', { test: 'otheruser foo1' });
-      sut.send('myuser', { test: 'second myuser foo1' });
-      sut.send('myuser', { test: 'second myuser foo2' });
-      sut.send('anotheruser', { test: 'anotheruser foo1' });
-      sut.publishPersistent('demo2', { test: 'demo2 foo3' });
-    });
-
-    setTimeout(function(){
-      sut.history('demo2!',{},{}, function(error, data){
-        assert.equal(error, null);
-        assert.notEqual(data.results, null);
-        assert.equal(data.results.length, 3);
-        assert.equal(data.results[0].$payload.test, 'foo6');
-        done();
-      });
-
-    }, 1000);
-
-  });
 });

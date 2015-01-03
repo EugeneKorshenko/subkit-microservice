@@ -8,7 +8,7 @@ var http = require('http'),
 	os = require('os');
 
 module.exports.init = function(server, store, event, es, doc){
-	require('./statistics.doc.js').init(doc);
+	require('./doc/statistics.doc.js').init(doc);
 
 	server.pre(function (req, res, next) {
 		var latency = res.get('Response-Time');

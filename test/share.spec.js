@@ -170,7 +170,7 @@ describe('Integration: Share', function(){
       client.del('/shares/demo1', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
-        assert.deepEqual(actual, {});
+        assert.deepEqual(actual, {message:"delete accepted"});
         done();
       });
     });

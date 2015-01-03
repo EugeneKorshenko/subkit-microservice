@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports.init = function(server, task, doc){
-	require('./task.doc.js').init(doc);
+	require('./doc/task.doc.js').init(doc);
 
 	//settings
 	server.get('/tasks/settings', function(req,res,next){

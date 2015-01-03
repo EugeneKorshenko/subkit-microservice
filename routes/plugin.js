@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports.init = function(server, plugin, doc){
-	require('./plugin.doc.js').init(doc);
+	require('./doc/plugin.doc.js').init(doc);
 	
 	server.get('/manage/plugins', function (req, res, next) {
 		plugin.list(function(error, data){

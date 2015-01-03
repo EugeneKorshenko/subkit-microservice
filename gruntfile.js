@@ -24,7 +24,7 @@ module.exports = function(grunt) {
         'test/manage.spec.js',
         'test/share.spec.js',
         
-        'lib/helper.js',
+        'lib/utils.module.js',
         'lib/doc.module.js',
         'lib/store.module.js',
         'lib/event.module.js',

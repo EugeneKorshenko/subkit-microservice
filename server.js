@@ -7,7 +7,7 @@ var restify = require('restify'),
 	path = require('path'),
 	nconf = require('nconf'),
 	subkitPackage = require('./package.json'),
-	utils = require('./lib/helper.js').init();    
+	utils = require('./lib/utils.module.js').init();    
 
 module.exports.init = function(){
 	var admin,
@@ -206,12 +206,12 @@ module.exports.init = function(){
 	task.runScheduler(true);
 
 	//starts external API
-	require('./lib/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, doc);
-	require('./lib/store.js').init(server, storage, doc);
-	require('./lib/share.js').init(server, share, doc);
-	require('./lib/event.js').init(server, event, doc);
-	// require('./lib/statistics.js').init(server, storage, event, es, doc);
-	require('./lib/task.js').init(server, task, doc);
+	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, doc);
+	require('./routes/store.js').init(server, storage, doc);
+	require('./routes/share.js').init(server, share, doc);
+	require('./routes/event.js').init(server, event, doc);
+	// require('./routes/statistics.js').init(server, storage, event, es, doc);
+	require('./routes/task.js').init(server, task, doc);
 
 	//plugins
 	var availablePlugins = subkitPackage.optionalDependencies;
@@ -234,7 +234,7 @@ module.exports.init = function(){
 
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);
 	plugin.loadAll();
-	require('./lib/plugin.js').init(server, plugin, doc);
+	require('./routes/plugin.js').init(server, plugin, doc);
 
 	return {
 		getContext: function(){

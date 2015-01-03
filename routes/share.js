@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports.init = function(server, share, doc){
-	require('./share.doc.js').init(doc);
+	require('./doc/share.doc.js').init(doc);
 
 	server.get('/shares/identities', function(req, res, next){
 		share.listIdentities(function(err, data){

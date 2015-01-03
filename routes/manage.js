@@ -4,11 +4,11 @@ var uuid = require('node-uuid');
 var randomString = require('randomstring');
 var	path = require('path');
 var	fs = require('fs');
-var	utils = require('./helper.js').init();
 var	os = require('os');
+var	utils = require('../lib/utils.module.js').init();
 
 module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, doc){
-	require('./manage.doc.js').init(doc);
+	require('./doc/manage.doc.js').init(doc);
 
 	server.post('/manage/login', function (req, res, next) {
 		var api = configuration.get('api');

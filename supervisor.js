@@ -3,14 +3,14 @@
 var fs = require('fs'),
     path = require('path'),
     forever = require('forever'),
-    helper = require('./lib/helper.js').init();
+    utils = require('./lib/utils.module.js').init();
 
 process.env.NODE_ENV = 'production';
 var logsPath = 'files/logs/';
 var logsFullPath = path.join(__dirname,logsPath);
 
 if(!fs.existsSync(logsFullPath))
-    helper.mkdirRecursive(logsFullPath);
+    utils.mkdirRecursive(logsFullPath);
 
 forever.startDaemon(path.join(__dirname,'index.js'), {
     silent: false,

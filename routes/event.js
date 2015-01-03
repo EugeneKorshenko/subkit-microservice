@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports.init = function(server, event, doc){
-	require('./event.doc.js').init(doc);
+	require('./doc/event.doc.js').init(doc);
 
 	// heartbeat
 	(function(){

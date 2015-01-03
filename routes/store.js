@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports.init = function(server, storage, doc){
-	require('./store.doc.js').init(doc);
+	require('./doc/store.doc.js').init(doc);
 
 	server.get('/stores', function (req, res, next) {
 		storage.stores(function(error, resourceKeys){

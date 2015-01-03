@@ -130,7 +130,9 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 
 	server.post('/manage/import', function(req,res,next){
 		var payload = req.body;
-		storage.imports('', JSON.parse(payload.toString()), function(error, data){
+		if(!payload) return res.send(400, new Error('Unsupported format.'));
+
+		storage.imports('', payload, function(error, data){
 			if(error) return res.send(500, error);
 			res.send(201, { message: 'imported' });
 		});
@@ -139,8 +141,9 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		var name = req.params.name;
 		var payload = req.body;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
-		
-		storage.imports(name, JSON.parse(payload.toString()), function(error, data){
+		if(!payload) return res.send(400, new Error('Unsupported format.'));
+
+		storage.imports(name, payload, function(error, data){
 			if(error) return res.send(500, error);
 			res.send(201, { message: 'imported' });
 		});

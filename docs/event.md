@@ -111,13 +111,22 @@ Get clients grouped by stream name.
 
 ## log(resource, options, queryString, callback)
 
-Get messages from a stream by using a json query. 
+Get events from a persistent stream by using a json query. 
 
 ### Params:
 
 * **String** *resource* - Name of stream.
 * **Object** *options* - Query options.
 * **String** *queryString* - JSON Query options.
+* **callback** *callback* - Done handler.
+
+## log(resource, callback)
+
+Delete all events from a persistent stream. 
+
+### Params:
+
+* **String** *resource* - Name of stream.
 * **callback** *callback* - Done handler.
 
 <!-- End lib/event.module.js -->

@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.1.25",
+  "version": "0.2.0",
   "dependencies": {
     "cflow": "*",
     "cron": "*",
@@ -8,7 +8,6 @@
     "fstream": "*",
     "jshtml-express": "*",
     "json-stringify-safe": "*",
-    "jsonquery": "*",
     "level": "*",
     "level-fix-range": "^2.0.0",
     "microtime": "*",

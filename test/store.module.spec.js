@@ -357,10 +357,10 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('should import raw data', function(done){
       var data = [
-        { key: 'import2!name', value: 'Max Mustermann' },
-        { key: 'import2!dob', value: '16 February 1941' },
-        { key: 'import2!spouse', value: 'Maxi' },
-        { key: 'import2!occupation', value: 'Clown' }
+        { key: 'name', value: 'Max Mustermann', store: 'import2' },
+        { key: 'dob', value: '16 February 1941', store: 'import2' },
+        { key: 'spouse', value: 'Maxi', store: 'import2' },
+        { key: 'occupation', value: 'Clown', store: 'import2' }
         ];
       sut.imports('', data, function(error){
         assert.equal(error, undefined);

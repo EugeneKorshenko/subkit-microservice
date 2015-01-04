@@ -42,7 +42,6 @@ module.exports = function(grunt) {
         'routes/event.js',
         'routes/task.js',
         'routes/share.js',
-        'routes/statistics.js',
 
         'gruntfile.js',
         'supervisor.js',

@@ -201,22 +201,12 @@ module.exports.init = function(){
 		basePath: app.key ? 'https://localhost:'+app.port : 'http://localhost:'+app.port
 	});
 
-
 	//starts the tasks scheduler
 	task.runScheduler(true);
 
-	//starts external API
-	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, doc);
-	require('./routes/store.js').init(server, storage, doc);
-	require('./routes/share.js').init(server, share, doc);
-	require('./routes/event.js').init(server, event, doc);
-	// require('./routes/statistics.js').init(server, storage, event, es, doc);
-	require('./routes/task.js').init(server, task, doc);
-
 	//plugins
-	var availablePlugins = subkitPackage.optionalDependencies;
 	var pluginContext = {
-		AvailablePlugins: availablePlugins,
+		AvailablePlugins: subkitPackage.optionalDependencies,
 		Server: server,
 		Configuration: nconf,
 		Utils: utils,
@@ -234,7 +224,12 @@ module.exports.init = function(){
 
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);
 	plugin.loadAll();
-	require('./routes/plugin.js').init(server, plugin, doc);
+
+	//starts external API
+	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, plugin, share, doc);
+	require('./routes/store.js').init(server, storage, doc);
+	require('./routes/event.js').init(server, event, doc);
+	require('./routes/task.js').init(server, task, doc);
 
 	return {
 		getContext: function(){

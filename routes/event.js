@@ -50,11 +50,15 @@ module.exports.init = function(server, event, doc){
 
 	server.post('/events/emit/:stream', function (req, res, next) {
 		var stream = req.params.stream;
-		var	message = req.body;
-		var isPersistent = req.headers['X-Subkit-Event-Persistent'] || false;
+		var	payload = req.body;
+		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
+		if(!payload) return res.send(400, new Error('Parameter `payload` missing.'));
+
+		var isPersistent = req.headers['x-subkit-event-persistent'] || false;
+		var metadata = req.headers['x-subkit-event-metadata'] || {};
 		
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
-		event.emit(stream, message, {}, isPersistent);
+		event.emit(stream, payload, metadata, isPersistent);
 		res.send(201, {message: 'emitted'});
 	});
 

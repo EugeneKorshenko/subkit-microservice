@@ -8,6 +8,7 @@
     "fstream": "*",
     "jshtml-express": "*",
     "json-stringify-safe": "*",
+    "jsonquery": "^0.1.6",
     "level": "*",
     "level-fix-range": "^2.0.0",
     "microtime": "*",

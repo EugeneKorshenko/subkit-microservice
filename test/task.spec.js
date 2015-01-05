@@ -24,8 +24,8 @@ describe.skip('Integration: Task', function(){
     done();
   });
   after(function(done){
-    context.Storage.close();
-    context.Server.close();
+    context.storage.close();
+    context.server.close();
     delete require.cache[server];
     done();
   });

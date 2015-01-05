@@ -212,13 +212,13 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 	});
 
-	server.get('/manage/shares/identities', function(req, res, next){
+	server.get('/manage/permissions/identities', function(req, res, next){
 		share.listIdentities(function(err, data){
 			if(err) return res.send(400);
 			res.send(200, data);
 		});
 	});
-	server.get('/manage/shares/:identity', function(req, res, next){
+	server.get('/manage/permissions/:identity', function(req, res, next){
 		var identity = req.params.identity;
 		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
@@ -227,7 +227,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(200, data);
 		});
 	});
-	server.post('/manage/shares/:name', function(req, res, next){
+	server.post('/manage/permissions/:name', function(req, res, next){
 		var name = req.params.name;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
 
@@ -236,7 +236,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(201, data);
 		});
 	});
-	server.del('/manage/shares/:name', function(req, res, next){
+	server.del('/manage/permissions/:name', function(req, res, next){
 		var name = req.params.name;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
 
@@ -245,8 +245,16 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(202, {message: 'delete accepted'});
 		});
 	});
+	server.put('/manage/permissions/action/revoke/:identity', function(req, res, next){
+		var identity = req.params.identity;
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
-	server.put('/manage/shares/:name/action/grantread/:identity', function(req, res, next){
+		share.revokeAccess(identity, function(err,data){
+			if(err) return res.send(400);
+			res.send(202, data);
+		});
+	});		
+	server.put('/manage/permissions/:name/action/grantread/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -257,7 +265,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(202, data);
 		});
 	});
-	server.put('/manage/shares/:name/action/revokeread/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/action/revokeread/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -268,7 +276,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(202, data);
 		});
 	});
-	server.put('/manage/shares/:name/action/grantinsert/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/action/grantinsert/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -279,7 +287,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(202, data);
 		});
 	});
-	server.put('/manage/shares/:name/action/revokeinsert/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/action/revokeinsert/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -290,7 +298,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(202, data);
 		});
 	});	
-	server.put('/manage/shares/:name/action/grantupdate/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/action/grantupdate/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -301,7 +309,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(202, data);
 		});
 	});	
-	server.put('/manage/shares/:name/action/revokeupdate/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/action/revokeupdate/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -312,7 +320,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(202, data);
 		});
 	});
-	server.put('/manage/shares/:name/action/grantdelete/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/action/grantdelete/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -323,7 +331,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(202, data);
 		});
 	});
-	server.put('/manage/shares/:name/action/revokedelete/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/action/revokedelete/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -334,13 +342,4 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.send(202, data);
 		});
 	});
-	server.put('/manage/shares/action/revoke/:identity', function(req, res, next){
-		var identity = req.params.identity;
-		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
-
-		share.revokeAccess(identity, function(err,data){
-			if(err) return res.send(400);
-			res.send(202, data);
-		});
-	});	
 };

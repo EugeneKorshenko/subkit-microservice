@@ -1,10 +1,10 @@
 # Microservice Template [![Build Status](https://travis-ci.org/SubKit/subkit-microservice.svg?branch=master)](https://travis-ci.org/SubKit/subkit-microservice)
 
-Backend applications as simple and flexible as never before.
+Backends as simple as never before.
 
 PREAMBLE
 ---
-ATTENTION! Project is under heavy development and not ready for production yet.
+ATTENTION! Project is under heavy development.
 
 Prerequisites
 ---
@@ -25,132 +25,7 @@ __Windows 8/8.1__
 * [Windows Software Development Kit (SDK) für Windows 8](http://www.microsoft.com/click/services/Redirect2.ashx?CR_EAC=300105886)
 * [Windows Software Development Kit (SDK) for Windows 8.1](http://www.microsoft.com/click/services/Redirect2.ashx?CR_EAC=300135395)
 
-Installation
----
-__via Subkit-CLI__  
-`npm install subkit-microservice -g`  
-+ Creates a new backend instance  
-`subkit new <appname>`  
-+ Start the newly created backend instance  
-`subkit start <appname>`
-+ Browser automatically opens https://localhost:8080  
-__Username: subkit__  
-__Password: subkit__  
-
-BASICS
----
-* [Quick Intro](docs/quick_intro.md)
-* [Quick Intro JavaScript Sample](docs/quick_start_javascript_sample.html)
-* [Configuration Options](docs/service_config.md)
-
-GETTING STARTED
----
-* [5 mins Subkit JS Tutorial](docs/tutorials/5mins_js_tutorial.md)
-
-DOCUMENTATION
----
-* [Shares & Access Control](docs/acl.md)
-* [Queries](docs/store_queries.md)
-* [Projections](docs/projections.md)
-* [Task API](docs/task_api.md)
-
-FEATURES
----
-STATUS		  | Feature 	  | Comments
-------------- | ------------- | ---------------
-X		 	  | HTTP/HTTPS    | [Service Configuration](docs/service_config.md)
-X		 	  | Dashboard     | Web-Admin-Dashboard
-X		 	  | Backups	      | Backup and Restore your data
-X		 	  | JSON Im/Export| JSON data import and export
-X		 	  | ETag Caching  | ETag based content caching
-X		 	  | ETag Versions | ETag / version based concurrency control
-X		 	  | API DOC       | Interactive REST documentation
-X		 	  | JSON Queries  | [MongoDB like JSON Queries](docs/store_queries.md)
-X		 	  | Worker		  | Scheduled Background Worker
-X		 	  | Monitoring	  | Heartbeats for Web-Service Monitoring
-X		 	  | Statistics	  | Useful statistics and usage analysis
-X		 	  | History		  | Track and query all state changes
-X		 	  | JSON Storage  | Lightweight JSON key/value persistence
-X		 	  | Messaging	  | Lightweight Message Bus for Real-Time topic based and storage changes
-X			  | Statistics    | Instance resource and usage statistics
-X		 	  | Shares        | Resource and ACL based authorization
--		 	  | WebHooks      | User-defined HTTP callbacks
--		 	  | WebSockets    | Web-Socket support for real-time notifications
-
-PLUGINS
----
-Extend the Subkit MircoService instance with plugins.
-
-`npm install <plugin> --save-optional`
-
-STATUS		  | Name 	 		  | Comments
-------------- | ----------------- | ---------------
-X		 	  | [File](https://github.com/SubKit/subkit-file-plugin.git)			  | Create, Upload, Download static files
-X			  | [EMail](https://github.com/SubKit/subkit-email-plugin.git) 			  | Templated EMails over SMTP 
-X			  | [Task](https://github.com/SubKit/subkit-task-plugin.git)	    	  | Manage, execute and schedule custom JavaScript tasks
-X		 	  | [Template](https://github.com/SubKit/subkit-template-plugin.git)		  | JSHTML based template engine
-X		 	  | [User](https://github.com/SubKit/subkit-user-plugin.git)			  | Manage accounts
--			  | [Payment](https://github.com/SubKit/subkit-payment-plugin.git)   		  | Payment provider support
--			  | [Geolocation](https://github.com/SubKit/subkit-geolocation-plugin.git)    	  | Organize and query geolocations
--			  | [S3](https://github.com/SubKit/subkit-S3-plugin.git)			  | Manage Amazon S3 buckets and items
--			  | [Mobile Push](https://github.com/SubKit/subkit-push-plugin.git)	  | Mobile push notifications to iOS, Android, WP8
-O			  | BaaS			  | Manage Subkit as BaaS or MEAP
-O			  | ETL				  | Extract-Transform-Load data flow engine
-O			  | MDM       		  | Mobile Device Management Plugin
-O			  | Analytics   	  | Real-Time event-driven data analytics engine
-O			  | Transcoder		  | Transcoding images and videos
-
-X = available  
-\- = planed  
-O = commercial  
-
-ROADMAP
----
-* [Roadmap](docs/roadmap.md)
-
-MODULE DOCUMENTATION
----
-* [Manage Module](docs/manage.md)
-* [JSON Key/Value Store Module](docs/store.md)
-* [Event Module](docs/event.md)
-* [Task Module](docs/task.md)
-* [Template Module](docs/template.md)
-* [EventSource Module](docs/eventsource.md)
-* [File Module](docs/file.md)
-* [Doc Module](docs/doc.md)
-* [Utils Module](docs/helper.md)
-* [Share Module](docs/share.md)
-* [Identity Module](docs/identity.md)
-
-DEVELOPMENT
----
-* [Custom Plugin Development](docs/plugin_dev.md)
-* Develop Tasks - The custom JavaScript execution API
-
-Alternative installations
----
-__via NPM__  
-`npm install subkit-microservice`  
-`cd node_modules/subkit-microservice`  
-`npm start`  
-
-__via Git__  
-`git clone https://github.com/SubKit/subkit-microservice.git`  
-`cd subkit-microservice`  
-`npm install grunt-cli -g`  
-`npm install`  
-`npm test`  
-`npm start`  
-
-SuperVisor
----
-It's essential to monitor the current execution state to each microservice instance. We use forever to start every instance via the 'supervisor.js' script.
-
-Start a Subkit mirsoservice instance supervised.
-
-1. `npm start` || `node supervisor.js`
-
 License
 ---
 No License  
-Copyright 2015 Mike Bild  
+Copyright 2015  

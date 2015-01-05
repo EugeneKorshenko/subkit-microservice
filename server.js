@@ -206,20 +206,19 @@ module.exports.init = function(){
 
 	//plugins
 	var pluginContext = {
-		AvailablePlugins: subkitPackage.optionalDependencies,
-		Server: server,
-		Configuration: nconf,
-		Utils: utils,
-		Doc: doc,
-		Storage: storage,
-		Share: share,
-		Event: event,
-		EventSource: es,
-		File: file,
-		Template: template,
-		Task: task,
-		Identity: identity,
-		ServeStatic: restify.serveStatic
+		plugins: subkitPackage.optionalDependencies,
+		server: server,
+		configuration: nconf,
+		utils: utils,
+		doc: doc,
+		storage: storage,
+		share: share,
+		event: event,
+		eventSource: es,
+		file: file,
+		template: template,
+		task: task,
+		identity: identity
 	};
 
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);

@@ -51,10 +51,10 @@ module.exports.init = function(server, event, doc){
 	server.post('/events/emit/:stream', function (req, res, next) {
 		var stream = req.params.stream;
 		var	message = req.body;
-
-		var isPersistent = req.headers['x-sk-event-persistent'] || false;
-
-		if(message) event.emit(stream, message, {}, isPersistent);
+		var isPersistent = req.headers['X-Subkit-Event-Persistent'] || false;
+		
+		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
+		event.emit(stream, message, {}, isPersistent);
 		res.send(201, {message: 'emitted'});
 	});
 

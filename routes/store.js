@@ -37,7 +37,7 @@ module.exports.init = function(server, storage, doc){
 		if(groupBy) options.groupBy = groupBy;
 		if(keysOnly) options.keysOnly = keysOnly==='false' ? false : true;
 
-		try { if(where) where = JSON.parse(unescape(where)); }catch(e){}
+		try { if(where) where = JSON.parse(unescape(where)); }catch(e){ where = {}; }
 
 		storage.query(resource, options, where || {}, function(error, data){
 			if(error) return next(error);

@@ -19,6 +19,8 @@ module.exports.init = function(server, event, doc){
 
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
 		
+		try { if(where) where = JSON.parse(unescape(where)); } catch(e){ where = null; }
+
 		event.bind(stream, where, function(error, data){
 			if(error) return res.send(404, error);
 			res.contentType = 'application/json';

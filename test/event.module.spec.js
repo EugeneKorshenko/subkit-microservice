@@ -23,12 +23,12 @@ describe('Module: Event', function(){
   it('should emit message to channels', function(done){
     var count1 = 0;
     var count2 = 0;
-    sut.bindPersistent('demo1', function(error, data){
+    sut.bindPersistent('demo1', null, function(error, data){
       count1++;
       assert.equal(error, null);
       assert.notEqual(data, null);
     });
-    sut.bindPersistent('demo2', function(error, data){
+    sut.bindPersistent('demo2', null, function(error, data){
       count2++;
       assert.equal(error, null);
       assert.notEqual(data, null);
@@ -43,8 +43,7 @@ describe('Module: Event', function(){
       assert.equal(count1, 3);
       assert.equal(count2, 2);
       done();
-    }, 100);
-    
+    }, 20);
   });
 
   it('should receive messages from a user by single channel', function(done){
@@ -75,7 +74,33 @@ describe('Module: Event', function(){
         done();
       });
 
-    }, 100);
+    }, 20);
+  });
+
+  it('should filtered receive emitted messages', function(done){
+    var count1 = 0;
+    var count2 = 0;
+    sut.bindPersistent('demo1', { id: {$exists:true} }, function(error, data){
+      count1++;
+      assert.equal(error, null);
+      assert.notEqual(data, null);
+    });
+    sut.bindPersistent('demo2', { id: {$exists:true} }, function(error, data){
+      count2++;
+      assert.equal(error, null);
+      assert.notEqual(data, null);
+    });    
+    sut.emit('demo1', { test: 'demo1 foo1', id: 1 });
+    sut.emit('demo2', { test: 'demo2 foo1' });
+    sut.emit('demo1', { test: 'demo1 foo3', id: 2 });
+    sut.emit('demo1', { test: 'demo1 foo2' });
+    sut.emit('demo2', { test: 'demo2 foo2', id: 1 });
+
+    setTimeout(function(){
+      assert.equal(count1, 2);
+      assert.equal(count2, 1);
+      done();
+    }, 20);
   });
 
 });

@@ -15,9 +15,11 @@ module.exports.init = function(server, event, doc){
 	//events
 	server.get('/events/bind/:stream', function (req, res, next) {
 		var stream = req.params.stream;
+		var where = req.params.where;
+
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
 		
-		event.bind(stream, function(error, data){
+		event.bind(stream, where, function(error, data){
 			if(error) return res.send(404, error);
 			res.contentType = 'application/json';
 			res.header('Content-Type', 'application/json');
@@ -27,15 +29,15 @@ module.exports.init = function(server, event, doc){
 
 	server.post('/events/bind/:stream', function(req,res,next){
 		var stream = req.params.stream;
-		var webhook = req.headers['X-Subkit-Event-WebHook'];
+		var webhook = req.headers['X-Subkit-Event-WebHook'] || '';
+		var where = req.headers['X-Subkit-Event-Filter'];
 		
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
 		if(!webhook) return res.send(400, new Error('Parameter `webhook` missing.'));
 		
-		event.bindWebHook(stream, webhook, function(error, data){
-			if(error) return res.send(404, error);
-			res.send(201, {message: 'created'})
-		});
+		event.bindWebHook(stream, webhook, where);
+		res.send(201, {message: 'created'});
+
 	});
 	server.del('/events/bind/:stream', function(req,res,next){
 		var stream = req.params.stream;

@@ -27,11 +27,6 @@ describe('Module: Share', function(){
       it('should be only grant read access', function(done){
         var actual = sut.listByIdentity('anonymous');
         assert.deepEqual(actual['/'], ['GET']);
-        assert.deepEqual(actual['/libs'], ['GET']);
-        assert.deepEqual(actual['/css'], ['GET']);
-        assert.deepEqual(actual['/sdk'], ['GET']);
-        assert.deepEqual(actual['/img'], ['GET']);
-        assert.deepEqual(actual['/js'], ['GET']);
         assert.deepEqual(actual['/doc'], ['GET']);
         done();
       });
@@ -155,11 +150,6 @@ describe('Module: Share', function(){
       it('should being revoke all access on shares', function(done){
         var actual = sut.revokeAccess('superIdent');
         assert.deepEqual(actual, { '/': [],
-                                  '/libs': [],
-                                  '/css': [],
-                                  '/sdk': [],
-                                  '/js': [],
-                                  '/img': [],
                                   '/doc': [],
                                   '/demo2': [],
                                   '/demo3': [],

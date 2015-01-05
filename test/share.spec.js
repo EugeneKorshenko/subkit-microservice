@@ -41,11 +41,6 @@ describe('Integration: Share', function(){
         assert.ifError(error);
         assert.equal(res.statusCode, 200, 'Wrong HTTP status code.');
         assert.deepEqual(actual, {  '/': [ 'GET' ],
-                                    '/libs': [ 'GET' ],
-                                    '/css': [ 'GET' ],
-                                    '/sdk': [ 'GET' ],
-                                    '/js': [ 'GET' ],
-                                    '/img': [ 'GET' ],
                                     '/doc': [ 'GET' ] }
         );
         done();
@@ -57,11 +52,6 @@ describe('Integration: Share', function(){
         assert.ifError(error);
         assert.equal(res.statusCode, 200, 'Wrong HTTP status code.');
         assert.deepEqual(actual, {  '/': [],
-                                    '/libs': [],
-                                    '/css': [],
-                                    '/sdk': [],
-                                    '/js': [],
-                                    '/img': [],
                                     '/doc': [] }
         );
         done();
@@ -154,11 +144,6 @@ describe('Integration: Share', function(){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
         assert.deepEqual(actual, { '/': [],
-                                  '/libs': [],
-                                  '/css': [],
-                                  '/sdk': [],
-                                  '/js': [],
-                                  '/img': [],
                                   '/doc': [],
                                   '/demo1': [] }
         );

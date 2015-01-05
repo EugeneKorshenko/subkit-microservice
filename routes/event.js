@@ -25,7 +25,6 @@ module.exports.init = function(server, event, doc){
 		});
 	});
 
-
 	server.post('/events/bind/:stream', function(req,res,next){
 		var stream = req.params.stream;
 		var webhook = req.headers['X-Subkit-Event-WebHook'];
@@ -38,7 +37,6 @@ module.exports.init = function(server, event, doc){
 			res.send(201, {message: 'created'})
 		});
 	});
-
 	server.del('/events/bind/:stream', function(req,res,next){
 		var stream = req.params.stream;
 		var webhook = req.headers['X-Subkit-Event-WebHook'];
@@ -106,6 +104,5 @@ module.exports.init = function(server, event, doc){
 			res.send(200, data);
 		});
 	});
-
 
 };

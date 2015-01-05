@@ -13,25 +13,41 @@ module.exports.init = function(server, event, doc){
 	})();
 
 	//events
-	server.get('/events/bind/:stream/:clientId', function (req, res, next) {
-		var stream = req.params.stream,
-			clientId = req.params.clientId;
-
-		event.bind(stream, clientId, function(err, data){
-			if(err) res.send(404, err);
+	server.get('/events/bind/:stream', function (req, res, next) {
+		var stream = req.params.stream;
+		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
+		
+		event.bind(stream, function(error, data){
+			if(error) return res.send(404, error);
 			res.contentType = 'application/json';
 			res.header('Content-Type', 'application/json');
 			res.end(JSON.stringify([data]));
 		});
 	});
-	server.del('/events/bind/:stream/:clientId', function(req,res,next){
-		var stream = req.params.stream,
-			clientId = req.params.clientId;
 
-		if(!stream || !clientId) res.send(404);
+
+	server.post('/events/bind/:stream', function(req,res,next){
+		var stream = req.params.stream;
+		var webhook = req.headers['X-Subkit-Event-WebHook'];
 		
-		event.unsubscribe(stream, clientId);
-		res.send(202);
+		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
+		if(!webhook) return res.send(400, new Error('Parameter `webhook` missing.'));
+		
+		event.bindWebHook(stream, webhook, function(error, data){
+			if(error) return res.send(404, error);
+			res.send(201, {message: 'created'})
+		});
+	});
+
+	server.del('/events/bind/:stream', function(req,res,next){
+		var stream = req.params.stream;
+		var webhook = req.headers['X-Subkit-Event-WebHook'];
+
+		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
+		if(!webhook) return res.send(400, new Error('Parameter `webhook` missing.'));
+
+		event.unbindWebHook(stream, clientId);
+		res.send(202, {message: 'unbind accepted'});
 	});
 
 	server.post('/events/emit/:stream', function (req, res, next) {

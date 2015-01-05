@@ -10,7 +10,7 @@ describe('Module: Event', function(){
       dbPath:'./eventspecdb',
       backupPath:'./backups'
     });
-    sut = require('../lib/event.module.js').init({ pollInterval: 1}, store);
+    sut = require('../lib/event.module.js').init({}, store);
     require('../lib/eventsource.module.js').init(store, sut);
     done();
   });
@@ -23,12 +23,12 @@ describe('Module: Event', function(){
   it('should emit message to channels', function(done){
     var count1 = 0;
     var count2 = 0;
-    sut.bindPersistent('demo1','demouser', function(error, data){
+    sut.bindPersistent('demo1', function(error, data){
       count1++;
       assert.equal(error, null);
       assert.notEqual(data, null);
     });
-    sut.bindPersistent('demo2','otheruser', function(error, data){
+    sut.bindPersistent('demo2', function(error, data){
       count2++;
       assert.equal(error, null);
       assert.notEqual(data, null);

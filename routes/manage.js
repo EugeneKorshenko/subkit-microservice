@@ -7,7 +7,7 @@ var	fs = require('fs');
 var	os = require('os');
 var	utils = require('../lib/utils.module.js').init();
 
-module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, plugin, share, doc){
+module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, plugin, share, version, doc){
 	require('./doc/manage.doc.js').init(doc);
 
 	server.post('/manage/login', function (req, res, next) {
@@ -86,12 +86,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 
 		if(!certificate) return res.send(400, new Error('Parameter `certificate` missing.'));
 		if(!key) return res.send(400, new Error('Parameter `key` missing.'));
-		if(!ca) return res.send(400, new Error('Parameter `ca` missing.'));
 
 		var appConfig = configuration.get('app');		
 		fs.writeFileSync(appConfig.key, key);
 		fs.writeFileSync(appConfig.cert, certificate);
-		fs.writeFileSync(appConfig.ca, ca);
+		if(ca) fs.writeFileSync(appConfig.ca, ca);
 
 		configuration.save(function(err){
 			if(err) return res.send(400, new Error('Can not change the certificate.'));
@@ -113,17 +112,9 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	});
 	server.get('/manage/os', function(req, res,next){
 		res.send(200, {
+			apiVersion: version,
 			hostname: os.hostname(),
-			osType: os.type(),
-			osPlatform: os.platform(),
-			osArch: os.arch(),
-			osRelease: os.release(),
-			osUptime: os.uptime(),
-			osCpus: os.cpus(),
-			osTotalMem: os.totalmem(),
-			osLoadAvg: os.loadavg(),
-			osFreeMem: os.freemem(),
-			processMemUsage: process.memoryUsage(),
+			processMemUsage: process.memoryUsage().heapTotal,
 			processUptime: process.uptime()
 		});
 	});

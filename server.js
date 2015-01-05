@@ -76,7 +76,8 @@ module.exports.init = function(){
 	server.formatters['text/html'] = function(req, res, body){
 		return body;
 	};
-	//Middleware
+
+	//middleware
 	server.use(restify.acceptParser(server.acceptable));
 	server.use(restify.bodyParser({ mapParams: true }));
 	server.use(restify.CORS({
@@ -107,7 +108,6 @@ module.exports.init = function(){
 		return next();
 	});
 
-
 	//handle errors	
 	process.stdin.resume();
 	server.on('uncaughtException', function (req, res, route, err) {
@@ -131,7 +131,7 @@ module.exports.init = function(){
 	process.on('SIGINT', exitHandler.bind(null, {cleanup: true, exit:true}));
 	process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
 	
-	//Modules
+	//modules
 	var storage = require('./lib/store.module.js').init(paths);
 	var	event = require('./lib/event.module.js').init({pollInterval: 1}, storage);
 	var share = require('./lib/share.module.js').init({}, event);
@@ -141,8 +141,8 @@ module.exports.init = function(){
 	var task = require('./lib/task.module.js').init(paths, storage, event, es, template.init(paths), file.init(paths), doc);
 	var identity = require('./lib/identity.module.js');
 
-    var usersIdent = identity.init(null, storage);
-	//handle share access
+    //handle access
+    var usersIdent = identity.init(null, storage);	
 	server.use(function(req, res, next){
 		var apikey = req.headers['x-auth-token'] || req.params.apikey || req.params.api_key;
 		var token = null;
@@ -225,7 +225,7 @@ module.exports.init = function(){
 	plugin.loadAll();
 
 	//starts external API
-	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, plugin, share, doc);
+	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, plugin, share, subkitPackage.version, doc);
 	require('./routes/store.js').init(server, storage, doc);
 	require('./routes/event.js').init(server, event, doc);
 	require('./routes/task.js').init(server, task, doc);

@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.2.0",
+  "version": "0.2.01",
   "dependencies": {
     "cflow": "*",
     "cron": "*",

@@ -11,7 +11,7 @@ describe('Module: Event', function(){
       backupPath:'./backups'
     });
     sut = require('../lib/event.module.js').init({}, store);
-    require('../lib/eventsource.module.js').init(store, sut);
+    // require('../lib/eventsource.module.js').init(store, sut);
     done();
   });
   after(function(done){

@@ -133,7 +133,7 @@ module.exports.init = function(){
 	
 	//modules
 	var storage = require('./lib/store.module.js').init(paths);
-	var	event = require('./lib/event.module.js').init({pollInterval: 1}, storage);
+	var	event = require('./lib/event.module.js').init({}, storage);
 	var share = require('./lib/share.module.js').init({}, event);
 	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, event);

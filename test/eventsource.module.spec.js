@@ -10,7 +10,7 @@ describe('Module: EventSource', function(){
       dbPath:'./eventsourcedb',
       backupPath:'./backups'
     });
-    event = require('../lib/event.module.js').init({pollInterval: 1});
+    event = require('../lib/event.module.js').init({}, store);
     sut = require('../lib/eventsource.module.js').init(store, event);
     
    event.emit('demo1',{},{},true);

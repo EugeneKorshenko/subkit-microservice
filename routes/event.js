@@ -37,6 +37,8 @@ module.exports.init = function(server, event, doc){
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
 		if(!webhook) return res.send(400, new Error('Parameter `webhook` missing.'));
 		
+		try { if(where) where = JSON.parse(unescape(where)); } catch(e){ where = null; }
+
 		event.bindWebHook(stream, webhook, where);
 		res.send(201, {message: 'created'});
 
@@ -62,8 +64,12 @@ module.exports.init = function(server, event, doc){
 		var metadata = req.headers['x-subkit-event-metadata'] || {};
 		
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
-		event.emit(stream, payload, metadata, isPersistent);
-		res.send(201, {message: 'emitted'});
+
+		event.emit(stream, payload, metadata, isPersistent, function(error, data){
+			if(error) return res.send(400, error);
+			res.send(201, data);
+		});
+		
 	});
 
 	server.get('/events/log/:stream', function(req, res, next){

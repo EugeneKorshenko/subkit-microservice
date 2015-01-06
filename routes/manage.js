@@ -111,16 +111,28 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 	});
 	server.get('/manage/os', function(req, res,next){
-		res.send(200, {
-			apiVersion: version,
-			hostname: os.hostname(),
-			processMemUsage: process.memoryUsage().heapTotal,
-			processUptime: process.uptime()
-		});
+		storage.statistics(function(error, data){
+			res.send(200, {
+				apiVersion: version,
+				hostname: os.hostname(),
+				dbSize: data || 0,
+				processMemUsage: process.memoryUsage().heapTotal,
+				processUptime: process.uptime()
+			});
+		})
 	});
 
 	server.post('/manage/import', function(req,res,next){
 		var payload = req.body;
+
+		if(req.headers['content-type'] === 'application/octed-stream') {
+			try{
+				payload = JSON.parse(payload.toString());
+
+			}catch(error){
+				return res.send(400, new Error('Unsupported format.'));
+			}
+		}
 		if(!payload) return res.send(400, new Error('Unsupported format.'));
 
 		storage.imports('', payload, function(error, data){

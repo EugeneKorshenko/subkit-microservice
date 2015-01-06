@@ -41,6 +41,9 @@ module.exports.init = function(server, storage, doc){
 
 		storage.query(resource, options, where || {}, function(error, data){
 			if(error) return next(error);
+
+			if(data.$version) res.header('ETag', data.$version);
+			if(data.$timestamp) res.header('Last-Modified', data.$timestamp);
 			res.send(data);
 			return next();
 		});		
@@ -68,26 +71,38 @@ module.exports.init = function(server, storage, doc){
 		var resource = req.params[0];
 		var key = req.params[1];
 		var	body = req.body;
+		var ifMatch = parseInt(req.headers['if-match']);
 
 		if(resource === '' || key === ''  || body === undefined) return res.send(404, new Error('Parameters not set.'));
 
-		storage.update(resource, key, body, function(error){
+		var responseHandler = function(error){
+			if(error && error.message === 'Version conflict.') return res.send(412, error);
+			if(error && error.message === 'Not found.') return res.send(404, error);
 			if(error) return next(error);
 			res.send(202, { message: 'update accepted' });
 			return next();
-		});
+		};
+
+		if(!ifMatch) storage.update(resource, key, body, responseHandler);
+		else storage.tryUpdate(resource, key, ifMatch, body, responseHandler);
 	});
 	server.del(/stores\/([a-zA-Z0-9_\.~-]+)\/(.*)/, function (req, res, next) {
-		var resource = req.params[0],
-			key = req.params[1];
+		var resource = req.params[0];
+		var key = req.params[1];
+		var ifMatch = parseInt(req.headers['if-match']);
 
 		if(resource === '' || key === '') return res.send(404, new Error('Parameters not set.'));
 
-		storage.del(resource, key, function(error){
+		var responseHandler = function(error){
+			if(error && error.message === 'Version conflict.') return res.send(412, error);
+			if(error && error.message === 'Not found.') return res.send(404, error);			
 			if(error) return next(error);
 			res.send(202, { message: 'delete accepted' });
 			return next();
-		});
+		};
+
+		if(!ifMatch) storage.del(resource, key, responseHandler);
+		else storage.tryDel(resource, key, ifMatch, responseHandler);
 	});
 	server.del(/stores\/([a-zA-Z0-9_\.~-]+)/, function (req, res, next) {
 		var resource = req.params[0];

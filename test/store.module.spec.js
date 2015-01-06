@@ -215,9 +215,9 @@ describe('Module: JSON Key/Value Storage', function(){
       });
     });
   });
-  xdescribe('versioned write changes', function(){
+  describe('conditional write changes', function(){
     it('create should add a item', function(done){
-      sut.tryUpdate('try_change_test_item', '1', {test: 'try_change_test_item 1 test'}, function(error){
+      sut.insert('try_change_test_item', '1', {test: 'try_change_test_item 1 test'}, function(error){
         assert.equal(error, undefined);
 
         sut.query('try_change_test_item', { key: '1' }, {}, function(error, data){
@@ -229,19 +229,19 @@ describe('Module: JSON Key/Value Storage', function(){
 
       });
     });
-    it('update should change the item', function(done){
+
+    it('update with same version should change the item', function(done){
 
       sut.query('try_change_test_item', { key: '1' }, {}, function(error, data){
         var oldVersion = data.$version;
-
         data.$payload.test = 'new try_change_test_item 1 test';
 
-        sut.tryUpdate('try_change_test_item', '1', data, function(error){
-          assert.equal(error, undefined);
+        sut.tryUpdate('try_change_test_item', '1', oldVersion, data.$payload, function(error){
+          assert.ifError(error);
 
           sut.query('try_change_test_item', { key: '1' }, {}, function(error, afterChange){
-            assert.equal(error, undefined);
-            assert.equal(afterChange.test , 'new try_change_test_item 1 test');
+            assert.ifError(error);
+            assert.equal(afterChange.$payload.test , 'new try_change_test_item 1 test');
             assert.equal(oldVersion < afterChange.$version, true);
             assert.notEqual(afterChange.$version, null);
             done();  
@@ -251,63 +251,74 @@ describe('Module: JSON Key/Value Storage', function(){
 
       });
     });
-    it('update with the same version number should throw an error', function(done){
 
-      sut.query('try_change_test_item', { key: '1' }, {}, function(error, existingItem){
-        assert.equal(error, undefined);
+    it('update with the newer version number should change to item', function(done){
 
-        sut.tryUpdate('try_change_test_item', '1', existingItem, function(error, changedItem){
-          assert.equal(error, undefined);
-          assert.equal(existingItem.$version < changedItem.$version, true);
+      sut.query('try_change_test_item', { key: '1' }, {}, function(error, data){
+        var oldVersion = data.$version;
+        data.$payload.test = 'new try_change_test_item 1 test';
 
-          sut.tryUpdate('try_change_test_item', '1', existingItem, function(error, data){
-            assert.equal(error.message, 'Item can not be changed. Version conflict exists.');
-            done();
+        sut.tryUpdate('try_change_test_item', '1', oldVersion+1, data.$payload, function(error){
+          assert.ifError(error);
+
+          sut.query('try_change_test_item', { key: '1' }, {}, function(error, afterChange){
+            assert.ifError(error);
+            assert.equal(afterChange.$payload.test , 'new try_change_test_item 1 test');
+            assert.equal(oldVersion < afterChange.$version, true);
+            assert.notEqual(afterChange.$version, null);
+            done();  
           });
 
         });
 
       });
-
     });
-    it('update with the same version number should update item', function(done){
 
-      sut.query('try_change_test_item', { key: '1' }, {}, function(error, existingItem){
-        assert.equal(error, undefined);
+    it('update with the older version number should throw an error', function(done){
 
-        sut.tryUpdate('try_change_test_item', '1', existingItem, function(error, changedItem){
-          assert.equal(error, undefined);
-          assert.equal(existingItem.$version < changedItem.$version, true);
-          
-          sut.tryUpdate('try_change_test_item', '1', changedItem, function(error, data){
-            assert.equal(error, undefined);
-            assert.equal(changedItem.$version < data.$version, true);
-            done();
+      sut.query('try_change_test_item', { key: '1' }, {}, function(error, data){
+        var oldVersion = data.$version;
+        data.$payload.test = 'new try_change_test_item 1 test';
+
+        sut.tryUpdate('try_change_test_item', '1', oldVersion-1, data.$payload, function(error){
+          assert.equal(error.message, 'Version conflict.');
+          done();
+        });
+
+      });
+    }); 
+
+    it('delete with the older version number should throw an error', function(done){
+
+      sut.query('try_change_test_item', { key: '1' }, {}, function(error, data){
+        var oldVersion = data.$version;
+
+        sut.tryDel('try_change_test_item', '1', oldVersion-1, function(error){
+          assert.equal(error.message, 'Version conflict.');
+          done();
+        });
+
+      });
+    }); 
+
+    it('delete with same version should remove the item', function(done){
+
+      sut.query('try_change_test_item', { key: '1' }, {}, function(error, data){
+        var oldVersion = data.$version;
+
+        sut.tryDel('try_change_test_item', '1', oldVersion, function(error){
+          assert.ifError(error);
+
+          sut.query('try_change_test_item', { key: '1' }, {}, function(error){
+            assert.equal(error.message, 'Key not found in database [try_change_test_item!1]');
+            done();  
           });
 
         });
 
       });
-      
     });
-    it('delete with same version should throw error', function(done){
-      sut.tryDel('try_change_test_item', '1', microtime.now()-1000000, function(error){
-        assert.equal(error.message, 'Item can not be deleted. Version conflict exists.');
-        done();
-      });
-    });
-    
-    it('delete should remove the item', function(done){
-      sut.tryDel('try_change_test_item', '1', microtime.now(), function(error){
-        assert.equal(error, undefined);
 
-        sut.query('change_test_item', { key: '1' }, {}, function(error, data){
-          assert.equal(data, undefined);
-          done();  
-        });
-
-      });
-    });
   });
   describe('grouping', function(){
     it('by range store name "bdemo" with groupBy', function(done){

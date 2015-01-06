@@ -1,20 +1,20 @@
 'use strict';
 
-var restify = require('restify'),
-	http = require('http'),
-	https = require('https'),
-	fs = require('fs'),
-	path = require('path'),
-	nconf = require('nconf'),
-	subkitPackage = require('./package.json'),
-	utils = require('./lib/utils.module.js').init();    
+var restify = require('restify');
+var http = require('http');
+var https = require('https');
+var fs = require('fs');
+var path = require('path');
+var nconf = require('nconf');
+var microtime = require('microtime');
+var subkitPackage = require('./package.json');
+var utils = require('./lib/utils.module.js').init();    
 
 module.exports.init = function(){
-	var admin,
-		app,
-		api,
-		paths,
-		etag = {etag:'', lastModified:''};
+	var admin;
+	var app;
+	var api;
+	var paths;
 
 	//load and apply configuration
 	var _applyConfig = function(){
@@ -52,7 +52,7 @@ module.exports.init = function(){
 	
 	//configure and start HTTPS/SSL server
 	var _applyServer = function(){
-		var options = { name: 'subkit microservice' };
+		var options = { name: 'subkit microservice', version: subkitPackage.version };
 
 		if(!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
 		if(app.key && fs.existsSync(app.key)) options.key = fs.readFileSync(app.key);
@@ -90,12 +90,6 @@ module.exports.init = function(){
 	server.use(restify.dateParser());
 	server.use(restify.queryParser());
 	server.use(restify.gzipResponse());
-	server.use(function (req, res, next) {
-		res.header('ETag', etag.etag);
-		res.header('Last-Modified', etag.lastModified);
-		return next();
-	});
-	server.use(restify.conditionalRequest());
 	server.pre(restify.pre.sanitizePath());
 	server.pre(restify.pre.userAgentConnection());
 

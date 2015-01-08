@@ -30,7 +30,7 @@ describe('Module: Task', function(){
     it('should create a task',function(done){
       var newTask = new sut.Task('success', []);
       newTask.taskScript = 'task.debug("Hello!"); task.done(null,{Message:"Hello world!"});';
-      sut.set(newTask.name, newTask, function(error, data){
+      sut.set(newTask.name, newTask, function(error){
         assert.ifError(error);
         done();
       });
@@ -46,7 +46,7 @@ describe('Module: Task', function(){
       });
     });
     it('should remove a task',function(done){
-      sut.remove('success', function(error, data){
+      sut.remove('success', function(error){
         assert.ifError(error);
         done();
       });
@@ -57,7 +57,7 @@ describe('Module: Task', function(){
     it('should create a task with parameters',function(done){
       var newTask = new sut.Task('longrunningsuccess', {Msg:'Hello!!!'});
       newTask.taskScript = 'setTimeout(function(){task.debug(params.Msg);},1000); setTimeout(task.done,2500);';
-      sut.set(newTask.name, newTask, function(error, data){
+      sut.set(newTask.name, newTask, function(error){
         assert.ifError(error);
         done();
       });
@@ -77,7 +77,7 @@ describe('Module: Task', function(){
       });
     });
     it('should remove task',function(done){
-      sut.remove('longrunningsuccess', function(error, data){
+      sut.remove('longrunningsuccess', function(error){
         assert.ifError(error);
         done();
       });
@@ -85,19 +85,19 @@ describe('Module: Task', function(){
   });
 
   describe.skip('on scheduled endless tasks', function(){
-    it('should create scheduled endless task with parameters',function(done){
+    it('should create scheduled endless task with parameters', function(){
       
       var newTask = new sut.Task('scheduledendlesssuccess', {Msg:'Endless-Scheduled'});
       newTask.taskScript = 'setTimeout(function(){log(params.Msg);}, 500); task.done();';
       newTask.schedule = '* * * * * *';
-      sut.set(newTask.name, newTask, function(error, data){
+      sut.set(newTask.name, newTask, function(error){
         assert.ifError(error);
       });
 
     });
-    it('should remove endless scheduled tasks',function(done){
+    it('should remove endless scheduled tasks',function(){
       
-      sut.remove('scheduledendlesssuccess', function(error, data){
+      sut.remove('scheduledendlesssuccess', function(error){
         assert.ifError(error);
       });
 
@@ -110,14 +110,14 @@ describe('Module: Task', function(){
       var newTask = new sut.Task('continuoussuccess', {Msg:'Continuous-1-'});
       newTask.taskScript = 'var count = 0; setTimeout(function(){log(params.Msg+count++);}, 1000); task.done();';
       newTask.continuous = true;
-      sut.set(newTask.name, newTask, function(error, data){
+      sut.set(newTask.name, newTask, function(error){
         assert.ifError(error);
       });
 
       var newTask2 = new sut.Task('continuous2success', {Msg:'Continuous-2-'});
       newTask2.taskScript = 'var count = 0; setTimeout(function(){log(params.Msg+count++);}, 2000); task.done();';
       newTask2.continuous = true;
-      sut.set(newTask2.name, newTask2, function(error, data){
+      sut.set(newTask2.name, newTask2, function(error){
         assert.ifError(error);
         setTimeout(done, 6500);
       });
@@ -125,11 +125,11 @@ describe('Module: Task', function(){
     });
     it('should remove parallel continuous tasks',function(done){
       
-      sut.remove('continuoussuccess', function(error, data){
+      sut.remove('continuoussuccess', function(error){
         assert.ifError(error);
       });
 
-      sut.remove('continuous2success', function(error, data){
+      sut.remove('continuous2success', function(error){
         assert.ifError(error);
         done();
       });
@@ -143,14 +143,14 @@ describe('Module: Task', function(){
       var newTask = new sut.Task('scheduledsuccess', {Msg:'Scheduled-1'});
       newTask.taskScript = 'log(params.Msg); task.done();';
       newTask.schedule = '* * * * * *';
-      sut.set(newTask.name, newTask, function(error, data){
+      sut.set(newTask.name, newTask, function(error){
         assert.ifError(error);
       });
 
       var newTask2 = new sut.Task('scheduled2success', {Msg:'Scheduled-2'});
       newTask2.taskScript = 'log(params.Msg); task.done();';
       newTask2.schedule = '*/2 * * * * *';
-      sut.set(newTask2.name, newTask2, function(error, data){
+      sut.set(newTask2.name, newTask2, function(error){
         assert.ifError(error);
         setTimeout(done, 1000);
       });
@@ -158,11 +158,11 @@ describe('Module: Task', function(){
     });
     it('should remove parallel scheduled tasks',function(done){
       
-      sut.remove('scheduledsuccess', function(error, data){
+      sut.remove('scheduledsuccess', function(error){
         assert.ifError(error);
       });
 
-      sut.remove('scheduled2success', function(error, data){
+      sut.remove('scheduled2success', function(error){
         assert.ifError(error);
         done();
       });

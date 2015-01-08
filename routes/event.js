@@ -50,7 +50,7 @@ module.exports.init = function(server, event, doc){
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
 		if(!webhook) return res.send(400, new Error('Parameter `webhook` missing.'));
 
-		event.unbindWebHook(stream, clientId);
+		event.unbindWebHook(stream, webhook);
 		res.send(202, {message: 'unbind accepted'});
 	});
 
@@ -84,7 +84,7 @@ module.exports.init = function(server, event, doc){
 		var stream = req.params.stream;
 		event.deleteLog(stream, function(err, data){
 			if(err) return res.send(500,err);
-			res.send(202, {message: "delete accepted"});
+			res.send(202, {message: 'delete accepted'});
 			return next();
 		});
 	});

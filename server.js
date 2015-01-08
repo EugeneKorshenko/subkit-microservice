@@ -6,7 +6,6 @@ var https = require('https');
 var fs = require('fs');
 var path = require('path');
 var nconf = require('nconf');
-var microtime = require('microtime');
 var subkitPackage = require('./package.json');
 var utils = require('./lib/utils.module.js').init();    
 
@@ -20,7 +19,7 @@ module.exports.init = function(){
 	var _applyConfig = function(){
 		var configFilePath = path.join(process.cwd(),'files','config');
 	  	nconf.file('config', path.join(configFilePath, 'config.json'));
-	  	nconf.file('defaults', path.join(__dirname, 'defaults.json'))
+	  	nconf.file('defaults', path.join(__dirname, 'defaults.json'));
 
 		admin = nconf.get('admin');
 		app = nconf.get('app');

@@ -41,7 +41,9 @@ describe('Module: JSON Key/Value Storage', function(){
     setTimeout(done,1000);
   });
   after(function(done){
-    sut.destroy(done);
+    setTimeout(function(){
+      sut.destroy(done);
+    },1000);
   });
   
   describe('query', function(){

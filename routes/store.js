@@ -48,12 +48,6 @@ module.exports.init = function(server, storage, doc){
 			return next();
 		});		
 	});
-	server.head(/stores\/([a-zA-Z0-9_\.~-]+)(\/)?(.*)/, function (req, res, next) {
-		var resource = req.params[0],
-			key = req.params[2];
-		if(resource === '') return res.send(404, new Error('Parameter not set.'));
-		res.send(200);
-	});
 	server.post(/stores\/([a-zA-Z0-9_\.~-]+)(\/)?(.*)/, function (req, res, next) {
 		var resource = req.params[0];
 		var key = req.params[2];

@@ -197,7 +197,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/plugins/:name', function (req, res, next) {
 		var name = req.params.name;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
-		if(name.indexOf("subkit-") === -1 || name.indexOf("-plugin") === -1) return res.send(400, new Error('Plugin could not be installed.'));
+		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) return res.send(400, new Error('Plugin could not be installed.'));
 
 		plugin.add(name, function(error, data){
 			if(error) return res.send(400, new Error('Plugin could not be installed.'));
@@ -207,7 +207,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.del('/manage/plugins/:name', function (req, res, next) {
 		var name = req.params.name;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
-		if(name.indexOf("subkit-") === -1 || name.indexOf("-plugin") === -1) return res.send(400, new Error('Plugin could not be uninstalled.'));
+		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) return res.send(400, new Error('Plugin could not be uninstalled.'));
 
 		plugin.remove(name, function(error, data){
 			if(error) return res.send(400, new Error('Plugin could not be uninstalled.'));

@@ -274,7 +274,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
 
 		share.grantReadAccess(name,identity,function(err,data){
-			if(err) return next(400, , new Error('Permission error.'));
+			if(err) return next(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});

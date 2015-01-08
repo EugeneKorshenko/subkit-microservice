@@ -1,7 +1,6 @@
 'use strict';
 
 var assert = require('assert');
-var path = require('path');
 
 describe('Given module: Plugin', function(){
   var sut;
@@ -35,7 +34,7 @@ describe('Given module: Plugin', function(){
     
     it('then should the plugin installed.', function(done){
 
-      sut.add('subkit-file-plugin', function(error, data){
+      sut.add('subkit-file-plugin', function(error){
         assert.ifError(error);
         assert.equal(error, 0);
 
@@ -54,12 +53,10 @@ describe('Given module: Plugin', function(){
   describe('when add a `unknown-unknown` plugin', function(){
     
     it('then should raise an error.', function(done){
-
-      sut.add('unknown-unknown', function(error, data){
+      sut.add('unknown-unknown', function(error){
         assert.equal(error, 1);
-        done()
+        done();
       });
-
     });
 
   });  
@@ -67,12 +64,12 @@ describe('Given module: Plugin', function(){
   describe('when remove a plugin', function(){
     
     it('then should the plugin removed.', function(done){
-
-      sut.remove('subkit-file-plugin', function(error, data){
+      sut.remove('subkit-file-plugin', function(error){
+        assert.ifError(error);
+        
         sut.list(function(error, data){
           assert.ifError(error);
           assert.equal(data.results.length, 0);
-          
           done();
         });
       });

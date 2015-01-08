@@ -141,7 +141,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		}
 		if(!payload) return next(400, new Error('Unsupported format.'));
 
-		storage.imports('', payload, function(error, data){
+		storage.imports('', payload, function(error){
 			if(error) return next(400, error);
 			res.send(201, { message: 'imported' });
 			next();
@@ -153,7 +153,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		if(!name) return next(400, new Error('Parameter `name` missing.'));
 		if(!payload) return next(400, new Error('Unsupported format.'));
 
-		storage.imports(name, payload, function(error, data){
+		storage.imports(name, payload, function(error){
 			if(error) return next(400, error);
 			res.send(201, { message: 'imported' });
 			next();
@@ -210,7 +210,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		if(!name) return next(400, new Error('Parameter `name` missing.'));
 		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) return next(400, new Error('Plugin could not be installed.'));
 
-		plugin.add(name, function(error, data){
+		plugin.add(name, function(error){
 			if(error) return next(400, new Error('Plugin could not be installed.'));
 			res.send(201, {message: 'installed'});
 			next();
@@ -221,7 +221,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		if(!name) return next(400, new Error('Parameter `name` missing.'));
 		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) return next(400, new Error('Plugin could not be uninstalled.'));
 
-		plugin.remove(name, function(error, data){
+		plugin.remove(name, function(error){
 			if(error) return next(400, new Error('Plugin could not be uninstalled.'));
 			res.send(200, {message: 'uninstalled'});
 			next();
@@ -259,7 +259,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		var name = req.params.name;
 		if(!name) return next(400, new Error('Parameter `name` missing.'));
 
-		share.remove(name, function(err,data){
+		share.remove(name, function(err){
 			if(err) return next(400, new Error('Permission error.'));
 			res.send(202, {message: 'delete accepted'});
 			next();

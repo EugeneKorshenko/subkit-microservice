@@ -59,7 +59,7 @@ module.exports.init = function(server, task, doc){
 		var taskName = req.params.name;
 		if(!taskName) return next(400, new Error('Task `name` missing.'));
 
-		task.remove(taskName, function(error, data){
+		task.remove(taskName, function(error){
 			if(error) return next(400, new Error('Task error.'));
 			res.send(202, {message: 'delete accepted'});
 			next();

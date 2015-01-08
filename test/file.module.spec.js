@@ -17,7 +17,7 @@ describe('Module: File', function(){
 
   it('should be create a javascript file', function(done){
     var filePath = path.join(process.cwd(),'files','statics','test','js','app.js');
-    sut.writeFile(filePath,'', function(err, data){
+    sut.writeFile(filePath,'', function(err){
       assert.ifError(err);
       done();
     });
@@ -25,7 +25,7 @@ describe('Module: File', function(){
 
   it('should be create a css file', function(done){
     var filePath = path.join(process.cwd(),'files','statics','test','css','style.css');
-    sut.writeFile(filePath,'', function(err, data){
+    sut.writeFile(filePath,'', function(err){
       assert.ifError(err);
       done();
     });
@@ -33,7 +33,7 @@ describe('Module: File', function(){
 
   it('should be create a html file', function(done){
     var filePath = path.join(process.cwd(),'files','statics','test','index.html');
-    sut.writeFile(filePath,'', function(err, data){
+    sut.writeFile(filePath,'', function(err){
       assert.ifError(err);
       done();
     });

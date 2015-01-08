@@ -1,8 +1,7 @@
 'use strict';
 
-var assert = require('assert'),
-    microtime = require('microtime'),
-    sut;
+var assert = require('assert');
+var sut;
 
 describe('Module: JSON Key/Value Storage', function(){
   before(function(done) {

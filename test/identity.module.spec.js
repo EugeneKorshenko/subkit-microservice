@@ -1,9 +1,8 @@
 'use strict';
 
-var assert = require('assert'),
-    path = require('path'),
-    store,
-    sut;
+var assert = require('assert');
+var store;
+var sut;
 
 describe('Module: Identity', function(){
   before(function(done) {
@@ -77,7 +76,7 @@ describe('Module: Identity', function(){
         assert.ifError(error);
         assert.equal(data.group, null);
 
-        sut.update('ident6@subkit.io', {group: 'Z'}, function(error, data){
+        sut.update('ident6@subkit.io', {group: 'Z'}, function(error){
           assert.ifError(error);
           
           sut.get('ident6@subkit.io', function(error, data){
@@ -142,7 +141,7 @@ describe('Module: Identity', function(){
   });
   describe('remove', function(){
     it('should be remove a items', function(done){
-      sut.remove('ident1@subkit.io',function(error, data){
+      sut.remove('ident1@subkit.io',function(error){
         assert.ifError(error);
         
         sut.listAll(function(error, data){

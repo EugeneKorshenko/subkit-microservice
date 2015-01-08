@@ -43,27 +43,28 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 	});
 	server.put('/manage/password/action/reset', function (req, res, next) {
-		if(!req.body) return res.send(400, new Error('Parameter `password` missing.'));
+		if(!req.body) return next(400, new Error('Parameter `password` missing.'));
 
 		var password = req.body.password;
 		var newPassword = req.body.newPassword;
 		var newPasswordValidation = req.body.newPasswordValidation;
 
-		if(!password) return res.send(400, new Error('Parameter `password` missing.'));
-		if(!newPassword) return res.send(400, new Error('Parameter `newPassword` missing.'));
-		if(!newPasswordValidation) return res.send(400, new Error('Parameter `newPasswordValidation` missing.'));
-		if(newPassword !== newPasswordValidation) return res.send(400, new Error('New password do not match.'));
+		if(!password) return next(400, new Error('Parameter `password` missing.'));
+		if(!newPassword) return next(400, new Error('Parameter `newPassword` missing.'));
+		if(!newPasswordValidation) return next(400, new Error('Parameter `newPasswordValidation` missing.'));
+		if(newPassword !== newPasswordValidation) return next(400, new Error('New password do not match.'));
 
 		var adminConfig = configuration.get('admin');
 		var isValidPassword = utils.validate(adminConfig.password, password);
-		if(!isValidPassword) return res.send(400, new Error('Password do not match.'));
+		if(!isValidPassword) return next(400, new Error('Password do not match.'));
 		adminConfig.password = utils.hash(newPassword);
 
 		configuration.set('admin', adminConfig);
 		configuration.save(function(err){
-			if(err) return res.send(400, new Error('Can not change the password.'));
+			if(err) return next(400, new Error('Can not change the password.'));
 			applyConfiguration();
 			res.send(202, {message: 'update accepted'});
+			next();
 		});
 	});
 	server.get('/manage/certificate', function (req, res, next) {
@@ -77,16 +78,17 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			certificate: cert,
 			key: key
 		});
+		next();
 	});
 	server.put('/manage/certificate/action/change', function (req, res, next) {
-		if(!req.body) return res.send(400, new Error('Parameter `certificate` missing.'));
+		if(!req.body) return next(400, new Error('Parameter `certificate` missing.'));
 
 		var certificate = req.body.certificate;
 		var key = req.body.key;
 		var ca = req.body.ca;
 
-		if(!certificate) return res.send(400, new Error('Parameter `certificate` missing.'));
-		if(!key) return res.send(400, new Error('Parameter `key` missing.'));
+		if(!certificate) return next(400, new Error('Parameter `certificate` missing.'));
+		if(!key) return next(400, new Error('Parameter `key` missing.'));
 
 		var appConfig = configuration.get('app');		
 		fs.writeFileSync(appConfig.key, key);
@@ -94,21 +96,23 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		if(ca) fs.writeFileSync(appConfig.ca, ca);
 
 		configuration.save(function(err){
-			if(err) return res.send(400, new Error('Can not change the certificate.'));
+			if(err) return next(400, new Error('Can not change the certificate.'));
 			applyConfiguration();
 			res.send(202, {message: 'update accepted'});
+			next();
 			setTimeout(process.exit, 300);
 		});
 	});
 
 	server.get('/manage/log/:name', function(req,res,next){
 		var name = req.params.name;
-		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!name) return next(400, new Error('Parameter `name` missing.'));
 
 		var fullPath = path.join(process.cwd(),'files/logs', name +'.log.txt');
 		fs.readFile(fullPath, function(err, data){
-			if(err) return res.send(400, new Error('Log not found.'));
+			if(err) return next(400, new Error('Log not found.'));
 			res.send(200, data.toString());
+			next();
 		});
 	});
 	server.get('/manage/os', function(req, res,next){
@@ -132,46 +136,50 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 				payload = JSON.parse(payload.toString());
 
 			}catch(error){
-				return res.send(400, new Error('Unsupported format.'));
+				return next(400, new Error('Unsupported format.'));
 			}
 		}
-		if(!payload) return res.send(400, new Error('Unsupported format.'));
+		if(!payload) return next(400, new Error('Unsupported format.'));
 
 		storage.imports('', payload, function(error, data){
-			if(error) return res.send(500, error);
+			if(error) return next(400, error);
 			res.send(201, { message: 'imported' });
+			next();
 		});
 	});
 	server.post('/manage/import/:name', function(req,res,next){
 		var name = req.params.name;
 		var payload = req.body;
-		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
-		if(!payload) return res.send(400, new Error('Unsupported format.'));
+		if(!name) return next(400, new Error('Parameter `name` missing.'));
+		if(!payload) return next(400, new Error('Unsupported format.'));
 
 		storage.imports(name, payload, function(error, data){
-			if(error) return res.send(500, error);
+			if(error) return next(400, error);
 			res.send(201, { message: 'imported' });
+			next();
 		});
 	});
 	server.get('/manage/export', function(req,res,next){
 		storage.exports('', function(error, data){
-			if(error) return res.send(500, error);
+			if(error) return next(400, error);
 
 			res.header('Content-Type', 'application/octet-stream');
 			res.write(JSON.stringify(data));
 			res.end();
+			next();
 		});
 	});
 	server.get('/manage/export/:name', function(req,res,next){
 		var name = req.params.name;
-		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!name) return next(400, new Error('Parameter `name` missing.'));
 
 		storage.exports(name, function(error, data){
-			if(error) return res.send(500, error);
+			if(error) return next(400, error);
 
 			res.header('Content-Type', 'application/octet-stream');
 			res.write(JSON.stringify(data));
 			res.end();
+			next();
 		});
 	});
 	server.post('/manage/backup', function(req,res,next){

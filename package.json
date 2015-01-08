@@ -42,7 +42,8 @@
     "node": ">=0.10.28"
   },
   "scripts": {
-    "start": "node supervisor",
+    "run": "node prod",
+    "start": "node dev",
     "test": "grunt test"
   },
   "author": {

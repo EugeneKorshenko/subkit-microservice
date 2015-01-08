@@ -190,7 +190,7 @@ this.start = function(args, callback){
 	if(!shelljs.test('-e', installTmpPath)) return console.log('App `'+data.app+'` not found.');
 
 	shelljs.cd(data.app);
-	shelljs.exec('node index.js', {silent:false, async:true});
+	shelljs.exec('npm start', {silent:false, async:true});
 
 	if(data.noBrowser) return;
 	setTimeout(function(){
@@ -222,7 +222,7 @@ this.run = function(args, callback){
 	if(!shelljs.test('-e', installTmpPath)) return console.log('App `'+data.app+'` not found.');
 
 	shelljs.cd(data.app);
-	shelljs.exec('npm start', {silent:false, async:true});
+	shelljs.exec('npm run', {silent:false, async:true});
 
 	if(data.noBrowser) return;
 	setTimeout(function(){

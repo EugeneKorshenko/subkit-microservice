@@ -155,7 +155,7 @@ describe('Integration: Share', function(){
       client.del('/manage/permissions/demo1', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 202, 'Wrong HTTP status code.');
-        assert.deepEqual(actual, {message:"delete accepted"});
+        assert.deepEqual(actual, {message: 'delete accepted'});
         done();
       });
     });

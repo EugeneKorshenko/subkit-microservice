@@ -1,11 +1,10 @@
 'use strict';
 
-var uuid = require('node-uuid');
 var randomString = require('randomstring');
-var	path = require('path');
-var	fs = require('fs');
-var	os = require('os');
-var	utils = require('../lib/utils.module.js').init();
+var path = require('path');
+var fs = require('fs');
+var os = require('os');
+var utils = require('../lib/utils.module.js').init();
 
 module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, plugin, share, version, doc){
 	require('./doc/manage.doc.js').init(doc);
@@ -121,7 +120,8 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 				processMemUsage: process.memoryUsage().heapTotal,
 				processUptime: process.uptime()
 			});
-		})
+			next();
+		});
 	});
 
 	server.post('/manage/import', function(req,res,next){

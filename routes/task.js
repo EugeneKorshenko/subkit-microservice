@@ -49,7 +49,7 @@ module.exports.init = function(server, task, doc){
 		newTask.continuous = req.body.continuous;
 		newTask.parameters = req.body.parameters;
 
-		task.set(taskName, newTask, function(error, data){
+		task.set(taskName, newTask, function(error){
 			if(error) return next(400, new Error('Task error.'));
 			res.send(202, {message: 'update accepted'});
 			next();

@@ -39,11 +39,11 @@ describe('Module: EventSource', function(){
         $complete: function(state){ 
           return state;
         },
-        demo1: function(state, message){
+        demo1: function(state){
           state.count += 1;
           return state;
         },
-        demo2: function(state, message){
+        demo2: function(state){
           state.count += 1;
           return state;
         }
@@ -79,11 +79,11 @@ describe('Module: EventSource', function(){
         $complete: function(state){ 
           return state;
         },
-        demo1: function(state, message){
+        demo1: function(state){
           state.count += 1;
           return state;
         },
-        demo2: function(state, message){
+        demo2: function(state){
           state.count += 1;
           return state;
         }

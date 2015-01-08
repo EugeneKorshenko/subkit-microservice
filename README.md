@@ -1,4 +1,4 @@
-# Microservice Template [![Build Status](https://travis-ci.org/SubKit/subkit-microservice.svg?branch=master)](https://travis-ci.org/SubKit/subkit-microservice)
+# Microservice Template [![Circle CI](https://circleci.com/gh/SubKit/subkit-microservice.svg?style=svg)](https://circleci.com/gh/SubKit/subkit-microservice)
 
 Backends as simple as never before.
 

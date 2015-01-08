@@ -418,6 +418,8 @@ describe('Module: JSON Key/Value Storage', function(){
   describe('statistics', function(){
     it('should get the current db size', function(done){
       sut.statistics(function(error, data){
+          assert.ifError(error);
+          assert.notEqual(data, undefined);
           done();
       });
     });
@@ -428,7 +430,9 @@ describe('Module: JSON Key/Value Storage', function(){
         assert.equal(changed.key, 'notifications!first');
       });
       sut.update('notifications', 'first', {test: 'notifications test 1'}, function(error){
+        assert.ifError(error);
         sut.del('notifications', 'first', function(error){
+          assert.ifError(error);
         });
       });
       var ops = [
@@ -437,6 +441,7 @@ describe('Module: JSON Key/Value Storage', function(){
         { type: 'del', key: 'notifications!first' }
       ];
       sut.batch(ops, function(error){
+        assert.ifError(error);
         done();
       });
     });

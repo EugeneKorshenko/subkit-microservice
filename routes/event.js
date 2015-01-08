@@ -86,7 +86,7 @@ module.exports.init = function(server, event, doc){
 	});
 	server.del('/events/log/:stream', function(req, res, next){
 		var stream = req.params.stream;
-		event.deleteLog(stream, function(err, data){
+		event.deleteLog(stream, function(err){
 			if(err) return next(400, err);
 			res.send(202, {message: 'delete accepted'});
 			next();

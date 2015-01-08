@@ -1,8 +1,7 @@
 'use strict';
 
-var assert = require('assert'),
-    path = require('path'),
-    sut;
+var assert = require('assert');
+var sut;
 
 describe('Module: Share', function(){
   before(function(done) {

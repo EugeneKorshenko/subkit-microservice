@@ -196,7 +196,7 @@ this.start = function(args, callback){
 	setTimeout(function(){
 		var config = fs.readFileSync('./files/config/config.json');
 		config = JSON.parse(config.toString());
-		shelljs.exec('open https://localhost:'+config.app.port, {silent:true, async:true});
+		shelljs.exec('open https://localhost:'+config.app.port + '/dashboard/index.html', {silent:true, async:true});
 		argv._ = ['usage'];
 		self.help(argv, callback);
 	}, 2000);

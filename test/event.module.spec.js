@@ -74,7 +74,7 @@ describe('Module: Event', function(){
         done();
       });
 
-    }, 20);
+    }, 100); //persistent event ~100ms write latency
   });
 
   it('should filtered receive emitted messages', function(done){
@@ -100,7 +100,7 @@ describe('Module: Event', function(){
       assert.equal(count1, 2);
       assert.equal(count2, 1);
       done();
-    }, 20);
+    }, 100);  //persistent event ~100ms write latency
   });
 
 });

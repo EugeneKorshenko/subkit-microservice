@@ -211,7 +211,8 @@ module.exports.init = function(){
 		file: file,
 		template: template,
 		task: task,
-		identity: identity
+		identity: identity,
+		serve: restify.serveStatic
 	};
 
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);

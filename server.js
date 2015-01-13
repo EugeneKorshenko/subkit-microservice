@@ -72,9 +72,8 @@ module.exports.init = function(){
 		return srv;	
 	};
 	var server = _applyServer();
-	server.formatters['text/html'] = function(req, res, body){
-		return body;
-	};
+	server.formatters['text/html'] = require('restify-formatter-text');
+	server.acceptable.push('text/html');
 
 	//middleware
 	server.use(restify.acceptParser(server.acceptable));

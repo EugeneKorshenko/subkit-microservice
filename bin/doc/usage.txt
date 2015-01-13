@@ -4,8 +4,3 @@ Base URL : https://localhost:8080
 Username : subkit
 Password : subkit
 API Key  : 66LOHAiB8Zeod1bAeLYW
-
-SDK HTML Script:
-<script src="https://localhost:8080“ type="text/javascript"></script>
-JavaScript SDK:
-var subkit = new Subkit({baseUrl: 'https://localhost:8080', apiKey: '66LOHAiB8Zeod1bAeLYW'});

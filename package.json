@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "dependencies": {
     "cflow": "*",
     "cron": "*",
@@ -20,6 +20,7 @@
     "q": "^1.0.1",
     "randomstring": "*",
     "restify": "*",
+    "restify-formatter-text": "^0.1.0",
     "shelljs": "0.2.6",
     "tar": "*",
     "underscore": "*",
@@ -70,5 +71,7 @@
       "url": ""
     }
   ],
-  "optionalDependencies": {}
+  "optionalDependencies": {
+    "subkit-user-plugin": "*"
+  }
 }

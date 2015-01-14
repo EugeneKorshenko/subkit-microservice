@@ -48,14 +48,14 @@ describe('Module: JSON Key/Value Storage', function(){
   describe('query', function(){
     it('by store name begins with "bdemo" should return 8 items', function(done){
       sut.query('bdemo', {}, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 8);
         done();
       });
     }),
     it('by more specific store name "bdemob" should return only 6 items', function(done){
       sut.query('bdemob', {}, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 6);
         assert.equal(data.results[0].$key, '1');
         done();
@@ -63,7 +63,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('by more specific store name "rangequery" from key "3" should return 3 items', function(done){
       sut.query('rangequery', {from: '3'}, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 3);
         assert.equal(data.results[0].$key, '3!a');
         done();
@@ -71,7 +71,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('by more specific store name "rangequery" from key "3!b" should return 1 item', function(done){
       sut.query('rangequery', {from: '3!b'}, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 1);
         assert.equal(data.results[0].$key, '3!b');
         done();
@@ -79,7 +79,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('by more specific store name "rangequery" from key "2!" should return 6 item', function(done){
       sut.query('rangequery', {from: '2'}, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 6);
         assert.equal(data.results[0].$key, '2!a');
         done();
@@ -87,7 +87,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('by more specific store name "rangequery" from key "2!b" should return 4 items', function(done){
       sut.query('rangequery', {from: '2!b'}, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 4);
         assert.equal(data.results[0].$key, '2!b');
         done();
@@ -95,7 +95,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('by more specific store name "rangequery" from key "2!b" with limit 2 should return 2 item', function(done){
       sut.query('rangequery', {from: '2!b', limit:2}, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 2);
         assert.equal(data.results[0].$key, '2!b');
         done();
@@ -103,7 +103,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('by more specific store name "rangequery" from key "2!b!2" should return 1 item', function(done){
       sut.query('rangequery', {from: '2!b!2'}, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 1);
         assert.equal(data.results[0].$key, '2!b!2');
         done();
@@ -111,28 +111,28 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('by not matching store name should return an empty array', function(done){
       sut.query('nomatch', {}, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 0);
         done();
       });
     }),
     it('by store key should return a single item', function(done){
       sut.query('bdemoa', { key: '1' },{}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.$payload.test, 'bdemoa 1 test');
         done();
       });
     }),
     it('by store name begins with "bdemo" and limit 4 should return 4 items', function(done){
       sut.query('bdemo', { limit: 4 }, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 4);
         done();
       });
     }),
     it('by store with keysOnly should return 3 keys', function(done){
       sut.query('bdemo', { keysOnly: true }, {}, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 8);
         assert.equal(data.results[0].$payload, undefined);
         done();
@@ -140,7 +140,7 @@ describe('Module: JSON Key/Value Storage', function(){
     });
     it('by store from literal query should return element', function(done){
       sut.query('bdemob', { }, { 'test': /bdemob/i }, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 6);
         assert.equal(data.results[0].$key, '1');
         done();
@@ -150,7 +150,7 @@ describe('Module: JSON Key/Value Storage', function(){
   describe('stores', function(){
     it('should return 7 stores', function(done){
       sut.stores(function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.results.length, 7);
         done();
       });
@@ -158,11 +158,11 @@ describe('Module: JSON Key/Value Storage', function(){
   });
   describe('write changes', function(){
     it('create should add a item', function(done){
-      sut.update('change_test_item', '1', {test: 'change_test_item 1 test'}, function(error){
-        assert.equal(error, undefined);
+      sut.insert('change_test_item', '1', {test: 'change_test_item 1 test'}, function(error){
+        assert.ifError(error);
 
         sut.query('change_test_item', { key: '1' }, {}, function(error, data){
-          assert.equal(error, undefined);
+          assert.ifError(error);
           assert.equal(data.$payload.test , 'change_test_item 1 test');
           assert.notEqual(data.$version, null);
           done();  
@@ -172,10 +172,10 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('update should change the item', function(done){
       sut.update('change_test_item', '1', {test: 'new change_test_item 1 test'}, function(error){
-        assert.equal(error, undefined);
+        assert.ifError(error);
 
         sut.query('change_test_item', { key: '1' }, {}, function(error, data){
-          assert.equal(error, undefined);
+          assert.ifError(error);
           assert.equal(data.$payload.test , 'new change_test_item 1 test');
           assert.notEqual(data.$version, null);
           done();  
@@ -185,7 +185,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('delete should remove the item', function(done){
       sut.del('change_test_item', '1', function(error){
-        assert.equal(error, undefined);
+        assert.ifError(error);
 
         sut.query('change_test_item', { key: '1' }, {}, function(error, data){
           assert.equal(data, undefined);
@@ -196,7 +196,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('delete item key 2 should remove a item', function(done){
       sut.del('deleteDemo', '2', function(error){
-        assert.equal(error, undefined);
+        assert.ifError(error);
 
         sut.query('deleteDemo', {}, {}, function(error, data){
           assert.equal(data.results.length, 3);
@@ -208,7 +208,7 @@ describe('Module: JSON Key/Value Storage', function(){
     it('delete should remove all items from a store', function(done){
       sut.del('deleteDemo', null, function(){
         sut.query('deleteDemo', {}, {}, function(error, data){
-          assert.equal(error, undefined);
+          assert.ifError(error);
           assert.equal(data.results.length, 0);
           done();  
         });
@@ -219,10 +219,10 @@ describe('Module: JSON Key/Value Storage', function(){
   describe('conditional write changes', function(){
     it('create should add a item', function(done){
       sut.insert('try_change_test_item', '1', {test: 'try_change_test_item 1 test'}, function(error){
-        assert.equal(error, undefined);
+        assert.ifError(error);
 
         sut.query('try_change_test_item', { key: '1' }, {}, function(error, data){
-          assert.equal(error, undefined);
+          assert.ifError(error);
           assert.equal(data.$payload.test , 'try_change_test_item 1 test');
           assert.notEqual(data.$version, null);
           done();  
@@ -324,7 +324,7 @@ describe('Module: JSON Key/Value Storage', function(){
   describe('grouping', function(){
     it('by range store name "bdemo" with groupBy', function(done){
       sut.query('bdemo', { groupBy: 'group' }, { }, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.undefined.length, 4);
         assert.equal(data.A.length, 2);
         assert.equal(data.B.length, 2);
@@ -335,14 +335,14 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('by specific store "cdemoc" name with groupBy', function(done){
       sut.query('cdemoc', { groupBy: 'group' }, { }, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.A.length, 1);
         done();
       });
     }),
     it('by specific store "bdemob" name with groupBy', function(done){
       sut.query('bdemob', { groupBy: 'demo22.group' }, { }, function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.equal(data.undefined.length, 4);
         assert.equal(data.Z.length, 2);
         done();
@@ -358,7 +358,7 @@ describe('Module: JSON Key/Value Storage', function(){
         { key: 'occupation', value: 'Clown' }
         ];
       sut.imports('import1', data, function(error){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         sut.query('import1', {}, {}, function(error, data){
           assert.notEqual(data, undefined);
           assert.equal(data.results.length, 4);
@@ -375,7 +375,7 @@ describe('Module: JSON Key/Value Storage', function(){
         { key: 'occupation', value: 'Clown', store: 'import2' }
         ];
       sut.imports('', data, function(error){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         sut.query('import2', {}, {}, function(error, data){
           assert.notEqual(data, undefined);
           assert.equal(data.results.length, 4);
@@ -386,7 +386,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('should export import1 data', function(done){
       sut.exports('import1', function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.notEqual(data, undefined);
         assert.equal(data.length, 4);
         assert.equal(data[0].key, 'dob');
@@ -395,7 +395,7 @@ describe('Module: JSON Key/Value Storage', function(){
     }),
     it('should export all data', function(done){
       sut.exports('', function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.notEqual(data, undefined);
         assert.equal(data.length, 30);
         assert.equal(data[17].key, 'spouse');
@@ -406,10 +406,10 @@ describe('Module: JSON Key/Value Storage', function(){
   describe('backup/restore', function(){
     it('should backup/restore the complete DB to path', function(done){
       sut.backup(function(error, data){
-        assert.equal(error, undefined);
+        assert.ifError(error);
         assert.notEqual(data, undefined);
         sut.restore(data, function(error){
-          assert.equal(error, undefined);
+          assert.ifError(error);
           done();
         });
       });
@@ -429,7 +429,7 @@ describe('Module: JSON Key/Value Storage', function(){
       sut.onChange(function(changed){
         assert.equal(changed.key, 'notifications!first');
       });
-      sut.update('notifications', 'first', {test: 'notifications test 1'}, function(error){
+      sut.insert('notifications', 'first', {test: 'notifications test 1'}, function(error){
         assert.ifError(error);
         sut.del('notifications', 'first', function(error){
           assert.ifError(error);

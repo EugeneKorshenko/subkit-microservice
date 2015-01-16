@@ -10,7 +10,7 @@ module.exports.init = function(server, storage, doc){
 			return next();
 		});
 	});
-	server.get(/stores\/([a-zA-Z0-9_\.~-]+)(\/)?(.*)/, function (req, res, next) {
+	server.get(/stores\/([a-zA-Z0-9!@_\.~-]+)(\/)?(.*)/, function (req, res, next) {
 		var resource = req.params[0],
 			key = req.params[2],
 			from = req.params.from,
@@ -48,7 +48,7 @@ module.exports.init = function(server, storage, doc){
 			return next();
 		});		
 	});
-	server.post(/stores\/([a-zA-Z0-9_\.~-]+)(\/)?(.*)/, function (req, res, next) {
+	server.post(/stores\/([a-zA-Z0-9!@_\.~-]+)(\/)?(.*)/, function (req, res, next) {
 		var resource = req.params[0] || '';
 		var key = req.params[2] || '';
 		var payload = req.body;
@@ -64,17 +64,15 @@ module.exports.init = function(server, storage, doc){
 			return next();
 		});
 	});
-	server.put(/stores\/([a-zA-Z0-9_\.~-]+)\/(.*)/, function (req, res, next) {
+	server.put(/stores\/([a-zA-Z0-9!@_\.~-]+)\/(.*)/, function (req, res, next) {
 		var resource = req.params[0] || '';
 		var key = req.params[1] || '';
 		var	payload = req.body;
 		var ifMatch = parseInt(req.headers['if-match']);
 
 		if(!resource) return res.send(400, new Error('Parameter `resource` missing'));
-		if(!key) return res.send(400, new Error('Parameter `resource` missing'));
+		if(!key) return res.send(400, new Error('Parameter `key` missing'));
 		if(!payload) return res.send(400, new Error('Parameter `payload` missing'));
-		if(!resource.match(/^[0-9a-zA-Z_\-@!]+$/)) return res.send(400, new Error('Parameter `resource` mal formatted')); 
-		if(!key.match(/^[0-9a-zA-Z_\-@!]+$/)) return res.send(400, new Error('Parameter `key` mal formatted')); 
 
 		var responseHandler = function(error){
 			if(error && error.message.indexOf('Version conflict') !== -1) { res.send(412, error); return next(); }
@@ -87,16 +85,17 @@ module.exports.init = function(server, storage, doc){
 		if(!ifMatch) storage.update(resource, key, payload, responseHandler);
 		else storage.tryUpdate(resource, key, ifMatch, payload, responseHandler);
 	});
-	server.del(/stores\/([a-zA-Z0-9_\.~-]+)\/(.*)/, function (req, res, next) {
+	server.del(/stores\/([a-zA-Z0-9!@_\.~-]+)\/(.*)/, function (req, res, next) {
 		var resource = req.params[0];
 		var key = req.params[1];
 		var ifMatch = parseInt(req.headers['if-match']);
 
-		if(resource === '' || key === '') return res.send(400, new Error('Parameters missing'));
+		if(!resource) return res.send(400, new Error('Parameter `resource` missing'));
+		if(!key) return res.send(400, new Error('Parameter `key` missing'));
 
 		var responseHandler = function(error){
 			if(error && error.message.indexOf('Version conflict') !== -1) { res.send(412, error); return next(); }
-			if(error && error.message.indexOf('Key not found') !== -1) { res.send(404, error); return next(); }			
+			if(error && error.message.indexOf('Key not found') !== -1) { res.send(404, error); return next(); }
 			if(error) { res.send(400, error); return next(); }
 			res.send(202, { message: 'delete accepted' });
 			return next();
@@ -105,13 +104,13 @@ module.exports.init = function(server, storage, doc){
 		if(!ifMatch) storage.del(resource, key, responseHandler);
 		else storage.tryDel(resource, key, ifMatch, responseHandler);
 	});
-	server.del(/stores\/([a-zA-Z0-9_\.~-]+)/, function (req, res, next) {
+	server.del(/stores\/([a-zA-Z0-9!@_\.~-]+)/, function (req, res, next) {
 		var resource = req.params[0];
-		if(resource === '') return res.send(400, new Error('Parameter not set'));
+		if(!resource) return res.send(400, new Error('Parameter `resource` missing'));
 
 		storage.del(resource, null, function(error){
 			if(error) { res.send(400, error); return next(); }
-			res.send(202, { message: 'deleted accepted' });
+			res.send(202, { message: 'delete accepted' });
 			return next();
 		});
 	});

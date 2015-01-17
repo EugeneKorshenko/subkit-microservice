@@ -224,14 +224,14 @@ this.run = function(args, callback){
 	shelljs.cd(data.app);
 	shelljs.exec('npm run', {silent:false, async:true});
 
-	if(data.noBrowser) return;
-	setTimeout(function(){
-		var config = fs.readFileSync('./files/config/config.json');
-		config = JSON.parse(config.toString());
-		shelljs.exec('open https://localhost:'+config.app.port, {silent:true, async:true});
-		argv._ = ['usage'];
-		self.help(argv, callback);
-	}, 2000);
+	// if(data.noBrowser) return;
+	// setTimeout(function(){
+	// 	var config = fs.readFileSync('./files/config/config.json');
+	// 	config = JSON.parse(config.toString());
+	// 	shelljs.exec('open https://localhost:'+config.app.port, {silent:true, async:true});
+	// 	argv._ = ['usage'];
+	// 	self.help(argv, callback);
+	// }, 2000);
 };
 
 this.unknown = function(args, callback){

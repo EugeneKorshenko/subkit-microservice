@@ -184,7 +184,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	});
 	server.post('/manage/backup', function(req,res,next){
 		storage.backup(function(error, data){
-			if(error) return next(error);
+			if(error) { res.send(400, new Error('Backup error')); return next(); }
 			res.send(202, data);
 			return next();
 		});
@@ -192,11 +192,18 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.post('/manage/restore', function(req,res,next){
 		var name = req.body.name;
 		storage.restore(name, function(error, data){
-			if(error) return next(error);
+			if(error) { res.send(400, new Error('Restore error')); return next(); }
 			res.send(202, data);
 			return next();
 		});
 	});
+	server.del('/manage/db/destroy', function(req,res,next){
+		storage.destroy(function(error, data){
+			if(error) { res.send(400, new Error('Destroy error')); return next(); }
+			res.send(202, data);
+			return next();
+		});
+	});	
 
 	server.get('/manage/plugins', function (req, res, next) {
 		plugin.list(function(error, data){
@@ -205,14 +212,25 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/plugins/:name', function (req, res, next) {
+	server.post('/manage/plugins/:name', function (req, res, next) {
 		var name = req.params.name;
 		if(!name) return next(400, new Error('Parameter `name` missing.'));
 		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) return next(400, new Error('Plugin could not be installed.'));
 
 		plugin.add(name, function(error){
 			if(error) return next(400, new Error('Plugin could not be installed.'));
-			res.send(201, {message: 'installed'});
+			res.send(201, {message: 'Plugin installed'});
+			next();
+		});
+	});
+	server.put('/manage/plugins/:name', function (req, res, next) {
+		var name = req.params.name;
+		if(!name) return next(400, new Error('Parameter `name` missing.'));
+		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) return next(400, new Error('Plugin could not be installed.'));
+
+		plugin.update(name, function(error){
+			if(error) return next(400, new Error('Plugin could not be installed.'));
+			res.send(202, {message: 'Plugin update accepted'});
 			next();
 		});
 	});
@@ -223,7 +241,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 
 		plugin.remove(name, function(error){
 			if(error) return next(400, new Error('Plugin could not be uninstalled.'));
-			res.send(200, {message: 'uninstalled'});
+			res.send(200, {message: 'Plugin uninstall accepted'});
 			next();
 		});
 	});

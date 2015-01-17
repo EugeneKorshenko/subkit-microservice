@@ -60,7 +60,7 @@ module.exports.init = function(server, storage, doc){
 
 		storage.insert(resource, key, payload, function(error, data){
 			if(error) { res.send(400, error); return next(); }
-			res.send(201, { message: 'created', key:  data.key});
+			res.send(201, { message: 'created', $key:  data.key, $version: data.version, $timestamp: data.timestamp, $store: data.store });
 			return next();
 		});
 	});
@@ -74,11 +74,11 @@ module.exports.init = function(server, storage, doc){
 		if(!key) return res.send(400, new Error('Parameter `key` missing'));
 		if(!payload) return res.send(400, new Error('Parameter `payload` missing'));
 
-		var responseHandler = function(error){
+		var responseHandler = function(error, data){
 			if(error && error.message.indexOf('Version conflict') !== -1) { res.send(412, error); return next(); }
 			if(error && error.message.indexOf('Key not found') !== -1) { res.send(404, error); return next(); }
 			if(error) { res.send(400, error); return next(); }
-			res.send(202, { message: 'update accepted' });
+			res.send(202, { message: 'update accepted', $key:  data.key, $version: data.version, $timestamp: data.timestamp, $store: data.store });
 			return next();
 		};
 

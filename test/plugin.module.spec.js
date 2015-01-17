@@ -18,7 +18,7 @@ describe('Given module: Plugin', function(){
   
   describe('when list plugins', function(){
     
-    it('then should list all available plugins.', function(done){
+    it('then should list all available plugins', function(done){
       
       sut.list(function(error, data){
         assert.ifError(error);
@@ -32,9 +32,29 @@ describe('Given module: Plugin', function(){
 
   describe('when add a `subkit-file-plugin` plugin', function(){
     
-    it('then should the plugin installed.', function(done){
+    it('then should the plugin installed', function(done){
 
       sut.add('subkit-file-plugin', function(error){
+        assert.ifError(error);
+        assert.equal(error, 0);
+
+        sut.list(function(error, data){
+          assert.ifError(error);
+          assert.equal(data.results.length, 1);
+          
+          done();
+        });
+      });
+
+    });
+
+  });
+
+  describe('when update a `subkit-file-plugin` plugin', function(){
+    
+    it('then should the plugin updated', function(done){
+
+      sut.update('subkit-file-plugin', function(error){
         assert.ifError(error);
         assert.equal(error, 0);
 
@@ -63,7 +83,7 @@ describe('Given module: Plugin', function(){
 
   describe('when remove a plugin', function(){
     
-    it('then should the plugin removed.', function(done){
+    it('then should the plugin removed', function(done){
       sut.remove('subkit-file-plugin', function(error){
         assert.ifError(error);
         

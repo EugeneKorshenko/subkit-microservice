@@ -135,6 +135,16 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		res.send(202, {message: 'Kill accepted'});
 		next();
 	});	
+	server.put('/manage/update', function(req, res,next){
+		shelljs.exec('npm install', {silent:false, async:true}, function(error){
+			if(error) {
+				res.send(400, new Error('Update error.'));
+				return next();
+			}
+			res.send(202, {message: 'Update instance accepted'});
+			next();
+		});
+	});		
 
 	server.post('/manage/import', function(req,res,next){
 		var payload = req.body;

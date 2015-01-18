@@ -204,7 +204,6 @@ this.start = function(args, callback){
 	// 	self.help(argv, callback);
 	// }, 2000);
 };
-
 this.run = function(args, callback){
 	var self = this;
 	this.logo();
@@ -225,7 +224,7 @@ this.run = function(args, callback){
 	if(!shelljs.test('-e', installTmpPath)) return console.log('App `'+data.app+'` not found.');
 
 	shelljs.cd(data.app);
-	shelljs.exec('npm run', {silent:false, async:true});
+	shelljs.exec('node prod', {silent:false, async:true});
 
 	// if(data.noBrowser) return;
 	// setTimeout(function(){
@@ -236,7 +235,6 @@ this.run = function(args, callback){
 	// 	self.help(argv, callback);
 	// }, 2000);
 };
-
 this.unknown = function(args, callback){
 	console.log('unknown action');
 };

@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.2.26",
+  "version": "0.2.27",
   "dependencies": {
     "cflow": "*",
     "cron": "*",
@@ -43,7 +43,6 @@
     "node": ">=0.10.28"
   },
   "scripts": {
-    "run": "node prod",
     "start": "node dev",
     "test": "grunt test"
   },

@@ -5,6 +5,7 @@ var path = require('path');
 var fs = require('fs');
 var os = require('os');
 var utils = require('../lib/utils.module.js').init();
+var shelljs = require('shelljs');
 
 module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, plugin, share, version, doc){
 	require('./doc/manage.doc.js').init(doc);
@@ -127,6 +128,13 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
+	server.put('/manage/kill', function(req, res,next){
+		setTimeout(function(){
+			shelljs.exec('kill -9 ' + process.pid);
+		}, 100);
+		res.send(202, {message: 'Kill accepted'});
+		next();
+	});	
 
 	server.post('/manage/import', function(req,res,next){
 		var payload = req.body;

@@ -12,7 +12,7 @@ var logsFullPath = path.join(__dirname,logsPath);
 if(!fs.existsSync(logsFullPath))
     utils.mkdirRecursive(logsFullPath);
 
-forever.startDaemon(path.join(__dirname,'index.js'), {
+forever.startDaemon(path.join(__dirname,'dev.js'), {
     silent: false,
     uid: 'master',
     cwd: path.join(__dirname),

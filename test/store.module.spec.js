@@ -243,8 +243,6 @@ describe('Module: JSON Key/Value Storage', function(){
           sut.query('try_change_test_item', { key: '1' }, {}, function(error, afterChange){
             assert.ifError(error);
             assert.equal(afterChange.$payload.test , 'new try_change_test_item 1 test');
-            console.log(oldVersion)
-            console.log(afterChange)
             assert.equal(oldVersion < afterChange.$version, true);
             assert.notEqual(afterChange.$version, null);
             done();  

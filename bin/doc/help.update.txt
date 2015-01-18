@@ -1,0 +1,10 @@
+Updates a Subkit-Microservice instance at the provided path.
+
+Usage:
+  $0 update
+  $0 update <appname>
+  $0 update -n <appname>
+  
+Options:
+  -n | --name <appname>       Instance name.
+  -v | --verbose              Verbose output.

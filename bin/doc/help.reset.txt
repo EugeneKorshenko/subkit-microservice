@@ -1,4 +1,4 @@
-Reset Subkit MicroService password.
+Reset Subkit-Microservice password.
 
 Usage:
   $0 reset password

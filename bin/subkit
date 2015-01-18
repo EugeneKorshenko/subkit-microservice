@@ -56,6 +56,7 @@ this.install = function(args, callback){
 
 	shelljs.cd(data.app);
 	data.plugins.split(',').forEach(function(plugin){
+		plugin = plugin.trim();
 		var done = shelljs.exec('npm install subkit-'+plugin+'-plugin --save-optional', {silent:!data.verbose});
 		if(done.code === 0) console.log('\nPlugin `subkit-'+plugin+'-plugin` installed.');
 		else console.log('\nERROR: Can not install Plugin `subkit-'+plugin+'-plugin`.');
@@ -80,6 +81,7 @@ this.uninstall = function(args, callback){
 
 	shelljs.cd(data.app);
 	data.plugins.split(',').forEach(function(plugin){
+		plugin = plugin.trim();
 		var done = shelljs.exec('npm remove subkit-'+plugin+'-plugin --save-optional', {silent:!data.verbose});
 		if(done.code === 0) console.log('\nPlugin `subkit-'+plugin+'-plugin` uninstalled.');
 		else console.log('\nERROR: Can not remove Plugin `subkit-'+plugin+'-plugin`.');
@@ -117,6 +119,7 @@ this.new = function(args, callback){
 		console.log('\nNew Subkit instance installed in '+data.app+' done.');
 		if(data.plugins){
 			data.plugins.split(',').forEach(function(plugin){
+				plugin = plugin.trim();
 				var done = shelljs.exec('npm install subkit-'+plugin+'-plugin --save-optional', {silent:!data.verbose});
 				if(done.code === 0) console.log('\nPlugin `subkit-'+plugin+'-plugin` installed.');
 				else console.log('\nERROR: Can not install Plugin `subkit-'+plugin+'-plugin`.');

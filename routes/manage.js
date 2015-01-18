@@ -214,34 +214,66 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	});
 	server.post('/manage/plugins/:name', function (req, res, next) {
 		var name = req.params.name;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) return next(400, new Error('Plugin could not be installed.'));
+		
+		if(!name) {
+			res.send(400, new Error('Parameter `name` missing.'));
+			return next();
+		}
+		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) { 
+			res.send(400, new Error('Plugin could not be uninstalled.'));
+			return next();
+		}
 
 		plugin.add(name, function(error){
-			if(error) return next(400, new Error('Plugin could not be installed.'));
+			if(error) {
+				res.send(400, new Error('Plugin could not be uninstalled.'));
+				return next();
+			}
+
 			res.send(201, {message: 'Plugin installed'});
 			next();
 		});
 	});
 	server.put('/manage/plugins/:name', function (req, res, next) {
 		var name = req.params.name;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) return next(400, new Error('Plugin could not be installed.'));
+
+		if(!name) {
+			res.send(400, new Error('Parameter `name` missing.'));
+			return next();
+		}
+		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) { 
+			res.send(400, new Error('Plugin could not be uninstalled.'));
+			return next();
+		}
 
 		plugin.update(name, function(error){
-			if(error) return next(400, new Error('Plugin could not be installed.'));
+			if(error) {
+				res.send(400, new Error('Plugin could not be uninstalled.'));
+				return next();
+			}
+
 			res.send(202, {message: 'Plugin update accepted'});
 			next();
 		});
 	});
 	server.del('/manage/plugins/:name', function (req, res, next) {
 		var name = req.params.name;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) return next(400, new Error('Plugin could not be uninstalled.'));
+
+		if(!name) {
+			res.send(400, new Error('Parameter `name` missing.'));
+			return next();
+		}
+		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) { 
+			res.send(400, new Error('Plugin could not be uninstalled.'));
+			return next();
+		}
 
 		plugin.remove(name, function(error){
-			if(error) return next(400, new Error('Plugin could not be uninstalled.'));
-			res.send(200, {message: 'Plugin uninstall accepted'});
+			if(error) {
+				res.send(400, new Error('Plugin could not be uninstalled.'));
+				return next();
+			}
+			res.send(202, {message: 'Plugin uninstall accepted'});
 			next();
 		});
 	});

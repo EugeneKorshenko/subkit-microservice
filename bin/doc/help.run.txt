@@ -2,7 +2,7 @@ Starts a Subkit MicroService.
 
 Usage:
   $0 run
-  $0 run -n | --nobrowser
+  $0 run --browser
   
 Options:
-  -n | --nobrowser   Whether to open browser upon subkit start.
+  --browser   Whether to open browser upon subkit start.

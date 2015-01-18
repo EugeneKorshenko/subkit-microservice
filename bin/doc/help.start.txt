@@ -1,8 +1,8 @@
-Starts a Subkit MicroService.
+Starts a Subkit-Microservice.
 
 Usage:
   $0 start
-  $0 start -n | --nobrowser
+  $0 start --browser
   
 Options:
-  -n | --nobrowser   Whether to open browser upon subkit start.
+  --browser   Open browser upon Subkit-Microservice start.

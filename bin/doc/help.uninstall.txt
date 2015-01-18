@@ -1,4 +1,4 @@
-Uninstalls Subkit plugin(s).
+Uninstalls Subkit-Microservice plugin(s).
 
 Usage:
   $0 uninstall <appname> <plugins>

@@ -1,4 +1,4 @@
-Installs Subkit plugin(s).
+Installs Subkit-Microservice plugin(s).
 
 Usage:
   $0 install <appname>

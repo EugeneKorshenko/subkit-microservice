@@ -6,6 +6,8 @@ var fs = require('fs');
 var os = require('os');
 var utils = require('../lib/utils.module.js').init();
 var shelljs = require('shelljs');
+var packageJson = require('package-json');
+var http = require('http');
 
 module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, plugin, share, version, doc){
 	require('./doc/manage.doc.js').init(doc);
@@ -136,14 +138,41 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		next();
 	});	
 	server.put('/manage/update', function(req, res,next){
-		shelljs.exec('npm install', {silent:false, async:true}, function(error){
+		packageJson('subkit-microservice', 'latest', function (error, json) {
 			if(error) {
 				res.send(400, new Error('Update error.'));
 				return next();
 			}
-			res.send(202, {message: 'Update instance accepted'});
-			next();
+
+			var filePath = path.join(process.cwd(), json.version + '.tar.gz');
+			var fileStream = fs.createWriteStream(filePath);
+
+			http.get(json.dist.tarball, function(response) {
+				response.pipe(fileStream);
+				response.on('end',function(){
+					
+					var packageFile = fs.readFileSync(path.join(__dirname, '../package.json'));
+					var packageConfig = JSON.parse(packageFile);
+
+					shelljs.exec("tar -xvzf " + filePath + " --strip-components=1 --exclude='files/*'", {silent:true, async:true}, function(error){
+						if(error) {
+							res.send(400, new Error('Update error.'));
+							return next();
+						}
+						
+						var newPackageFile = fs.readFileSync(path.join(__dirname, '../package.json'));
+						var newPackageConfig = JSON.parse(newPackageFile);
+						newPackageConfig.optionalDependencies = packageConfig.optionalDependencies;
+						fs.writeFileSync(path.join(__dirname, '../package.json'), JSON.stringify(newPackageConfig, null, 2));
+
+						res.send(202, {message: 'Update instance accepted'});
+						next();
+					});
+
+				});
+			});			
 		});
+
 	});		
 
 	server.post('/manage/import', function(req,res,next){

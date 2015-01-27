@@ -71,5 +71,7 @@
       "url": ""
     }
   ],
-  "optionalDependencies": {}
+  "optionalDependencies": {
+    "subkit-dashboard-plugin": "^0.2.23"
+  }
 }

@@ -75,8 +75,8 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		if(!appConfig.cert) return res.send(200,{certificate:'',key:'' });
 		if(!appConfig.key) return res.send(200,{certificate:'',key:'' });
 
-		var cert = fs.readFileSync(path.join(process.cwd(), appConfig.cert)).toString();
-		var key = fs.readFileSync(path.join(process.cwd(), appConfig.key)).toString();
+		var cert = fs.readFileSync(appConfig.cert).toString();
+		var key = fs.readFileSync(appConfig.key).toString();
 		res.send(200, {
 			certificate: cert,
 			key: key

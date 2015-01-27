@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.2.29",
+  "version": "0.2.30",
   "dependencies": {
     "cflow": "*",
     "cron": "*",
@@ -17,6 +17,7 @@
     "node-uuid": "*",
     "offset-stream": "^1.0.2",
     "ordered-through": "0.0.3",
+    "package-json": "^1.0.1",
     "q": "^1.0.1",
     "randomstring": "*",
     "restify": "*",

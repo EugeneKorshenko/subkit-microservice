@@ -154,7 +154,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 					var packageFile = fs.readFileSync(path.join(__dirname, '../package.json'));
 					var packageConfig = JSON.parse(packageFile);
 
-					shelljs.exec("tar -xvzf " + filePath + " --strip-components=1 --exclude='files/*'", {silent:true, async:true}, function(error){
+					shelljs.exec('tar -xvzf ' + filePath + ' --strip-components=1 --exclude="files/*"', {silent:true, async:true}, function(error){
 						if(error) {
 							res.send(400, new Error('Update error.'));
 							return next();

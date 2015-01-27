@@ -40,7 +40,7 @@ describe('Integration: Share', function(){
       client.get('/manage/permissions/anonymous', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 200, 'Wrong HTTP status code.');
-        assert.deepEqual(actual, {  '/': [ 'GET' ],
+        assert.deepEqual(actual, {  '/': [ ],
                                     '/doc': [ 'GET' ] }
         );
         done();

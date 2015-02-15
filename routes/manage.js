@@ -172,7 +172,6 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 				});
 			});			
 		});
-
 	});		
 
 	server.post('/manage/import', function(req,res,next){
@@ -260,47 +259,29 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 	});
 	server.post('/manage/plugins/:name', function (req, res, next) {
-		var name = req.params.name;
-		
-		if(!name) {
+		var fileName = req.params.name;
+
+		if(!fileName) {
 			res.send(400, new Error('Parameter `name` missing.'));
 			return next();
 		}
-		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) { 
-			res.send(400, new Error('Plugin could not be uninstalled.'));
-			return next();
-		}
-
-		plugin.add(name, function(error){
-			if(error) {
-				res.send(400, new Error('Plugin could not be uninstalled.'));
+		var filePath = path.join(configuration.get('paths').staticsPath, fileName);
+		fs.writeFile(filePath, req.body, 'binary', function(err){
+			if(err) {
+				res.send(400, new Error('Plugin not installed.'));
 				return next();
 			}
 
-			res.send(201, {message: 'Plugin installed'});
-			next();
-		});
-	});
-	server.put('/manage/plugins/:name', function (req, res, next) {
-		var name = req.params.name;
+			plugin.fileAdd(filePath, function(error){
+				if(error) {
+					res.send(400, new Error('Plugin not installed.'));
+					return next();
+				}
 
-		if(!name) {
-			res.send(400, new Error('Parameter `name` missing.'));
-			return next();
-		}
-		if(name.indexOf('subkit-') === -1 || name.indexOf('-plugin') === -1) { 
-			res.send(400, new Error('Plugin could not be uninstalled.'));
-			return next();
-		}
-
-		plugin.update(name, function(error){
-			if(error) {
-				res.send(400, new Error('Plugin could not be uninstalled.'));
+				res.send(201, { message: 'Plugin installed'});
 				return next();
-			}
+			});
 
-			res.send(202, {message: 'Plugin update accepted'});
-			next();
 		});
 	});
 	server.del('/manage/plugins/:name', function (req, res, next) {

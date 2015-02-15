@@ -34,7 +34,7 @@ describe('Given module: Plugin', function(){
     
     it('then should the plugin installed', function(done){
 
-      sut.add('subkit-file-plugin', function(error){
+      sut.npmAdd('subkit-file-plugin', function(error){
         assert.ifError(error);
         assert.equal(error, 0);
 
@@ -54,7 +54,7 @@ describe('Given module: Plugin', function(){
     
     it('then should the plugin updated', function(done){
 
-      sut.update('subkit-file-plugin', function(error){
+      sut.npmUpdate('subkit-file-plugin', function(error){
         assert.ifError(error);
         assert.equal(error, 0);
 
@@ -73,7 +73,7 @@ describe('Given module: Plugin', function(){
   describe('when add a `unknown-unknown` plugin', function(){
     
     it('then should raise an error.', function(done){
-      sut.add('unknown-unknown', function(error){
+      sut.npmAdd('unknown-unknown', function(error){
         assert.equal(error, 1);
         done();
       });

@@ -276,26 +276,27 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 				res.send(201, { message: 'Plugin installed'});
 				return next();
 			});
-		}
+		} else {
 
-		var filePath = path.join(configuration.get('paths').staticsPath, packageName);
-		fs.writeFile(filePath, req.body, 'binary', function(err){
-			if(err) {
-				res.send(400, new Error('Plugin not installed.'));
-				return next();
-			}
-
-			plugin.fileAdd(filePath, function(error){
-				if(error) {
+			var filePath = path.join(configuration.get('paths').staticsPath, packageName);
+			fs.writeFile(filePath, req.body, 'binary', function(err){
+				if(err) {
 					res.send(400, new Error('Plugin not installed.'));
 					return next();
 				}
 
-				res.send(201, { message: 'Plugin installed'});
-				return next();
-			});
+				plugin.fileAdd(filePath, function(error){
+					if(error) {
+						res.send(400, new Error('Plugin not installed.'));
+						return next();
+					}
 
-		});
+					res.send(201, { message: 'Plugin installed'});
+					return next();
+				});
+
+			});
+		}
 	});
 	server.del('/manage/plugins/:name', function (req, res, next) {
 		var name = req.params.name;

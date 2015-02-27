@@ -259,13 +259,26 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 	});
 	server.post('/manage/plugins/:name', function (req, res, next) {
-		var fileName = req.params.name;
+		var packageName = req.params.name;
 
-		if(!fileName) {
+		if(!packageName) {
 			res.send(400, new Error('Parameter `name` missing.'));
 			return next();
 		}
-		var filePath = path.join(configuration.get('paths').staticsPath, fileName);
+
+		if(!req.body){
+			plugin.npmAdd(packageName, function(error){
+				if(error) {
+					res.send(400, new Error('Plugin not installed.'));
+					return next();
+				}
+
+				res.send(201, { message: 'Plugin installed'});
+				return next();
+			});
+		}
+
+		var filePath = path.join(configuration.get('paths').staticsPath, packageName);
 		fs.writeFile(filePath, req.body, 'binary', function(err){
 			if(err) {
 				res.send(400, new Error('Plugin not installed.'));

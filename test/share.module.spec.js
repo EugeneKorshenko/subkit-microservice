@@ -26,7 +26,6 @@ describe('Module: Share', function(){
       it('should be only grant read access', function(done){
         var actual = sut.listByIdentity('anonymous');
         assert.deepEqual(actual['/doc'], ['GET']);
-        assert.deepEqual(actual['/'], []);
         done();
       });
     });

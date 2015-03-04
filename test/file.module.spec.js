@@ -47,16 +47,15 @@ describe('Module: File', function(){
     });
   });
 
-  it('should zip the complete directory', function(done){
+  it('should tar the complete directory', function(done){
     var srcPath = path.join(process.cwd(),'files','statics','test');
-    var dstPath = path.join(process.cwd(),'files','statics','zipfile.zip');
+    var dstPath = path.join(process.cwd(),'files','statics','tarfile.tar');
 
-    sut.zipDirectory(srcPath, dstPath, function(err, data){
+    sut.tarDirectory(srcPath, dstPath, function(err, data){
       assert.ifError(err);
       assert.equal(data,dstPath);
       done();
     });
-
   });
 
   it('should delete the complete directory', function(done){
@@ -67,8 +66,8 @@ describe('Module: File', function(){
     });
   });
 
-  it('should delete the zip file', function(done){
-    var filePath = path.join(process.cwd(),'files','statics','zipfile.zip');
+  it('should delete the tar file', function(done){
+    var filePath = path.join(process.cwd(),'files','statics','tarfile.tar');
     sut.delFile(filePath, function(err){
       assert.ifError(err);
       done();

@@ -231,18 +231,58 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.post('/manage/backup', function(req,res,next){
 		storage.backup(function(error, data){
 			if(error) { res.send(400, new Error('Backup error')); return next(); }
-			res.send(202, data);
+			res.send(201, data);
 			return next();
 		});
 	});
-	server.post('/manage/restore', function(req,res,next){
-		var name = req.body.name;
-		storage.restore(name, function(error, data){
-			if(error) { res.send(400, new Error('Restore error')); return next(); }
-			res.send(202, data);
+	server.put('/manage/restore/:name', function(req,res,next){
+		var name = req.params.name;
+		if(!name) { res.send(400, new Error('Parameter `name` missing')); return next(); }
+
+		if(req.body){
+			storage.restore(name, function(error){
+				if(error) return res.send(400, new Error('Restore error'));
+
+				res.send(202, {message:'Restore accepted'});
+				return next();
+			});
+		} else {
+			var filePath = path.join(process.cwd(), configuration.get('paths').backupPath, name) + '.tar';
+
+			fs.writeFile(filePath, req.body, 'binary', function(error){
+				if(error) return res.send(400, new Error('Restore error'));
+
+				storage.restore(name, function(error){
+					if(error) return res.send(400, new Error('Restore error'));
+
+					res.send(202, {message:'Restore accepted'});
+					return next();
+				});
+			});
+		}
+	});
+	server.get('/manage/savepoints', function(req,res,next){
+		storage.listBackups(function(error, data){
+			if(error) { res.send(400, new Error('Not found')); return next(); }
+			res.send(200, data);
 			return next();
 		});
 	});
+	server.get('/manage/savepoints/:name', function(req,res,next){
+		var name = req.params.name;
+		if(!name) { res.send(400, new Error('Parameter `name` missing')); return next(); }
+		
+		var filePath = path.join(process.cwd(), configuration.get('paths').backupPath, name) + '.tar';
+		fs.readFile(filePath, function(error, data){
+			if(error) return res.send(400, new Error('Not found'));
+			
+			res.header('Content-Type', 'application/octet-stream');
+			res.write(data);
+			res.end();
+			return next();
+		});
+	});
+
 	server.del('/manage/db/destroy', function(req,res,next){
 		storage.destroy(function(error, data){
 			if(error) { res.send(400, new Error('Destroy error')); return next(); }

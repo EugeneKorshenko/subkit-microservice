@@ -1,6 +1,6 @@
 {
   "name": "subkit-microservice",
-  "version": "0.2.41",
+  "version": "0.2.42",
   "dependencies": {
     "cflow": "0.1.3",
     "cron": "1.0.6",
@@ -26,7 +26,6 @@
     "tar": "1.0.3",
     "underscore": "1.7.0",
     "underscore-keypath": "0.0.21",
-    "unzip": "0.1.11",
     "yargs": "1.3.3"
   },
   "devDependencies": {

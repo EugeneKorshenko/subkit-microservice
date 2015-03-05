@@ -30,6 +30,7 @@ module.exports.init = function(server, task, doc){
 		newTask.description = req.body.description;
 		newTask.schedule = req.body.schedule;
 		newTask.continuous = req.body.continuous;
+		newTask.anonymous = req.body.anonymous || false;
 		newTask.parameters = req.body.parameters;
 		
 		task.set(taskName, newTask, function(error){
@@ -47,6 +48,7 @@ module.exports.init = function(server, task, doc){
 		newTask.description = req.body.description;
 		newTask.schedule = req.body.schedule;
 		newTask.continuous = req.body.continuous;
+		newTask.anonymous = req.body.anonymous || false;
 		newTask.parameters = req.body.parameters;
 
 		task.set(taskName, newTask, function(error){

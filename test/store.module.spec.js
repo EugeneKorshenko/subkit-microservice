@@ -405,15 +405,15 @@ describe('Module: JSON Key/Value Storage', function(){
   });
   describe('backup/restore', function(){
     it('should backup/restore the complete DB to path', function(done){
-      sut.backup(function(error, backupFilenName){
+      sut.backup(function(error, backupFileName){
         assert.ifError(error);
-        assert.notEqual(backupFilenName, undefined);
+        assert.notEqual(backupFileName, undefined);
 
         sut.listBackups(function(error, data){
           assert.ifError(error);
           assert.equal(data.length > 0, true);
 
-          sut.restore(backupFilenName, function(error){
+          sut.restore(backupFileName, function(error){
             assert.ifError(error);
             done();
           });

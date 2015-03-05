@@ -20,14 +20,14 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	});
 	server.put('/manage/user', function (req, res, next) {
 		var username = req.body.username;
-		if(!username) return next(400, new Error('Parameter `username` missing.'));
+		if(!username) return res.send(400, new Error('Parameter `username` missing.'));
 		
 		var adminConfig = configuration.get('admin');
 		adminConfig.username = username;
 
 		configuration.set('admin', adminConfig);
 		configuration.save(function(err){
-			if(err) return next(400, new Error('Can not change username.'));
+			if(err) return res.send(400, new Error('Can not change username.'));
 			applyConfiguration();			
 			res.send(202, {message: 'update accepted'});
 			next();
@@ -39,32 +39,32 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 
 		configuration.set('api', apiConfig);
 		configuration.save(function(err){
-			if(err) return next(400, new Error('Can not change api-key.'));
+			if(err) return res.send(400, new Error('Can not change api-key.'));
 			applyConfiguration();
 			res.send(202, { message: 'update accepted', apiKey:apiConfig.apiKey });
 			next();
 		});
 	});
 	server.put('/manage/password/action/reset', function (req, res, next) {
-		if(!req.body) return next(400, new Error('Parameter `password` missing.'));
+		if(!req.body) return res.send(400, new Error('Parameter `password` missing.'));
 
 		var password = req.body.password;
 		var newPassword = req.body.newPassword;
 		var newPasswordValidation = req.body.newPasswordValidation;
 
-		if(!password) return next(400, new Error('Parameter `password` missing.'));
-		if(!newPassword) return next(400, new Error('Parameter `newPassword` missing.'));
-		if(!newPasswordValidation) return next(400, new Error('Parameter `newPasswordValidation` missing.'));
-		if(newPassword !== newPasswordValidation) return next(400, new Error('New password do not match.'));
+		if(!password) return res.send(400, new Error('Parameter `password` missing.'));
+		if(!newPassword) return res.send(400, new Error('Parameter `newPassword` missing.'));
+		if(!newPasswordValidation) return res.send(400, new Error('Parameter `newPasswordValidation` missing.'));
+		if(newPassword !== newPasswordValidation) return res.send(400, new Error('New password do not match.'));
 
 		var adminConfig = configuration.get('admin');
 		var isValidPassword = utils.validate(adminConfig.password, password);
-		if(!isValidPassword) return next(400, new Error('Password do not match.'));
+		if(!isValidPassword) return res.send(400, new Error('Password do not match.'));
 		adminConfig.password = utils.hash(newPassword);
 
 		configuration.set('admin', adminConfig);
 		configuration.save(function(err){
-			if(err) return next(400, new Error('Can not change the password.'));
+			if(err) return res.send(400, new Error('Can not change the password.'));
 			applyConfiguration();
 			res.send(202, {message: 'update accepted'});
 			next();
@@ -84,14 +84,14 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		next();
 	});
 	server.put('/manage/certificate/action/change', function (req, res, next) {
-		if(!req.body) return next(400, new Error('Parameter `certificate` missing.'));
+		if(!req.body) return res.send(400, new Error('Parameter `certificate` missing.'));
 
 		var certificate = req.body.certificate;
 		var key = req.body.key;
 		var ca = req.body.ca;
 
-		if(!certificate) return next(400, new Error('Parameter `certificate` missing.'));
-		if(!key) return next(400, new Error('Parameter `key` missing.'));
+		if(!certificate) return res.send(400, new Error('Parameter `certificate` missing.'));
+		if(!key) return res.send(400, new Error('Parameter `key` missing.'));
 
 		var appConfig = configuration.get('app');		
 		fs.writeFileSync(appConfig.key, key);
@@ -99,7 +99,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		if(ca) fs.writeFileSync(appConfig.ca, ca);
 
 		configuration.save(function(err){
-			if(err) return next(400, new Error('Can not change the certificate.'));
+			if(err) return res.send(400, new Error('Can not change the certificate.'));
 			applyConfiguration();
 			res.send(202, {message: 'update accepted'});
 			next();
@@ -109,11 +109,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 
 	server.get('/manage/log/:name', function(req,res,next){
 		var name = req.params.name;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
 
 		var fullPath = path.join(process.cwd(),'files/logs', name +'.log.txt');
 		fs.readFile(fullPath, function(err, data){
-			if(err) return next(400, new Error('Log not found.'));
+			if(err) return res.send(400, new Error('Log not found.'));
 			res.send(200, data.toString());
 			next();
 		});
@@ -182,13 +182,13 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 				payload = JSON.parse(payload.toString());
 
 			}catch(error){
-				return next(400, new Error('Unsupported format.'));
+				return res.send(400, new Error('Unsupported format.'));
 			}
 		}
-		if(!payload) return next(400, new Error('Unsupported format.'));
+		if(!payload) return res.send(400, new Error('Unsupported format.'));
 
 		storage.imports('', payload, function(error){
-			if(error) return next(400, error);
+			if(error) return res.send(400, error);
 			res.send(201, { message: 'imported' });
 			next();
 		});
@@ -196,36 +196,37 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.post('/manage/import/:name', function(req,res,next){
 		var name = req.params.name;
 		var payload = req.body;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(!payload) return next(400, new Error('Unsupported format.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!payload) return res.send(400, new Error('Unsupported format.'));
 
 		storage.imports(name, payload, function(error){
-			if(error) return next(400, error);
+			if(error) return res.send(400, error);
 			res.send(201, { message: 'imported' });
 			next();
 		});
 	});
 	server.get('/manage/export', function(req,res,next){
 		storage.exports('', function(error, data){
-			if(error) return next(400, error);
+			if(error) return res.send(400, error);
 
 			res.header('Content-Type', 'application/octet-stream');
-			res.write(JSON.stringify(data));
+			res.header('Content-disposition', 'attachment; filename=export.json');
+			res.write(JSON.stringify(data, null, 4));
 			res.end();
 			next();
 		});
 	});
-	server.get('/manage/export/:name', function(req,res,next){
+	server.get('/manage/export/:name', function(req,res){
 		var name = req.params.name;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
 
 		storage.exports(name, function(error, data){
-			if(error) return next(400, error);
-
+			if(error) return res.send(400, error);
+			
+			res.header('Content-disposition', 'attachment; filename=' + name + '.json');
 			res.header('Content-Type', 'application/octet-stream');
-			res.write(JSON.stringify(data));
+			res.write(JSON.stringify(data, null, 4));
 			res.end();
-			next();
 		});
 	});
 	server.post('/manage/backup', function(req,res,next){
@@ -238,8 +239,8 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/restore/:name', function(req,res,next){
 		var name = req.params.name;
 		if(!name) { res.send(400, new Error('Parameter `name` missing')); return next(); }
-
-		if(req.body){
+		
+		if(!req.body){
 			storage.restore(name, function(error){
 				if(error) return res.send(400, new Error('Restore error'));
 
@@ -247,7 +248,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 				return next();
 			});
 		} else {
-			var filePath = path.join(process.cwd(), configuration.get('paths').backupPath, name) + '.tar';
+			var filePath = path.join(process.cwd(), configuration.get('paths').backupPath, name);
 
 			fs.writeFile(filePath, req.body, 'binary', function(error){
 				if(error) return res.send(400, new Error('Restore error'));
@@ -272,15 +273,13 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		var name = req.params.name;
 		if(!name) { res.send(400, new Error('Parameter `name` missing')); return next(); }
 		
-		var filePath = path.join(process.cwd(), configuration.get('paths').backupPath, name) + '.tar';
-		fs.readFile(filePath, function(error, data){
-			if(error) return res.send(400, new Error('Not found'));
-			
-			res.header('Content-Type', 'application/octet-stream');
-			res.write(data);
-			res.end();
-			return next();
-		});
+		var filePath = path.join(process.cwd(), configuration.get('paths').backupPath, name);
+
+		res.header('Content-disposition', 'attachment; filename=' + name);
+		res.header('Content-Type', 'application/x-tar');
+
+		var filestream = fs.createReadStream(filePath);
+		filestream.pipe(res);
 	});
 
 	server.del('/manage/db/destroy', function(req,res,next){
@@ -293,7 +292,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 
 	server.get('/manage/plugins', function (req, res, next) {
 		plugin.list(function(error, data){
-			if(error) return next(400, error);
+			if(error) return res.send(400, error);
 			res.send(200, data);
 			next();
 		});
@@ -362,47 +361,47 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 
 	server.get('/manage/permissions/identities', function(req, res, next){
 		share.listIdentities(function(err, data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(200, data);
 			next();
 		});
 	});
 	server.get('/manage/permissions/:identity', function(req, res, next){
 		var identity = req.params.identity;
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.listByIdentity(identity, function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(200, data);
 			next();
 		});
 	});
 	server.post('/manage/permissions/:name', function(req, res, next){
 		var name = req.params.name;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
 
 		share.add(name, function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(201, data);
 			next();
 		});
 	});
 	server.del('/manage/permissions/:name', function(req, res, next){
 		var name = req.params.name;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
 
 		share.remove(name, function(err){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, {message: 'delete accepted'});
 			next();
 		});
 	});
 	server.put('/manage/permissions/action/revoke/:identity', function(req, res, next){
 		var identity = req.params.identity;
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.revokeAccess(identity, function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});
@@ -410,11 +409,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/permissions/:name/action/grantread/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.grantReadAccess(name,identity,function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});
@@ -422,11 +421,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/permissions/:name/action/revokeread/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.revokeReadAccess(name,identity,function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});
@@ -434,11 +433,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/permissions/:name/action/grantinsert/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.grantInsertAccess(name,identity, function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});
@@ -446,11 +445,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/permissions/:name/action/revokeinsert/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.revokeInsertAccess(name,identity,function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});
@@ -458,11 +457,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/permissions/:name/action/grantupdate/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.grantUpdateAccess(name,identity,function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});
@@ -470,11 +469,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/permissions/:name/action/revokeupdate/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.revokeUpdateAccess(name,identity,function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});
@@ -482,11 +481,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/permissions/:name/action/grantdelete/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.grantDeleteAccess(name,identity,function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});
@@ -494,11 +493,11 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.put('/manage/permissions/:name/action/revokedelete/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
-		if(!name) return next(400, new Error('Parameter `name` missing.'));
-		if(!identity) return next(400, new Error('Parameter `identity` missing.'));
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
 		share.revokeDeleteAccess(name,identity,function(err,data){
-			if(err) return next(400, new Error('Permission error.'));
+			if(err) return res.send(400, new Error('Permission error.'));
 			res.send(202, data);
 			next();
 		});

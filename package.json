@@ -34,7 +34,10 @@
     "grunt-contrib-jshint": "*",
     "grunt-markdox": "*",
     "grunt-mocha-test": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "chai": "^1.10.0",
+    "superagent": "^0.21.0",
+    "uuid": "^2.0.1"
   },
   "bin": {
     "subkit": "./bin/subkit"

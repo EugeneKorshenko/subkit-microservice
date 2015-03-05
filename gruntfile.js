@@ -19,7 +19,8 @@ module.exports = function(grunt) {
         'test/file.module.spec.js',
         'test/plugin.module.spec.js',
 
-        'test/store.spec.js',
+        'test/store-operations.spec.js',
+        'test/store-query.spec.js',
         'test/task.spec.js',
         'test/manage.spec.js',
         'test/share.spec.js',
@@ -96,7 +97,8 @@ module.exports = function(grunt) {
         },
         src: [
           'test/store.module.spec.js',
-          'test/store.spec.js'
+          'test/store-operations.spec.js',
+          'test/store-query.spec.js'
         ]
       },
       taskTests: {

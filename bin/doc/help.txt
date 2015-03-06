@@ -8,6 +8,7 @@ Usage:
   $0 uninstall <appname> <plugin>...
   $0 remove <appname>
   $0 update <appname>
+  $0 deploy <appname>  <alias>
   $0 usage
   $0 reset
   $0 -h | --help

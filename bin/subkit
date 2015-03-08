@@ -2,24 +2,18 @@
 
 'use strict';
 
-var argv = require('yargs').argv,
-	shelljs = require('shelljs'),
-	path = require('path'),
-	fs = require('fs'),
-	args = [],
-	callback = callback || function() {};
+var argv = require('yargs').argv;
+var shelljs = require('shelljs');	
+var path = require('path');
+var restify = require('restify');
+var fs = require('fs');
+var args = [];	
+var callback = callback || function() { process.exit(0); };
+var fstream = require('fstream');
+var tar = require('tar');
 
-this.logo = function(){
-console.log("\n\
-███████╗██╗   ██╗██████╗ ██╗  ██╗██╗████████╗\n\
-██╔════╝██║   ██║██╔══██╗██║ ██╔╝██║╚══██╔══╝\n\
-███████╗██║   ██║██████╔╝█████╔╝ ██║   ██║   \n\
-╚════██║██║   ██║██╔══██╗██╔═██╗ ██║   ██║   \n\
-███████║╚██████╔╝██████╔╝██║  ██╗██║   ██║   \n\
-╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝   ╚═╝   \n\
-");
-};
 
+this.logo = function(){};
 this.help = function(args, callback){
 	console.log('Subkit-CLI: v'+require('../package.json').version);
 	this.logo();
@@ -226,15 +220,56 @@ this.run = function(args, callback){
 
 	shelljs.cd(data.app);
 	shelljs.exec('node prod', {silent:false, async:true});
+};
+this.deploy = function(args, callback){
+	var self = this;
+	this.logo();
+	if (argv._.length <= 0) {
+		argv._.unshift('help');
+		this.argv(argv, callback);
+		return;
+	}
 
-	// if(data.noBrowser) return;
-	// setTimeout(function(){
-	// 	var config = fs.readFileSync('./files/config/config.json');
-	// 	config = JSON.parse(config.toString());
-	// 	shelljs.exec('open https://localhost:'+config.app.port, {silent:true, async:true});
-	// 	argv._ = ['usage'];
-	// 	self.help(argv, callback);
-	// }, 2000);
+	var data = {
+		app: argv._[1] || argv.app || argv.p,
+		alias: argv._[2] || argv.alias || argv.a,
+		verbose: argv.verbose || argv.v
+	};
+	if(!data.app) return console.log('Missing argument: <appname>.');
+	if(!data.alias) return console.log('Missing argument: <alias>.');
+	
+	var client = restify.createClient({ 
+		url: 'https://cloud.subkit.io',
+		headers: {
+        	'Content-Type': 'application/octed-stream'
+      	}
+	});
+
+	var srcPath = path.join(process.cwd(), '../files');
+
+	client.post('/api/deploybackend', function(err, req) {
+
+		req.on('result', function(err, res) {
+			res.body = '';
+			res.setEncoding('utf8');
+			res.on('data', function(chunk) {
+				res.body += chunk;
+			});
+			
+			res.on('end', function() {
+				console.log(res.body);
+				callback();
+			});
+		});
+
+		fstream
+			.Reader({
+				'path':srcPath,
+				'type': 'Directory'
+			})
+			.pipe(tar.Pack())
+			.pipe(req);
+	});
 };
 this.unknown = function(args, callback){
 	console.log('unknown action');

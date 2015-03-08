@@ -1,0 +1,10 @@
+Deploy a new Subkit-Microservice instance.
+
+Usage:
+  $0 deploy <appname> <alias>
+  $0 deploy -n <appname> -a <alias>
+  
+Options:
+  -n | --name <appname>       Instance name.
+  -a | --alias <alias>        Alias name.
+  -v | --verbose              Verbose output.

@@ -53,6 +53,31 @@ describe('Module: Task', function(){
     });
   });
 
+  describe('on task error', function(){
+    it('should create a task',function(done){
+      var newTask = new sut.Task('failure', []);
+      newTask.taskScript = 'task.done(new Error("Error occured"));';
+      sut.set(newTask.name, newTask, function(error){
+        assert.ifError(error);
+        done();
+      });
+    });
+    it('should run a task and success',function(done){
+      sut.run('failure', [], null, function(error, data, contentType, log){
+        assert.notEqual(error, null);
+        assert.equal(error.message, 'Error occured');
+        assert.deepEqual(log, []);
+        done();
+      });
+    });
+    it('should remove a task',function(done){
+      sut.remove('failure', function(error){
+        assert.ifError(error);
+        done();
+      });
+    });
+  });
+
   describe('on long running tasks', function(){
     it('should create a task with parameters',function(done){
       var newTask = new sut.Task('longrunningsuccess', {Msg:'Hello!!!'});

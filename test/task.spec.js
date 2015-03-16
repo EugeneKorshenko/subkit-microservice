@@ -11,14 +11,14 @@ var client = restify.createJsonClient({
   headers: {'x-auth-token':'66LOHAiB8Zeod1bAeLYW'}
 });
 
-describe.skip('Integration: Task', function(){
+describe('Integration: Task', function(){
   var server,
       context;
 
   before(function(done) {
     server = require('../server.js');
     context = server.init().getContext();
-    context.Task.init({
+    context.task.init({
       tasksPath: path.join(__dirname, './task_mock'),
     });
     done();
@@ -47,12 +47,12 @@ describe.skip('Integration: Task', function(){
             assert.equal(null, err);
             assert.notEqual(null, obj);
             assert.notEqual('', obj.taskScript);
-            assert.equal('changed', obj.message);
+            assert.equal('update accepted', obj.message);
 
             client.del('/tasks/demo1', function(err, req, res, obj) {
               assert.equal(null, err);
               assert.notEqual(null, obj);
-              assert.equal('removed', obj.message);
+              assert.equal('delete accepted', obj.message);
               done();
             });
 
@@ -61,6 +61,45 @@ describe.skip('Integration: Task', function(){
         });
       });
     });
+
+    it('should execute error task', function(done){
+      client.post('/tasks/error1', null, function(err, req, res, obj) {
+        assert.equal(null, err);
+        assert.notEqual(null, obj);
+        assert.equal('created', obj.message);
+        
+        client.get('/tasks/error1', function(err, req, res, obj){
+          assert.equal(null, err);
+          assert.notEqual(null, obj); 
+          assert.notEqual('', obj.name);
+
+          obj.taskScript = 'task.done(new Error("Error occured"));';
+          client.put('/tasks/error1', obj, function(err, req, res, obj){
+            assert.equal(null, err);
+            assert.notEqual(null, obj);
+            assert.notEqual('', obj.taskScript);
+            assert.equal('update accepted', obj.message);
+
+
+            client.get('/api/error1', function(err, req, res, obj){
+
+              client.del('/tasks/error1', function(err, req, res, obj) {
+                assert.equal(null, err);
+                assert.notEqual(null, obj);
+                assert.equal('delete accepted', obj.message);
+                done();
+              });
+
+            });
+
+
+
+          });
+
+        });
+      });
+    });
+
   });
 
 });

@@ -6,24 +6,24 @@ module.exports.init = function(server, task, doc){
 	//operations
 	server.get('/tasks', function(req,res,next){
 		task.list(function(error, data){
-			if(error) return next(400, new Error('Task error.'));
+			if(error) return res.send(400, new Error('Task error.'));
 			res.send(200, {results: data});
 			next();
 		});
 	});
 	server.get('/tasks/:name', function (req, res, next) {
 		var taskName = req.params.name;
-		if(!taskName) return next(400, new Error('Task `name` missing.'));
+		if(!taskName) return res.send(400, new Error('Task `name` missing.'));
 
 		task.get(taskName, function(error, data){
-			if(error) return next(400, new Error('Task error.'));
+			if(error) return res.send(400, new Error('Task error.'));
 			res.send(200, data);
 			next();
 		});
 	});
 	server.post('/tasks/:name', function(req, res, next){
 		var taskName = req.params.name;
-		if(!taskName) return next(400, new Error('Task `name` missing.'));
+		if(!taskName) return res.send(400, new Error('Task `name` missing.'));
 
 		var newTask = new task.Task(taskName);
 		newTask.taskScript = req.body.taskScript;
@@ -34,14 +34,14 @@ module.exports.init = function(server, task, doc){
 		newTask.parameters = req.body.parameters;
 		
 		task.set(taskName, newTask, function(error){
-			if(error) return next(400, new Error('Task error.'));
+			if(error) return res.send(400, new Error('Task error.'));
 			res.send(201, { message: 'created'});
 			next();
 		});
 	});
 	server.put('/tasks/:name', function (req, res, next) {
 		var taskName = req.params.name;
-		if(!taskName) return next(400, new Error('Task `name` missing.'));
+		if(!taskName) return res.send(400, new Error('Task `name` missing.'));
 
 		var newTask = new task.Task(taskName);
 		newTask.taskScript = req.body.taskScript;
@@ -52,17 +52,17 @@ module.exports.init = function(server, task, doc){
 		newTask.parameters = req.body.parameters;
 
 		task.set(taskName, newTask, function(error){
-			if(error) return next(400, new Error('Task error.'));
+			if(error) return res.send(400, new Error('Task error.'));
 			res.send(202, {message: 'update accepted'});
 			next();
 		});
 	});
 	server.del('/tasks/:name', function(req, res, next){
 		var taskName = req.params.name;
-		if(!taskName) return next(400, new Error('Task `name` missing.'));
+		if(!taskName) return res.send(400, new Error('Task `name` missing.'));
 
 		task.remove(taskName, function(error){
-			if(error) return next(400, new Error('Task error.'));
+			if(error) return res.send(400, new Error('Task error.'));
 			res.send(202, {message: 'delete accepted'});
 			next();
 		});
@@ -73,15 +73,15 @@ module.exports.init = function(server, task, doc){
 		delete req.params[2];
 
 		var timeOutRef = setTimeout(function(){
-			return next(400, new Error(resource + ' do not done. Timeout.'));
+			return res.send(400, new Error(resource + ' do not done. Timeout.'));
 		}, 2500);
 		
 		var resource = req.params[0];
 		task.run(resource, req.params || req.body || {}, { request: req, response: res }, function(err, data, contentType, log){
 			clearTimeout(timeOutRef);
-			try{			
+			if(err) return res.send(400, err);
+			try{	
 				if(log) res.setHeader('Subkit-Log', JSON.stringify(log, null, 4));
-				if(err) return next(400, err);
 				if(contentType) res.setHeader('Content-Type', contentType);
 				res.send(200, data);
 				next();

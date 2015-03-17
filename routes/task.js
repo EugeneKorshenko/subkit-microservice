@@ -73,13 +73,13 @@ module.exports.init = function(server, task, doc){
 		delete req.params[2];
 
 		var timeOutRef = setTimeout(function(){
-			return res.send(400, new Error(resource + ' do not done. Timeout.'));
-		}, 2500);
+			return res.send(500, 'Timeout - ' + resource + ' do not done.');
+		}, 5000);
 		
 		var resource = req.params[0];
 		task.run(resource, req.params || req.body || {}, { request: req, response: res }, function(err, data, contentType, log){
 			clearTimeout(timeOutRef);
-			if(err) return res.send(400, err);
+			if(err) return res.send(500, err.message);
 			try{	
 				if(log) res.setHeader('Subkit-Log', JSON.stringify(log, null, 4));
 				if(contentType) res.setHeader('Content-Type', contentType);

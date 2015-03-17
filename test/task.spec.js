@@ -73,7 +73,7 @@ describe('Integration: Task', function(){
           assert.notEqual(null, obj); 
           assert.notEqual('', obj.name);
 
-          obj.taskScript = 'task.done(new Error("Error occured"));';
+          obj.taskScript = 'task.done(new Error("Test error occured"));';
           client.put('/tasks/error1', obj, function(err, req, res, obj){
             assert.equal(null, err);
             assert.notEqual(null, obj);
@@ -82,6 +82,9 @@ describe('Integration: Task', function(){
 
 
             client.get('/api/error1', function(err, req, res, obj){
+              assert.equal(res.statusCode, 500);
+              assert.equal('Test error occured', err.body);
+              assert.equal('Test error occured', obj);
 
               client.del('/tasks/error1', function(err, req, res, obj) {
                 assert.equal(null, err);
@@ -92,7 +95,83 @@ describe('Integration: Task', function(){
 
             });
 
+          });
 
+        });
+      });
+    });
+
+    it('should execute timeout error task', function(done){
+      client.post('/tasks/timeout1', null, function(err, req, res, obj) {
+        assert.equal(null, err);
+        assert.notEqual(null, obj);
+        assert.equal('created', obj.message);
+        
+        client.get('/tasks/timeout1', function(err, req, res, obj){
+          assert.equal(null, err);
+          assert.notEqual(null, obj); 
+          assert.notEqual('', obj.name);
+
+          obj.taskScript = 'setTimeout(function(){task.done();},6000);';
+          client.put('/tasks/timeout1', obj, function(err, req, res, obj){
+            assert.equal(null, err);
+            assert.notEqual(null, obj);
+            assert.notEqual('', obj.taskScript);
+            assert.equal('update accepted', obj.message);
+
+
+            client.get('/api/timeout1', function(err, req, res, obj){
+              assert.equal(res.statusCode, 500);
+              assert.equal('Timeout - timeout1 do not done.', err.body);
+              assert.equal('Timeout - timeout1 do not done.', obj);
+
+              client.del('/tasks/timeout1', function(err, req, res, obj) {
+                assert.equal(null, err);
+                assert.notEqual(null, obj);
+                assert.equal('delete accepted', obj.message);
+                done();
+              });
+
+            });
+
+          });
+
+        });
+      });
+    });
+
+    it('should execute throw error task', function(done){
+      client.post('/tasks/throw1', null, function(err, req, res, obj) {
+        assert.equal(null, err);
+        assert.notEqual(null, obj);
+        assert.equal('created', obj.message);
+        
+        client.get('/tasks/throw1', function(err, req, res, obj){
+          assert.equal(null, err);
+          assert.notEqual(null, obj); 
+          assert.notEqual('', obj.name);
+
+          obj.taskScript = 'throw new Error("Error thrown");';
+          client.put('/tasks/throw1', obj, function(err, req, res, obj){
+            assert.equal(null, err);
+            assert.notEqual(null, obj);
+            assert.notEqual('', obj.taskScript);
+            assert.equal('update accepted', obj.message);
+
+
+            client.get('/api/throw1', function(err, req, res, obj){
+              assert.equal(res.statusCode, 500);
+              assert.equal('Error thrown', err.body);
+              assert.equal('Error thrown', obj);
+
+              client.del('/tasks/throw1', function(err, req, res, obj) {
+                assert.equal(null, err);
+                assert.notEqual(null, obj);
+                assert.equal('delete accepted', obj.message);
+                done();
+              });
+
+            });
 
           });
 

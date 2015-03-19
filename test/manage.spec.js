@@ -1,6 +1,6 @@
 'use strict';
 
-/*var assert = require('assert');
+var assert = require('assert');
 var restify = require('restify');
 
 var client = restify.createJsonClient({
@@ -8,7 +8,7 @@ var client = restify.createJsonClient({
   rejectUnauthorized: false,
   url: 'https://127.0.0.1:8080',
   headers: {'x-auth-token':'66LOHAiB8Zeod1bAeLYW'}
-});*/
+});
 
 describe('Integration: Manage', function(){
   var server,
@@ -29,6 +29,10 @@ describe('Integration: Manage', function(){
 
   describe('on ...', function(){
     it('should be ...', function(done){
+      client.get('/manage/os', function(error, req, res, actual){
+        assert.ifError(error);
+        assert.notEqual(actual, null);
+      });
       done();
     });
   });

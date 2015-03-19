@@ -22,6 +22,7 @@ module.exports = function(grunt) {
         'test/store-operations.spec.js',
         'test/store-query.spec.js',
         'test/task.spec.js',
+        'test/event.spec.js',
         'test/manage.spec.js',
         'test/share.spec.js',
         
@@ -141,7 +142,17 @@ module.exports = function(grunt) {
         src: [
           'test/plugin.module.spec.js'
         ]
-      }      
+      },
+      manageTests: {
+        options: {
+          reporter: 'spec',
+          timeout: 10000,
+          clearRequireCache: false
+        },
+        src: [
+          'test/manage.spec.js'
+        ]
+      },
     },
     markdox: {
       target: {
@@ -160,7 +171,7 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', []);
-  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:eventTests','mochaTest:taskTests','mochaTest:fileTests','mochaTest:identityTests','mochaTest:pluginTests']);
+  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:eventTests','mochaTest:taskTests','mochaTest:fileTests','mochaTest:identityTests','mochaTest:pluginTests','mochaTest:manageTests']);
   grunt.registerTask('shareTests', ['mochaTest:shareTests']);
   grunt.registerTask('storeTests', ['mochaTest:storeTests']);
   grunt.registerTask('eventTests', ['mochaTest:eventTests']);
@@ -168,5 +179,6 @@ module.exports = function(grunt) {
   grunt.registerTask('fileTests', ['mochaTest:fileTests']);
   grunt.registerTask('identityTests', ['mochaTest:identityTests']);
   grunt.registerTask('pluginTests', ['mochaTest:pluginTests']);
+  grunt.registerTask('manageTests', ['mochaTest:manageTests']);
   grunt.registerTask('docs', ['markdox']);
 };

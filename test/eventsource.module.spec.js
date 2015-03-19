@@ -160,8 +160,5 @@ describe('Module: EventSource', function(){
       setTimeout(done, 500);
 
     });
-
-
-
   });
 });

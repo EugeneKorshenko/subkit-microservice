@@ -22,7 +22,7 @@ module.exports.init = function(server, event, configuration, doc){
 				message: 'Webhook registered to: ' + itm.webhook
 			});
 			event.bindWebHook(itm.stream, unescape(itm.webhook), itm.where, itm.apiKey);
-		};
+		}
 	})();
 
 	// heartbeat

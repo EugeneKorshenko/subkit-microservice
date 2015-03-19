@@ -1,5 +1,7 @@
 'use strict';
 
+var util = require('../lib/utils.module.js').init();
+
 module.exports.init = function(server, event, configuration, doc){
 	require('./doc/event.doc.js').init(doc);
 
@@ -13,7 +15,12 @@ module.exports.init = function(server, event, configuration, doc){
 		}
 		for(var idx in webhooksConfig){
 			var itm = webhooksConfig[idx];
-			console.log(itm)
+			util.log({
+				type: 'webhook',
+				status: 'registered',
+				webhook: itm.webhook,
+				message: 'Webhook registered to: ' + itm.webhook
+			});
 			event.bindWebHook(itm.stream, unescape(itm.webhook), itm.where, itm.apiKey);
 		};
 	})();

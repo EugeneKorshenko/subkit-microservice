@@ -17,7 +17,7 @@ describe('Module: Share', function(){
     describe('list all identities', function(){
       it('should be get all identies', function(done){
         var actual = sut.listIdentities();
-        assert.notEqual(actual.length, 0);
+        assert.equal(actual.length, 0);
         done();
       });
     });
@@ -25,7 +25,7 @@ describe('Module: Share', function(){
     describe('list by identity', function(){
       it('should be only grant read access', function(done){
         var actual = sut.listByIdentity('anonymous');
-        assert.deepEqual(actual['/doc'], ['GET']);
+        assert.deepEqual(actual['/doc'], []);
         done();
       });
     });
@@ -156,6 +156,5 @@ describe('Module: Share', function(){
         done();
       });
     });
-
   });
 });

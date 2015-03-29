@@ -224,7 +224,7 @@ module.exports.init = function(){
 	//starts external API
 	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, plugin, share, subkitPackage.version, doc);
 	require('./routes/store.js').init(server, storage, doc);
-	require('./routes/event.js').init(server, event, doc);
+	require('./routes/event.js').init(server, event, nconf, doc);
 	require('./routes/task.js').init(server, task, doc);
 
 	return {

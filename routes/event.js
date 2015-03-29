@@ -1,7 +1,29 @@
 'use strict';
 
-module.exports.init = function(server, event, doc){
+var util = require('../lib/utils.module.js').init();
+
+module.exports.init = function(server, event, configuration, doc){
 	require('./doc/event.doc.js').init(doc);
+
+	var webhooksConfig = configuration.get('webhooks');
+	//bind webhooks
+	(function(){
+		if(!webhooksConfig) {
+			webhooksConfig = {};
+			configuration.set('webhooks', webhooksConfig);
+			configuration.save();
+		}
+		for(var idx in webhooksConfig){
+			var itm = webhooksConfig[idx];
+			util.log({
+				type: 'webhook',
+				status: 'registered',
+				webhook: itm.webhook,
+				message: 'Webhook registered to: ' + itm.webhook
+			});
+			event.bindWebHook(itm.stream, unescape(itm.webhook), itm.where, itm.apiKey);
+		}
+	})();
 
 	// heartbeat
 	(function(){
@@ -28,33 +50,47 @@ module.exports.init = function(server, event, doc){
 			next();
 		});
 	});
-
 	server.post('/events/bind/:stream', function(req,res,next){
 		var stream = req.params.stream;
 		if(!req.body) req.body = {};
 		var webhook = req.body.webhook || req.headers['x-subkit-event-webhook'];
 		var where = req.body.filter || req.headers['x-subkit-event-filter'];
+		var apiKey = req.body.apikey || req.headers['x-subkit-event-apikey'];
 		
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
 		if(!webhook) return res.send(400, new Error('Parameter `webhook` missing.'));
 		
 		try { if(where) where = JSON.parse(unescape(where)); } catch(e){ where = null; }
-
-		event.bindWebHook(stream, webhook, where);
-		res.send(201, {message: 'created'});
-		next();
-
+		
+		event.bindWebHook(stream, webhook, where, apiKey);
+		
+		webhooksConfig[escape(webhook)] = {
+			stream: stream,
+			webhook: webhook,
+			where: where,
+			apiKey: apiKey
+		};
+		configuration.set('webhooks', webhooksConfig);
+		configuration.save(function(){
+			res.send(201, {message: 'created'});
+			next();			
+		});
 	});
 	server.del('/events/bind/:stream', function(req,res,next){
 		var stream = req.params.stream;
+		if(!req.body) req.body = {};
 		var webhook = req.body.webhook || req.headers['x-subkit-event-webhook'];
 
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
 		if(!webhook) return res.send(400, new Error('Parameter `webhook` missing.'));
+		event.unbind(stream, webhook);
 
-		event.unbindWebHook(stream, webhook);
-		res.send(202, {message: 'unbind accepted'});
-		next();
+		delete webhooksConfig[escape(webhook)];
+		configuration.set('webhooks', webhooksConfig);
+		configuration.save(function(){
+			res.send(202, {message: 'delete accepted'});
+			next();			
+		});
 	});
 
 	server.post('/events/emit/:stream', function (req, res, next) {
@@ -73,7 +109,6 @@ module.exports.init = function(server, event, doc){
 			res.send(201, data);
 			next();
 		});
-		
 	});
 
 	server.get('/events/log/:stream', function(req, res, next){

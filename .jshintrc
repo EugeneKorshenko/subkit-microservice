@@ -8,7 +8,8 @@
     "before",
     "beforeEach",
     "root",
-    "unescape"
+    "unescape",
+    "escape"
   ],
 
   "indent": 2,

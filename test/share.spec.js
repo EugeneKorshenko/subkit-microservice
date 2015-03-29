@@ -32,7 +32,7 @@ describe('Integration: Share', function(){
       client.get('/manage/permissions/identities', function(error, req, res, actual){
         assert.ifError(error);
         assert.equal(res.statusCode, 200, 'Wrong HTTP status code.');
-        assert.notEqual(actual.length, 0);
+        assert.equal(actual.length, 0);
         done();
       });
     });
@@ -41,7 +41,7 @@ describe('Integration: Share', function(){
         assert.ifError(error);
         assert.equal(res.statusCode, 200, 'Wrong HTTP status code.');
         assert.deepEqual(actual, {  '/': [ ],
-                                    '/doc': [ 'GET' ] }
+                                    '/doc': [ ] }
         );
         done();
       });

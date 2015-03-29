@@ -30,10 +30,10 @@ module.exports.init = function(){
 			utils.mkdirRecursive(configFilePath);
 
 			nconf.remove('defaults');
-			nconf.set('admin', admin);
-			nconf.set('app', app);
-			nconf.set('api', api);
-			nconf.set('paths', paths);
+			nconf.set('admin', JSON.parse(JSON.stringify(admin)));
+			nconf.set('app', JSON.parse(JSON.stringify(app)));
+			nconf.set('api', JSON.parse(JSON.stringify(api)));
+			nconf.set('paths', JSON.parse(JSON.stringify(paths)));
 			nconf.save();
 		}
 		

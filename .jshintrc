@@ -3,6 +3,8 @@
     "console",
     "describe",
     "it",
+    "xdescribe",
+    "xit",
     "after",
     "afterEach",
     "before",

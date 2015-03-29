@@ -140,13 +140,14 @@ module.exports.init = function(){
 		var token = null;
 
 		if(api.apiKey === apikey) {
+			utils.log('Authorized', {apikey: apikey });
 			return next();
 		}
 		if((req.authorization)
 			&& (req.authorization.basic)
 			&& (req.username === admin.username)
 			&& (utils.validate(admin.password, req.authorization.basic.password))){
-
+			utils.log('Authorized', { username: req.username || 'none'});
 			return next();
 		}
  		if(!apikey && req.username && req.authorization && req.authorization.basic && req.authorization.basic.password){
@@ -168,6 +169,7 @@ module.exports.init = function(){
 					else username = req.username;
 
 					if(shareItem[req.method].indexOf(username) !== -1){
+						utils.log('Authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
 						return next();
 					}
 					
@@ -175,12 +177,14 @@ module.exports.init = function(){
 						for (var p = 0; p < user.groups.length; p++) {
 							var group = user.groups[p];
 							if(shareItem[req.method].indexOf(group) !== -1){
+								utils.log('Authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
 								return next();
 							}
 						}
 					}
 				}
 			}
+			utils.log('Unauthorized', {apikey: apikey || 'none', token: token || 'none'});
 			res.send(401, new Error('Unauthorized'));
 		});
 	});

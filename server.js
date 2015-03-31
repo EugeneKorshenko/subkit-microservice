@@ -103,18 +103,35 @@ module.exports.init = function(){
 	//handle errors	
 	process.stdin.resume();
 	server.on('uncaughtException', function (req, res, route, err) {
-		utils.trace(err, route);
+		utils.log('service', {
+			type: 'service',
+			status: 'error',			
+			error: err,
+			route: route
+		});
 	});
 	function exitHandler(options, err) {
 	    if (err) {
-	    	utils.trace(err);
+	    	utils.log('service', {
+				type: 'service',
+				status: 'error',
+	    		error: err
+	    	});
 	    }
 	    if (options.cleanup) {
 	    	storage.close();
-	    	utils.log('Clean up resources.');
+	    	utils.log('service', {
+				type: 'service',
+				status: 'success',
+	    		message: 'clean up resources'
+	    	});
 	    }
 	    if (options.exit) {
-	    	utils.log( 'Process exit.');
+	    	utils.log('service', {
+				type: 'service',
+				status: 'success',
+	    		message: 'process exit'
+	    	});
 	    	process.exit();
 	    }
 	}
@@ -140,14 +157,14 @@ module.exports.init = function(){
 		var token = null;
 
 		if(api.apiKey === apikey) {
-			utils.log('Authorized', {apikey: apikey });
+			utils.log('authorized', {apikey: apikey });
 			return next();
 		}
 		if((req.authorization)
 			&& (req.authorization.basic)
 			&& (req.username === admin.username)
 			&& (utils.validate(admin.password, req.authorization.basic.password))){
-			utils.log('Authorized', { username: req.username || 'none'});
+			utils.log('authorized', { username: req.username || 'none'});
 			return next();
 		}
  		if(!apikey && req.username && req.authorization && req.authorization.basic && req.authorization.basic.password){
@@ -169,7 +186,7 @@ module.exports.init = function(){
 					else username = req.username;
 
 					if(shareItem[req.method].indexOf(username) !== -1){
-						utils.log('Authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
+						utils.log('authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
 						return next();
 					}
 					
@@ -177,7 +194,7 @@ module.exports.init = function(){
 						for (var p = 0; p < user.groups.length; p++) {
 							var group = user.groups[p];
 							if(shareItem[req.method].indexOf(group) !== -1){
-								utils.log('Authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
+								utils.log('authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
 								return next();
 							}
 						}

@@ -6,11 +6,12 @@ describe('Module: Event', function(){
       sut;
 
   before(function(done) {
+    var logger = require('../lib/logger.module.js').init();
     store = require('../lib/store.module.js').init({
       dbPath:'./eventspecdb',
       backupPath:'./backups'
-    });
-    sut = require('../lib/event.module.js').init({}, store);
+    }, logger);
+    sut = require('../lib/event.module.js').init({}, store, logger);
     done();
   });
   after(function(done){

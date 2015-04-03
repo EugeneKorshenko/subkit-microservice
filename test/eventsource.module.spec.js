@@ -6,11 +6,12 @@ describe('Module: EventSource', function(){
   var store, event, sut;
 
   before(function(done) {
+    var logger = require('../lib/logger.module.js').init();
     store = require('../lib/store.module.js').init({
       dbPath:'./eventsourcedb',
       backupPath:'./backups'
-    });
-    event = require('../lib/event.module.js').init({}, store);
+    }, logger);
+    event = require('../lib/event.module.js').init({}, store, logger);
     sut = require('../lib/eventsource.module.js').init(store, event);
     
    event.emit('demo1',{},{},true);

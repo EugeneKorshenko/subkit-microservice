@@ -5,10 +5,11 @@ var sut;
 
 describe('Module: JSON Key/Value Storage', function(){
   before(function(done) {
+    var logger = require('../lib/logger.module.js').init();
     sut = require('../lib/store.module.js').init({
       dbPath:'./storespecdb',
       backupPath:'./backups'
-    });
+    }, logger);
     sut.update('ademo', '1', {test: 'ademo 1 test', group: 'B'});
     sut.update('bdemoa', '1', {test: 'bdemoa 1 test'});
     sut.update('bdemob', '1', {test: 'bdemob 1 test', group: 'A'});

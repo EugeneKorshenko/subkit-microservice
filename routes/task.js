@@ -1,7 +1,6 @@
 'use strict';
 
-module.exports.init = function(server, task, doc){
-	require('./doc/task.doc.js').init(doc);
+module.exports.init = function(server, task){
 
 	//operations
 	server.get('/tasks', function(req,res,next){

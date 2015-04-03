@@ -9,8 +9,7 @@ var shelljs = require('shelljs');
 var packageJson = require('package-json');
 var http = require('http');
 
-module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, plugin, share, version, doc){
-	require('./doc/manage.doc.js').init(doc);
+module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, plugin, share, version){
 
 	server.post('/manage/login', function (req, res, next) {
 		var api = configuration.get('api');

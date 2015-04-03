@@ -7,11 +7,12 @@ var path = require('path'),
 
 describe('Module: Task', function(){
   before(function(done) {
+    var logger = require('../lib/logger.module.js').init();
     store = require('../lib/store.module.js').init({
       dbPath:'./taskspecdb',
       backupPath:'./backups'
-    });
-    var event = require('../lib/event.module.js').init({pollInterval: 1});
+    }, logger);
+    var event = require('../lib/event.module.js').init({pollInterval: 1}, logger);
     var eventsource = require('../lib/eventsource.module.js').init(store, event);
     var template = require('../lib/template.module.js').init({templatesPath:'./test/template_mock'});
     var file = require('../lib/file.module.js').init({templatesPath:'./test/statics_mock'});
@@ -19,7 +20,7 @@ describe('Module: Task', function(){
     sut = require('../lib/task.module.js').init({
       tasksPath: path.join(__dirname, './task_mock'),
       backupPath: './backups'
-    }, store, event, eventsource, template, file);
+    }, store, event, eventsource, template, file, logger);
     done();
   });
   after(function(done){

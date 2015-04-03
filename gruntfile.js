@@ -9,6 +9,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
       files: [
+        'test/logger.module.spec.js',
         'test/store.module.spec.js',
         'test/event.module.spec.js',
         'test/task.module.spec.js',
@@ -27,7 +28,6 @@ module.exports = function(grunt) {
         'test/share.spec.js',
         
         'lib/utils.module.js',
-        'lib/doc.module.js',
         'lib/store.module.js',
         'lib/event.module.js',
         'lib/eventsource.module.js',

@@ -2,8 +2,7 @@
 
 var util = require('../lib/utils.module.js').init();
 
-module.exports.init = function(server, event, configuration, doc){
-	require('./doc/event.doc.js').init(doc);
+module.exports.init = function(server, event, configuration){
 
 	var webhooksConfig = configuration.get('webhooks');
 	//bind webhooks

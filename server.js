@@ -7,7 +7,8 @@ var fs = require('fs');
 var path = require('path');
 var nconf = require('nconf');
 var subkitPackage = require('./package.json');
-var utils = require('./lib/utils.module.js').init();    
+var logger = require('./lib/logger.module.js').init();
+var utils = require('./lib/utils.module.js').init();
 
 module.exports.init = function(){
 	var admin;
@@ -60,11 +61,11 @@ module.exports.init = function(){
 		
 		var	srv = restify.createServer(options);
 		srv.listen(app.port, function(){
-			utils.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
-			utils.log('ENVIRONMENT: '+process.env.NODE_ENV);
-			utils.log('SECURE: '+srv.secure);
-			utils.log('PORT: '+srv.address().port);
-			utils.log('PID: '+process.pid);
+			logger.log('Subkit micro-service (V'+subkitPackage.version+') listen.');
+			logger.log('ENVIRONMENT: '+process.env.NODE_ENV);
+			logger.log('SECURE: '+srv.secure);
+			logger.log('PORT: '+srv.address().port);
+			logger.log('PID: '+process.pid);
 
 			http.globalAgent.maxSockets = 50000;
 			https.globalAgent.maxSockets = 50000;
@@ -101,18 +102,18 @@ module.exports.init = function(){
 	});
 
 	//handle errors	
-	process.stdin.resume();
-	server.on('uncaughtException', function (req, res, route, err) {
-		utils.log('service', {
-			type: 'service',
-			status: 'error',			
-			error: err,
-			route: route
-		});
-	});
+	// process.stdin.resume();
+	// server.on('uncaughtException', function (req, res, route, err) {
+	// 	logger.log('service', {
+	// 		type: 'service',
+	// 		status: 'error',			
+	// 		error: err,
+	// 		route: route
+	// 	});
+	// });
 	function exitHandler(options, err) {
 	    if (err) {
-	    	utils.log('service', {
+	    	logger.log('service', {
 				type: 'service',
 				status: 'error',
 	    		error: err
@@ -120,14 +121,14 @@ module.exports.init = function(){
 	    }
 	    if (options.cleanup) {
 	    	storage.close();
-	    	utils.log('service', {
+	    	logger.log('service', {
 				type: 'service',
 				status: 'success',
 	    		message: 'clean up resources'
 	    	});
 	    }
 	    if (options.exit) {
-	    	utils.log('service', {
+	    	logger.log('service', {
 				type: 'service',
 				status: 'success',
 	    		message: 'process exit'
@@ -138,33 +139,33 @@ module.exports.init = function(){
 	process.on('abort', exitHandler.bind(null,{cleanup:true, exit:true}));
 	process.on('exit', exitHandler.bind(null,{cleanup:true, exit:true}));
 	process.on('SIGINT', exitHandler.bind(null, {cleanup: true, exit:true}));
-	process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
+	// process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
 	
 	//modules
-	var storage = require('./lib/store.module.js').init(paths);
-	var	event = require('./lib/event.module.js').init({}, storage);
-	var share = require('./lib/share.module.js').init({}, event);
+	var storage = require('./lib/store.module.js').init(paths, logger);
+	var	event = require('./lib/event.module.js').init({}, storage, logger);
+	var share = require('./lib/share.module.js').init({}, logger);
 	var file = require('./lib/file.module.js');
 	var es = require('./lib/eventsource.module.js').init(storage, event);
 	var template = require('./lib/template.module.js');
-	var task = require('./lib/task.module.js').init(paths, storage, event, es, template.init(paths), file.init(paths), doc);
+	var task = require('./lib/task.module.js').init(paths, storage, event, es, template.init(paths, logger), file.init(paths, logger), logger);
 	var identity = require('./lib/identity.module.js');
 
     //handle access
-    var usersIdent = identity.init(null, storage);	
+    var usersIdent = identity.init(null, storage, logger);	
 	server.use(function(req, res, next){
 		var apikey = req.headers['x-auth-token'] || req.params.apikey || req.params.api_key;
 		var token = null;
 
 		if(api.apiKey === apikey) {
-			utils.log('authorized', {apikey: apikey });
+			logger.log('authorized', {apikey: apikey });
 			return next();
 		}
 		if((req.authorization)
 			&& (req.authorization.basic)
 			&& (req.username === admin.username)
 			&& (utils.validate(admin.password, req.authorization.basic.password))){
-			utils.log('authorized', { username: req.username || 'none'});
+			logger.log('authorized', { username: req.username || 'none'});
 			return next();
 		}
  		if(!apikey && req.username && req.authorization && req.authorization.basic && req.authorization.basic.password){
@@ -186,7 +187,7 @@ module.exports.init = function(){
 					else username = req.username;
 
 					if(shareItem[req.method].indexOf(username) !== -1){
-						utils.log('authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
+						logger.log('authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
 						return next();
 					}
 					
@@ -194,24 +195,16 @@ module.exports.init = function(){
 						for (var p = 0; p < user.groups.length; p++) {
 							var group = user.groups[p];
 							if(shareItem[req.method].indexOf(group) !== -1){
-								utils.log('authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
+								logger.log('authorized', {apikey: apikey || 'none', token: token || 'none', username: username || 'none'});
 								return next();
 							}
 						}
 					}
 				}
 			}
-			utils.log('Unauthorized', {apikey: apikey || 'none', token: token || 'none'});
+			logger.log('Unauthorized', {apikey: apikey || 'none', token: token || 'none'});
 			res.send(401, new Error('Unauthorized'));
 		});
-	});
-
-	//JSON doc
-	var doc = require('./lib/doc.module.js');
-	doc = doc.configure(server, {
-		discoveryUrl: '/docs',
-		version: '1.2',
-		basePath: app.key ? 'https://localhost:'+app.port : 'http://localhost:'+app.port
 	});
 
 	//starts the tasks scheduler
@@ -223,7 +216,6 @@ module.exports.init = function(){
 		server: server,
 		configuration: nconf,
 		util: utils,
-		doc: doc,
 		storage: storage,
 		permission: share,
 		event: event,
@@ -232,6 +224,7 @@ module.exports.init = function(){
 		template: template,
 		task: task,
 		identity: identity,
+		logger: logger,
 		serve: restify.serveStatic
 	};
 
@@ -239,10 +232,10 @@ module.exports.init = function(){
 	plugin.loadAll();
 
 	//starts external API
-	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, plugin, share, subkitPackage.version, doc);
-	require('./routes/store.js').init(server, storage, doc);
-	require('./routes/event.js').init(server, event, nconf, doc);
-	require('./routes/task.js').init(server, task, doc);
+	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, plugin, share, subkitPackage.version);
+	require('./routes/store.js').init(server, storage);
+	require('./routes/event.js').init(server, event, nconf);
+	require('./routes/task.js').init(server, task);
 
 	return {
 		getContext: function(){

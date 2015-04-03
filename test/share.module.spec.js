@@ -5,7 +5,8 @@ var sut;
 
 describe('Module: Share', function(){
   before(function(done) {
-    sut = require('../lib/share.module.js').init({}, null);
+    var logger = require('../lib/logger.module.js').init();
+    sut = require('../lib/share.module.js').init({}, logger);
     done();
   });
   after(function(done){

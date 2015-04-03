@@ -106,7 +106,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 	});
 
-	server.get('/manage/log/:name', function(req,res,next){
+	server.get('/manage/log/:name', function(req,res, next){
 		var name = req.params.name;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
 
@@ -117,7 +117,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.get('/manage/os', function(req, res,next){
+	server.get('/manage/os', function(req, res, next){
 		storage.statistics(function(error, data){
 			res.send(200, {
 				apiVersion: version,
@@ -129,14 +129,14 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/kill', function(req, res,next){
+	server.put('/manage/kill', function(req, res, next){
 		setTimeout(function(){
 			shelljs.exec('kill -9 ' + process.pid);
 		}, 100);
 		res.send(202, {message: 'Kill accepted'});
 		next();
 	});	
-	server.put('/manage/update', function(req, res,next){
+	server.put('/manage/update', function(req, res, next){
 		packageJson('subkit-microservice', 'latest', function (error, json) {
 			if(error) {
 				res.send(400, new Error('Update error.'));
@@ -173,7 +173,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 	});		
 
-	server.post('/manage/import', function(req,res,next){
+	server.post('/manage/import', function(req,res, next){
 		var payload = req.body;
 
 		if(req.headers['content-type'] === 'application/octed-stream') {
@@ -192,7 +192,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.post('/manage/import/:name', function(req,res,next){
+	server.post('/manage/import/:name', function(req,res, next){
 		var name = req.params.name;
 		var payload = req.body;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -204,7 +204,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.get('/manage/export', function(req,res,next){
+	server.get('/manage/export', function(req,res, next){
 		storage.exports('', function(error, data){
 			if(error) return res.send(400, error);
 
@@ -228,14 +228,14 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			res.end();
 		});
 	});
-	server.post('/manage/backup', function(req,res,next){
+	server.post('/manage/backup', function(req,res, next){
 		storage.backup(function(error, data){
 			if(error) { res.send(400, new Error('Backup error')); return next(); }
 			res.send(201, data);
 			return next();
 		});
 	});
-	server.put('/manage/restore/:name', function(req,res,next){
+	server.put('/manage/restore/:name', function(req,res, next){
 		var name = req.params.name;
 		if(!name) { res.send(400, new Error('Parameter `name` missing')); return next(); }
 		
@@ -261,14 +261,14 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			});
 		}
 	});
-	server.get('/manage/savepoints', function(req,res,next){
+	server.get('/manage/savepoints', function(req,res, next){
 		storage.listBackups(function(error, data){
 			if(error) { res.send(400, new Error('Not found')); return next(); }
 			res.send(200, data);
 			return next();
 		});
 	});
-	server.get('/manage/savepoints/:name', function(req,res,next){
+	server.get('/manage/savepoints/:name', function(req,res, next){
 		var name = req.params.name;
 		if(!name) { res.send(400, new Error('Parameter `name` missing')); return next(); }
 		
@@ -281,7 +281,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		filestream.pipe(res);
 	});
 
-	server.del('/manage/db/destroy', function(req,res,next){
+	server.del('/manage/db/destroy', function(req,res, next){
 		storage.destroy(function(error, data){
 			if(error) { res.send(400, new Error('Destroy error')); return next(); }
 			res.send(202, data);

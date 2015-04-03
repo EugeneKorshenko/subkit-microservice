@@ -77,20 +77,17 @@ module.exports.init = function(){
 	server.acceptable.push('text/html');
 
 	//middleware
-	server.use(restify.acceptParser(server.acceptable));
-	server.use(restify.bodyParser({ mapParams: true }));
+	server.pre(restify.pre.sanitizePath());
+	server.pre(restify.pre.userAgentConnection());
+	server.use(restify.fullResponse());
 	server.use(restify.CORS({
 		origins: ['*'],
 		credentials: true,
 		headers: ['authorization','content-type','x-auth-token','subkit-log']
 	}));	
-	server.use(restify.fullResponse());
 	server.use(restify.authorizationParser());
-	server.use(restify.dateParser());
+	server.use(restify.bodyParser({ mapParams: true }));
 	server.use(restify.queryParser());
-	server.use(restify.gzipResponse());
-	server.pre(restify.pre.sanitizePath());
-	server.pre(restify.pre.userAgentConnection());
 
 	//handle CORS
 	server.opts(/\.*/, function (req, res, next) {
@@ -102,23 +99,15 @@ module.exports.init = function(){
 	});
 
 	//handle errors	
-	// process.stdin.resume();
-	// server.on('uncaughtException', function (req, res, route, err) {
-	// 	logger.log('service', {
-	// 		type: 'service',
-	// 		status: 'error',			
-	// 		error: err,
-	// 		route: route
-	// 	});
-	// });
-	function exitHandler(options, err) {
-	    if (err) {
-	    	logger.log('service', {
-				type: 'service',
-				status: 'error',
-	    		error: err
-	    	});
-	    }
+	server.on('uncaughtException', function (req, res, route, err) {
+		logger.log('service', {
+			type: 'service',
+			status: 'error',
+			error: err,
+			route: route
+		});
+	});
+	function exitHandler(options) {
 	    if (options.cleanup) {
 	    	storage.close();
 	    	logger.log('service', {
@@ -134,12 +123,13 @@ module.exports.init = function(){
 	    		message: 'process exit'
 	    	});
 	    	process.exit();
-	    }
+	    }    
 	}
+
+	//handle exits
 	process.on('abort', exitHandler.bind(null,{cleanup:true, exit:true}));
 	process.on('exit', exitHandler.bind(null,{cleanup:true, exit:true}));
 	process.on('SIGINT', exitHandler.bind(null, {cleanup: true, exit:true}));
-	// process.on('uncaughtException', exitHandler.bind(null, {exit:false}));
 	
 	//modules
 	var storage = require('./lib/store.module.js').init(paths, logger);
@@ -206,6 +196,22 @@ module.exports.init = function(){
 			res.send(401, new Error('Unauthorized'));
 		});
 	});
+	
+	//handle log streams
+	server.get('/manage/log', function(req, res){
+		res.writeHead(200, {
+			'Transfer-Encoding': 'chunked',
+			'Content-Type': 'application/json'
+		});
+		logger
+			.logStream()
+			.pipe(res);
+	});
+
+	//middleware
+	server.use(restify.acceptParser(server.acceptable));
+	server.use(restify.dateParser());
+	server.use(restify.gzipResponse());	
 
 	//starts the tasks scheduler
 	task.runScheduler(true);

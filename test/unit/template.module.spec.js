@@ -7,8 +7,8 @@ describe('Module: Template', function(){
   var sut;
 
   before(function(done) {
-    sut = require('../lib/template.module.js').init({
-      templatesPath: path.join(__dirname,'template_mock')
+    sut = require('../../lib/template.module.js').init({
+      templatesPath: path.join(__dirname, 'template_mock')
     });
 
     done();

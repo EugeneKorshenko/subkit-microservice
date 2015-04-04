@@ -27,7 +27,7 @@ describe('Integration Spec: Store  queries', function(){
   var context;
 
   before(function(done) {
-    server = require('../server.js');
+    server = require('../../server.js');
     context = server.init().getContext();
     setTimeout(done, 500);
   });

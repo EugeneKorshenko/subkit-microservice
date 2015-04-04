@@ -9,21 +9,22 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
       files: [        
-        'test/store.module.spec.js',
-        'test/event.module.spec.js',
-        'test/task.module.spec.js',
-        'test/template.module.spec.js',
-        'test/eventsource.module.spec.js',
-        'test/identity.module.spec.js',
-        'test/share.module.spec.js',
-        'test/file.module.spec.js',
-        'test/plugin.module.spec.js',
-        'test/store-operations.spec.js',
-        'test/store-query.spec.js',
-        'test/task.spec.js',
-        'test/event.spec.js',
-        'test/manage.spec.js',
-        'test/share.spec.js',
+        'test/unit/store.module.spec.js',
+        'test/unit/event.module.spec.js',
+        'test/unit/task.module.spec.js',
+        'test/unit/template.module.spec.js',
+        'test/unit/eventsource.module.spec.js',
+        'test/unit/identity.module.spec.js',
+        'test/unit/share.module.spec.js',
+        'test/unit/file.module.spec.js',
+        'test/unit/plugin.module.spec.js',
+
+        'test/integration/store-operations.spec.js',
+        'test/integration/store-query.spec.js',
+        'test/integration/task.spec.js',
+        'test/integration/event.spec.js',
+        'test/integration/manage.spec.js',
+        'test/integration/share.spec.js',
         
         'lib/utils.module.js',
         'lib/store.module.js',
@@ -55,18 +56,6 @@ module.exports = function(grunt) {
       }
     },
     mochaTest: {
-      test: {
-        options: {
-          reporter: 'spec',
-          timeout: 10000,
-          clearRequireCache: false
-        },
-        src: [
-          'test/manage.spec.js',
-          'test/template.module.spec.js',
-          'test/eventsource.module.spec.js'
-        ]
-      },
       shareTests: {
         options: {
           reporter: 'spec',
@@ -74,8 +63,8 @@ module.exports = function(grunt) {
           clearRequireCache: false
         },
         src: [
-          'test/share.module.spec.js',
-          'test/share.spec.js'
+          'test/unit/share.module.spec.js',
+          'test/integration/share.spec.js'
         ]
       },
       eventTests: {
@@ -85,8 +74,8 @@ module.exports = function(grunt) {
           clearRequireCache: false
         },
         src: [
-          'test/event.module.spec.js',
-          'test/event.spec.js'
+          'test/unit/event.module.spec.js',
+          'test/integration/event.spec.js'
         ]
       },      
       storeTests: {
@@ -96,9 +85,9 @@ module.exports = function(grunt) {
           clearRequireCache: false
         },
         src: [
-          'test/store.module.spec.js',
-          'test/store-operations.spec.js',
-          'test/store-query.spec.js'
+          'test/unit/store.module.spec.js',
+          'test/integration/store-operations.spec.js',
+          'test/integration/store-query.spec.js'
         ]
       },
       taskTests: {
@@ -108,8 +97,8 @@ module.exports = function(grunt) {
           clearRequireCache: false
         },
         src: [
-          'test/task.module.spec.js',
-          'test/task.spec.js'
+          'test/unit/task.module.spec.js',
+          'test/integration/task.spec.js'
         ]
       },
       fileTests: {
@@ -119,7 +108,7 @@ module.exports = function(grunt) {
           clearRequireCache: false
         },
         src: [
-          'test/file.module.spec.js'
+          'test/unit/file.module.spec.js'
         ]
       },
       identityTests: {
@@ -129,7 +118,7 @@ module.exports = function(grunt) {
           clearRequireCache: false
         },
         src: [
-          'test/identity.module.spec.js'
+          'test/unit/identity.module.spec.js'
         ]
       },
       pluginTests: {
@@ -139,7 +128,7 @@ module.exports = function(grunt) {
           clearRequireCache: false
         },
         src: [
-          'test/plugin.module.spec.js'
+          'test/unit/plugin.module.spec.js'
         ]
       },
       manageTests: {
@@ -149,7 +138,7 @@ module.exports = function(grunt) {
           clearRequireCache: false
         },
         src: [
-          'test/manage.spec.js'
+          'test/integration/manage.spec.js'
         ]
       },
     },
@@ -171,7 +160,18 @@ module.exports = function(grunt) {
     }
   });
   grunt.registerTask('default', []);
-  grunt.registerTask('test', ['jshint','mochaTest:test','mochaTest:shareTests','mochaTest:storeTests','mochaTest:eventTests','mochaTest:taskTests','mochaTest:fileTests','mochaTest:identityTests','mochaTest:pluginTests','mochaTest:manageTests']);
+  grunt.registerTask('docs', ['markdox']);
+  grunt.registerTask('test', [
+    'jshint',
+    'mochaTest:shareTests',
+    'mochaTest:storeTests',
+    'mochaTest:eventTests',
+    'mochaTest:taskTests',
+    'mochaTest:fileTests',
+    'mochaTest:identityTests',
+    'mochaTest:pluginTests',
+    'mochaTest:manageTests'
+  ]);
   grunt.registerTask('shareTests', ['mochaTest:shareTests']);
   grunt.registerTask('storeTests', ['mochaTest:storeTests']);
   grunt.registerTask('eventTests', ['mochaTest:eventTests']);
@@ -180,5 +180,5 @@ module.exports = function(grunt) {
   grunt.registerTask('identityTests', ['mochaTest:identityTests']);
   grunt.registerTask('pluginTests', ['mochaTest:pluginTests']);
   grunt.registerTask('manageTests', ['mochaTest:manageTests']);
-  grunt.registerTask('docs', ['markdox']);
+
 };

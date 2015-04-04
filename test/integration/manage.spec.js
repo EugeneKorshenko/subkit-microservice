@@ -15,7 +15,7 @@ describe('Integration: Manage', function(){
       context;
 
   before(function(done) {
-    server = require('../server.js');
+    server = require('../../server.js');
     context = server.init().getContext();
     done();
   });

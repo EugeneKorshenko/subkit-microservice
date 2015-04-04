@@ -32,7 +32,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/apikey/action/reset', function (req, res, next) {
+	server.put('/manage/apikey/reset', function (req, res, next) {
 		var apiConfig = configuration.get('api');
 		apiConfig.apiKey = randomString.generate(20);
 
@@ -44,7 +44,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/password/action/reset', function (req, res, next) {
+	server.put('/manage/password/reset', function (req, res, next) {
 		if(!req.body) return res.send(400, new Error('Parameter `password` missing.'));
 
 		var password = req.body.password;
@@ -82,7 +82,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 		next();
 	});
-	server.put('/manage/certificate/action/change', function (req, res, next) {
+	server.put('/manage/certificate', function (req, res, next) {
 		if(!req.body) return res.send(400, new Error('Parameter `certificate` missing.'));
 
 		var certificate = req.body.certificate;
@@ -280,7 +280,6 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		var filestream = fs.createReadStream(filePath);
 		filestream.pipe(res);
 	});
-
 	server.del('/manage/db/destroy', function(req,res, next){
 		storage.destroy(function(error, data){
 			if(error) { res.send(400, new Error('Destroy error')); return next(); }
@@ -395,7 +394,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/permissions/action/revoke/:identity', function(req, res, next){
+	server.put('/manage/permissions/revoke/:identity', function(req, res, next){
 		var identity = req.params.identity;
 		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));
 
@@ -405,7 +404,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});		
-	server.put('/manage/permissions/:name/action/grantread/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/grantread/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -417,7 +416,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/permissions/:name/action/revokeread/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/revokeread/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -429,7 +428,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/permissions/:name/action/grantinsert/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/grantinsert/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -441,7 +440,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/permissions/:name/action/revokeinsert/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/revokeinsert/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -453,7 +452,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});	
-	server.put('/manage/permissions/:name/action/grantupdate/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/grantupdate/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -465,7 +464,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});	
-	server.put('/manage/permissions/:name/action/revokeupdate/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/revokeupdate/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -477,7 +476,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/permissions/:name/action/grantdelete/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/grantdelete/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -489,7 +488,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.put('/manage/permissions/:name/action/revokedelete/:identity', function(req, res, next){
+	server.put('/manage/permissions/:name/revokedelete/:identity', function(req, res, next){
 		var name = req.params.name;
 		var identity = req.params.identity;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));

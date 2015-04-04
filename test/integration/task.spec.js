@@ -16,7 +16,7 @@ describe('Integration: Task', function(){
       context;
 
   before(function(done) {
-    server = require('../server.js');
+    server = require('../../server.js');
     context = server.init().getContext();
     context.task.init({
       tasksPath: path.join(__dirname, './task_mock'),

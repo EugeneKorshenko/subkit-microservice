@@ -5,8 +5,8 @@ var sut;
 
 describe('Module: JSON Key/Value Storage', function(){
   before(function(done) {
-    var logger = require('../lib/logger.module.js').init();
-    sut = require('../lib/store.module.js').init({
+    var logger = require('../../lib/logger.module.js').init();
+    sut = require('../../lib/store.module.js').init({
       dbPath:'./storespecdb',
       backupPath:'./backups'
     }, logger);

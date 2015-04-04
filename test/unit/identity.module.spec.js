@@ -6,11 +6,11 @@ var sut;
 
 describe('Module: Identity', function(){
   before(function(done) {
-    store = require('../lib/store.module.js').init({
+    store = require('../../lib/store.module.js').init({
       dbPath:'./identityspecdb',
       backupPath:'./backups'
     });
-    sut = require('../lib/identity.module.js').init('account', store);
+    sut = require('../../lib/identity.module.js').init('account', store);
 
     sut.add('ident1@subkit.io', {test: 'ident1 test', group: 'A1'});
     sut.add('ident2@subkit.io', {test: 'ident2 test', group: 'A1'});

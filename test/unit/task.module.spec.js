@@ -1,23 +1,27 @@
 'use strict';
 
-var path = require('path'),
-    assert = require('assert'),
-    store,
-    sut;
+var path = require('path');
+var assert = require('assert');
+var store;
+var sut;
 
 describe('Module: Task', function(){
   before(function(done) {
-    var logger = require('../lib/logger.module.js').init();
-    store = require('../lib/store.module.js').init({
+    var logger = require('../../lib/logger.module.js').init();
+    store = require('../../lib/store.module.js').init({
       dbPath:'./taskspecdb',
       backupPath:'./backups'
     }, logger);
-    var event = require('../lib/event.module.js').init({pollInterval: 1}, logger);
-    var eventsource = require('../lib/eventsource.module.js').init(store, event);
-    var template = require('../lib/template.module.js').init({templatesPath:'./test/template_mock'});
-    var file = require('../lib/file.module.js').init({templatesPath:'./test/statics_mock'});
+    var event = require('../../lib/event.module.js').init({pollInterval: 1}, logger);
+    var eventsource = require('../../lib/eventsource.module.js').init(store, event);
+    var template = require('../../lib/template.module.js').init({
+      templatesPath: path.join(__dirname, './template_mock')
+    });
+    var file = require('../../lib/file.module.js').init({
+      templatesPath: path.join(__dirname, './statics_mock')
+    });
 
-    sut = require('../lib/task.module.js').init({
+    sut = require('../../lib/task.module.js').init({
       tasksPath: path.join(__dirname, './task_mock'),
       backupPath: './backups'
     }, store, event, eventsource, template, file, logger);

@@ -6,8 +6,8 @@ describe('Given module: Plugin', function(){
   var sut;
 
   before(function(done) {
-    var subkitPackage = require('../package.json');
-    sut = require('../lib/plugin.module.js').init({
+    var subkitPackage = require('../../package.json');
+    sut = require('../../lib/plugin.module.js').init({
       AvailablePlugins: subkitPackage.optionalDependencies
     });
     done();

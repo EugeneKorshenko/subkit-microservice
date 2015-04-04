@@ -14,7 +14,7 @@ describe('Integration Spec: Store commands', function(){
   var context;
 
   before(function(done) {
-    server = require('../server.js');
+    server = require('../../server.js');
     context = server.init().getContext();
     setTimeout(done, 500);
   });

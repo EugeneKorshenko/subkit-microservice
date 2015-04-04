@@ -6,7 +6,7 @@ var assert = require('assert'),
 
 describe('Module: File', function(){
   before(function(done) {
-    sut = require('../lib/file.module.js').init({
+    sut = require('../../lib/file.module.js').init({
       staticsPath: path.join(process.cwd(),'files','statics')
     });
     done();

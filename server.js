@@ -198,7 +198,7 @@ module.exports.init = function(){
 	});
 	
 	//handle message streams
-	require('./routes/stream.js').init(server, logger);
+	require('./routes/stream.js').init(server, event, logger);
 	require('./routes/event.js').init(server, event, nconf);
 
 	//starts the tasks scheduler

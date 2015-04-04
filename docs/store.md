@@ -57,7 +57,7 @@ Update an item in a store.
 * **Object** *payload* - New data object.
 * **callback** *callback* - Done handler.
 
-## tryUpdate(resource, key, payload, callback)
+## tryUpdate(resource, key, version, payload, callback)
 
 Try to add or change an item in a store.
 
@@ -65,6 +65,7 @@ Try to add or change an item in a store.
 
 * **String** *resource* - Name of store.
 * **String** *key* - Store item key.
+* **Number** *version* - Expected item version.
 * **Object** *payload* - New data object.
 * **callback** *callback* - Done handler.
 
@@ -80,13 +81,13 @@ Remove an item from the store.
 
 ## del(resource, key, version, callback)
 
-Try to remove an item from the store.
+Remove an item from the store.
 
 ### Params:
 
 * **String** *resource* - Name of store.
 * **String** *key* - Store item key.
-* **Number** *version* - Store item version.
+* **Number** *version* - Expected item version.
 * **callback** *callback* - Done handler.
 
 ## batch(data, callback)
@@ -127,7 +128,7 @@ Repair storage files.
 
 ## backup(done)
 
-Backup storage files.
+Backup all data files.
 
 ### Params:
 
@@ -135,16 +136,24 @@ Backup storage files.
 
 ## restore(name, done)
 
-Restore storage files.
+Restore all data files.
 
 ### Params:
 
 * **String** *name* - Backup name.
 * **callback** *done* 
 
+## listBackups(done)
+
+List all backup files.
+
+### Params:
+
+* **callback** *done* 
+
 ## destroy(done)
 
-Delete storage files.
+Delete storage file.
 
 ### Params:
 

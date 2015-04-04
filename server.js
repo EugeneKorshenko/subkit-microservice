@@ -197,23 +197,9 @@ module.exports.init = function(){
 		});
 	});
 	
-	//handle log streams
-	server.get('/manage/log', function(req, res){
-		var where = req.params.where;
-
-		res.writeHead(200, {
-			'Transfer-Encoding': 'chunked',
-			'Content-Type': 'application/json'
-		});
-		logger
-			.logStream(where)
-			.pipe(res);
-	});
-
-	//middleware
-	server.use(restify.acceptParser(server.acceptable));
-	server.use(restify.dateParser());
-	server.use(restify.gzipResponse());	
+	//handle message streams
+	require('./routes/stream.js').init(server, logger);
+	require('./routes/event.js').init(server, event, nconf);
 
 	//starts the tasks scheduler
 	task.runScheduler(true);
@@ -239,10 +225,14 @@ module.exports.init = function(){
 	var plugin = require('./lib/plugin.module.js').init(pluginContext);
 	plugin.loadAll();
 
+	//middleware	
+	server.use(restify.acceptParser(server.acceptable));
+	server.use(restify.dateParser());
+	server.use(restify.gzipResponse());	
+
 	//starts external API
 	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, plugin, share, subkitPackage.version);
 	require('./routes/store.js').init(server, storage);
-	require('./routes/event.js').init(server, event, nconf);
 	require('./routes/task.js').init(server, task);
 
 	return {

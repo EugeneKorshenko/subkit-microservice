@@ -8,8 +8,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
-      files: [
-        'test/logger.module.spec.js',
+      files: [        
         'test/store.module.spec.js',
         'test/event.module.spec.js',
         'test/task.module.spec.js',
@@ -19,7 +18,6 @@ module.exports = function(grunt) {
         'test/share.module.spec.js',
         'test/file.module.spec.js',
         'test/plugin.module.spec.js',
-
         'test/store-operations.spec.js',
         'test/store-query.spec.js',
         'test/task.spec.js',
@@ -30,6 +28,7 @@ module.exports = function(grunt) {
         'lib/utils.module.js',
         'lib/store.module.js',
         'lib/event.module.js',
+        'lib/logger.module.js',        
         'lib/eventsource.module.js',
         'lib/identity.module.js',
         'lib/template.module.js',
@@ -38,17 +37,17 @@ module.exports = function(grunt) {
         'lib/file.module.js',
         'lib/plugin.module.js',
 
-        'routes/plugin.js',        
         'routes/manage.js',
         'routes/store.js',
+        'routes/stream.js',
         'routes/event.js',
         'routes/task.js',
-        'routes/share.js',
 
         'gruntfile.js',
         'supervisor.js',
         'server.js',
-        'index.js'
+        'dev.js',
+        'prod.js'
       ],
       options: {
         jshintrc: '.jshintrc',
@@ -159,13 +158,14 @@ module.exports = function(grunt) {
         files: [
           {src: 'lib/store.module.js', dest: 'docs/store.md'},
           {src: 'lib/event.module.js', dest: 'docs/event.md'},
+          {src: 'lib/logger.module.js', dest: 'docs/logger.md'},
           {src: 'lib/task.module.js', dest: 'docs/task.md'},
           {src: 'lib/identity.module.js', dest: 'docs/identity.md'},
           {src: 'lib/file.module.js', dest: 'docs/file.md'},
           {src: 'lib/template.module.js', dest: 'docs/template.md'},
           {src: 'lib/plugin.module.js', dest: 'docs/plugin.md'},
           {src: 'lib/share.module.js', dest: 'docs/share.md'},
-          {src: 'lib/eventsource.module.js', dest: 'docs/eventsource.md'},
+          {src: 'lib/eventsource.module.js', dest: 'docs/eventsource.md'}
         ]
       }
     }

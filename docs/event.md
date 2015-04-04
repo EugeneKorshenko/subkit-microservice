@@ -9,7 +9,7 @@ Async result callback.
 * **Object** *error* 
 * **Object** *data* 
 
-## exports(config, store)
+## exports(config, store, logger)
 
 Event module.
 
@@ -17,6 +17,37 @@ Event module.
 
 * **Object** *config* - Configuration dependency.
 * **Object** *store* - Store module dependency.
+* **Object** *logger* - Logger module dependency.
+
+## bind(stream, JSONquery, callback)
+
+Bind to a stream.
+
+### Params:
+
+* **String** *stream* - Name of stream.
+* **Object** *JSONquery* - JSONquery message filter.
+* **callback** *callback* 
+
+## bindPersistent(stream, JSONquery, callback)
+
+Persistent bind to a stream.
+
+### Params:
+
+* **String** *stream* - Name of stream.
+* **Object** *JSONquery* - JSONquery message filter.
+* **callback** *callback* 
+
+## bindWebHook(stream, JSONquery, clientId)
+
+WebHook bind to a stream.
+
+### Params:
+
+* **String** *stream* - Name of stream.
+* **Object** *JSONquery* - JSONquery message filter.
+* **String** *clientId* - WebHook callback address.
 
 ## unbind(stream, clientId)
 
@@ -25,31 +56,11 @@ Unbind from a stream.
 ### Params:
 
 * **String** *stream* - Name of stream.
-* **String** *clientId* - Unique client key.
-
-## bind(stream, clientId, callback)
-
-Subscribe to a stream.
-
-### Params:
-
-* **String** *stream* - Name of stream.
-* **String** *clientId* - Unique client key.
-* **callback** *callback* 
-
-## bindPersistent(stream, clientId, callback)
-
-Persistent bind to a stream.
-
-### Params:
-
-* **String** *stream* - Name of stream.
-* **String** *clientId* - Unique client key.
-* **callback** *callback* 
+* **String** *clientId* - WebHook callback address.
 
 ## emit(stream, message, metadata, persistent)
 
-Publish (Fanout) a message to a stream.
+Publish a message to a stream.
 
 ### Params:
 
@@ -58,14 +69,22 @@ Publish (Fanout) a message to a stream.
 * **Object** *metadata* - The message metadata.
 * **Bool** *persistent* - Persist message to store.
 
-## on(query, callback)
+## on(JSONquery, callback)
 
 Hook into the raw message stream.
 
 ### Params:
 
-* **String** *query* - JSON Query
+* **Object** *JSONquery* - JSONquery message filter.
 * **callback** *callback* 
+
+## eventStream(JSONquery)
+
+Message stream.
+
+### Params:
+
+* **Object** *JSONquery* - JSONquery message filter.
 
 ## once(callback)
 

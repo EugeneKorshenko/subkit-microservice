@@ -119,14 +119,24 @@ Get the directory disk usage.
 * **String** *name* - Directory as full source path.
 * **callback** *callback* - Done handler.
 
-## zipDirectory(srcPath, dstPath, callback)
+## tarDirectory(srcPath, dstPath, callback)
 
-Zip a directory.
+Tar a directory.
 
 ### Params:
 
 * **String** *srcPath* - Full source path.
-* **String** *dstPath* - Zip file name in full destination path.
+* **String** *dstPath* - Tar file name in full destination path.
+* **callback** *callback* - Done handler.
+
+## extractTar(srcFile, dstPath, callback)
+
+Extract a Tar file.
+
+### Params:
+
+* **String** *srcFile* - Full path to Tar file.
+* **String** *dstPath* - Full extract destination path.
 * **callback** *callback* - Done handler.
 
 ## cleanDirectories(path)

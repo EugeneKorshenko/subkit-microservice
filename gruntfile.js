@@ -60,7 +60,8 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: false
+          clearRequireCache: false,
+          require: 'env-test'
         },
         src: [
           'test/unit/share.module.spec.js',
@@ -71,7 +72,8 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: false
+          clearRequireCache: false,
+          require: 'env-test'
         },
         src: [
           'test/unit/event.module.spec.js',
@@ -82,7 +84,8 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: false
+          clearRequireCache: false,
+          require: 'env-test'          
         },
         src: [
           'test/unit/store.module.spec.js',
@@ -94,7 +97,8 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: false
+          clearRequireCache: false,
+          require: 'env-test'          
         },
         src: [
           'test/unit/task.module.spec.js',
@@ -105,7 +109,8 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: false
+          clearRequireCache: false,
+          require: 'env-test'          
         },
         src: [
           'test/unit/file.module.spec.js'
@@ -115,7 +120,8 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: false
+          clearRequireCache: false,
+          require: 'env-test'          
         },
         src: [
           'test/unit/identity.module.spec.js'
@@ -125,7 +131,8 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: false
+          clearRequireCache: false,
+          require: 'env-test'          
         },
         src: [
           'test/unit/plugin.module.spec.js'
@@ -135,7 +142,8 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
           timeout: 10000,
-          clearRequireCache: false
+          clearRequireCache: false,
+          require: 'env-test'          
         },
         src: [
           'test/integration/manage.spec.js'

@@ -97,39 +97,6 @@ module.exports.init = function(){
 		res.send(200);
 		return next();
 	});
-
-	//handle errors	
-	server.on('uncaughtException', function (req, res, route, err) {
-		logger.log('service', {
-			type: 'service',
-			status: 'error',
-			error: err,
-			route: route
-		});
-	});
-	function exitHandler(options) {
-	    if (options.cleanup) {
-	    	storage.close();
-	    	logger.log('service', {
-				type: 'service',
-				status: 'success',
-	    		message: 'clean up resources'
-	    	});
-	    }
-	    if (options.exit) {
-	    	logger.log('service', {
-				type: 'service',
-				status: 'success',
-	    		message: 'process exit'
-	    	});
-	    	process.exit();
-	    }    
-	}
-
-	//handle exits
-	process.on('abort', exitHandler.bind(null,{cleanup:true, exit:true}));
-	process.on('exit', exitHandler.bind(null,{cleanup:true, exit:true}));
-	process.on('SIGINT', exitHandler.bind(null, {cleanup: true, exit:true}));
 	
 	//modules
 	var storage = require('./lib/store.module.js').init(paths, logger);
@@ -222,7 +189,7 @@ module.exports.init = function(){
 		serve: restify.serveStatic
 	};
 
-	var plugin = require('./lib/plugin.module.js').init(pluginContext);
+	var plugin = require('./lib/plugin.module.js').init(pluginContext, logger);
 	plugin.loadAll();
 
 	//middleware	

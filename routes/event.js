@@ -5,6 +5,7 @@ var util = require('../lib/utils.module.js').init();
 module.exports.init = function(server, event, configuration){
 
 	var webhooksConfig = configuration.get('webhooks');
+	
 	//bind webhooks
 	(function(){
 		if(!webhooksConfig) {
@@ -33,6 +34,9 @@ module.exports.init = function(server, event, configuration){
 	})();
 
 	//events
+	/**
+	 * @deprecated
+	 */
 	server.get('/events/bind/:stream', function (req, res, next) {
 		var stream = req.params.stream;
 		var where = req.params.where;
@@ -49,6 +53,7 @@ module.exports.init = function(server, event, configuration){
 			next();
 		});
 	});
+
 	server.post('/events/bind/:stream', function(req,res,next){
 		var stream = req.params.stream;
 		if(!req.body) req.body = {};
@@ -92,6 +97,14 @@ module.exports.init = function(server, event, configuration){
 		});
 	});
 
+	server.get('/events/streams', function(req,res,next){
+		event.getChannels(function(err, data){
+			if(err) return res.send(400, err);
+			res.send(200, data);
+			next();
+		});
+	});
+
 	server.post('/events/emit/:stream', function (req, res, next) {
 		var stream = req.params.stream;
 		var	payload = req.body;
@@ -110,30 +123,38 @@ module.exports.init = function(server, event, configuration){
 		});
 	});
 
-	server.get('/events/log/:stream', function(req, res, next){
+	/**
+	 * @deprecated
+	 */	
+	server.get('/events/log/:stream', loadHistory);
+
+	server.get('/events/history/:stream', loadHistory);
+	function loadHistory(req, res, next){
 		var stream = req.params.stream;
 		event.log(stream, {}, {}, function(err, data){
 			if(err) return res.send(400, err);
 			res.send(data);
 			next();
 		});
-	});
-	server.del('/events/log/:stream', function(req, res, next){
+	}
+	/**
+	 * @deprecated
+	 */	
+	server.del('/events/log/:stream', deleteHistory);
+
+	server.del('/events/history/:stream', deleteHistory);
+	function deleteHistory(req, res, next){
 		var stream = req.params.stream;
 		event.deleteLog(stream, function(err){
 			if(err) return res.send(400, err);
 			res.send(202, {message: 'delete accepted'});
 			next();
 		});
-	});
+	}
 
-	server.get('/events/streams', function(req,res,next){
-		event.getChannels(function(err, data){
-			if(err) return res.send(400, err);
-			res.send(200, data);
-			next();
-		});
-	});
+	/**
+	 * @deprecated
+	 */	
 	server.get('/events/streams/:clientId', function(req,res,next){
 		var clientId = req.params.clientId;
 		if(!clientId) next(400, new Error('Parameter `clientId` missing.'));
@@ -144,6 +165,9 @@ module.exports.init = function(server, event, configuration){
 			next();
 		});
 	});
+	/**
+	 * @deprecated
+	 */
 	server.get('/events/clients', function(req,res,next){
 		event.getClients(function(err, data){
 			if(err) res.send(400, err);
@@ -151,6 +175,9 @@ module.exports.init = function(server, event, configuration){
 			next();
 		});
 	});
+	/**
+	 * @deprecated
+	 */
 	server.get('/events/clients/:stream', function(req,res,next){
 		var stream = req.params.stream;
 		if(!stream) res.send(400, new Error('Parameter `stream` missing.'));

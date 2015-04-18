@@ -41,7 +41,7 @@ describe('Module: Task', function(){
       });
     });
     it('should run a task and success',function(done){
-      sut.run('success', [], null, function(error, data, contentType){
+      sut.run('success', [], null, function(error, data){
         assert.ifError(error);
         assert.notEqual(data, null);
         assert.equal(data.Message, 'Hello world!');
@@ -66,7 +66,7 @@ describe('Module: Task', function(){
       });
     });
     it('should run a task and success',function(done){
-      sut.run('failure', [], null, function(error, data, contentType){
+      sut.run('failure', [], null, function(error){
         assert.notEqual(error, null);
         assert.equal(error.message, 'Error occured');
         done();
@@ -90,11 +90,11 @@ describe('Module: Task', function(){
       });
     });
     it('should run long running tasks in parallel and success',function(done){
-      sut.run('longrunningsuccess', {Msg:'Hello--1'}, null, function(error, data, contentType){
+      sut.run('longrunningsuccess', {Msg:'Hello--1'}, null, function(error){
         assert.ifError(error);
       });
 
-      sut.run('longrunningsuccess', {Msg:'Hello--2'}, null, function(error, data, contentType){
+      sut.run('longrunningsuccess', {Msg:'Hello--2'}, null, function(error){
         assert.ifError(error);
         done();
       });

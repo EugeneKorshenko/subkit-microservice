@@ -215,7 +215,7 @@ describe('Integration: Task', function(){
             assert.notEqual('', obj.taskScript);
             assert.equal('update accepted', obj.message);
 
-            client.get('/api/demo1', function(err, req, res, obj){
+            client.get('/api/demo1', function(err, req, res){
               assert.equal(res.statusCode, 200);
             });
 

@@ -78,7 +78,7 @@ module.exports.init = function(server, task){
 		var resource = req.params[0];
 		task.run(resource, req.params || req.body || {}, { request: req, response: res }, function(err, data, contentType){
 			clearTimeout(timeOutRef);
-			if(err) return res.send(500, { message: err.message });
+			if(err) return res.send(500, { message: err.message, error: err });
 
 			if(contentType) res.setHeader('Content-Type', contentType);
 			res.send(200, data);

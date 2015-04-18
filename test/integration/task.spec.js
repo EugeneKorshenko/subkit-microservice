@@ -112,7 +112,7 @@ describe('Integration: Task', function(){
           assert.notEqual(null, obj); 
           assert.notEqual('', obj.name);
 
-          obj.taskScript = 'setTimeout(function(){task.done();},6000);';
+          obj.taskScript = 'setTimeout(function(){task.done();}, 7000);';
           client.put('/tasks/timeout1', obj, function(err, req, res, obj){
             assert.equal(null, err);
             assert.notEqual(null, obj);

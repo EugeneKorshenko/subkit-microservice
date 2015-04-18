@@ -34,19 +34,17 @@ describe('Module: Task', function(){
   describe('on simple tasks', function(){
     it('should create a task',function(done){
       var newTask = new sut.Task('success', []);
-      newTask.taskScript = 'task.debug("Hello!"); task.done(null,{Message:"Hello world!"});';
+      newTask.taskScript = 'task.log("Hello!"); task.done(null,{Message:"Hello world!"});';
       sut.set(newTask.name, newTask, function(error){
         assert.ifError(error);
         done();
       });
     });
     it('should run a task and success',function(done){
-      sut.run('success', [], null, function(error, data, contentType, log){
+      sut.run('success', [], null, function(error, data, contentType){
         assert.ifError(error);
         assert.notEqual(data, null);
         assert.equal(data.Message, 'Hello world!');
-        assert.equal(log.length, 1);
-        assert.equal(log[0], 'Hello!');
         done();
       });
     });
@@ -68,10 +66,9 @@ describe('Module: Task', function(){
       });
     });
     it('should run a task and success',function(done){
-      sut.run('failure', [], null, function(error, data, contentType, log){
+      sut.run('failure', [], null, function(error, data, contentType){
         assert.notEqual(error, null);
         assert.equal(error.message, 'Error occured');
-        assert.deepEqual(log, []);
         done();
       });
     });
@@ -86,23 +83,19 @@ describe('Module: Task', function(){
   describe('on long running tasks', function(){
     it('should create a task with parameters',function(done){
       var newTask = new sut.Task('longrunningsuccess', {Msg:'Hello!!!'});
-      newTask.taskScript = 'setTimeout(function(){task.debug(params.Msg);},1000); setTimeout(task.done,2500);';
+      newTask.taskScript = 'setTimeout(function(){task.log(params.Msg);},1000); setTimeout(task.done,2500);';
       sut.set(newTask.name, newTask, function(error){
         assert.ifError(error);
         done();
       });
     });
     it('should run long running tasks in parallel and success',function(done){
-      sut.run('longrunningsuccess', {Msg:'Hello--1'}, null, function(error, data, contentType, log){
+      sut.run('longrunningsuccess', {Msg:'Hello--1'}, null, function(error, data, contentType){
         assert.ifError(error);
-        assert.equal(log.length, 1);
-        assert.equal(log[0], 'Hello--1');
       });
 
-      sut.run('longrunningsuccess', {Msg:'Hello--2'}, null, function(error, data, contentType, log){
+      sut.run('longrunningsuccess', {Msg:'Hello--2'}, null, function(error, data, contentType){
         assert.ifError(error);
-        assert.equal(log.length, 1);
-        assert.equal(log[0], 'Hello--2');
         done();
       });
     });

@@ -31,6 +31,7 @@ describe('Integration: Task', function(){
   });
 
   describe('Manage tasks', function(){
+
     it('should manage task', function(done){
       client.post('/tasks/demo1', null, function(err, req, res, obj) {
         assert.equal(null, err);
@@ -177,6 +178,53 @@ describe('Integration: Task', function(){
 
         });
       });
+    });
+
+    it('should execute task with debug messages', function(done){
+
+      client.get('/events/bind/demo1', function(err, req, res, obj){
+        assert.ifError(err);
+        assert.equal(obj.length, 1);
+        assert.equal(obj[0].$payload, 'demo1 debug message');
+
+        //cleanup
+        client.del('/tasks/demo1', function(err, req, res, obj) {
+          assert.equal(null, err);
+          assert.notEqual(null, obj);
+          assert.equal('delete accepted', obj.message);
+          done();
+        });
+
+      });
+
+
+      client.post('/tasks/demo1', null, function(err, req, res, obj) {
+        assert.equal(null, err);
+        assert.notEqual(null, obj);
+        assert.equal('created', obj.message);
+        
+        client.get('/tasks/demo1', function(err, req, res, obj){
+          assert.equal(null, err);
+          assert.notEqual(null, obj); 
+          assert.notEqual('', obj.name);
+
+          obj.taskScript = 'task.debug("demo1 debug message"); task.done(null,{});';
+          client.put('/tasks/demo1', obj, function(err, req, res, obj){
+            assert.equal(null, err);
+            assert.notEqual(null, obj);
+            assert.notEqual('', obj.taskScript);
+            assert.equal('update accepted', obj.message);
+
+            client.get('/api/demo1', function(err, req, res, obj){
+              assert.equal(res.statusCode, 200);
+            });
+
+          });
+
+        });
+      
+      });
+
     });
 
   });

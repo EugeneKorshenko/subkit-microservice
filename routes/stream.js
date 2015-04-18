@@ -15,7 +15,7 @@ module.exports.init = function(server, event, logger){
 			.pipe(res);
 	});
 
-	server.get('/streams/notify', function(req, res){
+	server.get('/events', function(req, res){
 		var where = req.params.where;
 		var size = req.params.size;
 

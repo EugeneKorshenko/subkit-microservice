@@ -83,8 +83,8 @@ describe('Integration: Task', function(){
 
             client.get('/api/error1', function(err, req, res, obj){
               assert.equal(res.statusCode, 500);
-              assert.equal('Test error occured', err.body);
-              assert.equal('Test error occured', obj);
+              assert.equal('Test error occured', err.body.message);
+              assert.equal('Test error occured', obj.message);
 
               client.del('/tasks/error1', function(err, req, res, obj) {
                 assert.equal(null, err);
@@ -122,8 +122,8 @@ describe('Integration: Task', function(){
 
             client.get('/api/timeout1', function(err, req, res, obj){
               assert.equal(res.statusCode, 500);
-              assert.equal('Timeout - timeout1 do not done.', err.body);
-              assert.equal('Timeout - timeout1 do not done.', obj);
+              assert.equal('Timeout - timeout1 do not done.', err.body.message);
+              assert.equal('Timeout - timeout1 do not done.', obj.message);
 
               client.del('/tasks/timeout1', function(err, req, res, obj) {
                 assert.equal(null, err);
@@ -161,8 +161,8 @@ describe('Integration: Task', function(){
 
             client.get('/api/throw1', function(err, req, res, obj){
               assert.equal(res.statusCode, 500);
-              assert.equal('Error thrown', err.body);
-              assert.equal('Error thrown', obj);
+              assert.equal('Error thrown', err.body.message);
+              assert.equal('Error thrown', obj.message);
 
               client.del('/tasks/throw1', function(err, req, res, obj) {
                 assert.equal(null, err);

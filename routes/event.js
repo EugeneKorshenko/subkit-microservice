@@ -34,27 +34,58 @@ module.exports.init = function(server, event, configuration){
 	})();
 
 	//events
-	/**
-	 * @deprecated
-	 */
-	server.get('/events/bind/:stream', function (req, res, next) {
+	server.post('/events/emit/:stream', function (req, res, next) {
 		var stream = req.params.stream;
-		var where = req.params.where;
-
+		var	payload = req.body;
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
-		
-		try { if(where) where = JSON.parse(unescape(where)); } catch(e){ where = null; }
+		if(!payload) return res.send(400, new Error('Parameter `payload` missing.'));
 
-		event.bind(stream, where, function(error, data){
-			if(error) return res.send(404, error);
-			res.contentType = 'application/json';
-			res.header('Content-Type', 'application/json');
-			res.end(JSON.stringify([data]));
+		var isPersistent = req.headers['x-subkit-event-persistent'] || false;
+		var metadata = req.headers['x-subkit-event-metadata'] || {};
+		
+		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
+
+		event.emit(stream, payload, metadata, isPersistent, function(error, data){
+			if(error) return res.send(400, error);
+			res.send(201, data);
 			next();
 		});
 	});
+	server.get('/events/stream', function(req, res){
+		var where = req.params.where;
+		var size = req.params.size;
 
-	server.post('/events/bind/:stream', function(req,res,next){
+		res.writeHead(200, {
+			'Transfer-Encoding': 'chunked',
+			'Content-Type': 'application/json'
+		});
+		event
+			.eventStream('', where, size)
+			.pipe(res);
+	});
+	server.get('/events/stream/:name', function(req, res){
+		var name = req.params.name;
+		var where = req.params.where;
+		var size = req.params.size;
+
+		res.writeHead(200, {
+			'Transfer-Encoding': 'chunked',
+			'Content-Type': 'application/json'
+		});
+		event
+			.eventStream(name, where, size)
+			.pipe(res);
+	});
+
+	server.get('/events/streams', function(req,res,next){
+		event.getChannels(function(err, data){
+			if(err) return res.send(400, err);
+			res.send(200, data);
+			next();
+		});
+	});
+			
+	server.post('/events/stream/:stream', function(req,res,next){
 		var stream = req.params.stream;
 		if(!req.body) req.body = {};
 		var webhook = req.body.webhook || req.headers['x-subkit-event-webhook'];
@@ -80,7 +111,7 @@ module.exports.init = function(server, event, configuration){
 			next();			
 		});
 	});
-	server.del('/events/bind/:stream', function(req,res,next){
+	server.del('/events/stream/:stream', function(req,res,next){
 		var stream = req.params.stream;
 		if(!req.body) req.body = {};
 		var webhook = req.body.webhook || req.headers['x-subkit-event-webhook'];
@@ -97,96 +128,20 @@ module.exports.init = function(server, event, configuration){
 		});
 	});
 
-	server.get('/events/streams', function(req,res,next){
-		event.getChannels(function(err, data){
-			if(err) return res.send(400, err);
-			res.send(200, data);
-			next();
-		});
-	});
-
-	server.post('/events/emit/:stream', function (req, res, next) {
-		var stream = req.params.stream;
-		var	payload = req.body;
-		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
-		if(!payload) return res.send(400, new Error('Parameter `payload` missing.'));
-
-		var isPersistent = req.headers['x-subkit-event-persistent'] || false;
-		var metadata = req.headers['x-subkit-event-metadata'] || {};
-		
-		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
-
-		event.emit(stream, payload, metadata, isPersistent, function(error, data){
-			if(error) return res.send(400, error);
-			res.send(201, data);
-			next();
-		});
-	});
-
-	/**
-	 * @deprecated
-	 */	
-	server.get('/events/log/:stream', loadHistory);
-
-	server.get('/events/history/:stream', loadHistory);
-	function loadHistory(req, res, next){
+	server.get('/events/history/:stream', function (req, res, next){
 		var stream = req.params.stream;
 		event.log(stream, {}, {}, function(err, data){
 			if(err) return res.send(400, err);
 			res.send(data);
 			next();
 		});
-	}
-	/**
-	 * @deprecated
-	 */	
-	server.del('/events/log/:stream', deleteHistory);
-
-	server.del('/events/history/:stream', deleteHistory);
-	function deleteHistory(req, res, next){
+	});	
+	server.del('/events/history/:stream', function (req, res, next){
 		var stream = req.params.stream;
 		event.deleteLog(stream, function(err){
 			if(err) return res.send(400, err);
 			res.send(202, {message: 'delete accepted'});
 			next();
 		});
-	}
-
-	/**
-	 * @deprecated
-	 */	
-	server.get('/events/streams/:clientId', function(req,res,next){
-		var clientId = req.params.clientId;
-		if(!clientId) next(400, new Error('Parameter `clientId` missing.'));
-		
-		event.getChannelsByClientId(clientId, function(err, data){
-			if(err) return res.send(400, err);
-			res.send(200, data);
-			next();
-		});
-	});
-	/**
-	 * @deprecated
-	 */
-	server.get('/events/clients', function(req,res,next){
-		event.getClients(function(err, data){
-			if(err) res.send(400, err);
-			res.send(200, data);
-			next();
-		});
-	});
-	/**
-	 * @deprecated
-	 */
-	server.get('/events/clients/:stream', function(req,res,next){
-		var stream = req.params.stream;
-		if(!stream) res.send(400, new Error('Parameter `stream` missing.'));
-
-		event.getClientsByChannel(stream, function(err, data){
-			if(err) res.send(400, err);
-			res.send(200, data);
-			next();
-		});
-	});
-
+	});	
 };

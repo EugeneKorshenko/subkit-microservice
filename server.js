@@ -165,7 +165,6 @@ module.exports.init = function(){
 	});
 	
 	//handle message streams
-	require('./routes/stream.js').init(server, event, logger);
 	require('./routes/event.js').init(server, event, nconf);
 
 	//starts the tasks scheduler
@@ -198,7 +197,7 @@ module.exports.init = function(){
 	server.use(restify.gzipResponse());	
 
 	//starts external API
-	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, plugin, share, subkitPackage.version);
+	require('./routes/manage.js').init(nconf, _applyConfig, server, _applyServer, storage, plugin, share, logger, subkitPackage.version);
 	require('./routes/store.js').init(server, storage);
 	require('./routes/task.js').init(server, task);
 

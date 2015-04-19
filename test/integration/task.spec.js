@@ -182,17 +182,32 @@ describe('Integration: Task', function(){
 
     it('should execute task with debug messages', function(done){
 
-      client.get('/events/bind/demo1', function(err, req, res, obj){
-        assert.ifError(err);
-        assert.equal(obj.length, 1);
-        assert.equal(obj[0].$payload, 'demo1 debug message');
+      var rawClient = restify.createClient({
+        rejectUnauthorized: false,
+        url: 'https://127.0.0.1:8080',
+        headers: {'x-auth-token':'66LOHAiB8Zeod1bAeLYW'}
+      });
 
-        //cleanup
-        client.del('/tasks/demo1', function(err, req, res, obj) {
-          assert.equal(null, err);
-          assert.notEqual(null, obj);
-          assert.equal('delete accepted', obj.message);
-          done();
+      rawClient.get('/events/stream/demo1', function(err, req){
+
+        req.on('result', function(err, res) {
+          assert.ifError(err);
+
+          res.on('data', function(chunk) {
+            var obj = JSON.parse(chunk.toString());
+            assert.equal(obj.length, 1);
+            assert.equal(obj[0].$payload, 'demo1 debug message');
+
+            //cleanup
+            client.del('/tasks/demo1', function(err, req, res, obj) {
+              assert.equal(null, err);
+              assert.notEqual(null, obj);
+              assert.equal('delete accepted', obj.message);
+              done();
+            });
+            
+          });
+
         });
 
       });

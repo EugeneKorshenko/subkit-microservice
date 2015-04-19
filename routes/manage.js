@@ -9,7 +9,7 @@ var shelljs = require('shelljs');
 var packageJson = require('package-json');
 var http = require('http');
 
-module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, plugin, share, version){
+module.exports.init = function(configuration, applyConfiguration, server, applyServer, storage, plugin, share, logger, version){
 
 	server.post('/manage/login', function (req, res, next) {
 		var api = configuration.get('api');
@@ -106,6 +106,18 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 	});
 
+	server.get('/manage/log', function(req, res){
+		var where = req.params.where;
+		var size = req.params.size;
+
+		res.writeHead(200, {
+			'Transfer-Encoding': 'chunked',
+			'Content-Type': 'application/json'
+		});
+		logger
+			.logStream(where, size)
+			.pipe(res);
+	});	
 	server.get('/manage/log/:name', function(req,res, next){
 		var name = req.params.name;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -117,6 +129,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
+
 	server.get('/manage/os', function(req, res, next){
 		storage.statistics(function(error, data){
 			res.send(200, {

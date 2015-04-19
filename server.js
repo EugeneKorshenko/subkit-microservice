@@ -83,7 +83,7 @@ module.exports.init = function(){
 	server.use(restify.CORS({
 		origins: ['*'],
 		credentials: true,
-		headers: ['authorization','content-type','x-auth-token','subkit-log']
+		headers: ['authorization','content-type','x-auth-token','x-subkit-event-webhook','x-subkit-event-filter','x-subkit-event-apikey']
 	}));	
 	server.use(restify.authorizationParser());
 	server.use(restify.bodyParser({ mapParams: true }));
@@ -93,7 +93,7 @@ module.exports.init = function(){
 	server.opts(/\.*/, function (req, res, next) {
 		res.header('Access-Control-Allow-Origin', '*');
 		res.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, HEAD, OPTION');
-		res.header('Access-Control-Allow-Headers', 'authorization, content-type, x-auth-token, subkit-log');
+		res.header('Access-Control-Allow-Headers', 'authorization, content-type, x-auth-token, x-subkit-event-webhook, x-subkit-event-filter, x-subkit-event-apikey');
 		res.send(200);
 		return next();
 	});
@@ -165,7 +165,7 @@ module.exports.init = function(){
 	});
 	
 	//handle message streams
-	require('./routes/event.js').init(server, event, nconf);
+	require('./routes/event.js').init(server, event, logger, nconf);
 
 	//starts the tasks scheduler
 	task.runScheduler(true);

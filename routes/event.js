@@ -1,8 +1,6 @@
 'use strict';
 
-var util = require('../lib/utils.module.js').init();
-
-module.exports.init = function(server, event, configuration){
+module.exports.init = function(server, event, logger, configuration){
 
 	var webhooksConfig = configuration.get('webhooks');
 	
@@ -15,7 +13,7 @@ module.exports.init = function(server, event, configuration){
 		}
 		for(var idx in webhooksConfig){
 			var itm = webhooksConfig[idx];
-			util.log({
+			logger.log({
 				type: 'webhook',
 				status: 'registered',
 				webhook: itm.webhook,

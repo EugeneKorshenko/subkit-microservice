@@ -50,8 +50,14 @@ module.exports.init = function(server, event, logger, configuration){
 		});
 	});
 	server.get('/events/stream', function(req, res){
-		var where = req.params.where;
 		var size = req.params.size;
+		var where = {};
+
+		try{
+			if(req.params.where) where = JSON.parse(req.params.where);
+		}catch(e){
+			return res.send(400, new Error('Invalid `where` filter.'));
+		}
 
 		res.writeHead(200, {
 			'Transfer-Encoding': 'chunked',
@@ -62,21 +68,29 @@ module.exports.init = function(server, event, logger, configuration){
 			.pipe(res);
 	});
 	server.get('/events/stream/:name', function(req, res){
-		var name = req.params.name;
-		var where = req.params.where;
+		var name = req.params.name;	
 		var size = req.params.size;
+		var where = {};
+		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+
+		try{
+			if(req.params.where) where = JSON.parse(req.params.where);
+		}catch(e){
+			return res.send(400, new Error('Invalid `where` filter.'));
+		}
 
 		res.writeHead(200, {
 			'Transfer-Encoding': 'chunked',
 			'Content-Type': 'application/json'
 		});
+
 		event
 			.eventStream(name, where, size)
 			.pipe(res);
 	});
 
 	server.get('/events/streams', function(req,res,next){
-		event.getChannels(function(err, data){
+		event.getStreams(function(err, data){
 			if(err) return res.send(400, err);
 			res.send(200, data);
 			next();
@@ -116,7 +130,8 @@ module.exports.init = function(server, event, logger, configuration){
 
 		if(!stream) return res.send(400, new Error('Parameter `stream` missing.'));
 		if(!webhook) return res.send(400, new Error('Parameter `webhook` missing.'));
-		event.unbind(stream, webhook);
+		
+		event.unbindWebHook(stream, webhook);
 
 		delete webhooksConfig[escape(webhook)];
 		configuration.set('webhooks', webhooksConfig);

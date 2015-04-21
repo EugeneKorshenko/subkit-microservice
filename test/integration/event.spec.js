@@ -20,6 +20,44 @@ describe('Integration: Event', function(){
     setTimeout(done, 1000);
   });
 
+  describe('on stream', function(){
+
+    var jsonClient = restify.createJsonClient({
+      rejectUnauthorized: false,
+      url: 'https://127.0.0.1:8080',
+      headers: { 'x-auth-token':'66LOHAiB8Zeod1bAeLYW' }
+    });
+
+    it('a emit should receive a event', function(done){
+
+      var rawClient = restify.createClient({
+        rejectUnauthorized: false,
+        url: 'https://127.0.0.1:8080',
+        headers: {'x-auth-token':'66LOHAiB8Zeod1bAeLYW'}
+      });
+
+      rawClient.get('/events/stream/mystream', function(err, req){
+
+        req.on('result', function(err, res) {
+          assert.ifError(err);
+
+          res.on('data', function(chunk) {
+            var obj = JSON.parse(chunk.toString());
+            assert.equal(obj.length, 1);
+            assert.equal(obj[0].$payload.Msg, 'Hello Subkit!');
+            done();            
+          });
+
+        });
+
+      });
+
+      jsonClient.post('/events/emit/mystream', {Msg:'Hello Subkit!', Number: 1}); 
+
+    });
+
+  });
+
   describe('on webhook', function(){
     it('should call a bound webhook', function(done){
       var client = restify.createJsonClient({
@@ -103,44 +141,6 @@ describe('Integration: Event', function(){
           
         });
       });       
-    });
-
-  });
-
-  describe('on stream', function(){
-
-    var jsonClient = restify.createJsonClient({
-      rejectUnauthorized: false,
-      url: 'https://127.0.0.1:8080',
-      headers: { 'x-auth-token':'66LOHAiB8Zeod1bAeLYW' }
-    });
-
-    it('a emit should receive a event', function(done){
-
-      var rawClient = restify.createClient({
-        rejectUnauthorized: false,
-        url: 'https://127.0.0.1:8080',
-        headers: {'x-auth-token':'66LOHAiB8Zeod1bAeLYW'}
-      });
-
-      rawClient.get('/events/stream/mystream', function(err, req){
-
-        req.on('result', function(err, res) {
-          assert.ifError(err);
-
-          res.on('data', function(chunk) {
-            var obj = JSON.parse(chunk.toString());
-            assert.equal(obj.length, 1);
-            assert.equal(obj[0].$payload.Msg, 'Hello Subkit!');
-            done();            
-          });
-
-        });
-
-      });
-
-      jsonClient.post('/events/emit/mystream',{Msg:'Hello Subkit!', Number: 1}); 
-
     });
 
   });

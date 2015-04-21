@@ -25,16 +25,16 @@ List stores.
 
 * **callback** *callback* 
 
-## query(resource, options, queryString, callback)
+## query(resource, options, JSONquery, callback)
 
 Get items from a store by using a json query.
 
 ### Params:
 
-* **String** *resource* - Name of store.
-* **Object** *options* - Query options.
-* **String** *queryString* - JSON Query options.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of store
+* **Object** *options* - Query options
+* **String** *JSONquery* - JSON Query
+* **callback** *callback* - Done handler
 
 ## insert(resource, payload, callback)
 
@@ -42,9 +42,9 @@ Add an item in a store.
 
 ### Params:
 
-* **String** *resource* - Name of store.
-* **Object** *payload* - New data object.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of store
+* **Object** *payload* - Document object
+* **callback** *callback* - Done handler
 
 ## update(resource, key, payload, callback)
 
@@ -52,10 +52,10 @@ Update an item in a store.
 
 ### Params:
 
-* **String** *resource* - Name of store.
-* **String** *key* - Store item key.
-* **Object** *payload* - New data object.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of store
+* **String** *key* - Store item key
+* **Object** *payload* - Document object
+* **callback** *callback* - Done handler
 
 ## tryUpdate(resource, key, version, payload, callback)
 
@@ -63,11 +63,11 @@ Try to add or change an item in a store.
 
 ### Params:
 
-* **String** *resource* - Name of store.
-* **String** *key* - Store item key.
-* **Number** *version* - Expected item version.
-* **Object** *payload* - New data object.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of store
+* **String** *key* - Store item key
+* **Number** *version* - Expected document version
+* **Object** *payload* - Document object
+* **callback** *callback* - Done handler
 
 ## del(resource, key, callback)
 
@@ -75,9 +75,9 @@ Remove an item from the store.
 
 ### Params:
 
-* **String** *resource* - Name of store.
-* **String** *key* - Store item key.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of store
+* **String** *key* - Store item key
+* **callback** *callback* - Done handler
 
 ## del(resource, key, version, callback)
 
@@ -85,10 +85,10 @@ Remove an item from the store.
 
 ### Params:
 
-* **String** *resource* - Name of store.
-* **String** *key* - Store item key.
-* **Number** *version* - Expected item version.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of store
+* **String** *key* - Store item key
+* **Number** *version* - Expected document version
+* **callback** *callback* - Done handler
 
 ## batch(data, callback)
 
@@ -96,8 +96,8 @@ Bulk update (add, change, remove).
 
 ### Params:
 
-* **Array** *data* - Object array with store operations.
-* **callback** *callback* - Done handler.
+* **Array** *data* - Object array with store operations
+* **callback** *callback* - Done handler
 
 ## imports(resource, payload, callback)
 
@@ -105,9 +105,9 @@ Imports JSON data to a store.
 
 ### Params:
 
-* **String** *resource* - Name of store.
-* **Object** *payload* - JSON (array) to import.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of store
+* **Object** *payload* - JSON (array) to import
+* **callback** *callback* - Done handler
 
 ## exports(resource, callback)
 
@@ -115,8 +115,8 @@ Exports store data as JSON.
 
 ### Params:
 
-* **String** *resource* - Name of store.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of store
+* **callback** *callback* - Done handler
 
 ## repair(done)
 
@@ -140,7 +140,7 @@ Restore all data files.
 
 ### Params:
 
-* **String** *name* - Backup name.
+* **String** *name* - Backup name
 * **callback** *done* 
 
 ## listBackups(done)
@@ -177,7 +177,7 @@ Store change notifications.
 
 ### Params:
 
-* **callback** *callback* - Done handler.
+* **callback** *callback* - Done handler
 
 <!-- End lib/store.module.js -->
 

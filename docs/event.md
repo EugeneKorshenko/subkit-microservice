@@ -19,125 +19,85 @@ Event module.
 * **Object** *store* - Store module dependency.
 * **Object** *logger* - Logger module dependency.
 
-## bind(stream, JSONquery, callback)
-
-Bind to a stream.
-
-### Params:
-
-* **String** *stream* - Name of stream.
-* **Object** *JSONquery* - JSONquery message filter.
-* **callback** *callback* 
-
-## bindPersistent(stream, JSONquery, callback)
-
-Persistent bind to a stream.
-
-### Params:
-
-* **String** *stream* - Name of stream.
-* **Object** *JSONquery* - JSONquery message filter.
-* **callback** *callback* 
-
-## bindWebHook(stream, JSONquery, clientId)
+## bindWebHook(stream, webhookId, JSONquery, apikey)
 
 WebHook bind to a stream.
 
 ### Params:
 
-* **String** *stream* - Name of stream.
-* **Object** *JSONquery* - JSONquery message filter.
-* **String** *clientId* - WebHook callback address.
+* **String** *stream* - Name of stream
+* **String** *webhookId* - WebHook callback URL
+* **Object** *JSONquery* - JSONquery message filter
+* **String** *apikey* - WebHook URL API-Key
 
-## unbind(stream, clientId)
+## unbindWebHook(stream, webhookId)
 
-Unbind from a stream.
+Unbind WebHook from a stream.
 
 ### Params:
 
-* **String** *stream* - Name of stream.
-* **String** *clientId* - WebHook callback address.
+* **String** *stream* - Name of stream
+* **String** *webhookId* - WebHook callback URL
 
-## emit(stream, message, metadata, persistent)
+## emit(stream, payload, metadata, persistent, callback)
 
 Publish a message to a stream.
 
 ### Params:
 
-* **String** *stream* - Name of stream.
-* **Object** *message* - The message payload.
-* **Object** *metadata* - The message metadata.
-* **Bool** *persistent* - Persist message to store.
+* **String** *stream* - Name of stream
+* **Object** *payload* - The message payload
+* **Object** *metadata* - The message metadata
+* **Bool** *persistent* - Persist message to store
+* **callback** *callback* - Done handler
 
-## on(JSONquery, callback)
+## on(stream, JSONquery, callback)
 
 Hook into the raw message stream.
 
 ### Params:
 
-* **Object** *JSONquery* - JSONquery message filter.
-* **callback** *callback* 
+* **String** *stream* - Name of stream
+* **Object** *JSONquery* - JSONquery message filter
+* **callback** *callback* - Done handler
 
-## eventStream(JSONquery)
+## eventStream(stream, JSONquery)
 
 Message stream.
 
 ### Params:
 
-* **Object** *JSONquery* - JSONquery message filter.
+* **String** *stream* - Name of stream
+* **Object** *JSONquery* - JSONquery message filter
 
-## once(callback)
+## once(stream, JSONquery, callback)
 
 Hook into the raw message stream once.
 
 ### Params:
 
-* **callback** *callback* 
+* **String** *stream* - Name of stream
+* **Object** *JSONquery* - JSONquery message filter
+* **callback** *callback* - Done handler
 
-## getChannels(callback)
+## getStreams(callback)
 
 Get all available streams.
 
 ### Params:
 
-* **callback** *callback* 
+* **callback** *callback* - Done handler
 
-## getClients(callback)
-
-Get all available clients.
-
-### Params:
-
-* **callback** *callback* 
-
-## getChannelsByClientId(clientId, callback)
-
-Get streams grouped by client key.
-
-### Params:
-
-* **String** *clientId* 
-* **callback** *callback* 
-
-## getClientsByChannel(stream, callback)
-
-Get clients grouped by stream name.
-
-### Params:
-
-* **String** *stream* 
-* **callback** *callback* 
-
-## log(resource, options, queryString, callback)
+## log(resource, options, JSONquery, callback)
 
 Get events from a persistent stream by using a json query. 
 
 ### Params:
 
-* **String** *resource* - Name of stream.
-* **Object** *options* - Query options.
-* **String** *queryString* - JSON Query options.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of stream
+* **Object** *options* - Query options
+* **Object** *JSONquery* - Filter as JSON-Query
+* **callback** *callback* - Done handler
 
 ## log(resource, callback)
 
@@ -145,8 +105,8 @@ Delete all events from a persistent stream.
 
 ### Params:
 
-* **String** *resource* - Name of stream.
-* **callback** *callback* - Done handler.
+* **String** *resource* - Name of stream
+* **callback** *callback* - Done handler
 
 <!-- End lib/event.module.js -->
 

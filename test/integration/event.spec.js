@@ -1,7 +1,8 @@
 'use strict';
 
-var assert = require('assert');
+var assert  = require('assert');
 var restify = require('restify');
+var _       = require('underscore');
 
 describe('Integration: Event', function(){
   var server,
@@ -59,7 +60,7 @@ describe('Integration: Event', function(){
   });
 
   describe('on webhook', function(){
-    it('should call a bound webhook', function(done){
+    it('should create and call a bound webhook', function(done){
       var client = restify.createJsonClient({
         rejectUnauthorized: false,
         url: 'https://127.0.0.1:8080',
@@ -73,16 +74,31 @@ describe('Integration: Event', function(){
         assert.ifError(error);
         assert.equal(actual.message, 'created');
 
-        client.post('/events/emit/eventstream1', {content:'a'}, function(error, req, res, actual){
+        client.get('/events/streams', function(error, req, res, actual){
           assert.ifError(error);
-          assert.equal(actual.message, 'emitted');
+          
+          var inspect = _.findWhere(actual, {stream: 'eventstream1'});
+          assert.notEqual(inspect, null);
+          assert.equal(inspect.id, 'https://127.0.0.1:8080/stores/events');
 
-          client.del('/events/stream/eventstream1', function(error, req, res, actual){
+          client.post('/events/emit/eventstream1', {content:'a'}, function(error, req, res, actual){
             assert.ifError(error);
-            assert.equal(actual.message, 'delete accepted');
-            done(); 
-          }); 
+            assert.equal(actual.message, 'emitted');
+
+            client.del('/events/stream/eventstream1', function(error, req, res, actual){
+              assert.ifError(error);
+              assert.equal(actual.message, 'delete accepted');
+
+              client.get('/events/streams', function(error, req, res, actual){
+                assert.ifError(error);
+                assert.equal(_.findWhere(actual, {stream: 'eventstream1'}), null);
+                done(); 
+              });
+            });
+          });
+
         });
+
       });
     });
 

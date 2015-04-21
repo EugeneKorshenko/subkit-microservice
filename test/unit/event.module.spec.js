@@ -32,7 +32,7 @@ describe('Module: Event', function(){
       count2++;
       assert.equal(error, null);
       assert.notEqual(data, null);
-    });    
+    });  
     sut.emit('demo1', { test: 'demo1 foo1' });
     sut.emit('demo2', { test: 'demo2 foo1' });
     sut.emit('demo1', { test: 'demo1 foo3' });
@@ -40,6 +40,12 @@ describe('Module: Event', function(){
     sut.emit('demo2', { test: 'demo2 foo2' });
 
     setTimeout(function(){
+
+      sut.getStreams(function(err, data){
+        assert.ifError(err);
+        assert.deepEqual(data, [ { stream: 'demo1' }, { stream: 'demo2' } ]);
+      });
+
       assert.equal(count1, 3);
       assert.equal(count2, 2);
       done();

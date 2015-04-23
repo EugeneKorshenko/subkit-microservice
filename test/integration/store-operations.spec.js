@@ -3,6 +3,7 @@
 var request = require('superagent');
 var chai = require('chai');
 var expect = chai.expect;
+var should = chai.should();
 var uuid = require('uuid');
 
 var url = 'https://localhost:8080';

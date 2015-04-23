@@ -39,7 +39,7 @@ describe('Integration Spec: Store  queries', function(){
     done();
   });
 
-  describe('Limit document results', function(){
+  describe('Integration Spec: Limit document results', function(){
     var DocumentsInStore = 4;
     before(function(done){
       for (var i = 0; i < DocumentsInStore; i++)

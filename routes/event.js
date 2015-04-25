@@ -26,6 +26,7 @@ module.exports.init = function(server, event, logger, configuration){
 	// heartbeat
 	(function(){
 		var count = 0;
+		event.emit('heartbeat', {value: count++});
 		setInterval(function(){
 			event.emit('heartbeat', {value: count++});
 		}, 5000);

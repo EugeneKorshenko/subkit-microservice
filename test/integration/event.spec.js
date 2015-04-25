@@ -7,6 +7,7 @@ var chai = require('chai');
 var expect = chai.expect;
 var should = chai.should();
 var request = require('superagent');
+chai.use(require('chai-things'));
 
 var url = 'https://localhost:8080';
 var token = '66LOHAiB8Zeod1bAeLYW';
@@ -35,24 +36,11 @@ describe('Integration: Event', function(){
         .get(url + '/events/streams')
         .set('X-Auth-Token', token)
         .accept('json')
-        /*.parse( function (res, callback) {
-         res.setEncoding('utf8');
-         res.data = '';
-         res.on('data', function (chunk) {
-         res.data += chunk;
-         });
-         res.on('end', function () {
-         try {
-         callback(null, JSON.parse(res.data.toString()));
-         } catch (err) {
-         callback(err);
-         }
-         })
-         })*/
         .end(function (res) {
           res.status.should.be.equal(200);
-          res.body.should.be.an('array').and.have.length(1);
-          res.body.should.have.deep.property('[0].stream').and.be.equal('heartbeat');
+          res.body.should.be.an('array');
+          res.body.should.include.something.that.deep.equals({stream: 'heartbeat'});
+
           done();
         });
     });
@@ -71,12 +59,7 @@ describe('Integration: Event', function(){
             .end(function (res) {
               res.status.should.be.equal(200);
               res.body.should.be.an('array');
-              var streams = [];
-              for (var i = 0; i < res.body.length; i++) {
-                res.body[i].should.have.property('stream');
-                streams.push(res.body[i].stream);
-              }
-              streams.should.include.members(['mystream', 'heartbeat']);
+              res.body.should.include.something.that.deep.equals({stream: 'heartbeat'}, {stream: 'mystream'});
               done();
             });
         });
@@ -151,7 +134,7 @@ describe('Integration: Event', function(){
           res.on('data', function (chunk) {
             var event = JSON.parse(chunk.toString());
             event.should.be.an('array').and.have.length(1);
-            event[0].should.have.all.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload'])
+            // event[0].should.have.all.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload'])
             event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').and.be.equal('Hello Subkit!');
             event.should.have.deep.property('[0].$name').to.be.equal('unique_test_stream');
             event.should.have.deep.property('[0].$stream').to.be.equal('unique_test_stream');
@@ -188,9 +171,9 @@ describe('Integration: Event', function(){
           res.on('data', function (chunk) {
             event_number++;
             var event = JSON.parse(chunk.toString());
-            event.should.be.an('array').and.have.length(1);
-            event[0].should.have.all.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
-            event[0].$payload.should.have.all.keys(['Msg', 'Number']);
+            // event.should.be.an('array').and.have.length(1);
+            // event[0].should.have.all.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
+            // event[0].$payload.should.have.all.keys(['Msg', 'Number']);
             expect(['Event #1', 'Event #2', 'Event #3']).to.include(event[0].$payload.Msg);
             expect([1, 2, 3]).to.include(event[0].$payload.Number);
             //event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').and.be.equal('Event #' + event_number.toString());

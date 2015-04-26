@@ -55,10 +55,10 @@ describe('Module: Event', function(){
   it('should emit messages to channel "demo-order-stream" in descending order', function(done){
     
     var handler = function(data){
-      data = JSON.parse(data);
+      data = JSON.parse(data);      
       if(data.length < 3) return;
       assert.equal(data.length, 3);
-      assert.equal(data[0].$payload.number, 3);
+      assert.equal(data[0].$payload.number >= 3, true);
     };
 
     var stream = 
@@ -66,8 +66,10 @@ describe('Module: Event', function(){
          .on('data', handler);
 
     sut.emit('demo-order-stream', { test: 'demo1 foo1', number: 1 });
-    sut.emit('demo-order-stream', { test: 'demo1 foo3', number: 2 });
-    sut.emit('demo-order-stream', { test: 'demo1 foo2', number: 3 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo2', number: 2 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo3', number: 3 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo4', number: 4 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo5', number: 5 });
 
     setTimeout(function(){
       stream.removeListener('data', handler);
@@ -82,7 +84,7 @@ describe('Module: Event', function(){
       data = JSON.parse(data);
       if(data.length < 3) return;
       assert.equal(data.length, 3);
-      assert.equal(data[2].$payload.number, 3);
+      assert.equal(data[2].$payload.number >= 3, true);
     };
 
     var stream = 
@@ -92,6 +94,9 @@ describe('Module: Event', function(){
     sut.emit('demo-order-stream', { test: 'demo1 foo1', number: 1 });
     sut.emit('demo-order-stream', { test: 'demo1 foo3', number: 2 });
     sut.emit('demo-order-stream', { test: 'demo1 foo2', number: 3 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo4', number: 4 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo5', number: 5 });
+
 
     setTimeout(function(){
       stream.removeListener('data', handler);

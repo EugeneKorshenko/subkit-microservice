@@ -52,6 +52,7 @@ module.exports.init = function(server, event, logger, configuration){
 	});
 	server.get('/events/stream', function(req, res){
 		var size = req.params.size;
+		var order = req.params.order;
 		var where = {};
 
 		try{
@@ -65,13 +66,15 @@ module.exports.init = function(server, event, logger, configuration){
 			'Content-Type': 'application/json'
 		});
 		event
-			.eventStream('', where, size)
+			.eventStream('', where, size, order)
 			.pipe(res);
 	});
 	server.get('/events/stream/:name', function(req, res){
 		var name = req.params.name;	
 		var size = req.params.size;
+		var order = req.params.order;
 		var where = {};
+		
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
 
 		try{
@@ -86,7 +89,7 @@ module.exports.init = function(server, event, logger, configuration){
 		});
 
 		event
-			.eventStream(name, where, size)
+			.eventStream(name, where, size, order)
 			.pipe(res);
 	});
 

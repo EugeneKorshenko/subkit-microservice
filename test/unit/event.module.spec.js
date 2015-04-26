@@ -20,7 +20,7 @@ describe('Module: Event', function(){
     }, 2000);
   });
   
-  it('should emit message to channels', function(done){
+  it('should emit messages to channels', function(done){
     var count1 = 0;
     var count2 = 0;
     sut.on('demo1', null, function(error, data){
@@ -50,6 +50,54 @@ describe('Module: Event', function(){
       assert.equal(count2, 2);
       done();
     }, 20);
+  });
+
+  it('should emit messages to channel "demo-order-stream" in descending order', function(done){
+    
+    var handler = function(data){
+      data = JSON.parse(data);
+      if(data.length < 3) return;
+      assert.equal(data.length, 3);
+      assert.equal(data[0].$payload.number, 3);
+    };
+
+    var stream = 
+      sut.eventStream('demo-order-stream', null, 3)
+         .on('data', handler);
+
+    sut.emit('demo-order-stream', { test: 'demo1 foo1', number: 1 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo3', number: 2 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo2', number: 3 });
+
+    setTimeout(function(){
+      stream.removeListener('data', handler);
+      done();
+    }, 100);
+
+  });
+
+  it('should emit messages to channel "demo-order-stream" in ascending order', function(done){
+    
+    var handler = function(data){
+      data = JSON.parse(data);
+      if(data.length < 3) return;
+      assert.equal(data.length, 3);
+      assert.equal(data[2].$payload.number, 3);
+    };
+
+    var stream = 
+      sut.eventStream('demo-order-stream', null, 3, 'ascending')
+         .on('data', handler);
+
+    sut.emit('demo-order-stream', { test: 'demo1 foo1', number: 1 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo3', number: 2 });
+    sut.emit('demo-order-stream', { test: 'demo1 foo2', number: 3 });
+
+    setTimeout(function(){
+      stream.removeListener('data', handler);
+      done();
+    }, 100);
+
   });
 
   it('should receive messages from a user by single channel', function(done){

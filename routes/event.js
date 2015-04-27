@@ -60,7 +60,6 @@ module.exports.init = function(server, event, logger, configuration){
 		}catch(e){
 			return res.send(400, new Error('Invalid `where` filter.'));
 		}
-
 		res.writeHead(200, {
 			'Transfer-Encoding': 'chunked',
 			'Content-Type': 'application/json'

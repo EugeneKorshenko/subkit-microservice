@@ -31,6 +31,7 @@ describe('Integration: Event', function(){
   });
 
   describe('Get available event-streams:', function(){
+
     it('If there is no one active stream it should return at least one stream "heartbeat"', function(done) {
       request
         .get(url + '/events/streams')
@@ -44,6 +45,7 @@ describe('Integration: Event', function(){
           done();
         });
     });
+
     it('If there is an active stream it should return at least two streams "heartbeat" and active one', function(done) {
       request
         .post(url + '/events/emit/mystream')
@@ -64,6 +66,7 @@ describe('Integration: Event', function(){
             });
         });
     });
+
     it('If there is an active stream result it should contain that stream', function(done) {
       request
         .post(url + '/events/emit/teststream')
@@ -89,6 +92,7 @@ describe('Integration: Event', function(){
             });
         });
     });
+
     it('If there is more than one active stream result it should return all of them', function(done) {
       request
         .post(url + '/events/emit/teststream')
@@ -122,9 +126,11 @@ describe('Integration: Event', function(){
             });
         });
     });
+
   });
 
   describe('Subscribe to specific event stream (Transfer-Encoding: chunked)', function(){
+    
     it('Should receive message from specified stream', function(done) {
       var req = request
         .get(url + '/events/stream/unique_test_stream')
@@ -418,24 +424,52 @@ describe('Integration: Event', function(){
             });
         });
     });
+
   });
 
   describe('Subscribe to event streams with filter (Transfer-Encoding: chunked)', function(){
+    
     it('Server should not hangs up on wrong queries', function(done) {
       var req = request
         .get(url + '/events/stream/another_unique_test_stream')
-        .query('where= {"Number": {"$exists":true}}') //wrong = symbol
+        .query({where: 'wrong'}) //wrong = symbol
         .set('X-Auth-Token', token)
         .accept('json')
         .end(function (res) {
           res.status.should.be.equal(400);
+          done();
         });
+    });
+
+    it('Should receive all messages where matching JSONQuery `{stream: "A-Stream"}` ', function(done) {
+      var req = request
+        .get(url + '/events/stream')
+        .query({where: JSON.stringify({stream: 'A-Stream'})})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse(function(res, callback) {
+          res.on('data', function (chunk) {
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array').and.have.length(1);
+            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').and.be.equal('Event #1');            
+            req.abort();
+            done();
+          });
+        })
+        .end(function (res) {});
+
+      request
+        .post(url + '/events/emit/A-Stream')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send({Msg:'Event #1', Number: 1})
+        .end(function (res) {});
     });
 
     it.skip('Should receive two of three messages from specified streams', function(done) {
       var req = request
         .get(url + '/events/stream/another_unique_test_stream')
-        .query('where: {"Number": {"$exists":true}}')
+        // .query({where: JSON.stringify({stream: {$exists:true}})})
         .set('X-Auth-Token', token)
         .accept('json')
         .parse( function (res, callback) {

@@ -126,7 +126,7 @@ describe('Integration: Event', function(){
 
   describe('Subscribe to specific event stream (Transfer-Encoding: chunked)', function(){
     it('Should receive message from specified stream', function(done) {
-      request
+      var req = request
         .get(url + '/events/stream/unique_test_stream')
         .set('X-Auth-Token', token)
         .accept('json')
@@ -142,6 +142,7 @@ describe('Integration: Event', function(){
             event.should.have.deep.property('[0].$key').to.be.an('number');
             event.should.have.deep.property('[0].$metadata').to.be.an('object');
             event.should.have.deep.property('[0].$timestamp');
+            req.abort();
             done();
           });
           res.on('end', function () {
@@ -163,7 +164,7 @@ describe('Integration: Event', function(){
     });
 
     it('Should receive three messages from specified streams', function(done) {
-      request
+      var req = request
         .get(url + '/events/stream/another_unique_test_stream')
         .set('X-Auth-Token', token)
         .accept('json')
@@ -186,6 +187,7 @@ describe('Integration: Event', function(){
             event.should.have.deep.property('[0].$metadata').to.be.an('object');
             event.should.have.deep.property('[0].$timestamp');
             if (event_number == 3) {
+              req.abort();
               done()
             };
           });
@@ -226,7 +228,7 @@ describe('Integration: Event', function(){
     });
 
     it('Should receive three messages from specified streams with window size equal to 3', function(done) {
-      request
+      var req = request
         .get(url + '/events/stream/another_unique_test_stream/?size=3')
         .set('X-Auth-Token', token)
         .accept('json')
@@ -249,7 +251,8 @@ describe('Integration: Event', function(){
             event.should.have.deep.property('[0].$metadata').to.be.an('object');
             event.should.have.deep.property('[0].$timestamp');
             if (event_number == 3) {
-              done()
+              req.abort();
+              done();
             };
           });
           res.on('end', function () {
@@ -289,7 +292,7 @@ describe('Integration: Event', function(){
     });
 
     it('Should receive three messages from specified streams with window size equal to 3 in FIFO order', function(done) {
-      request
+      var req = request
         .get(url + '/events/stream/another_unique_test_stream/?size=3&order=ascending')
         .set('X-Auth-Token', token)
         .accept('json')
@@ -312,7 +315,8 @@ describe('Integration: Event', function(){
             event.should.have.deep.property('[' + (event_number - 1) + '].$metadata').to.be.an('object');
             event.should.have.deep.property('[' + (event_number - 1) + '].$timestamp');
             if (event_number == 3) {
-              done()
+              req.abort();
+              done();
             };
           });
           res.on('end', function () {
@@ -352,7 +356,7 @@ describe('Integration: Event', function(){
     });
 
     it('Should receive three messages from specified streams with window size equal to 1 in FIFO order', function(done) {
-      request
+      var req = request
         .get(url + '/events/stream/another_unique_test_stream/?order=ascending')
         .set('X-Auth-Token', token)
         .accept('json')
@@ -375,7 +379,8 @@ describe('Integration: Event', function(){
             event.should.have.deep.property('[0].$metadata').to.be.an('object');
             event.should.have.deep.property('[0].$timestamp');
             if (event_number == 3) {
-              done()
+              req.abort();
+              done();
             };
           });
           res.on('end', function () {

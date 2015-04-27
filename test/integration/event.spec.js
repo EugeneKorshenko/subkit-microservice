@@ -720,24 +720,79 @@ describe('Integration: Event', function(){
         .query({where: JSON.stringify({stream: 'A-Stream'})})
         .set('X-Auth-Token', token)
         .accept('json')
-        .parse(function (res, callback) {
+        .parse( function (res, callback) {
+          var event_number = 0;
           res.on('data', function (chunk) {
+            event_number++;
             var event = JSON.parse(chunk.toString());
             event.should.be.an('array').and.have.length(1);
-            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').and.be.equal('Event #1');
-            req.abort();
-            done();
+            event.should.have.deep.property('[0].$stream').and.be.equal('A-Stream');
+            if (event_number == 2) {
+              req.abort();
+              done()
+            };
           });
+          res.on('end', function () {
+            '/events/stream/ will never end!'.should.be.true;
+          })
         })
         .end(function (res) {
+          '/events/stream/ will never end!'.should.be.true;
         });
-
       request
         .post(url + '/events/emit/A-Stream')
         .set('X-Auth-Token', token)
         .accept('json')
         .send({Msg: 'Event #1', Number: 1})
         .end(function (res) {
+          request
+            .post(url + '/events/emit/B-Stream')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .send({Msg: 'Event #1', Number: 1})
+            .end(function (res) {
+            });
+        });
+    });
+
+    it('Should receive all messages where matching JSONQuery `{stream: "A-Stream"}` ', function (done) {
+      var req = request
+        .get(url + '/events/stream')
+        .query('{where: {stream: \'A-Stream\'}}')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res, callback) {
+          var event_number = 0;
+          res.on('data', function (chunk) {
+            event_number++;
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array').and.have.length(1);
+            event.should.have.deep.property('[0].$stream').and.be.equal('A-Stream');
+            if (event_number == 2) {
+              req.abort();
+              done()
+            };
+          });
+          res.on('end', function () {
+            '/events/stream/ will never end!'.should.be.true;
+          })
+        })
+        .end(function (res) {
+          '/events/stream/ will never end!'.should.be.true;
+        });
+      request
+        .post(url + '/events/emit/A-Stream')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send({Msg: 'Event #1', Number: 1})
+        .end(function (res) {
+          request
+            .post(url + '/events/emit/B-Stream')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .send({Msg: 'Event #1', Number: 1})
+            .end(function (res) {
+            });
         });
     });
   });

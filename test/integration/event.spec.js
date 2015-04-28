@@ -32,6 +32,27 @@ describe('Integration: Event', function(){
 
   describe('Get available event-streams:', function(){
 
+    it('#GET with wrong "X-Auth-Token" header should response 401', function(done){
+      request
+        .get(url + '/events/streams')
+        .set('X-Auth-Token', 'wrong_token')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('#GET without "X-Auth-Token" header should response 401', function(done){
+      request
+        .get(url + '/events/streams')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
     it('If there is no one active stream it should return at least one stream "heartbeat"', function(done) {
       request
         .get(url + '/events/streams')
@@ -130,7 +151,28 @@ describe('Integration: Event', function(){
   });
 
   describe('Subscribe to specific event stream (Transfer-Encoding: chunked)', function(){
-    
+
+    it('#GET with wrong "X-Auth-Token" header should response 401', function(done){
+      request
+        .get(url + '/events/stream/unique_test_stream')
+        .set('X-Auth-Token', 'wrong_token')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('#GET without "X-Auth-Token" header should response 401', function(done){
+      request
+        .get(url + '/events/stream/unique_test_stream')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
     it('Should receive message from specified stream', function(done) {
       var req = request
         .get(url + '/events/stream/unique_test_stream')
@@ -621,7 +663,28 @@ describe('Integration: Event', function(){
   });
 
   describe('Subscribe to event streams with filter (Transfer-Encoding: chunked)', function() {
-    
+
+    it('#GET with wrong "X-Auth-Token" header should response 401', function(done){
+      request
+        .get(url + '/events/stream')
+        .set('X-Auth-Token', 'wrong_token')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('#GET without "X-Auth-Token" header should response 401', function(done){
+      request
+        .get(url + '/events/stream')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
     it('Server should not hangs up on wrong filter queries', function(done) {
       var req = request
         .get(url + '/events/stream')
@@ -837,7 +900,6 @@ describe('Integration: Event', function(){
         });
     });
   });
-
 
   describe('Emit an event', function(){});
 

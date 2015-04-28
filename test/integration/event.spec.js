@@ -837,7 +837,7 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Should receive all messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"$payload.Number": 2}]}` and window size = 2', function (done) {
+    it('Should receive all messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
       var filter = {$and: [{stream: 'A-Stream'}, {"payload.Number": 2}]};
 
       var req = request

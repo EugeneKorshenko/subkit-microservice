@@ -17,27 +17,27 @@ describe('Integration: Event', function(){
   var server,
       context;
 
-  before(function(done) {
+  before(function (done) {
     server = require('../../server.js');
     context = server.init().getContext();
     done();
   });
 
-  after(function(done){
+  after(function (done) {
     context.storage.close();
     context.server.close();
     delete require.cache[server];
     setTimeout(done, 1000);
   });
 
-  describe('Get available event-streams:', function(){
+  describe('Get available event-streams:', function () {
 
-    it('#GET with wrong "X-Auth-Token" header should response 401', function(done){
+    it('#GET with wrong "X-Auth-Token" header should response 401', function (done) {
       request
         .get(url + '/events/streams')
         .set('X-Auth-Token', 'wrong_token')
         .accept('json')
-        .end(function(res){
+        .end(function (res) {
           res.status.should.be.equal(401);
           done();
         });
@@ -838,7 +838,7 @@ describe('Integration: Event', function(){
     });
 
     it('Should receive all messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"$payload.Number": 2}]}` and window size = 2', function (done) {
-      var filter = {$and: [{stream: 'A-Stream'}, {"$payload.Number": 2}]};
+      var filter = {$and: [{stream: 'A-Stream'}, {"payload.Number": 2}]};
 
       var req = request
         .get(url + '/events/stream')

@@ -696,6 +696,19 @@ describe('Integration: Event', function(){
         });
     });
 
+    it('Server should not hangs up on filter with wrong field`s name queries', function(done) {
+      var filter = {$and: [{stream: 'A-Stream'}, {'$payload.Number': 2}]};
+      request
+        .get(url + '/events/stream')
+        .query({where: JSON.stringify(filter)})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(400);
+          done();
+        });
+    });
+
     it('Should receive all messages where matching JSONQuery `{$or: [{stream: "A-Stream"}, {stream: "B-Stream"}]}` ', function (done) {
       var filter = {$or: [{stream: 'A-Stream'}, {stream: 'B-Stream'}]};
 
@@ -835,7 +848,7 @@ describe('Integration: Event', function(){
     });
 
     it('Should receive all messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
-      var filter = {$and: [{stream: 'A-Stream'}, {"payload.Number": 2}]};
+      var filter = {$and: [{stream: 'A-Stream'}, {'payload.Number': 2}]};
 
       var req = request
         .get(url + '/events/stream')

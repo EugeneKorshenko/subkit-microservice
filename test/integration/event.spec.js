@@ -696,7 +696,7 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Server should not hangs up on filter with wrong field`s name queries', function(done) {
+    it('Server should return 204 `No content` on filter with wrong field`s name queries', function(done) {
       var filter = {$and: [{stream: 'A-Stream'}, {'$payload.Number': 2}]};
       request
         .get(url + '/events/stream')
@@ -704,7 +704,7 @@ describe('Integration: Event', function(){
         .set('X-Auth-Token', token)
         .accept('json')
         .end(function (res) {
-          res.status.should.be.equal(400);
+          res.status.should.be.equal(204);
           done();
         });
     });

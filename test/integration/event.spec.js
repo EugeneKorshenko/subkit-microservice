@@ -151,13 +151,9 @@ describe('Integration: Event', function(){
             req.abort();
             done();
           });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
         })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
+        .end();
+
       request
         .post(url + '/events/emit/unique_test_stream')
         .set('X-Auth-Token', token)
@@ -181,7 +177,7 @@ describe('Integration: Event', function(){
             var event = JSON.parse(chunk.toString());
             event.should.be.an('array').and.have.length(1);
             event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
-            // event[0].$payload.should.include.keys(['Msg', 'Number']);
+            event[0].$payload.should.include.keys(['Msg', 'Number']);
             expect(['Event #1', 'Event #2', 'Event #3']).to.include(event[0].$payload.Msg);
             expect([1, 2, 3]).to.include(event[0].$payload.Number);
             event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').and.be.equal('Event #' + event_number.toString());
@@ -197,13 +193,9 @@ describe('Integration: Event', function(){
               done()
             };
           });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
         })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
+        .end();
+
       request
         .post(url + '/events/emit/another_unique_test_stream')
         .set('X-Auth-Token', token)
@@ -245,7 +237,7 @@ describe('Integration: Event', function(){
             var event = JSON.parse(chunk.toString());
             event.should.be.an('array').and.have.length(event_number);
             event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
-            // event[0].$payload.should.include.keys(['Msg', 'Number']);
+            event[0].$payload.should.include.keys(['Msg', 'Number']);
             expect(['Event #1', 'Event #2', 'Event #3']).to.include(event[0].$payload.Msg);
             expect([1, 2, 3]).to.include(event[0].$payload.Number);
             event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').and.be.equal('Event #' + event_number.toString());
@@ -261,13 +253,9 @@ describe('Integration: Event', function(){
               done();
             };
           });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
         })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
+        .end();
+
       request
         .post(url + '/events/emit/another_unique_test_stream')
         .set('X-Auth-Token', token)
@@ -307,9 +295,10 @@ describe('Integration: Event', function(){
           res.on('data', function (chunk) {
             event_number++;
             var event = JSON.parse(chunk.toString());
+            
             event.should.be.an('array').and.have.length(event_number);
             event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
-            // event[0].$payload.should.include.keys(['Msg', 'Number']);
+            event[0].$payload.should.include.keys(['Msg', 'Number']);
             expect(['Event #1', 'Event #2', 'Event #3']).to.include(event[event_number - 1].$payload.Msg);
             expect([1, 2, 3]).to.include(event[event_number - 1].$payload.Number);
             event.should.have.deep.property('[' + (event_number - 1) + '].$payload').to.be.an('object').and.have.property('Msg').and.be.equal('Event #' + event_number.toString());
@@ -325,13 +314,9 @@ describe('Integration: Event', function(){
               done();
             };
           });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
         })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
+        .end();
+
       request
         .post(url + '/events/emit/another_unique_test_stream')
         .set('X-Auth-Token', token)
@@ -373,7 +358,7 @@ describe('Integration: Event', function(){
             var event = JSON.parse(chunk.toString());
             event.should.be.an('array').and.have.length(1);
             event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
-            // event[0].$payload.should.include.keys(['Msg', 'Number']);
+            event[0].$payload.should.include.keys(['Msg', 'Number']);
             expect(['Event #1', 'Event #2', 'Event #3']).to.include(event[0].$payload.Msg);
             expect([1, 2, 3]).to.include(event[0].$payload.Number);
             event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').and.be.equal('Event #' + event_number.toString());
@@ -389,13 +374,10 @@ describe('Integration: Event', function(){
               done();
             };
           });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
+
         })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
+        .end();
+
       request
         .post(url + '/events/emit/another_unique_test_stream')
         .set('X-Auth-Token', token)
@@ -427,48 +409,44 @@ describe('Integration: Event', function(){
 
   });
 
-  describe('Subscribe to event stream with filter (Transfer-Encoding: chunked)', function(){
-    it('Server should not hangs up on wrong queries', function(done) {
+  describe('Subscribe to specific event stream with filter (Transfer-Encoding: chunked)', function(){
+
+    it('Server should not hangs up on wrong filter queries', function(done) {
       var req = request
         .get(url + '/events/stream/another_unique_test_stream')
-        .query('where= {"Number": {"$exists":true}}') //wrong = symbol
+        .query({where: 'wrong'})
         .set('X-Auth-Token', token)
         .accept('json')
         .end(function (res) {
           res.status.should.be.equal(400);
+          done();
         });
     });
 
     it('Should receive two of three messages from specified streams with $payload.Number', function(done) {
+      var filter = {"payload.Number": {$exists:true}};
+
       var req = request
         .get(url + '/events/stream/another_unique_test_stream')
-        .query({where: JSON.stringify({"Number": {"$exists":true}})})
+        .query({where: JSON.stringify(filter)})
         .set('X-Auth-Token', token)
         .accept('json')
         .parse( function (res, callback) {
-          var event_number = 0;
           res.on('data', function (chunk) {
-            event_number++;
             var event = JSON.parse(chunk.toString());
             event.should.be.an('array').and.have.length(1);
             event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload', '$timestamp']);
-            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').and.be.equal(event_number);
-            if (event_number == 3) {
-              req.abort();
-              done()
-            };
+            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').and.be.equal(3);
+            req.abort();
+            done();
           });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
         })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
+        .end();
+
       request
         .post(url + '/events/emit/another_unique_test_stream')
         .set('X-Auth-Token', token)
-        .send({Msg:'Event #1', Number: 1})
+        .send({Msg:'Event #1'})
         .accept('json')
         .end(function (res) {
           res.status.should.be.equal(201);
@@ -476,7 +454,7 @@ describe('Integration: Event', function(){
           request
             .post(url + '/events/emit/another_unique_test_stream')
             .set('X-Auth-Token', token)
-            .send({Msg:'Event #2', Number: 2})
+            .send({Msg:'Event #2'})
             .accept('json')
             .end(function (res) {
               res.status.should.be.equal(201);
@@ -484,7 +462,7 @@ describe('Integration: Event', function(){
               request
                 .post(url + '/events/emit/another_unique_test_stream')
                 .set('X-Auth-Token', token)
-                .send({Msg:'Event #3'/*, Number: 3*/})
+                .send({Msg:'Event #3', Number: 3})
                 .accept('json')
                 .end(function (res) {
                   res.status.should.be.equal(201);
@@ -494,230 +472,28 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Should receive two of three messages from specified streams with $payload.Number', function(done) {
-      var req = request
-        .get(url + '/events/stream/another_unique_test_stream')
-        .query('{where: {"Number": {"$exists":true}}}')
-        .set('X-Auth-Token', token)
-        .accept('json')
-        .parse( function (res, callback) {
-          var event_number = 0;
-          res.on('data', function (chunk) {
-            event_number++;
-            var event = JSON.parse(chunk.toString());
-            event.should.be.an('array').and.have.length(1);
-            event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload', '$timestamp']);
-            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').and.be.equal(event_number);
-            if (event_number == 3) {
-              req.abort();
-              done()
-            };
-          });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
-        })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
-      request
-        .post(url + '/events/emit/another_unique_test_stream')
-        .set('X-Auth-Token', token)
-        .send({Msg:'Event #1', Number: 1})
-        .accept('json')
-        .end(function (res) {
-          res.status.should.be.equal(201);
-          res.body.should.have.property('message').and.be.equal('emitted');
-          request
-            .post(url + '/events/emit/another_unique_test_stream')
-            .set('X-Auth-Token', token)
-            .send({Msg:'Event #2', Number: 2})
-            .accept('json')
-            .end(function (res) {
-              res.status.should.be.equal(201);
-              res.body.should.have.property('message').and.be.equal('emitted');
-              request
-                .post(url + '/events/emit/another_unique_test_stream')
-                .set('X-Auth-Token', token)
-                .send({Msg:'Event #3'/*, Number: 3*/})
-                .accept('json')
-                .end(function (res) {
-                  res.status.should.be.equal(201);
-                  res.body.should.have.property('message').and.be.equal('emitted');
-                });
-            });
-        });
-    });
-
-    it('Should receive one of three messages from specified streams without $payload.Number', function(done) {
-      var req = request
-        .get(url + '/events/stream/another_unique_test_stream')
-        .query('where: {"Number": {"$exists":false}}')
-        .set('X-Auth-Token', token)
-        .accept('json')
-        .parse( function (res, callback) {
-          var event_number = 0;
-          res.on('data', function (chunk) {
-            event_number++;
-            var event = JSON.parse(chunk.toString());
-            event.should.be.an('array').and.have.length(1);
-            event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload', '$timestamp']);
-            event.should.have.deep.property('[0].$payload').to.be.an('object').and.not.have.property('Number');
-            if (event_number == 3) {
-              req.abort();
-              done()
-            };
-          });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
-        })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
-      request
-        .post(url + '/events/emit/another_unique_test_stream')
-        .set('X-Auth-Token', token)
-        .send({Msg:'Event #1', Number: 1})
-        .accept('json')
-        .end(function (res) {
-          res.status.should.be.equal(201);
-          res.body.should.have.property('message').and.be.equal('emitted');
-          request
-            .post(url + '/events/emit/another_unique_test_stream')
-            .set('X-Auth-Token', token)
-            .send({Msg:'Event #2', Number: 2})
-            .accept('json')
-            .end(function (res) {
-              res.status.should.be.equal(201);
-              res.body.should.have.property('message').and.be.equal('emitted');
-              request
-                .post(url + '/events/emit/another_unique_test_stream')
-                .set('X-Auth-Token', token)
-                .send({Msg:'Event #3'/*, Number: 3*/})
-                .accept('json')
-                .end(function (res) {
-                  res.status.should.be.equal(201);
-                  res.body.should.have.property('message').and.be.equal('emitted');
-                });
-            });
-        });
-    });
-
-    it('Should receive one of three messages from specified streams with $payload.Number in [2]', function(done) {
-      var req = request
-        .get(url + '/events/stream/another_unique_test_stream')
-        .query('where: {"Number": {"$in": [2]}}')
-        .set('X-Auth-Token', token)
-        .accept('json')
-        .parse( function (res, callback) {
-          var event_number = 0;
-          res.on('data', function (chunk) {
-            event_number++;
-            var event = JSON.parse(chunk.toString());
-            event.should.be.an('array').and.have.length(1);
-            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').and.be.equal(2);
-            if (event_number == 3) {
-              req.abort();
-              done()
-            };
-          });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
-        })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
-      request
-        .post(url + '/events/emit/another_unique_test_stream')
-        .set('X-Auth-Token', token)
-        .send({Msg:'Event #1', Number: 1})
-        .accept('json')
-        .end(function (res) {
-          res.status.should.be.equal(201);
-          res.body.should.have.property('message').and.be.equal('emitted');
-          request
-            .post(url + '/events/emit/another_unique_test_stream')
-            .set('X-Auth-Token', token)
-            .send({Msg:'Event #2', Number: 2})
-            .accept('json')
-            .end(function (res) {
-              res.status.should.be.equal(201);
-              res.body.should.have.property('message').and.be.equal('emitted');
-              request
-                .post(url + '/events/emit/another_unique_test_stream')
-                .set('X-Auth-Token', token)
-                .send({Msg:'Event #3'/*, Number: 3*/})
-                .accept('json')
-                .end(function (res) {
-                  res.status.should.be.equal(201);
-                  res.body.should.have.property('message').and.be.equal('emitted');
-                });
-            });
-        });
-    });
-
-    it('Should receive two of three messages from specified streams with {$or: [{"Number": {"$in": [2]}}, {"Msg": {"$in": [\'Event #3\']}} }', function(done) {
-      var req = request
-        .get(url + '/events/stream/another_unique_test_stream')
-        .query('where: {$or: [{"Number": {"$in": [2]}}, {"Msg": {"$in": [\'Event #3\']}} }')
-        .set('X-Auth-Token', token)
-        .accept('json')
-        .parse( function (res, callback) {
-          var event_number = 0;
-          res.on('data', function (chunk) {
-            event_number++;
-            var event = JSON.parse(chunk.toString());
-            event.should.be.an('array').and.have.length(1);
-            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Wrong').to.be.false;
-            if (event_number == 3) {
-              req.abort();
-              done()
-            };
-          });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
-        })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
-      request
-        .post(url + '/events/emit/another_unique_test_stream')
-        .set('X-Auth-Token', token)
-        .send({Msg:'Event #1', Number: 1, Wrong: true})
-        .accept('json')
-        .end(function (res) {
-          res.status.should.be.equal(201);
-          res.body.should.have.property('message').and.be.equal('emitted');
-          request
-            .post(url + '/events/emit/another_unique_test_stream')
-            .set('X-Auth-Token', token)
-            .send({Msg:'Event #2', Number: 2, Wrong: false})
-            .accept('json')
-            .end(function (res) {
-              res.status.should.be.equal(201);
-              res.body.should.have.property('message').and.be.equal('emitted');
-              request
-                .post(url + '/events/emit/another_unique_test_stream')
-                .set('X-Auth-Token', token)
-                .send({Msg:'Event #3'/*, Number: 3*/, Wrong: false})
-                .accept('json')
-                .end(function (res) {
-                  res.status.should.be.equal(201);
-                  res.body.should.have.property('message').and.be.equal('emitted');
-                });
-            });
-        });
-    });
   });
 
   describe('Subscribe to event streams with filter (Transfer-Encoding: chunked)', function() {
-    it('Should receive all messages where matching JSONQuery `{stream: "A-Stream"}` ', function (done) {
+    
+    it('Server should not hangs up on wrong filter queries', function(done) {
       var req = request
         .get(url + '/events/stream')
-        .query({where: JSON.stringify({stream: 'A-Stream'})})
+        .query({where: 'wrong'})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(400);
+          done();
+        });
+    });
+
+    it('Should receive all messages where matching JSONQuery `{$or: [{stream: "A-Stream"}, {stream: "B-Stream"}]}` ', function (done) {
+      var filter = {$or: [{stream: 'A-Stream'}, {stream: 'B-Stream'}]};
+
+      var req = request
+        .get(url + '/events/stream')
+        .query({where: JSON.stringify(filter)})
         .set('X-Auth-Token', token)
         .accept('json')
         .parse( function (res, callback) {
@@ -726,19 +502,22 @@ describe('Integration: Event', function(){
             event_number++;
             var event = JSON.parse(chunk.toString());
             event.should.be.an('array').and.have.length(1);
-            event.should.have.deep.property('[0].$stream').and.be.equal('A-Stream');
-            if (event_number == 2) {
+            
+            if(event_number === 1){
+              event.should.have.deep.property('[0].$stream').and.be.equal('A-Stream');
+            }
+            if(event_number === 2){
+              event.should.have.deep.property('[0].$stream').and.be.equal('B-Stream');
+            }
+            
+            if (event_number === 2) {
               req.abort();
               done()
             };
           });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
         })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
+        .end();
+
       request
         .post(url + '/events/emit/A-Stream')
         .set('X-Auth-Token', token)
@@ -755,46 +534,6 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Should receive all messages where matching JSONQuery `{stream: "A-Stream"}` ', function (done) {
-      var req = request
-        .get(url + '/events/stream')
-        .query('{where: {stream: \'A-Stream\'}}')
-        .set('X-Auth-Token', token)
-        .accept('json')
-        .parse( function (res, callback) {
-          var event_number = 0;
-          res.on('data', function (chunk) {
-            event_number++;
-            var event = JSON.parse(chunk.toString());
-            event.should.be.an('array').and.have.length(1);
-            event.should.have.deep.property('[0].$stream').and.be.equal('A-Stream');
-            if (event_number == 2) {
-              req.abort();
-              done()
-            };
-          });
-          res.on('end', function () {
-            '/events/stream/ will never end!'.should.be.true;
-          })
-        })
-        .end(function (res) {
-          '/events/stream/ will never end!'.should.be.true;
-        });
-      request
-        .post(url + '/events/emit/A-Stream')
-        .set('X-Auth-Token', token)
-        .accept('json')
-        .send({Msg: 'Event #1', Number: 1})
-        .end(function (res) {
-          request
-            .post(url + '/events/emit/B-Stream')
-            .set('X-Auth-Token', token)
-            .accept('json')
-            .send({Msg: 'Event #1', Number: 1})
-            .end(function (res) {
-            });
-        });
-    });
   });
 
 

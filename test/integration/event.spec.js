@@ -472,6 +472,152 @@ describe('Integration: Event', function(){
         });
     });
 
+    it('Should receive two of three messages from specified streams without $payload.Number', function(done) {
+      var filter = {"payload.Number": {$exists:false}};
+
+      var req = request
+        .get(url + '/events/stream/another_unique_test_stream')
+        .query({where: JSON.stringify(filter)})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res, callback) {
+          res.on('data', function (chunk) {
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array').and.have.length(1);
+            event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload', '$timestamp']);
+            event.should.have.deep.property('[0].$payload').to.be.an('object').and.not.have.property('Number');
+            req.abort();
+            done();
+          });
+        })
+        .end();
+
+      request
+        .post(url + '/events/emit/another_unique_test_stream')
+        .set('X-Auth-Token', token)
+        .send({Msg:'Event #1', Number: 1})
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          request
+            .post(url + '/events/emit/another_unique_test_stream')
+            .set('X-Auth-Token', token)
+            .send({Msg:'Event #2', Number: 2})
+            .accept('json')
+            .end(function (res) {
+              res.status.should.be.equal(201);
+              res.body.should.have.property('message').and.be.equal('emitted');
+              request
+                .post(url + '/events/emit/another_unique_test_stream')
+                .set('X-Auth-Token', token)
+                .send({Msg:'Event #3'})
+                .accept('json')
+                .end(function (res) {
+                  res.status.should.be.equal(201);
+                  res.body.should.have.property('message').and.be.equal('emitted');
+                });
+            });
+        });
+    });
+
+    it('Should receive two of three messages from specified streams with $payload.Number: {"$in": [2]}', function(done) {
+      var filter = {"payload.Number": {"$in": [2]}};
+
+      var req = request
+        .get(url + '/events/stream/another_unique_test_stream')
+        .query({where: JSON.stringify(filter)})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res, callback) {
+          res.on('data', function (chunk) {
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array').and.have.length(1);
+            event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload', '$timestamp']);
+            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').and.be.equal(2);
+            req.abort();
+            done();
+          });
+        })
+        .end();
+
+      request
+        .post(url + '/events/emit/another_unique_test_stream')
+        .set('X-Auth-Token', token)
+        .send({Msg:'Event #1', Number: 1})
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          request
+            .post(url + '/events/emit/another_unique_test_stream')
+            .set('X-Auth-Token', token)
+            .send({Msg:'Event #2', Number: 2})
+            .accept('json')
+            .end(function (res) {
+              res.status.should.be.equal(201);
+              res.body.should.have.property('message').and.be.equal('emitted');
+              request
+                .post(url + '/events/emit/another_unique_test_stream')
+                .set('X-Auth-Token', token)
+                .send({Msg:'Event #3'})
+                .accept('json')
+                .end(function (res) {
+                  res.status.should.be.equal(201);
+                  res.body.should.have.property('message').and.be.equal('emitted');
+                });
+            });
+        });
+    });
+
+    it('Should receive two of three messages from specified streams with {$or: [{"payload.Number": {"$in": [2]}}, {"Msg": {"$in": [\'Event #3\']}}]}', function(done) {
+      var filter = {$or: [{"payload.Number": {"$in": [2]}}, {"Msg": {"$in": ['Event #3']}}]};
+
+      var req = request
+        .get(url + '/events/stream/another_unique_test_stream')
+        .query({where: JSON.stringify(filter)})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res, callback) {
+          res.on('data', function (chunk) {
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array').and.have.length(1);
+            event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload', '$timestamp']);
+            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Wrong').to.be.false;
+            req.abort();
+            done();
+          });
+        })
+        .end();
+
+      request
+        .post(url + '/events/emit/another_unique_test_stream')
+        .set('X-Auth-Token', token)
+        .send({Msg:'Event #1', Number: 1, Wrong: true})
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          request
+            .post(url + '/events/emit/another_unique_test_stream')
+            .set('X-Auth-Token', token)
+            .send({Msg:'Event #2', Number: 2, Wrong: false})
+            .accept('json')
+            .end(function (res) {
+              res.status.should.be.equal(201);
+              res.body.should.have.property('message').and.be.equal('emitted');
+              request
+                .post(url + '/events/emit/another_unique_test_stream')
+                .set('X-Auth-Token', token)
+                .send({Msg:'Event #3', Wrong: false})
+                .accept('json')
+                .end(function (res) {
+                  res.status.should.be.equal(201);
+                  res.body.should.have.property('message').and.be.equal('emitted');
+                });
+            });
+        });
+    });
   });
 
   describe('Subscribe to event streams with filter (Transfer-Encoding: chunked)', function() {
@@ -534,6 +680,162 @@ describe('Integration: Event', function(){
         });
     });
 
+    it('Should receive all messages where matching JSONQuery `{stream: "A-Stream"}` ', function (done) {
+      var filter = {stream: 'A-Stream'};
+
+      var req = request
+        .get(url + '/events/stream')
+        .query({where: JSON.stringify(filter)})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res, callback) {
+          var event_number = 0;
+          res.on('data', function (chunk) {
+            event_number++;
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array').and.have.length(1);
+
+            if(event_number === 1){
+              event.should.have.deep.property('[0].$stream').and.be.equal('A-Stream');
+              req.abort();
+              done()
+            }
+
+           });
+        })
+        .end();
+
+      request
+        .post(url + '/events/emit/B-Stream')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send({Msg: 'Event #1', Number: 1})
+        .end(function (res) {
+          request
+            .post(url + '/events/emit/A-Stream')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .send({Msg: 'Event #1', Number: 1})
+            .end(function (res) {
+            });
+        });
+    });
+
+    it('Should receive all messages where matching JSONQuery `{stream: "A-Stream"}` and window size = 2', function (done) {
+      var filter = {stream: 'A-Stream'};
+
+      var req = request
+        .get(url + '/events/stream')
+        .query({size: 2})
+        .query({where: JSON.stringify(filter)})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res, callback) {
+          var event_number = 0;
+          res.on('data', function (chunk) {
+            event_number++;
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array');
+            event.should.not.include.something.that.deep.equals({stream: 'B-Stream'});
+            if (event_number == 2) {
+              req.abort();
+              done()
+            }
+          });
+        })
+        .end();
+
+      request
+        .post(url + '/events/emit/A-Stream')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send({Msg: 'Event #1', Number: 1})
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          request
+            .post(url + '/events/emit/B-Stream')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .send({Msg: 'Event #1', Number: 1})
+            .end(function (res) {
+              res.status.should.be.equal(201);
+              res.body.should.have.property('message').and.be.equal('emitted');
+              request
+                .post(url + '/events/emit/A-Stream')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .send({Msg: 'Event #2', Number: 2})
+                .end(function (res) {
+                  res.status.should.be.equal(201);
+                  res.body.should.have.property('message').and.be.equal('emitted');
+                });
+            });
+        });
+    });
+
+    it('Should receive all messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"$payload.Number": 2}]}` and window size = 2', function (done) {
+      var filter = {$and: [{stream: 'A-Stream'}, {"$payload.Number": 2}]};
+
+      var req = request
+        .get(url + '/events/stream')
+        .query({size: 2})
+        .query({where: JSON.stringify(filter)})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res, callback) {
+          var event_number = 0;
+          res.on('data', function (chunk) {
+            event_number++;
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array');
+            event.should.not.include.something.that.deep.equals({stream: 'B-Stream'});
+            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
+            if (event_number == 2) {
+              req.abort();
+              done()
+            }
+          });
+        })
+        .end();
+
+      request
+        .post(url + '/events/emit/A-Stream')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send({Msg: 'Event #1', Number: 2})
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          request
+            .post(url + '/events/emit/B-Stream')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .send({Msg: 'Event #2', Number: 1})
+            .end(function (res) {
+              res.status.should.be.equal(201);
+              res.body.should.have.property('message').and.be.equal('emitted');
+              request
+                .post(url + '/events/emit/A-Stream')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .send({Msg: 'Event #3', Number: 3})
+                .end(function (res) {
+                  res.status.should.be.equal(201);
+                  res.body.should.have.property('message').and.be.equal('emitted');
+                  request
+                    .post(url + '/events/emit/A-Stream')
+                    .set('X-Auth-Token', token)
+                    .accept('json')
+                    .send({Msg: 'Event #4', Number: 2})
+                    .end(function (res) {
+                      res.status.should.be.equal(201);
+                      res.body.should.have.property('message').and.be.equal('emitted');
+                    });
+                });
+            });
+        });
+    });
   });
 
 

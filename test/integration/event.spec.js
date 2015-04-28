@@ -464,7 +464,7 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Should receive two of three messages from specified streams with $payload.Number', function(done) {
+    it('Should receive two of three messages from specified streams with payload.Number', function(done) {
       var filter = {'payload.Number': {$exists:true}};
 
       var req = request
@@ -513,7 +513,7 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Should receive two of three messages from specified streams without $payload.Number', function(done) {
+    it('Should receive two of three messages from specified streams without payload.Number', function(done) {
       var filter = {'payload.Number': {$exists:false}};
 
       var req = request
@@ -562,7 +562,7 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Should receive two of three messages from specified streams with $payload.Number: {"$in": [2]}', function(done) {
+    it('Should receive two of three messages from specified streams with payload.Number: {"$in": [2]}', function(done) {
       var filter = {'payload.Number': {$in: [2]}};
 
       var req = request

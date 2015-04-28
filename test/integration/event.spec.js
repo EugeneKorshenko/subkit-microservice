@@ -696,19 +696,6 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Server should return 204 `No content` on filter with wrong field`s name queries', function(done) {
-      var filter = {$and: [{stream: 'A-Stream'}, {'$payload.Number': 2}]};
-      request
-        .get(url + '/events/stream')
-        .query({where: JSON.stringify(filter)})
-        .set('X-Auth-Token', token)
-        .accept('json')
-        .end(function (res) {
-          res.status.should.be.equal(204);
-          done();
-        });
-    });
-
     it('Should receive all messages where matching JSONQuery `{$or: [{stream: "A-Stream"}, {stream: "B-Stream"}]}` ', function (done) {
       var filter = {$or: [{stream: 'A-Stream'}, {stream: 'B-Stream'}]};
 

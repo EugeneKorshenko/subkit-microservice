@@ -3,9 +3,12 @@
 var assert  = require('assert');
 var restify = require('restify');
 var _       = require('underscore');
+
 var chai = require('chai');
 var expect = chai.expect;
 var request = require('superagent');
+
+chai.should();
 chai.use(require('chai-things'));
 
 var url = 'https://localhost:8080';

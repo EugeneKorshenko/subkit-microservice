@@ -149,6 +149,17 @@ module.exports = function(grunt) {
           'test/integration/manage.spec.js'
         ]
       },
+      smokeTests: {
+        options: {
+          reporter: 'spec',
+          timeout: 10000,
+          clearRequireCache: false,
+          require: 'env-test'
+        },
+        src: [
+          'test/smoke/event.smoke.js'
+        ]
+      }
     },
     markdox: {
       target: {
@@ -178,7 +189,8 @@ module.exports = function(grunt) {
     'mochaTest:fileTests',
     'mochaTest:identityTests',
     'mochaTest:pluginTests',
-    'mochaTest:manageTests'
+    'mochaTest:manageTests',
+    'mochaTest:smokeTests'
   ]);
   grunt.registerTask('shareTests', ['mochaTest:shareTests']);
   grunt.registerTask('storeTests', ['mochaTest:storeTests']);
@@ -188,5 +200,5 @@ module.exports = function(grunt) {
   grunt.registerTask('identityTests', ['mochaTest:identityTests']);
   grunt.registerTask('pluginTests', ['mochaTest:pluginTests']);
   grunt.registerTask('manageTests', ['mochaTest:manageTests']);
-
+  grunt.registerTask('smokeTests', ['mochaTest:smokeTests']);
 };

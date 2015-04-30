@@ -899,11 +899,208 @@ describe('Integration: Event', function(){
             });
         });
     });
+
+    it('Should receive all persistent messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
+      var filter = {$and: [{stream: 'A-Stream'}, {'payload.Number': 2}, {persistent: true}]};
+
+      var req = request
+        .get(url + '/events/stream')
+        .query({size: 2})
+        .query({where: JSON.stringify(filter)})
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res) {
+          var event_number = 0;
+          res.on('data', function (chunk) {
+            event_number++;
+            var event = JSON.parse(chunk.toString());
+            console.log('Receive event: ',event);
+            event.should.be.an('array');
+            event.should.not.include.something.that.deep.equals({stream: 'B-Stream'});
+            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
+            event.should.have.deep.property('[0].$persistent').to.be.equal('true');
+            if (event_number === 2) {
+              req.abort();
+              done();
+            }
+          });
+        })
+        .end();
+
+      request
+        .post(url + '/events/emit/A-Stream')
+        .set('X-Auth-Token', token)
+        .set('x-subkit-event-persistent', true)
+        .accept('json')
+        .send({Msg: 'Event #1', Number: 2})
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          console.log({stream: 'A-Stream', Msg: 'Event #1', Number: 2, Persistent: true});
+          request
+            .post(url + '/events/emit/B-Stream')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .send({Msg: 'Event #2', Number: 1})
+            .end(function (res) {
+              res.status.should.be.equal(201);
+              res.body.should.have.property('message').and.be.equal('emitted');
+              console.log({stream: 'B-Stream', Msg: 'Event #2', Number: 1});
+              request
+                .post(url + '/events/emit/A-Stream')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .send({Msg: 'Event #3', Number: 3})
+                .end(function (res) {
+                  res.status.should.be.equal(201);
+                  res.body.should.have.property('message').and.be.equal('emitted');
+                  console.log({stream: 'A-Stream', Msg: 'Event #3', Number: 3});
+                  request
+                    .post(url + '/events/emit/A-Stream')
+                    .set('X-Auth-Token', token)
+                    .accept('json')
+                    .send({Msg: 'Event #4', Number: 2})
+                    .end(function (res) {
+                      res.status.should.be.equal(201);
+                      res.body.should.have.property('message').and.be.equal('emitted');
+                      console.log({stream: 'A-Stream', Msg: 'Event #4', Number: 2});
+                      request
+                        .post(url + '/events/emit/A-Stream')
+                        .set('X-Auth-Token', token)
+                        .set('x-subkit-event-persistent', true)
+                        .accept('json')
+                        .send({Msg: 'Event #5', Number: 2})
+                        .end(function (res) {
+                          res.status.should.be.equal(201);
+                          res.body.should.have.property('message').and.be.equal('emitted');
+                          console.log({stream: 'A-Stream', Msg: 'Event #5', Number: 2, Persistent: true});
+                        });
+                    });
+                });
+            });
+        });
+    });
   });
 
-  describe('Emit an event', function(){});
+  describe('Emit an event', function(){
 
-  describe('Emit a persistent event', function(){});
+    it('Request with wrong "X-Auth-Token" header should response 401', function(done) {
+      request
+        .post(url + '/events/emit/news')
+        .set('X-Auth-Token', 'wrong_tocken')
+        .send({Title:'New test has been created', Body: 'The new test for event emission has been created today :)', Moment: '29.04.2015 12:27'})
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('Request without "X-Auth-Token" header should response 401', function(done) {
+      request
+        .post(url + '/events/emit/news')
+        .send({Title:'New test has been created', Body: 'The new test for event emission has been created today :)', Moment: '29.04.2015 12:27'})
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It should emit an event within `news` stream', function(done) {
+      request
+        .post(url + '/events/emit/news')
+        .set('X-Auth-Token', token)
+        .send({Title:'New test has been created', Body: 'The new test for event emission has been created today :)', Moment: '29.04.2015 12:27'})
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          console.log('emitted');
+          var req = request
+            .get(url + '/events/stream/news')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .parse( function (res) {
+              res.on('data', function (chunk) {
+                var event = JSON.parse(chunk.toString());
+                event.should.be.an('array').and.have.length(1);
+                event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
+                event.should.have.deep.property('[0].$payload').to.be.an('object').and.include.keys(['Title', 'Body', 'Moment']);
+                event.should.have.deep.property('[0].$payload.Title').to.be.equal('New test has been created');
+                event.should.have.deep.property('[0].$payload.Body').to.be.equal('The new test for event emission has been created today :)');
+                event.should.have.deep.property('[0].$payload.Moment').to.be.equal('29.04.2015 12:27');
+                event.should.have.deep.property('[0].$persistent').to.be.false;
+                req.abort();
+                done();
+              });
+            })
+            .end();
+        });
+    });
+
+  });
+
+  describe('Emit a persistent event', function(){
+
+    it('Request with wrong "X-Auth-Token" header should response 401', function(done) {
+      request
+        .post(url + '/events/emit/news')
+        .set('X-Auth-Token', 'wrong_tocken')
+        .set('x-subkit-event-persistent', true)
+        .send({Title:'New test has been created', Body: 'The new test for event emission has been created today :)', Moment: '29.04.2015 12:27'})
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('Request without "X-Auth-Token" header should response 401', function(done) {
+      request
+        .post(url + '/events/emit/news')
+        .set('x-subkit-event-persistent', true)
+        .send({Title:'New test has been created', Body: 'The new test for event emission has been created today :)', Moment: '29.04.2015 12:27'})
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It should emit an event within `news` stream', function(done) {
+      request
+        .post(url + '/events/emit/persistent_news')
+        .set('X-Auth-Token', token)
+        .set('x-subkit-event-persistent', true)
+        .send({Title:'New test has been created', Body: 'The new test for event emission has been created today :)', Moment: '29.04.2015 12:27'})
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          var req = request
+            .get(url + '/events/stream/persistent_news')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .parse( function (res) {
+              res.on('data', function (chunk) {
+                var event = JSON.parse(chunk.toString());
+                event.should.be.an('array').and.have.length(1);
+                event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
+                event.should.have.deep.property('[0].$payload').to.be.an('object').and.include.keys(['Title', 'Body', 'Moment']);
+                event.should.have.deep.property('[0].$payload.Title').to.be.equal('New test has been created');
+                event.should.have.deep.property('[0].$payload.Body').to.be.equal('The new test for event emission has been created today :)');
+                event.should.have.deep.property('[0].$payload.Moment').to.be.equal('29.04.2015 12:27');
+                event.should.have.deep.property('[0].$persistent').to.be.true;
+                req.abort();
+                done();
+              });
+            })
+            .end();
+        });
+    });
+
+  });
 
   describe('Read event history (stream-log)', function(){});
 

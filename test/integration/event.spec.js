@@ -900,7 +900,7 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Should receive all persistent messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
+    it.skip('Should receive all persistent messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
       var filter = {$and: [{stream: 'A-Stream'}, {'payload.Number': 2}, {persistent: true}]};
 
       var req = request
@@ -1008,34 +1008,39 @@ describe('Integration: Event', function(){
     });
 
     it('It should emit an event within `news` stream', function(done) {
+
+      var req = request
+        .get(url + '/events/stream/news')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res) {
+          res.on('data', function (chunk) {
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array').and.have.length(1);
+            event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
+            event.should.have.deep.property('[0].$payload').to.be.an('object').and.include.keys(['Title', 'Body', 'Moment']);
+            event.should.have.deep.property('[0].$payload.Title').to.be.equal('New test has been created');
+            event.should.have.deep.property('[0].$payload.Body').to.be.equal('The new test for event emission has been created today :)');
+            event.should.have.deep.property('[0].$payload.Moment').to.be.equal('29.04.2015 12:27');
+            event.should.have.deep.property('[0].$persistent').to.be.false;
+            req.abort();
+            done();
+          });
+        })
+        .end();
+
       request
         .post(url + '/events/emit/news')
         .set('X-Auth-Token', token)
-        .send({Title:'New test has been created', Body: 'The new test for event emission has been created today :)', Moment: '29.04.2015 12:27'})
+        .send({
+          Title:'New test has been created',
+          Body: 'The new test for event emission has been created today :)',
+          Moment: '29.04.2015 12:27'
+        })
         .accept('json')
         .end(function (res) {
           res.status.should.be.equal(201);
           res.body.should.have.property('message').and.be.equal('emitted');
-          console.log('emitted');
-          var req = request
-            .get(url + '/events/stream/news')
-            .set('X-Auth-Token', token)
-            .accept('json')
-            .parse( function (res) {
-              res.on('data', function (chunk) {
-                var event = JSON.parse(chunk.toString());
-                event.should.be.an('array').and.have.length(1);
-                event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
-                event.should.have.deep.property('[0].$payload').to.be.an('object').and.include.keys(['Title', 'Body', 'Moment']);
-                event.should.have.deep.property('[0].$payload.Title').to.be.equal('New test has been created');
-                event.should.have.deep.property('[0].$payload.Body').to.be.equal('The new test for event emission has been created today :)');
-                event.should.have.deep.property('[0].$payload.Moment').to.be.equal('29.04.2015 12:27');
-                event.should.have.deep.property('[0].$persistent').to.be.false;
-                req.abort();
-                done();
-              });
-            })
-            .end();
         });
     });
 
@@ -1068,38 +1073,69 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('It should emit an event within `news` stream', function(done) {
+    it('It should emit an event within `news` stream, receive the event and load it from history', function(done) {
+      
+      afterEach(function(done){
+        //Clean-up: delete the created persistent event stream
+        request
+          .del(url + '/events/history/persistent_news')
+          .set('X-Auth-Token', token)
+          .accept('json') 
+          .end(function(res){
+            res.status.should.be.equal(202);
+            res.body.should.have.property('message').and.be.equal('delete accepted');
+            done();
+          });
+      });
+
+      var req = request
+        .get(url + '/events/stream/persistent_news')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .parse( function (res) {
+          res.on('data', function (chunk) {
+            //check receive event via subscription
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array').and.have.length(1);
+            event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
+            event.should.have.deep.property('[0].$payload').to.be.an('object').and.include.keys(['Title', 'Body', 'Moment']);
+            event.should.have.deep.property('[0].$payload.Title').to.be.equal('New test has been created');
+            event.should.have.deep.property('[0].$payload.Body').to.be.equal('The new test for event emission has been created today :)');
+            event.should.have.deep.property('[0].$payload.Moment').to.be.equal('29.04.2015 12:27');
+            event.should.have.deep.property('[0].$persistent').to.be.equal('true');
+            req.abort();
+
+            request
+              .get(url + '/events/history/persistent_news')
+              .set('X-Auth-Token', token)
+              .accept('json') 
+              .end(function(data){
+                //check receive event stream history (event-log)
+                data.body.should.to.have.property('results');
+                data.body.results.should.be.an('array').and.have.length(1);
+                done();
+              });
+            
+          });
+        })
+        .end();
+
       request
         .post(url + '/events/emit/persistent_news')
         .set('X-Auth-Token', token)
         .set('x-subkit-event-persistent', true)
-        .send({Title:'New test has been created', Body: 'The new test for event emission has been created today :)', Moment: '29.04.2015 12:27'})
+        .send({
+          Title:'New test has been created',
+          Body: 'The new test for event emission has been created today :)',
+          Moment: '29.04.2015 12:27'
+        })
         .accept('json')
         .end(function (res) {
           res.status.should.be.equal(201);
           res.body.should.have.property('message').and.be.equal('emitted');
-          var req = request
-            .get(url + '/events/stream/persistent_news')
-            .set('X-Auth-Token', token)
-            .accept('json')
-            .parse( function (res) {
-              res.on('data', function (chunk) {
-                var event = JSON.parse(chunk.toString());
-                event.should.be.an('array').and.have.length(1);
-                event[0].should.include.keys(['$name', '$stream', '$persistent', '$key', '$metadata', '$payload']);
-                event.should.have.deep.property('[0].$payload').to.be.an('object').and.include.keys(['Title', 'Body', 'Moment']);
-                event.should.have.deep.property('[0].$payload.Title').to.be.equal('New test has been created');
-                event.should.have.deep.property('[0].$payload.Body').to.be.equal('The new test for event emission has been created today :)');
-                event.should.have.deep.property('[0].$payload.Moment').to.be.equal('29.04.2015 12:27');
-                event.should.have.deep.property('[0].$persistent').to.be.true;
-                req.abort();
-                done();
-              });
-            })
-            .end();
         });
-    });
 
+    });
   });
 
   describe('Read event history (stream-log)', function(){});

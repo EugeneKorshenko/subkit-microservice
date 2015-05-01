@@ -111,7 +111,7 @@ describe('Module: Task', function(){
     it('should create scheduled endless task with parameters', function(){
       
       var newTask = new sut.Task('scheduledendlesssuccess', {Msg:'Endless-Scheduled'});
-      newTask.taskScript = 'setTimeout(function(){log(task.params.Msg);}, 500); task.done();';
+      newTask.taskScript = 'setTimeout(function(){task.log(task.params.Msg);}, 500); task.done();';
       newTask.schedule = '* * * * * *';
       sut.set(newTask.name, newTask, function(error){
         assert.ifError(error);
@@ -131,14 +131,14 @@ describe('Module: Task', function(){
     it('should create continuous task with parameters in parallel',function(done){
       
       var newTask = new sut.Task('continuoussuccess', {Msg:'Continuous-1-'});
-      newTask.taskScript = 'var count = 0; setTimeout(function(){log(task.params.Msg+count++);}, 1000); task.done();';
+      newTask.taskScript = 'var count = 0; setTimeout(function(){task.log(task.params.Msg+count++);}, 1000); task.done();';
       newTask.continuous = true;
       sut.set(newTask.name, newTask, function(error){
         assert.ifError(error);
       });
 
       var newTask2 = new sut.Task('continuous2success', {Msg:'Continuous-2-'});
-      newTask2.taskScript = 'var count = 0; setTimeout(function(){log(task.params.Msg+count++);}, 2000); task.done();';
+      newTask2.taskScript = 'var count = 0; setTimeout(function(){task.log(task.params.Msg+count++);}, 2000); task.done();';
       newTask2.continuous = true;
       sut.set(newTask2.name, newTask2, function(error){
         assert.ifError(error);

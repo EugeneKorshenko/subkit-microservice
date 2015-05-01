@@ -66,9 +66,6 @@ module.exports.init = function(){
 			logger.log('SECURE: '+srv.secure);
 			logger.log('PORT: '+srv.address().port);
 			logger.log('PID: '+process.pid);
-
-			http.globalAgent.maxSockets = 50000;
-			https.globalAgent.maxSockets = 50000;
 		});
 		return srv;	
 	};

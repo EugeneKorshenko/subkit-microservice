@@ -27,7 +27,7 @@ describe('Smoke: Events', function () {
     setTimeout(done, 500);
   });
 
-  describe('Flood emit (stable)', function () {
+  describe('Flood emit (stable - 100 HTTP-transaction/second)', function () {
     
     it('Subscribe and emit 100 events', function(done){
       var count = 100;
@@ -35,7 +35,7 @@ describe('Smoke: Events', function () {
       for (var i = 1; i <= count; emitEvent(i++)){}
     });
 
-    it('Subscribe and emit 100 persistent events', function(done){
+    it('Subscribe, emit 100 persistent events and load from event history', function(done){
       afterEach(function(done){
         //Clean-up: delete the created persistent event stream
         request
@@ -49,7 +49,9 @@ describe('Smoke: Events', function () {
           });
       });
 
-      var count = 100;
+      
+      var count = 100;      
+      //subscribe to event stream
       subscribe(count, function(){
 
         request
@@ -61,7 +63,9 @@ describe('Smoke: Events', function () {
             data.body.results.should.be.an('array').and.have.length(100);
             done();
           });
-      });    
+
+      });
+      //emit 100 events
       for (var i = 1; i <= count; emitPersistentEvent(i++)){}
     });
 

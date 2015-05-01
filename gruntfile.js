@@ -25,6 +25,9 @@ module.exports = function(grunt) {
         'test/integration/event.spec.js',
         'test/integration/manage.spec.js',
         'test/integration/share.spec.js',
+
+        'test/smoke/event.smoke.js',
+        'test/smoke/event-projection.smoke.js',
         
         'lib/utils.module.js',
         'lib/store.module.js',

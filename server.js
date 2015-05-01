@@ -1,8 +1,6 @@
 'use strict';
 
 var restify = require('restify');
-var http = require('http');
-var https = require('https');
 var fs = require('fs');
 var path = require('path');
 var nconf = require('nconf');

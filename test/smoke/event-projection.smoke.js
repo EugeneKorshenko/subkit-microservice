@@ -31,46 +31,65 @@ describe('Smoke: Event-Projections', function () {
 
   describe('Run Event-Log projection', function () {
     beforeEach(function(done){
-      var scriptPath = path.join(__dirname, './fixtures/count_task.js');
+      var scriptPath = path.join(__dirname, './fixtures/gauss_sum_task.js');
       var script = fs.readFileSync(scriptPath, 'utf8');
 
-      createEventLogProjectionTask(script, function(){
+      createEventLogProjectionTask('mystream_persistent_projection', script, function(){
         done();
       });
     });
     afterEach(function(done){
       //Clean-up: delete the created persistent event stream
-      request
-        .del(url + '/events/history/mystream_persistent')
-        .set('X-Auth-Token', token)
-        .accept('json') 
-        .end(function(res){
-          res.status.should.be.equal(202);
-          res.body.should.have.property('message').and.be.equal('delete accepted');
-
-          deleteEventLogProjectionTask(function(){
-            done();
+        deletePersistentEventHistory('mystream_persistent', function(){
+          
+          deletePersistentEventHistory('mystream_persistent_other', function(){
+            
+            deleteEventLogProjectionTask('mystream_persistent_projection', function(){
+              done();
+            });
+          
           });
-
+        
         });
     });
 
-    it('Emit 100 events, start a Gauss-Sum event-log projection', function(done){
+    it('Emit 100 events and start a Gauss-Sum event-log projection', function(done){
       var count = 100;
-      for (var i = 1; i <= count; emitPersistentEvent(i++)){}
+      for (var i = 1; i <= count; emitPersistentEvent('mystream_persistent', i++)){}
       runEventLogProjectionTask(function(err, data){
         data.should.have.property('msg').and.be.equal('done');
         data.should.have.property('count').and.be.equal(100);
         data.should.have.property('gauss_sum').and.be.equal(5050);
         done();
-      })
+      });
+    });
+
+    it('Emit 100 events in two different streams and start a Gauss-Sum event-log projection', function(done){
+      var count = 100;      
+      for (var i = 1; i <= count; emitPersistentEvent('mystream_persistent', i++)){}
+
+      setTimeout(function(){
+        for (var i = 1; i <= count; emitPersistentEvent('mystream_persistent_other', i++)){}
+      }, 1000);
+
+      setTimeout(function(){
+
+        runEventLogProjectionTask(function(err, data){
+          data.should.have.property('msg').and.be.equal('done');
+          data.should.have.property('count').and.be.equal(200);
+          data.should.have.property('gauss_sum').and.be.equal(10100);
+          done();
+        });
+
+      }, 2000);
+
     });
 
   });
 
-  function emitPersistentEvent(i) {
+  function emitPersistentEvent(stream, i) {
     request
-      .post(url + '/events/emit/mystream_persistent')
+      .post(url + '/events/emit/' + stream)
       .set('x-subkit-event-persistent', true)
       .set('X-Auth-Token', token)
       .send({number: i, foo:'ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum, ipsumlarum'})
@@ -81,9 +100,21 @@ describe('Smoke: Event-Projections', function () {
       });
   }
 
-  function createEventLogProjectionTask(script, done) {
+  function deletePersistentEventHistory(stream, done){
     request
-      .post(url + '/tasks/mystream_persistent_projection')
+      .del(url + '/events/history/' + stream)
+      .set('X-Auth-Token', token)
+      .accept('json') 
+      .end(function(res){
+        res.status.should.be.equal(202);
+        res.body.should.have.property('message').and.be.equal('delete accepted');
+        done();        
+      }); 
+  }
+
+  function createEventLogProjectionTask(taskName, script, done) {
+    request
+      .post(url + '/tasks/' + taskName)
       .set('X-Auth-Token', token)
       .send({
         taskScript: script
@@ -96,9 +127,9 @@ describe('Smoke: Event-Projections', function () {
       });
   }
 
-  function deleteEventLogProjectionTask(done) {
+  function deleteEventLogProjectionTask(taskName, done) {
     request
-      .del(url + '/tasks/mystream_persistent_projection')
+      .del(url + '/tasks/' + taskName)
       .set('X-Auth-Token', token)
       .accept('json')
       .end(function (res) {

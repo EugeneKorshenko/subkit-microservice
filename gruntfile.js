@@ -157,7 +157,8 @@ module.exports = function(grunt) {
           require: 'env-test'
         },
         src: [
-          'test/smoke/event.smoke.js'
+          'test/smoke/event.smoke.js',
+          'test/smoke/event-projection.smoke.js'
         ]
       }
     },

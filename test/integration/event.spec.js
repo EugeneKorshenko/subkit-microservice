@@ -10,6 +10,7 @@ var request = require('superagent');
 
 chai.should();
 chai.use(require('chai-things'));
+chai.use(require('chai-array'));
 
 var url = 'https://localhost:8080';
 var token = '66LOHAiB8Zeod1bAeLYW';

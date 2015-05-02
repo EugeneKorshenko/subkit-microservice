@@ -28,7 +28,7 @@ module.exports.init = function(server, task){
 		newTask.taskScript = req.body.taskScript;
 		newTask.description = req.body.description;
 		newTask.schedule = req.body.schedule;
-		newTask.continuous = req.body.continuous;
+		newTask.continuous = req.body.continuous || false;
 		newTask.anonymous = req.body.anonymous || false;
 		newTask.parameters = req.body.parameters;
 		

@@ -109,8 +109,8 @@ describe('Smoke: Event-Projections', function () {
 
     it('Emit 15 events with a instant Gauss-Sum event-log projection', function(done){
       var count = 15;
-      subscribe('my_instant_stream_gauss_sum', count+1, function(data){
-        data.should.be.an('array').and.have.length(16);
+      subscribe('my_instant_stream_gauss_sum', count, function(data){
+        data.should.be.an('array').and.have.length(15);
         expect(data).last.to.have.deep.property('$payload.count').and.be.equal(15);
         expect(data).last.to.have.deep.property('$payload.gauss_sum').and.be.equal(120);
         done();

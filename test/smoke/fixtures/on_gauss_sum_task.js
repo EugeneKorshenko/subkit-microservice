@@ -9,11 +9,11 @@ task.eventsource
     },
     $any: function(state, e){
       state.count += 1;
-      state.gauss_sum += e.number;      
+      state.gauss_sum += e.number;
+      task.event.emit('my_instant_stream_gauss_sum', state);
       return state;
     },
-    $completed: function(state){
-      task.event.emit('my_instant_stream_gauss_sum', state);
+    $completed: function(state){      
       return state;
     }
   });

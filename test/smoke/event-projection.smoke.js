@@ -58,12 +58,18 @@ describe('Smoke: Event-Projections', function () {
     it('Emit 100 events and start a Gauss-Sum event-log projection', function(done){
       var count = 100;
       for (var i = 1; i <= count; emitPersistentEvent('mystream_persistent', i++)){}
-      runEventLogProjectionTask(function(err, data){
-        data.should.have.property('msg').and.be.equal('done');
-        data.should.have.property('count').and.be.equal(100);
-        data.should.have.property('gauss_sum').and.be.equal(5050);
-        done();
-      });
+      
+      setTimeout(function(){
+
+        runEventLogProjectionTask(function(err, data){
+          data.should.have.property('msg').and.be.equal('done');
+          data.should.have.property('count').and.be.equal(100);
+          data.should.have.property('gauss_sum').and.be.equal(5050);
+          done();
+        });
+        
+      }, 3000);
+
     });
 
     it('Emit 100 events in two different streams and start a Gauss-Sum event-log projection', function(done){
@@ -83,7 +89,7 @@ describe('Smoke: Event-Projections', function () {
           done();
         });
 
-      }, 2000);
+      }, 3000);
 
     });
 

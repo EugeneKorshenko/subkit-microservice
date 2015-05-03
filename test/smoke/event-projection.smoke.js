@@ -91,7 +91,7 @@ describe('Smoke: Event-Projections', function () {
 
   describe('Instant Event-Log projection', function () {
     beforeEach(function(done){
-      var scriptPath = path.join(__dirname, './fixtures/on_gauss_sum_task.js');
+      var scriptPath = path.join(__dirname, './fixtures/instant_gauss_sum_task.js');
       var script = fs.readFileSync(scriptPath, 'utf8');
 
       createContinuousEventLogProjectionTask('mystream_instant_projection', script, function(){
@@ -115,13 +115,13 @@ describe('Smoke: Event-Projections', function () {
         expect(data).last.to.have.deep.property('$payload.gauss_sum').and.be.equal(120);
         done();
       });
+
       for (var i = 1; i <= count; i++){
-          
           setTimeout(function(){
             emitEvent('my_instant_stream', this);
           }.bind(i), (i*200));
-
       }
+
     });
 
   });

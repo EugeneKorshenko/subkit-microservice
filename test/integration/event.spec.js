@@ -1074,21 +1074,7 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('It should emit an event within `news` stream, receive the event and load it from history', function(done) {
-      
-      afterEach(function(done){
-        //Clean-up: delete the created persistent event stream
-        request
-          .del(url + '/events/history/persistent_news')
-          .set('X-Auth-Token', token)
-          .accept('json') 
-          .end(function(res){
-            res.status.should.be.equal(202);
-            res.body.should.have.property('message').and.be.equal('delete accepted');
-            done();
-          });
-      });
-
+    it('It should emit a persistent event within `news` stream and receive the event', function(done) {
       var req = request
         .get(url + '/events/stream/persistent_news')
         .set('X-Auth-Token', token)
@@ -1105,18 +1091,7 @@ describe('Integration: Event', function(){
             event.should.have.deep.property('[0].$payload.Moment').to.be.equal('29.04.2015 12:27');
             event.should.have.deep.property('[0].$persistent').to.be.equal('true');
             req.abort();
-
-            request
-              .get(url + '/events/history/persistent_news')
-              .set('X-Auth-Token', token)
-              .accept('json') 
-              .end(function(data){
-                //check receive event stream history (event-log)
-                data.body.should.to.have.property('results');
-                data.body.results.should.be.an('array').and.have.length(1);
-                done();
-              });
-            
+            done();
           });
         })
         .end();
@@ -1135,55 +1110,143 @@ describe('Integration: Event', function(){
           res.status.should.be.equal(201);
           res.body.should.have.property('message').and.be.equal('emitted');
         });
-
     });
   });
 
-  describe('Read event history (stream-log)', function(){});
+  describe('Read event history (stream-log)', function(){
 
-  describe('Delete event history (stream-log)', function(){});
+    beforeEach(function(done){
+      //Clean-up: delete the created persistent event stream
+      request
+        .del(url + '/events/history/persistent_news')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').and.be.equal('delete accepted');
+          done();
+        });
+    });
+
+    afterEach(function(done){
+      //Clean-up: delete the created persistent event stream
+      request
+        .del(url + '/events/history/persistent_news')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').and.be.equal('delete accepted');
+          done();
+        });
+    });
+
+    it('It should emit a persistent event within `news` stream and load it from history', function(done) {
+      request
+        .post(url + '/events/emit/persistent_news')
+        .set('X-Auth-Token', token)
+        .set('x-subkit-event-persistent', true)
+        .send({
+          Title:'New test has been created',
+          Body: 'The new test for event emission has been created today :)',
+          Moment: '29.04.2015 12:27'
+        })
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          request
+            .get(url + '/events/history/persistent_news')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(data){
+              //check receive event stream history (event-log)
+              data.body.should.to.have.property('results');
+              data.body.results.should.be.an('array').and.have.length(1);
+              done();
+            });
+      });
+    });
+  });
+
+  describe('Delete event history (stream-log)', function(){
+
+    beforeEach(function(done){
+      //Clean-up: delete the created persistent event stream
+      request
+        .del(url + '/events/history/persistent_news')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').and.be.equal('delete accepted');
+          done();
+        });
+    });
+
+    afterEach(function(done){
+      //Clean-up: delete the created persistent event stream
+      request
+        .del(url + '/events/history/persistent_news')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').and.be.equal('delete accepted');
+          done();
+        });
+    });
+
+    it('It should delete event history', function(done) {
+      request
+        .post(url + '/events/emit/persistent_news')
+        .set('X-Auth-Token', token)
+        .set('x-subkit-event-persistent', true)
+        .send({
+          Title:'New test has been created',
+          Body: 'The new test for event emission has been created today :)',
+          Moment: '29.04.2015 12:27'
+        })
+        .accept('json')
+        .end(function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').and.be.equal('emitted');
+          request
+            .get(url + '/events/history/persistent_news')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(data){
+              //check receive event stream history (event-log)
+              data.body.should.to.have.property('results');
+              data.body.results.should.be.an('array').and.have.length(1);
+              request
+                .del(url + '/events/history/persistent_news')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .end(function(res){
+                  res.status.should.be.equal(202);
+                  res.body.should.have.property('message').and.be.equal('delete accepted');
+                  request
+                    .get(url + '/events/history/persistent_news')
+                    .set('X-Auth-Token', token)
+                    .accept('json')
+                    .end(function(data) {
+                      //check receive event stream history (event-log)
+                      data.body.should.to.have.property('results');
+                      data.body.results.should.be.an('array').and.have.length(0);
+                      done();
+                    });
+                });
+
+            });
+        });
+    });
+
+  });
 
   describe('Register a WebHook to event-stream', function(){});
 
   describe('Unregister a WebHook from event-stream', function(){});
-
-  describe('on stream', function(){
-
-    var jsonClient = restify.createJsonClient({
-      rejectUnauthorized: false,
-      url: url,
-      headers: { 'x-auth-token': token }
-    });
-
-    it('a emit should receive a event', function(done){
-
-      var rawClient = restify.createClient({
-        rejectUnauthorized: false,
-        url: url,
-        headers: {'x-auth-token': token}
-      });
-
-      rawClient.get('/events/stream/mystream', function(err, req){
-
-        req.on('result', function(err, res) {
-          assert.ifError(err);
-
-          res.on('data', function(chunk) {
-            var obj = JSON.parse(chunk.toString());
-            assert.equal(obj.length, 1);
-            assert.equal(obj[0].$payload.Msg, 'Hello Subkit!');
-            done();
-          });
-
-        });
-
-      });
-
-      jsonClient.post('/events/emit/mystream', {Msg:'Hello Subkit!', Number: 1});
-
-    });
-
-  });
 
   describe('on webhook', function(){
     it('should create and call a bound webhook', function(done){

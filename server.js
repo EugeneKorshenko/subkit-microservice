@@ -83,6 +83,7 @@ module.exports.init = function(){
 	server.use(restify.authorizationParser());
 	server.use(restify.bodyParser({ mapParams: true }));
 	server.use(restify.queryParser());
+	server.use(restify.throttle({ burst: 100, rate: 900, ip: true }));
 
 	//handle CORS
 	server.opts(/\.*/, function (req, res, next) {

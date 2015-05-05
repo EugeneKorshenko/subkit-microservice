@@ -73,7 +73,7 @@ module.exports.init = function(server, task){
 
 		var timeOutRef = setTimeout(function(){
 			return res.send(500, {message: 'Timeout - ' + resource + ' do not done.'});
-		}, 5000);
+		}, 30000);
 		
 		var resource = req.params[0];
 		task.run(resource, req.params || req.body || {}, { request: req, response: res }, function(err, data, contentType){

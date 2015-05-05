@@ -103,6 +103,8 @@ describe('Integration: Task', function(){
     });
 
     it('should execute timeout error task', function(done){
+      this.timeout(35000);
+      
       client.post('/tasks/timeout1', null, function(err, req, res, obj) {
         assert.equal(null, err);
         assert.notEqual(null, obj);
@@ -113,7 +115,7 @@ describe('Integration: Task', function(){
           assert.notEqual(null, obj); 
           assert.notEqual('', obj.name);
 
-          obj.taskScript = 'setTimeout(function(){task.done();}, 7000);';
+          obj.taskScript = 'setTimeout(function(){task.done();}, 32000);';
           client.put('/tasks/timeout1', obj, function(err, req, res, obj){
             assert.equal(null, err);
             assert.notEqual(null, obj);

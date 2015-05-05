@@ -32,6 +32,8 @@ describe('Smoke: Event-Projections', function () {
   });
 
   describe('Run Event-Log projection', function () {
+    this.timeout(20000);
+
     beforeEach(function(done){
       var scriptPath = path.join(__dirname, './fixtures/gauss_sum_task.js');
       var script = fs.readFileSync(scriptPath, 'utf8');
@@ -41,18 +43,19 @@ describe('Smoke: Event-Projections', function () {
       });
     });
     afterEach(function(done){
+
       //Clean-up: delete the created persistent event stream
-        deletePersistentEventHistory('mystream_persistent', function(){
+      deletePersistentEventHistory('mystream_persistent', function(){
+        
+        deletePersistentEventHistory('mystream_persistent_other', function(){
           
-          deletePersistentEventHistory('mystream_persistent_other', function(){
-            
-            deleteEventLogProjectionTask('mystream_persistent_projection', function(){
-              done();
-            });
-          
+          deleteEventLogProjectionTask('mystream_persistent_projection', function(){
+            setTimeout(done, 10000);
           });
         
         });
+      
+      });
     });
 
     it('Emit 100 events and start a Gauss-Sum event-log projection', function(done){
@@ -71,6 +74,31 @@ describe('Smoke: Event-Projections', function () {
       }, 3000);
 
     });
+
+    it('Emit 10.000 events and start a Gauss-Sum event-log projection (~6 trans/ms)', function(done){
+      this.timeout(65000);
+
+      for (var c = 1; c <= 10000; c++){
+        
+        setTimeout(function(){
+          emitPersistentEvent('mystream_persistent', this);
+        }.bind(c), c*5);
+          
+      }
+            
+      setTimeout(function(){
+
+        runEventLogProjectionTask(function(err, data){
+          data.should.have.property('msg').and.be.equal('done');
+          data.should.have.property('count').and.be.equal(10000);
+          data.should.have.property('gauss_sum').and.be.equal(50005000);
+          done();
+        });
+        
+      }, 60000);
+
+    });
+
 
     it('Emit 100 events in two different streams and start a Gauss-Sum event-log projection', function(done){
       var count = 100;      

@@ -1418,7 +1418,7 @@ describe('Integration: Event', function(){
         .set('X-Auth-Token', token)
         .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_store_' + streamId)
         .set('x-subkit-event-apikey', token)
-        .set('x-subkit-event-filter', JSON.stringify({Number: 2}))
+        .set('x-subkit-event-filter', JSON.stringify({'payload.Number': 2}))
         .accept('json')
         .end(function (res) {
           res.status.should.be.equal(201);

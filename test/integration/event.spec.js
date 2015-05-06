@@ -1240,7 +1240,7 @@ describe('Integration: Event', function(){
     });
   });
 
-  describe.only('Register a WebHook to event-stream:', function(){
+  describe('Register a WebHook to event-stream:', function(){
     var streamId;
 
     afterEach(function(done){
@@ -1358,7 +1358,7 @@ describe('Integration: Event', function(){
           res.body.should.have.property('message').and.be.equal('created');
           //emit three events
           request
-            .post(url + '/events/emit/' + streamId)
+            .post(url + '/events/emit/hooked_stream_' + streamId)
             .set('X-Auth-Token', token)
             .send({
               Title: 'New test has been created',
@@ -1371,7 +1371,7 @@ describe('Integration: Event', function(){
               res.status.should.be.equal(201);
               res.body.should.have.property('message').and.be.equal('emitted');
               request
-                .post(url + '/events/emit/' + streamId)
+                .post(url + '/events/emit/hooked_stream_' + streamId)
                 .set('X-Auth-Token', token)
                 .send({
                   Title: 'New test has been created',
@@ -1383,7 +1383,7 @@ describe('Integration: Event', function(){
                   res.status.should.be.equal(201);
                   res.body.should.have.property('message').and.be.equal('emitted');
                   request
-                    .post(url + '/events/emit/' + streamId)
+                    .post(url + '/events/emit/hooked_stream_' + streamId)
                     .set('X-Auth-Token', token)
                     .send({
                       Title: 'newtitle',

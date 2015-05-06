@@ -162,7 +162,7 @@ module.exports.init = function(){
 	
 	//handle message streams
 	require('./routes/event.js').init(server, event, logger, nconf);
-
+	
 	//starts the tasks scheduler
 	task.runScheduler(true);
 

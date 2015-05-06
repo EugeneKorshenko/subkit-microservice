@@ -92,6 +92,26 @@ module.exports.init = function(server, event, logger, configuration){
 			.pipe(res);
 	});
 
+	server.get('/events/log', function(req, res){
+		var size = req.params.size;
+		var where = {};
+
+		try{
+			if(req.params.where) where = JSON.parse(req.params.where);
+		}catch(e){
+			return res.send(400, new Error('Invalid `where` filter.'));
+		}
+		
+		res.writeHead(200, {
+			'Transfer-Encoding': 'chunked',
+			'Content-Type': 'application/json'
+		});
+	
+		logger
+			.logStream(where, size)
+			.pipe(res);
+	});	
+
 	server.get('/events/streams', function(req,res,next){
 		event.getStreams(function(err, data){
 			if(err) return res.send(400, err);
@@ -99,7 +119,7 @@ module.exports.init = function(server, event, logger, configuration){
 			next();
 		});
 	});
-			
+
 	server.post('/events/stream/:stream', function(req,res,next){
 		var stream = req.params.stream;
 		if(!req.body) req.body = {};

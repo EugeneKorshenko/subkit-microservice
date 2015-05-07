@@ -1,7 +1,6 @@
 'use strict';
 
 var _       = require('underscore');
-var Promise = require("bluebird");
 
 var chai = require('chai');
 var expect = chai.expect;
@@ -899,8 +898,8 @@ describe('Integration: Event', function(){
         });
     });
 
-    it.skip('Should receive all persistent messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
-      var filter = {$and: [{stream: 'A-Stream'}, {'payload.Number': 2}, {persistent: true}]};
+    it('Should receive all persistent messages where matching JSONQuery `{$and: [{stream: \'B-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
+      var filter = {$and: [{stream: 'B-Stream'}, {'payload.Number': 2}]};
 
       var req = request
         .get(url + '/events/stream')
@@ -913,14 +912,15 @@ describe('Integration: Event', function(){
           res.on('data', function (chunk) {
             event_number++;
             var event = JSON.parse(chunk.toString());
-            console.log('Receive event: ',event);
-            event.should.be.an('array');
-            event.should.not.include.something.that.deep.equals({stream: 'B-Stream'});
-            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
-            event.should.have.deep.property('[0].$persistent').to.be.equal('true');
-            if (event_number === 2) {
+            if(event_number === 2){
+              event.should.be.an('array');
+              event.should.not.include.something.that.deep.equals({stream: 'B-Stream'});
+              event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
+              event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').to.be.equal('Event #5');
+              event.should.have.deep.property('[1].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
+              event.should.have.deep.property('[1].$payload').to.be.an('object').and.have.property('Msg').to.be.equal('Event #2');
               req.abort();
-              done();
+              done();              
             }
           });
         })
@@ -929,22 +929,21 @@ describe('Integration: Event', function(){
       request
         .post(url + '/events/emit/A-Stream')
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-persistent', true)
         .accept('json')
         .send({Msg: 'Event #1', Number: 2})
         .end(function (res) {
           res.status.should.be.equal(201);
           res.body.should.have.property('message').and.be.equal('emitted');
-          console.log({stream: 'A-Stream', Msg: 'Event #1', Number: 2, Persistent: true});
+
           request
             .post(url + '/events/emit/B-Stream')
             .set('X-Auth-Token', token)
             .accept('json')
-            .send({Msg: 'Event #2', Number: 1})
+            .send({Msg: 'Event #2', Number: 2})
             .end(function (res) {
               res.status.should.be.equal(201);
               res.body.should.have.property('message').and.be.equal('emitted');
-              console.log({stream: 'B-Stream', Msg: 'Event #2', Number: 1});
+
               request
                 .post(url + '/events/emit/A-Stream')
                 .set('X-Auth-Token', token)
@@ -953,26 +952,24 @@ describe('Integration: Event', function(){
                 .end(function (res) {
                   res.status.should.be.equal(201);
                   res.body.should.have.property('message').and.be.equal('emitted');
-                  console.log({stream: 'A-Stream', Msg: 'Event #3', Number: 3});
+
                   request
-                    .post(url + '/events/emit/A-Stream')
+                    .post(url + '/events/emit/B-Stream')
                     .set('X-Auth-Token', token)
                     .accept('json')
-                    .send({Msg: 'Event #4', Number: 2})
+                    .send({Msg: 'Event #4', Number: 1})
                     .end(function (res) {
                       res.status.should.be.equal(201);
                       res.body.should.have.property('message').and.be.equal('emitted');
-                      console.log({stream: 'A-Stream', Msg: 'Event #4', Number: 2});
+
                       request
-                        .post(url + '/events/emit/A-Stream')
+                        .post(url + '/events/emit/B-Stream')
                         .set('X-Auth-Token', token)
-                        .set('x-subkit-event-persistent', true)
                         .accept('json')
                         .send({Msg: 'Event #5', Number: 2})
                         .end(function (res) {
                           res.status.should.be.equal(201);
                           res.body.should.have.property('message').and.be.equal('emitted');
-                          console.log({stream: 'A-Stream', Msg: 'Event #5', Number: 2, Persistent: true});
                         });
                     });
                 });
@@ -1244,49 +1241,25 @@ describe('Integration: Event', function(){
     var streamId;
 
     afterEach(function(done){
-      var promises = [];
-      promises.push(
-        new Promise(function (resolve, reject) {
-          //remove created webhook
-          request
-            .del(url + '/events/stream/hooked_stream_' + streamId)
-            .set('X-Auth-Token', token)
-            .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
-            .accept('json')
-            .end(function (err, res) {
-              if (err) {
-                reject(err);
-              }
-              res.status.should.be.equal(202);
-              res.body.should.have.property('message').and.be.equal('delete accepted');
-              resolve();
-            });
-        })
-      );
-      promises.push(
-        new Promise(function (resolve, reject) {
-          //delete created store
+      request
+        .del(url + '/events/stream/hooked_stream_' + streamId)
+        .set('X-Auth-Token', token)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
+        .accept('json')
+        .end(function (err, res) {
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').and.be.equal('delete accepted');
+        
           request
             .del(url + '/stores/hooked_stream_' + streamId)
             .set('X-Auth-Token', token)
             .accept('json')
             .end(function (err, res) {
-              if (err) {
-                reject(err);
-              }
               res.status.should.be.equal(202);
               res.body.should.have.property('message').and.be.equal('delete accepted');
-              resolve();
+              done();
             });
-        })
-      );
 
-      Promise.all(promises)
-        .then(function (res) {
-          done();
-        })
-        .catch(function (err) {
-          done();
         });
     });
 
@@ -1295,7 +1268,7 @@ describe('Integration: Event', function(){
       request
         .post(url + '/events/stream/hooked_stream_' + streamId)
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_store_' + streamId)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
         .set('x-subkit-event-apikey', token)
         .accept('json')
         .end(function (res) {
@@ -1320,7 +1293,7 @@ describe('Integration: Event', function(){
       request
         .post(url + '/events/stream/hooked_stream_' + streamId)
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_store_' + streamId)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
         .set('x-subkit-event-apikey', token)
         .accept('json')
         .end(function (res) {
@@ -1416,7 +1389,7 @@ describe('Integration: Event', function(){
       request
         .post(url + '/events/stream/hooked_stream_' + streamId)
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_store_' + streamId)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
         .set('x-subkit-event-apikey', token)
         .set('x-subkit-event-filter', JSON.stringify({'payload.Number': 2}))
         .accept('json')
@@ -1469,8 +1442,8 @@ describe('Integration: Event', function(){
                         .end(function (res) {
                           res.status.should.be.equal(200);
                           res.body.should.have.property('results').and.be.an('array').and.have.length(1);
-                          res.body.results.should.have.deep.property('[0].Number').to.be.equal(2);
-                          res.body.results.should.have.deep.property('[0].Title').to.be.equal('second');
+                          res.body.results.should.have.deep.property('[0].$payload.Number').to.be.equal(2);
+                          res.body.results.should.have.deep.property('[0].$payload.Title').to.be.equal('second');
                           done();
                         });
                     });
@@ -1482,14 +1455,12 @@ describe('Integration: Event', function(){
 
   describe('Unregister a WebHook from event-stream:', function(){
 
-    var streamId;
-
     it('It unregisters a hook from a stream', function(done) {
-      streamId = uuid.v4();
+      var streamId = uuid.v4();
       request
         .post(url + '/events/stream/hooked_stream_' + streamId)
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_' + streamId)
         .set('x-subkit-event-apikey', token)
         .accept('json')
         .end(function (res) {
@@ -1498,7 +1469,7 @@ describe('Integration: Event', function(){
           request
             .del(url + '/events/stream/hooked_stream_' + streamId)
             .set('X-Auth-Token', token)
-            .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
+            .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_' + streamId)
             .set('x-subkit-event-apikey', token)
             .accept('json')
             .end(function (res) {
@@ -1518,43 +1489,6 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('It unregisters a non existent hook from a stream', function(done) {
-      streamId = uuid.v4();
-      request
-        .post(url + '/events/stream/hooked_stream_' + streamId)
-        .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
-        .set('x-subkit-event-apikey', token)
-        .accept('json')
-        .end(function (res) {
-          res.status.should.be.equal(201);
-          res.body.should.have.property('message').and.be.equal('created');
-          request
-            .del(url + '/events/stream/hooked_stream_' + streamId)
-            .set('X-Auth-Token', token)
-            .set('x-subkit-event-webhook', 'http://localhost:8080/stores/not_existed')
-            .set('x-subkit-event-apikey', token)
-            .accept('json')
-            .end(function (res) {
-              res.status.should.be.equal(202);
-              res.body.should.have.property('message').and.be.equal('delete accepted');
-              done();
-            });
-        });
-    });
-
-    it('It should not unregister a hook from a non existent stream', function(done) {
-      streamId = undefined;
-      request
-        .del(url + '/events/stream/not_existed_stream')
-        .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/not_existed_stream')
-        .set('x-subkit-event-apikey', token)
-        .accept('json')
-        .end(function (res) {
-          res.status.should.be.equal(204);
-        });
-    });
   });
 
 });

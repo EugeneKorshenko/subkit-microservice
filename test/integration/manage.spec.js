@@ -42,6 +42,17 @@ describe('Integration: Manage.', function(){
         done();
       });
     });
+
+    it('should not login with wrong credentials should succeed', function(done){
+      request
+        .post(url + '/manage/login')
+        .auth('wrong', 'credentials')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
   });
 
   describe('Reset API-Key:', function(){

@@ -5,7 +5,7 @@ var _       = require('underscore');
 var chai = require('chai');
 var expect = chai.expect;
 var request = require('superagent');
-var uuid = require('uuid');
+var uuid = require('node-uuid');
 
 chai.should();
 chai.use(require('chai-things'));
@@ -898,8 +898,8 @@ describe('Integration: Event', function(){
         });
     });
 
-    it.skip('Should receive all persistent messages where matching JSONQuery `{$and: [{stream: \'A-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
-      var filter = {$and: [{stream: 'A-Stream'}, {'payload.Number': 2}, {persistent: true}]};
+    it('Should receive all persistent messages where matching JSONQuery `{$and: [{stream: \'B-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
+      var filter = {$and: [{stream: 'B-Stream'}, {'payload.Number': 2}]};
 
       var req = request
         .get(url + '/events/stream')
@@ -912,14 +912,15 @@ describe('Integration: Event', function(){
           res.on('data', function (chunk) {
             event_number++;
             var event = JSON.parse(chunk.toString());
-            console.log('Receive event: ',event);
-            event.should.be.an('array');
-            event.should.not.include.something.that.deep.equals({stream: 'B-Stream'});
-            event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
-            event.should.have.deep.property('[0].$persistent').to.be.equal('true');
-            if (event_number === 2) {
+            if(event_number === 2){
+              event.should.be.an('array');
+              event.should.not.include.something.that.deep.equals({stream: 'B-Stream'});
+              event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
+              event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').to.be.equal('Event #5');
+              event.should.have.deep.property('[1].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
+              event.should.have.deep.property('[1].$payload').to.be.an('object').and.have.property('Msg').to.be.equal('Event #2');
               req.abort();
-              done();
+              done();              
             }
           });
         })
@@ -928,22 +929,21 @@ describe('Integration: Event', function(){
       request
         .post(url + '/events/emit/A-Stream')
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-persistent', true)
         .accept('json')
         .send({Msg: 'Event #1', Number: 2})
         .end(function (res) {
           res.status.should.be.equal(201);
           res.body.should.have.property('message').and.be.equal('emitted');
-          console.log({stream: 'A-Stream', Msg: 'Event #1', Number: 2, Persistent: true});
+
           request
             .post(url + '/events/emit/B-Stream')
             .set('X-Auth-Token', token)
             .accept('json')
-            .send({Msg: 'Event #2', Number: 1})
+            .send({Msg: 'Event #2', Number: 2})
             .end(function (res) {
               res.status.should.be.equal(201);
               res.body.should.have.property('message').and.be.equal('emitted');
-              console.log({stream: 'B-Stream', Msg: 'Event #2', Number: 1});
+
               request
                 .post(url + '/events/emit/A-Stream')
                 .set('X-Auth-Token', token)
@@ -952,26 +952,24 @@ describe('Integration: Event', function(){
                 .end(function (res) {
                   res.status.should.be.equal(201);
                   res.body.should.have.property('message').and.be.equal('emitted');
-                  console.log({stream: 'A-Stream', Msg: 'Event #3', Number: 3});
+
                   request
-                    .post(url + '/events/emit/A-Stream')
+                    .post(url + '/events/emit/B-Stream')
                     .set('X-Auth-Token', token)
                     .accept('json')
-                    .send({Msg: 'Event #4', Number: 2})
+                    .send({Msg: 'Event #4', Number: 1})
                     .end(function (res) {
                       res.status.should.be.equal(201);
                       res.body.should.have.property('message').and.be.equal('emitted');
-                      console.log({stream: 'A-Stream', Msg: 'Event #4', Number: 2});
+
                       request
-                        .post(url + '/events/emit/A-Stream')
+                        .post(url + '/events/emit/B-Stream')
                         .set('X-Auth-Token', token)
-                        .set('x-subkit-event-persistent', true)
                         .accept('json')
                         .send({Msg: 'Event #5', Number: 2})
                         .end(function (res) {
                           res.status.should.be.equal(201);
                           res.body.should.have.property('message').and.be.equal('emitted');
-                          console.log({stream: 'A-Stream', Msg: 'Event #5', Number: 2, Persistent: true});
                         });
                     });
                 });
@@ -1240,12 +1238,37 @@ describe('Integration: Event', function(){
   });
 
   describe('Register a WebHook to event-stream:', function(){
-    xit('It creates a hook to a stream', function(done) {
-      var streamId = uuid.v4();
+    var streamId;
+
+    afterEach(function(done){
+      request
+        .del(url + '/events/stream/hooked_stream_' + streamId)
+        .set('X-Auth-Token', token)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
+        .accept('json')
+        .end(function (err, res) {
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').and.be.equal('delete accepted');
+        
+          request
+            .del(url + '/stores/hooked_stream_' + streamId)
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function (err, res) {
+              res.status.should.be.equal(202);
+              res.body.should.have.property('message').and.be.equal('delete accepted');
+              done();
+            });
+
+        });
+    });
+
+    it('It creates a hook to a stream', function(done) {
+      streamId = uuid.v4();
       request
         .post(url + '/events/stream/hooked_stream_' + streamId)
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
         .set('x-subkit-event-apikey', token)
         .accept('json')
         .end(function (res) {
@@ -1264,40 +1287,13 @@ describe('Integration: Event', function(){
         });
     });
 
-    xit('It should not creates a hook without api key to a stream', function(done) {
-      var streamId = uuid.v4();
-      request
-        .post(url + '/events/stream/hooked_stream_' + streamId)
-        .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
-        .accept('json')
-        .end(function (res) {
-          res.status.should.be.equal(400);
-          done();
-        });
-    });
-
-    xit('It should not creates a hook with wrong api key to a stream', function(done) {
-      var streamId = uuid.v4();
-      request
-        .post(url + '/events/stream/hooked_stream_' + streamId)
-        .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
-        .set('x-subkit-event-apikey', 'wrong apikey')
-        .accept('json')
-        .end(function (res) {
-          res.status.should.be.equal(400);
-          done();
-        });
-    });
-
-    xit('It creates a hook to a stream, emit one event', function(done) {
-      var streamId = uuid.v4();
+    it('It creates a hook to a stream, emit one event', function(done) {
+      streamId = uuid.v4();
       //create a webhook
       request
         .post(url + '/events/stream/hooked_stream_' + streamId)
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
         .set('x-subkit-event-apikey', token)
         .accept('json')
         .end(function (res) {
@@ -1322,40 +1318,12 @@ describe('Integration: Event', function(){
     });
 
     it('It creates a hook to a stream, emit three events and load event data from store', function(done) {
-      var streamId = uuid.v4();
-      
-      afterEach(function(done){
-
-        //remove created webhook
-        request
-          .del(url + '/events/stream/' + streamId)
-          .set('X-Auth-Token', token)
-          .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_' + streamId)
-          .accept('json')
-          .end(function (res) {
-            res.status.should.be.equal(202);
-            res.body.should.have.property('message').and.be.equal('delete accepted');
-
-            //delete created store
-            request
-              .del(url + '/stores/hooked_stream_' + streamId)
-              .set('X-Auth-Token', token)
-              .accept('json')
-              .end(function (res) {
-                res.status.should.be.equal(202);
-                res.body.should.have.property('message').and.be.equal('delete accepted');
-                done();
-              });
-
-          });
-
-      });
-
+      streamId = uuid.v4();
       //create a webhook
       request
-        .post(url + '/events/stream/' + streamId)
+        .post(url + '/events/stream/hooked_stream_' + streamId)
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_' + streamId)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
         .set('x-subkit-event-apikey', token)
         .accept('json')
         .end(function (res) {
@@ -1363,7 +1331,7 @@ describe('Integration: Event', function(){
           res.body.should.have.property('message').and.be.equal('created');
           //emit three events
           request
-            .post(url + '/events/emit/' + streamId)
+            .post(url + '/events/emit/hooked_stream_' + streamId)
             .set('X-Auth-Token', token)
             .send({
               Title: 'New test has been created',
@@ -1376,7 +1344,7 @@ describe('Integration: Event', function(){
               res.status.should.be.equal(201);
               res.body.should.have.property('message').and.be.equal('emitted');
               request
-                .post(url + '/events/emit/' + streamId)
+                .post(url + '/events/emit/hooked_stream_' + streamId)
                 .set('X-Auth-Token', token)
                 .send({
                   Title: 'New test has been created',
@@ -1388,7 +1356,7 @@ describe('Integration: Event', function(){
                   res.status.should.be.equal(201);
                   res.body.should.have.property('message').and.be.equal('emitted');
                   request
-                    .post(url + '/events/emit/' + streamId)
+                    .post(url + '/events/emit/hooked_stream_' + streamId)
                     .set('X-Auth-Token', token)
                     .send({
                       Title: 'newtitle',
@@ -1401,7 +1369,7 @@ describe('Integration: Event', function(){
                       res.body.should.have.property('message').and.be.equal('emitted');
                       //check store for documents of events
                       request
-                        .get(url + '/stores/hooked_stream_' + streamId)
+                        .get(url + '/stores/hooked_stream_store_' + streamId)
                         .set('X-Auth-Token', token)
                         .accept('json')
                         .end(function (res) {
@@ -1415,15 +1383,15 @@ describe('Integration: Event', function(){
         });
     });
 
-    xit('It creates a hook with filter to a stream, emit three events and load event data from store', function(done) {
-      var streamId = uuid.v4();
+    it('It creates a hook with filter to a stream, emit three events and load event data from store', function(done) {
+      streamId = uuid.v4();
       //create a webhook
       request
         .post(url + '/events/stream/hooked_stream_' + streamId)
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_store_' + streamId)
         .set('x-subkit-event-apikey', token)
-        .set('x-subkit-event-filter', JSON.stringify({Number: 2}))
+        .set('x-subkit-event-filter', JSON.stringify({'payload.Number': 2}))
         .accept('json')
         .end(function (res) {
           res.status.should.be.equal(201);
@@ -1468,14 +1436,14 @@ describe('Integration: Event', function(){
                       res.body.should.have.property('message').and.be.equal('emitted');
                       //check store for documents of events
                       request
-                        .get(url + '/stores/hooked_stream_' + streamId)
+                        .get(url + '/stores/hooked_stream_store_' + streamId)
                         .set('X-Auth-Token', token)
                         .accept('json')
                         .end(function (res) {
                           res.status.should.be.equal(200);
                           res.body.should.have.property('results').and.be.an('array').and.have.length(1);
-                          res.body.results.should.have.deep.property('[0].Number').to.be.equal(2);
-                          res.body.results.should.have.deep.property('[0].Title').to.be.equal('second');
+                          res.body.results.should.have.deep.property('[0].$payload.Number').to.be.equal(2);
+                          res.body.results.should.have.deep.property('[0].$payload.Title').to.be.equal('second');
                           done();
                         });
                     });
@@ -1485,71 +1453,42 @@ describe('Integration: Event', function(){
     });
   });
 
-  xdescribe('Unregister a WebHook from event-stream:', function(){
+  describe('Unregister a WebHook from event-stream:', function(){
 
-    var streamId = uuid.v4();
-
-    beforeEach(function(done){
+    it('It unregisters a hook from a stream', function(done) {
+      var streamId = uuid.v4();
       request
         .post(url + '/events/stream/hooked_stream_' + streamId)
         .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
+        .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_' + streamId)
         .set('x-subkit-event-apikey', token)
         .accept('json')
         .end(function (res) {
           res.status.should.be.equal(201);
           res.body.should.have.property('message').and.be.equal('created');
-          done();
-        });
-    });
-
-    it('It unregisters a hook from a stream', function(done) {
-      request
-        .del(url + '/events/stream/hooked_stream_' + streamId)
-        .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
-        .set('x-subkit-event-apikey', token)
-        .accept('json')
-        .end(function(res){
-          res.status.should.be.equal(202);
-          res.body.should.have.property('message').and.be.equal('delete accepted');
           request
-            .get(url + '/events/streams')
+            .del(url + '/events/stream/hooked_stream_' + streamId)
             .set('X-Auth-Token', token)
+            .set('x-subkit-event-webhook', 'https://localhost:8080/stores/hooked_stream_' + streamId)
+            .set('x-subkit-event-apikey', token)
             .accept('json')
-            .end(function(res){
-              res.status.should.be.equal(200);
-              res.body.should.be.an('array');
-              expect(_.findWhere(res.body, {stream: 'hooked_stream_' + streamId})).to.be.undefined;
-              done();
+            .end(function (res) {
+              res.status.should.be.equal(202);
+              res.body.should.have.property('message').and.be.equal('delete accepted');
+              request
+                .get(url + '/events/streams')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .end(function (res) {
+                  res.status.should.be.equal(200);
+                  res.body.should.be.an('array');
+                  expect(_.findWhere(res.body, {stream: 'hooked_stream_' + streamId})).to.be.undefined;
+                  done();
+                });
             });
         });
     });
 
-    it('It should not unregister a hook with wrong apikey from a stream', function(done) {
-      request
-        .del(url + '/events/stream/hooked_stream_' + streamId)
-        .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
-        .set('x-subkit-event-apikey', 'wrong api key')
-        .accept('json')
-        .end(function(res){
-          res.status.should.be.equal(400);
-          done();
-        });
-    });
-
-    it('It should not unregister a hook without apikey from a stream', function(done) {
-      request
-        .del(url + '/events/stream/hooked_stream_' + streamId)
-        .set('X-Auth-Token', token)
-        .set('x-subkit-event-webhook', 'http://localhost:8080/stores/hooked_stream_' + streamId)
-        .accept('json')
-        .end(function(res){
-          res.status.should.be.equal(400);
-          done();
-        });
-    });
   });
 
 });

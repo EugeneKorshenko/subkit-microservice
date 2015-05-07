@@ -14,7 +14,12 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	server.post('/manage/login', function (req, res, next) {
 		var api = configuration.get('api');
 		var app = configuration.get('app');
-		res.send({ api:api, app:app });
+		res.send({ 
+			apiKey: api.apiKey,
+			id: app.id,
+			domain: app.domain,
+			port: app.port
+		});
 		next();
 	});
 	server.put('/manage/user', function (req, res, next) {

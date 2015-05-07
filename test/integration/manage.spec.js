@@ -36,7 +36,6 @@ describe('Integration: Manage.', function(){
       .auth('subkit', 'subkit')
       .accept('json')
       .end(function(res){
-        console.log(res.status)
         res.status.should.be.equal(200);
         res.body.should.include.keys(['id', 'domain', 'port', 'apiKey']);
         res.body.should.has.property('apiKey').that.be.equal(token);
@@ -82,7 +81,7 @@ describe('Integration: Manage.', function(){
       request
         .put(url + '/manage/user')
         .set('X-Auth-Token', token)
-        .send({ "username": credentials.admin.username })
+        .send({ username: 'subkit' })
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(202);
@@ -95,7 +94,7 @@ describe('Integration: Manage.', function(){
       request
         .put(url + '/manage/user')
         .set('X-Auth-Token', token)
-        .send({ "username": "sss" })
+        .send({ username: 'demodemo' })
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(202);
@@ -107,7 +106,7 @@ describe('Integration: Manage.', function(){
     it('It shouldn`t set administrator`s user name if token is missing', function(done){
       request
         .put(url + '/manage/user')
-        .send({ "username": "sss" })
+        .send({ username: 'demdemo' })
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(401);
@@ -119,7 +118,7 @@ describe('Integration: Manage.', function(){
       request
         .put(url + '/manage/user')
         .set('X-Auth-Token', 'wrong_token')
-        .send({ "username": "sss" })
+        .send({ username: 'demdemo' })
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(401);

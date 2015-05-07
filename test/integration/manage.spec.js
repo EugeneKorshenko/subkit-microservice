@@ -1,16 +1,16 @@
 'use strict';
 
-var assert = require('assert');
-var restify = require('restify');
+var request = require('superagent');
+var chai = require('chai');
+var expect = chai.expect;
+var jf = require('jsonfile');
 
-var client = restify.createJsonClient({
-  version: '*',
-  rejectUnauthorized: false,
-  url: 'https://127.0.0.1:8080',
-  headers: {'x-auth-token':'66LOHAiB8Zeod1bAeLYW'}
-});
+var url = 'https://localhost:8080';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+var credentials = jf.readFileSync('./test/integration/fixtures/credentials.json');
+var token = credentials.api.apiKey;
 
-describe('Integration: Manage', function(){
+describe('Integration: Manage.', function(){
   var server,
       context;
 
@@ -27,13 +27,62 @@ describe('Integration: Manage', function(){
     setTimeout(done, 1000);
   });
 
-  describe('on ...', function(){
-    it('should be ...', function(done){
-      client.get('/manage/os', function(error, req, res, actual){
-        assert.ifError(error);
-        assert.notEqual(actual, null);
+  describe('Login:', function(){
+    it('login with correct credentials should succeed', function(done){
+    request
+      .post(url + '/manage/login')
+      .send(credentials.login)
+      .set('X-Auth-Token', token)
+      .accept('json')
+      .end(function(res){
+        res.status.should.be.equal(200);
+        res.body.should.have.property('api').that.be.an('object').that.has.property('apiKey').that.be.equal(token);
+        res.body.should.have.property('app').that.be.an('object').that.include.keys(['id', 'domain', 'port', 'key', 'cert', 'ca']);
+        done();
       });
-      done();
     });
   });
+
+  describe('Reset API-Key:', function(){
+    it('It should reset API-Key and return new one', function(done){
+      request
+        .put(url + '/manage/apikey/reset')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('apiKey').that.be.an('string');
+
+          //save new token for future use
+          //credentials.api.apiKey = res.body.apiKey;
+          //jf.writeFile('./test/integration/fixtures/credentials.json', credentials);
+
+          res.body.should.have.property('message').that.be.equal('update accepted');
+          done();
+        });
+    });
+  });
+
+  describe('Change administration username:', function(){});
+
+  describe('Reset administration password:', function(){});
+
+  describe('Get SSL certificates:', function(){});
+
+  describe('Change SSL certificates:', function(){});
+
+  describe('Process and OS informations:', function(){});
+
+  describe('Kill instance:', function(){});
+
+  describe('Update instance to latest version:', function(){});
+
+  describe('Export documents:', function(){});
+
+  describe('Import documents:', function(){});
+
+  describe('Get Process-Log-File:', function(){});
+
+  describe('Subscribe to Log-Stream:', function(){});
+
 });

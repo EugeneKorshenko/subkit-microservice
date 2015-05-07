@@ -3,7 +3,7 @@
 var request = require('superagent');
 var chai = require('chai');
 var expect = chai.expect;
-var uuid = require('uuid');
+var uuid = require('node-uuid');
 
 var url = 'https://localhost:8080';
 var token = '66LOHAiB8Zeod1bAeLYW';

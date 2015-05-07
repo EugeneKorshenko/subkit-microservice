@@ -5,7 +5,7 @@ var _       = require('underscore');
 var chai = require('chai');
 var expect = chai.expect;
 var request = require('superagent');
-var uuid = require('uuid');
+var uuid = require('node-uuid');
 
 chai.should();
 chai.use(require('chai-things'));

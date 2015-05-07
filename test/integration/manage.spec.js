@@ -63,7 +63,58 @@ describe('Integration: Manage.', function(){
     });
   });
 
-  describe('Change administration username:', function(){});
+  describe('Change administration username:', function(){
+
+    afterEach(function(done){
+      request
+        .put(url + '/manage/user')
+        .set('X-Auth-Token', token)
+        .send({ "username": credentials.admin.username })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').that.be.equal('update accepted');
+          done();
+        });
+    });
+
+    it('It should set administrator`s user name', function(done){
+      request
+        .put(url + '/manage/user')
+        .set('X-Auth-Token', token)
+        .send({ "username": "sss" })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').that.be.equal('update accepted');
+          done();
+        });
+    });
+
+    it('It shouldn`t set administrator`s user name if token is missing', function(done){
+      request
+        .put(url + '/manage/user')
+        .send({ "username": "sss" })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It shouldn`t set administrator`s user name if token is wrong', function(done){
+      request
+        .put(url + '/manage/user')
+        .set('X-Auth-Token', 'wrong_token')
+        .send({ "username": "sss" })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+  });
 
   describe('Reset administration password:', function(){});
 

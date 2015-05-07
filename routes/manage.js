@@ -39,7 +39,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	});
 	server.put('/manage/apikey/reset', function (req, res, next) {
 		var apiConfig = configuration.get('api');
-		apiConfig.apiKey = randomString.generate(20);
+		apiConfig.apiKey = req.body.apiKey || randomString.generate(20);
 
 		configuration.set('api', apiConfig);
 		configuration.save(function(err){

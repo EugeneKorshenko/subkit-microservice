@@ -307,13 +307,41 @@ describe('Integration: Manage.', function(){
                        '\nFwxtK9ffBuk0uFrgJquRAkB9jqGZ/XNtFqbZVFU8DTKNKMlQTER0pBuaVqH4J6qH'+
                        '\nxp0I5OIDwwP3CMqnVVJN03K08FVQV7NLvXkU0PkKtyM6'+
                        '\n-----END RSA PRIVATE KEY-----',
-          ca:          'test_ca'
+          ca:          '-----BEGIN RSA PRIVATE KEY-----'+
+                       '\nProc-Type: 4,ENCRYPTED'+
+                       '\nDEK-Info: DES-EDE3-CBC,1058713A07028202'+
+                       '\n'+
+                       '\nxn6JwUEekQW7Evjdbn+ei0zeuU1OJjKTyX1IgItraDRlQl7btDDfhdXlECeZRR80'+
+                       '\nZA3EahwpSFF0ouLbpUvgdTb9iT8ZttWyDqRAD0FKv6s+pFJVmy8Q/RrSADIW6Bkb'+
+                       '\ncO5ZuJsIzBTtU03H7YyTUQ8/IQKegjGL/bTTqq2vwVQJil2+B9/UYHc90DKh7HL5'+
+                       '\no5S/wr5i/+U1VxXPA9On5uTW/4iK1wZqrBreLTd3OrwsXQOHsF6ZMUqEGKMkIg6G'+
+                       '\nFahUTxBEZJW4MhHnU42Hkwqm1ytjR6PjPb9HgqqpfYpYl59A+m+fLWCLgygy4tkK'+
+                       '\nBD3QxZUHNssOqiRmsLAD0yI3DmlzXOlfqx8KsCJ/HA5yzpC9i11qT+joZYQxBCF9'+
+                       '\nNN9E6FuVGvLC7ScFjCMrlQG8b43MCeDVEhRdxupwSgtq6lfQFEBc5R3ClIHT0/Yw'+
+                       '\noX3eUI5w+3VC9wUlbIJJx8hlLmTSjDRI0UNAYXZw51m/JFgZbxPql5cWrIDmkJLH'+
+                       '\ndoJDpLn4uC/R+0O4AevlMOO15IOBKqMYi3J3PhS0R9izGTQUGQZ7e8adLhbRqXf0'+
+                       '\nO4NmLnhLWruN9+FzkzJjP5NBjj8OPuOQi3Owf6TqNg+6oJxHNCeJSZaYxz88muEA'+
+                       '\nHruNyiDDRWEiIe0Panv/hNQmdkC4ePBIrmX54Bbb0S93NAxqhf3c3+e/bsGLIRGY'+
+                       '\nfgwSOK0RXXd84Ot2Aud5/w+wJAcRADx1W56ANnz+9p9weWPnY5ziF4IKt2u4pNBK'+
+                       '\nTJFGlNIFVwJ6yY5vkvrbBxfJJgjO4l0d8Xb+BNm39B5YcyvzQfSt/b+aXJpYGX0g'+
+                       '\ncuWTcwfTETW1gccsicsYiMaykHwDkzCkqFtOx/grpUpC785I53KLHUEP/0g9yD+n'+
+                       '\nCJaVW/YmaiobRe3gl0M7RCAYL8/sBMeS1qZk/3OeImRQYU0ujGSh3pG1SF9vdNL9'+
+                       '\nmY9EFeeeSM5nN4h/NKtjBIIn8X7WXB51mAvHF6g58PTAHa85y6EU6AQTkNVUdql4'+
+                       '\nxNST8+tccHhPKWRsTah4W5gnDX1QslzrEZ3//9GdQ/FGljV/63Hnzk12Zsc7Okjw'+
+                       '\nlxtxJc4ajjq6nPTzZr7Q14sLsScLWY6kCWF8Zcbm+S5PWqfyFDzAp9s11zXsS7Dk'+
+                       '\noxdKnaWkzSB05di6ckmDRRDdZ8LIufdK0d5eKSuvXnHHeW/UHMiXdg3A97dqTrFc'+
+                       '\nxz/EqmOdNfg4ZnLBQmrSxn4fx9YuNT/xbuHI/PZwo5jaH6RnTPZWFXvL4i5jj2ve'+
+                       '\npWwFQNpNbEK6hQNqgKp7hcmmvvoHP/loYvZqd3VDM6YdyDP9kGF58GCnRRSfNqDR'+
+                       '\nuQWY/BWzpgbX2FAVKQ2x+tdcOGm4ICwg7YgIKSeeSY+Q03smPULzSrwsebNMbr3V'+
+                       '\njXT1BGxMOZjaNInik3BpQFUpI3aQUNN7/FQjmxU/Udc/GsoTWwqa/ja/csni2Hfm'+
+                       '\nI7GI5b7uXivbI/nJKI8rS4oqN6JfKQhWDtps/QJn5T1LnIT2ycTZTROizfUBRvxv'+
+                       '\nGn1Wzo2EOckQ+jWZ6kKpeVLNy4EozDSbIg920ZXuRwPPsbfOavJaMeeJqeoxlxIt'+
+                       '\n-----END RSA PRIVATE KEY-----'
         })
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(202);
-          res.body.should.have.property('certificate').that.be.a('string');
-          res.body.should.have.property('key').that.be.a('string');
+          res.body.should.have.property('message').that.be.equal('update accepted');
           done();
         });
     });

@@ -76,14 +76,17 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	});
 	server.get('/manage/certificate', function (req, res, next) {
 		var appConfig = configuration.get('app');
-		if(!appConfig.cert) return res.send(200,{certificate:'',key:'' });
-		if(!appConfig.key) return res.send(200,{certificate:'',key:'' });
+		if(!appConfig.cert) return res.send(200, {certificate:'', key:'', ca:'' });
+		if(!appConfig.key) return res.send(200, {certificate:'', key:'', ca:'' });
+		if(!appConfig.ca) return res.send(200, {certificate:'', key:'', ca:'' });
 
 		var cert = fs.readFileSync(appConfig.cert).toString();
 		var key = fs.readFileSync(appConfig.key).toString();
+		var ca = fs.readFileSync(appConfig.ca).toString();
 		res.send(200, {
 			certificate: cert,
-			key: key
+			key: key,
+			ca: ca
 		});
 		next();
 	});
@@ -96,11 +99,13 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 
 		if(!certificate) return res.send(400, new Error('Parameter `certificate` missing.'));
 		if(!key) return res.send(400, new Error('Parameter `key` missing.'));
+		if(!ca) return res.send(400, new Error('Parameter `ca` missing.'));
 
-		var appConfig = configuration.get('app');		
+		var appConfig = configuration.get('app');	
+			
 		fs.writeFileSync(appConfig.key, key);
 		fs.writeFileSync(appConfig.cert, certificate);
-		if(ca) fs.writeFileSync(appConfig.ca, ca);
+		fs.writeFileSync(appConfig.ca, ca);
 
 		configuration.save(function(err){
 			if(err) return res.send(400, new Error('Can not change the certificate.'));

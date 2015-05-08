@@ -32,8 +32,6 @@ describe('Smoke: Event-Projections', function () {
   });
 
   describe('Run Event-Log projection', function () {
-    this.timeout(20000);
-
     beforeEach(function(done){
       var scriptPath = path.join(__dirname, './fixtures/gauss_sum_task.js');
       var script = fs.readFileSync(scriptPath, 'utf8');
@@ -43,14 +41,14 @@ describe('Smoke: Event-Projections', function () {
       });
     });
     afterEach(function(done){
-
+      this.timeout(20000);
       //Clean-up: delete the created persistent event stream
       deletePersistentEventHistory('mystream_persistent', function(){
         
         deletePersistentEventHistory('mystream_persistent_other', function(){
           
           deleteEventLogProjectionTask('mystream_persistent_projection', function(){
-            setTimeout(done, 10000);
+            setTimeout(done, 15000);
           });
         
         });
@@ -75,14 +73,14 @@ describe('Smoke: Event-Projections', function () {
 
     });
 
-    it('Emit 10.000 events and start a Gauss-Sum event-log projection (~6 trans/ms)', function(done){
-      this.timeout(65000);
+    it('Emit 10.000 events and start a Gauss-Sum event-log projection (~4 trans/ms)', function(done){
+      this.timeout(85000);
 
       for (var c = 1; c <= 10000; c++){
         
         setTimeout(function(){
           emitPersistentEvent('mystream_persistent', this);
-        }.bind(c), c*5);
+        }.bind(c), c*8);
           
       }
             
@@ -95,7 +93,7 @@ describe('Smoke: Event-Projections', function () {
           done();
         });
         
-      }, 60000);
+      }, 75000);
 
     });
 
@@ -161,33 +159,33 @@ describe('Smoke: Event-Projections', function () {
   });
 
   function subscribe(stream, count, done){
-      var req = request
-        .get(url + '/events/stream/' + stream)
-        .set('X-Auth-Token', token)
-        .accept('json')
-        .parse(function(res) {
-          var data = '';
-          var events = [];
-          res.on('data', function (chunk) {            
-            var part = chunk.toString();
+    var req = request
+      .get(url + '/events/stream/' + stream)
+      .set('X-Auth-Token', token)
+      .accept('json')
+      .parse(function(res) {
+        var data = '';
+        var events = [];
+        res.on('data', function (chunk) {            
+          var part = chunk.toString();
 
-            try{
-              if(data) {
-                events.push(JSON.parse(data)[0]);
-                data = '';
-              }
-              events.push(JSON.parse(part)[0]);
-            }catch(e){
-              data += part;
+          try{
+            if(data) {
+              events.push(JSON.parse(data)[0]);
+              data = '';
             }
-            if(events.length === count){
-              req.abort();
-              done(events);              
-            }                       
-          });
+            events.push(JSON.parse(part)[0]);
+          }catch(e){
+            data += part;
+          }
+          if(events.length === count){
+            req.abort();
+            done(events);              
+          }                       
+        });
 
-        })
-        .end();    
+      })
+      .end();
   }
 
   function emitEvent(stream, i) {

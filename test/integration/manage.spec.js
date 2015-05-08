@@ -230,7 +230,43 @@ describe('Integration: Manage.', function(){
 
   });
 
-  describe('Get SSL certificates:', function(){});
+  describe('Get SSL certificates:', function(){
+
+    it('It should get SSL certificate', function(done){
+      request
+        .get(url + '/manage/certificate')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.have.property('certificate').that.be.a('string');
+          res.body.should.have.property('key').that.be.a('string');
+          done();
+        });
+    });
+
+    it('It shouldn`t get SSL certificate if token is missing', function(done){
+      request
+        .put(url + '/manage/certificate')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It shouldn`t get SSL certificate if token is wrong', function(done){
+      request
+        .put(url + '/manage/certificate')
+        .set('X-Auth-Token', 'wrong_token')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+  });
 
   describe('Change SSL certificates:', function(){});
 

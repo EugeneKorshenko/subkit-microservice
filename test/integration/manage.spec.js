@@ -151,9 +151,9 @@ describe('Integration: Manage.', function(){
         .put(url + '/manage/password/reset')
         .set('X-Auth-Token', token)
         .send({
-          password: 'testpass_3w9048tvynlsfngo7ew',
-          newPassword: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a',
-          newPasswordValidation: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a'
+          password: 'testpass',
+          newPassword: 'subkit',
+          newPasswordValidation: 'subkit'
         })
         .accept('json')
         .end(function(res){
@@ -168,9 +168,9 @@ describe('Integration: Manage.', function(){
         .put(url + '/manage/password/reset')
         .set('X-Auth-Token', token)
         .send({
-          password: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a',
-          newPassword: 'testpass_3w9048tvynlsfngo7ew',
-          newPasswordValidation: 'testpass_3w9048tvynlsfngo7ew'
+          password: 'subkit',
+          newPassword: 'testpass',
+          newPasswordValidation: 'testpass'
         })
         .accept('json')
         .end(function(res){
@@ -180,14 +180,17 @@ describe('Integration: Manage.', function(){
         });
     });
 
-    it('It should not set administrator`s password if old one is wrong', function(done){
+  });
+  
+  describe('Try reset administration password:', function(){
+    it('It should`t set administrator`s password if old one is wrong', function(done){
       request
         .put(url + '/manage/password/reset')
         .set('X-Auth-Token', token)
         .send({
           password: 'wrong_password',
-          newPassword: 'testpass_3w9048tvynlsfngo7ew',
-          newPasswordValidation: 'testpass_3w9048tvynlsfngo7ew'
+          newPassword: 'testpass',
+          newPasswordValidation: 'testpass'
         })
         .accept('json')
         .end(function(res){
@@ -201,9 +204,9 @@ describe('Integration: Manage.', function(){
       request
         .put(url + '/manage/password/reset')
         .send({
-          password: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a',
-          newPassword: 'testpass_3w9048tvynlsfngo7ew',
-          newPasswordValidation: 'testpass_3w9048tvynlsfngo7ew'
+          password: 'subkit',
+          newPassword: 'testpass',
+          newPasswordValidation: 'testpass'
         })
         .accept('json')
         .end(function(res){
@@ -217,9 +220,9 @@ describe('Integration: Manage.', function(){
         .put(url + '/manage/password/reset')
         .set('X-Auth-Token', 'wrong_token')
         .send({
-          password: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a',
-          newPassword: 'testpass_3w9048tvynlsfngo7ew',
-          newPasswordValidation: 'testpass_3w9048tvynlsfngo7ew'
+          password: 'subkit',
+          newPassword: 'testpass',
+          newPasswordValidation: 'testpass'
         })
         .accept('json')
         .end(function(res){

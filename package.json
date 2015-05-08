@@ -75,5 +75,7 @@
       "url": ""
     }
   ],
-  "optionalDependencies": {}
+  "optionalDependencies": {
+    "subkit-file-plugin": "0.0.19"
+  }
 }

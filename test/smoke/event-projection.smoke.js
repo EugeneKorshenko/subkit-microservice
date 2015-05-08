@@ -80,7 +80,7 @@ describe('Smoke: Event-Projections', function () {
         
         setTimeout(function(){
           emitPersistentEvent('mystream_persistent', this);
-        }.bind(c), c*8);
+        }.bind(c), c*7);
           
       }
             
@@ -93,7 +93,7 @@ describe('Smoke: Event-Projections', function () {
           done();
         });
         
-      }, 75000);
+      }, 80000);
 
     });
 

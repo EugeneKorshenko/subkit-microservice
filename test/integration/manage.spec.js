@@ -244,6 +244,7 @@ describe('Integration: Manage.', function(){
           res.status.should.be.equal(200);
           res.body.should.have.property('certificate').that.be.a('string');
           res.body.should.have.property('key').that.be.a('string');
+          res.body.should.have.property('ca').that.be.a('string');
           done();
         });
     });

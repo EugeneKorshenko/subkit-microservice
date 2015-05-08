@@ -56,7 +56,7 @@ module.exports.init = function(){
 		if(app.key && fs.existsSync(app.key)) options.key = fs.readFileSync(app.key);
 		if(app.cert && fs.existsSync(app.cert)) options.certificate = fs.readFileSync(app.cert);
 		if(app.ca && fs.existsSync(app.ca)) options.ca = fs.readFileSync(app.ca);
-		
+
 		var	srv = restify.createServer(options);
 		srv.listen(app.port, function(){
 			logger.log('Subkit micro-service (V'+subkitPackage.version+') listen.');

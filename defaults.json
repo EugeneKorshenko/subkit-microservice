@@ -12,7 +12,7 @@
     "port": 8080,
     "key": "./files/cert/server.key",
     "cert": "./files/cert/server.crt",
-    "ca": "./files/cert/ca.crt"
+    "ca": "./files/cert/server.csr"
   },
   "paths": {
     "backupPath": "./backups",

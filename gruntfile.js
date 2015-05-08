@@ -193,8 +193,7 @@ module.exports = function(grunt) {
     'mochaTest:fileTests',
     'mochaTest:identityTests',
     'mochaTest:pluginTests',
-    'mochaTest:manageTests',
-    'mochaTest:smokeTests'
+    'mochaTest:manageTests'
   ]);
   grunt.registerTask('shareTests', ['mochaTest:shareTests']);
   grunt.registerTask('storeTests', ['mochaTest:storeTests']);

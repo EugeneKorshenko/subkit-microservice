@@ -41,14 +41,14 @@ describe('Smoke: Event-Projections', function () {
       });
     });
     afterEach(function(done){
-      this.timeout(20000);
+      this.timeout(30000);
       //Clean-up: delete the created persistent event stream
       deletePersistentEventHistory('mystream_persistent', function(){
         
         deletePersistentEventHistory('mystream_persistent_other', function(){
           
           deleteEventLogProjectionTask('mystream_persistent_projection', function(){
-            setTimeout(done, 15000);
+            setTimeout(done, 25000);
           });
         
         });

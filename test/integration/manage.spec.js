@@ -30,6 +30,7 @@ describe('Integration: Manage.', function(){
   });
 
   describe('Login:', function(){
+
     it('login with correct credentials should succeed', function(done){
     request
       .post(url + '/manage/login')
@@ -53,9 +54,11 @@ describe('Integration: Manage.', function(){
           done();
         });
     });
+
   });
 
   describe('Reset API-Key:', function(){
+
     afterEach(function(done){
       request
         .put(url + '/manage/apikey/reset')
@@ -70,6 +73,7 @@ describe('Integration: Manage.', function(){
           done();
         });
     });
+
     it('It should reset API-Key and return new one', function(done){
       request
         .put(url + '/manage/apikey/reset')
@@ -84,6 +88,7 @@ describe('Integration: Manage.', function(){
           done();
         });
     });
+
   });
 
   describe('Change administration username:', function(){
@@ -139,7 +144,91 @@ describe('Integration: Manage.', function(){
 
   });
 
-  describe('Reset administration password:', function(){});
+  describe('Reset administration password:', function(){
+
+    afterEach(function(done){
+      request
+        .put(url + '/manage/password/reset')
+        .set('X-Auth-Token', token)
+        .send({
+          password: 'testpass_3w9048tvynlsfngo7ew',
+          newPassword: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a',
+          newPasswordValidation: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a'
+        })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').that.be.equal('update accepted');
+          done();
+        });
+    });
+
+    it('It should set administrator`s password', function(done){
+      request
+        .put(url + '/manage/password/reset')
+        .set('X-Auth-Token', token)
+        .send({
+          password: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a',
+          newPassword: 'testpass_3w9048tvynlsfngo7ew',
+          newPasswordValidation: 'testpass_3w9048tvynlsfngo7ew'
+        })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').that.be.equal('update accepted');
+          done();
+        });
+    });
+
+    it('It should not set administrator`s password if old one is wrong', function(done){
+      request
+        .put(url + '/manage/password/reset')
+        .set('X-Auth-Token', token)
+        .send({
+          password: 'wrong_password',
+          newPassword: 'testpass_3w9048tvynlsfngo7ew',
+          newPasswordValidation: 'testpass_3w9048tvynlsfngo7ew'
+        })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(400);
+          res.body.should.have.property('message').that.be.equal('Password do not match.');
+          done();
+        });
+    });
+
+    it('It shouldn`t set administrator`s password if token is missing', function(done){
+      request
+        .put(url + '/manage/password/reset')
+        .send({
+          password: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a',
+          newPassword: 'testpass_3w9048tvynlsfngo7ew',
+          newPasswordValidation: 'testpass_3w9048tvynlsfngo7ew'
+        })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It shouldn`t set administrator`s password if token is wrong', function(done){
+      request
+        .put(url + '/manage/password/reset')
+        .set('X-Auth-Token', 'wrong_token')
+        .send({
+          password: 'po78gGWyD3cc0cc472e9f28ca5f74bd95e115016a',
+          newPassword: 'testpass_3w9048tvynlsfngo7ew',
+          newPasswordValidation: 'testpass_3w9048tvynlsfngo7ew'
+        })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+  });
 
   describe('Get SSL certificates:', function(){});
 

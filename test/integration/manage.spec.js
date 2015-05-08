@@ -250,7 +250,7 @@ describe('Integration: Manage.', function(){
 
     it('It shouldn`t get SSL certificate if token is missing', function(done){
       request
-        .put(url + '/manage/certificate')
+        .get(url + '/manage/certificate')
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(401);
@@ -260,7 +260,7 @@ describe('Integration: Manage.', function(){
 
     it('It shouldn`t get SSL certificate if token is wrong', function(done){
       request
-        .put(url + '/manage/certificate')
+        .get(url + '/manage/certificate')
         .set('X-Auth-Token', 'wrong_token')
         .accept('json')
         .end(function(res){
@@ -271,7 +271,84 @@ describe('Integration: Manage.', function(){
 
   });
 
-  describe('Change SSL certificates:', function(){});
+  describe('Change SSL certificates:', function(){
+
+    it('It should change SSL certificate', function(done){
+      request
+        .put(url + '/manage/certificate')
+        .set('X-Auth-Token', token)
+        .send({
+          certificate: '-----BEGIN CERTIFICATE-----'+
+                       '\nMIICATCCAWoCCQDA2JpdPJzLeTANBgkqhkiG9w0BAQUFADBFMQswCQYDVQQGEwJE'+
+                       '\nRTETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50ZXJuZXQgV2lkZ2l0'+
+                       '\ncyBQdHkgTHRkMB4XDTE0MDUwMjE0MTQ1MloXDTE1MDUwMjE0MTQ1MlowRTELMAkG'+
+                       '\nA1UEBhMCREUxEzARBgNVBAgTClNvbWUtU3RhdGUxITAfBgNVBAoTGEludGVybmV0'+
+                       '\nIFdpZGdpdHMgUHR5IEx0ZDCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAsf9y'+
+                       '\nT7mKc2rg0d492Ot0QGNrCWXNz8bEv7y0JYKU7oI9BWUislhUR3RG3Nq+S9WjiMGX'+
+                       '\nRnufTCKzGBczhOhN1vA7Jb4jVLQ0/hbqr/+AUPg7jZ5bm9XxqgcAPEnWOBCxoJB/'+
+                       '\n/uPEJ+2uxusDTf1o6HQbd5wiQK5FAavI1E3E5sMCAwEAATANBgkqhkiG9w0BAQUF'+
+                       '\nAAOBgQCqaBxX1rCEkHQn/M8HirCbyLsFvM8JlmApSbrtXNINWpfpTnta4SG/ZZok'+
+                       '\niRA7sdhLUFkavmWNRlV7rqFZoLKYfIvFS2r+oRYv8SvrpW4l3yEaU2KmKwmN5hP0'+
+                       '\nvrvU9KcKZUfKOAPGSkbnyJAAkIfzLZvQXNzM/zVVn2jkjlgiyQ=='+
+                       '\n-----END CERTIFICATE-----',
+          key:         '\n-----BEGIN RSA PRIVATE KEY-----'+
+                       '\nMIICXQIBAAKBgQCx/3JPuYpzauDR3j3Y63RAY2sJZc3PxsS/vLQlgpTugj0FZSKy'+
+                       '\nWFRHdEbc2r5L1aOIwZdGe59MIrMYFzOE6E3W8DslviNUtDT+Fuqv/4BQ+DuNnlub'+
+                       '\n1fGqBwA8SdY4ELGgkH/+48Qn7a7G6wNN/WjodBt3nCJArkUBq8jUTcTmwwIDAQAB'+
+                       '\nAoGBAJSplP+hJ1FeYobl5yHVBTMB1dPzgwGWMZ0yLgNmHJ1XiT+ISIJL45gKNWUg'+
+                       '\nDO+pbvw5M+9aMKGWGZ51QkIvA1Ksd+NHWfh9bsZ3KOHlC8qKrCdjVNiXOL1C29yb'+
+                       '\nYkZzZsjCIOKqS0sEwZHQXe0wlQFD1l7y+qWuiM8nEZ9NzBEBAkEA28ZPLrxSV9hP'+
+                       '\nqNTRrREUXRIfIdb5TVvRvkKnEZKFFJv558MvDR0XCoNd/CyuVHtasMEOtysIzxaK'+
+                       '\nSjL5fEO4iQJBAM9WTtGREMTLHXPs5J4ZtK5cwbOv1P0XqEM8M3SVjoPXtUjVL0WQ'+
+                       '\nJH48vXvl03NWiMhn8PhNYlVZIZ/XhwJkOesCQQCfWwvPN339dDtOkAH5G4lIcvtf'+
+                       '\n7iCWlx1ed7XsZ/FXIEH0avKS76TlWpurXjqJx2fbAiFJb0rT3eQoKQ39rJ0BAkBP'+
+                       '\nF3VprBThfTn3Bt8PEG9ENE4P5XsyMNwXCdf3GTYMRTT6W5h0yM+i+DiwErPew5va'+
+                       '\nFwxtK9ffBuk0uFrgJquRAkB9jqGZ/XNtFqbZVFU8DTKNKMlQTER0pBuaVqH4J6qH'+
+                       '\nxp0I5OIDwwP3CMqnVVJN03K08FVQV7NLvXkU0PkKtyM6'+
+                       '\n-----END RSA PRIVATE KEY-----',
+          ca:          'test_ca'
+        })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('certificate').that.be.a('string');
+          res.body.should.have.property('key').that.be.a('string');
+          done();
+        });
+    });
+
+    it('It shouldn`t change SSL certificate if token is missing', function(done){
+      request
+        .put(url + '/manage/certificate')
+        .send({
+          certificate: '',
+          key: '',
+          ca: ''
+        })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It shouldn`t change SSL certificate if token is wrong', function(done){
+      request
+        .put(url + '/manage/certificate')
+        .set('X-Auth-Token', 'wrong_token')
+        .send({
+          certificate: '',
+          key: '',
+          ca: ''
+        })
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+  });
 
   describe('Process and OS informations:', function(){});
 

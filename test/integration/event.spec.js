@@ -663,6 +663,28 @@ describe('Integration: Event', function(){
   });
 
   describe('Subscribe to event streams with filter (Transfer-Encoding: chunked):', function() {
+    afterEach(function(done){
+      //Clean-up: delete the created persistent event stream
+      request
+        .del(url + '/events/history/A-Stream')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').and.be.equal('delete accepted');
+
+          request
+            .del(url + '/events/history/A-Stream')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(202);
+              res.body.should.have.property('message').and.be.equal('delete accepted');
+              done();
+            });
+
+        });
+    });
 
     it('#GET with wrong "X-Auth-Token" header should response 401', function(done){
       request
@@ -898,8 +920,8 @@ describe('Integration: Event', function(){
         });
     });
 
-    it('Should receive all persistent messages where matching JSONQuery `{$and: [{stream: \'B-Stream\'}, {"payload.Number": 2}]}` and window size = 2', function (done) {
-      var filter = {$and: [{stream: 'B-Stream'}, {'payload.Number': 2}]};
+    it('Should receive all persistent messages where matching JSONQuery `{$and: [{stream: \'B-Stream\'}, {"payload.Number": 2}, {persistent: true}]}` and window size = 2', function (done) {
+      var filter = {$and: [{stream: 'B-Stream'}, {'payload.Number': 2}, {persistent: 'true'}]};
 
       var req = request
         .get(url + '/events/stream')
@@ -915,6 +937,7 @@ describe('Integration: Event', function(){
             if(event_number === 2){
               event.should.be.an('array');
               event.should.not.include.something.that.deep.equals({stream: 'B-Stream'});
+              event.should.not.include.something.that.deep.equals({persistent: true});
               event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
               event.should.have.deep.property('[0].$payload').to.be.an('object').and.have.property('Msg').to.be.equal('Event #5');
               event.should.have.deep.property('[1].$payload').to.be.an('object').and.have.property('Number').to.be.equal(2);
@@ -938,6 +961,7 @@ describe('Integration: Event', function(){
           request
             .post(url + '/events/emit/B-Stream')
             .set('X-Auth-Token', token)
+            .set('x-subkit-event-persistent', true)
             .accept('json')
             .send({Msg: 'Event #2', Number: 2})
             .end(function (res) {
@@ -965,6 +989,7 @@ describe('Integration: Event', function(){
                       request
                         .post(url + '/events/emit/B-Stream')
                         .set('X-Auth-Token', token)
+                        .set('x-subkit-event-persistent', true)
                         .accept('json')
                         .send({Msg: 'Event #5', Number: 2})
                         .end(function (res) {
@@ -1042,6 +1067,18 @@ describe('Integration: Event', function(){
   });
 
   describe('Emit a persistent event:', function(){
+    afterEach(function(done){
+      //Clean-up: delete the created persistent event stream
+      request
+        .del(url + '/events/history/persistent_news')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').and.be.equal('delete accepted');
+          done();
+        });
+    });
 
     it('Request with wrong "X-Auth-Token" header should response 401', function(done) {
       request

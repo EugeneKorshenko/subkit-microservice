@@ -272,7 +272,7 @@ describe('Integration: Manage.', function(){
 
   });
 
-  describe('Change SSL certificates:', function(){
+  xdescribe('Change SSL certificates:', function(){
 
     it('It should change SSL certificate', function(done){
       request

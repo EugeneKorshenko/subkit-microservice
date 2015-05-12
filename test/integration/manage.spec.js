@@ -379,15 +379,194 @@ describe('Integration: Manage.', function(){
 
   });
 
-  describe('Process and OS informations:', function(){});
+  xdescribe('Process and OS informations:', function(){});
 
-  describe('Kill instance:', function(){});
+  xdescribe('Kill instance:', function(){});
 
-  describe('Update instance to latest version:', function(){});
+  xdescribe('Update instance to latest version:', function(){});
 
-  describe('Export documents:', function(){});
+  describe('Export documents:', function(){
+    beforeEach(function(done){
+      request
+        .post(url + '/stores/Scores/1c9f4c3e-86bb-11e4-b116-123b93f75cba12')
+        .send({
+          'score': 1876,
+          'playerName': 'Karl in scores',
+          'cheatMode': false
+        })
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(201);
+          request
+            .post(url + '/stores/Extras/1c9f4c3e-86bb-11e4-b116-123b93f75cba12345345')
+            .send({
+              'score': 1876,
+              'playerName': 'Karl in extras',
+              'cheatMode': false
+            })
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(201);
+              done();
+            });
+        });
+    });
 
-  describe('Import documents:', function(){});
+    afterEach(function(done){
+      request
+        .del(url + '/stores/Scores/1c9f4c3e-86bb-11e4-b116-123b93f75cba12')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          request
+            .del(url + '/stores/Extras/1c9f4c3e-86bb-11e4-b116-123b93f75cba12345345')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(202);
+              done();
+            });
+        });
+    });
+
+    it('It should exports all documents', function(done){
+      request
+        .get(url + '/manage/export')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          done();
+        });
+    });
+
+    it('It should exports all documents from specific store', function(done){
+      request
+        .get(url + '/manage/export/Extras')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          done();
+        });
+    });
+
+    it('It should not exports all documents with wrong api key', function(done){
+      request
+        .get(url + '/manage/export')
+        .set('X-Auth-Token', 'wrong')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It should not exports all documents from specific store with wrong api key', function(done){
+      request
+        .get(url + '/manage/export/Extras')
+        .set('X-Auth-Token', 'wrong')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It should not exports all documents without api key', function(done){
+      request
+        .get(url + '/manage/export')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It should not exports all documents from specific store without api key', function(done){
+      request
+        .get(url + '/manage/export/Extras')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+  });
+
+  describe('Import documents:', function(){
+    beforeEach(function(done){
+      request
+        .post(url + '/stores/Scores/1c9f4c3e-86bb-11e4-b116-123b93f75cba12')
+        .send({
+          'score': 1876,
+          'playerName': 'Karl in scores',
+          'cheatMode': false
+        })
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(201);
+          request
+            .post(url + '/stores/Extras/1c9f4c3e-86bb-11e4-b116-123b93f75cba12345345')
+            .send({
+              'score': 1876,
+              'playerName': 'Karl in extras',
+              'cheatMode': false
+            })
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(201);
+              done();
+            });
+        });
+    });
+
+    afterEach(function(done){
+      request
+        .del(url + '/stores/Scores/1c9f4c3e-86bb-11e4-b116-123b93f75cba12')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          request
+            .del(url + '/stores/Extras/1c9f4c3e-86bb-11e4-b116-123b93f75cba12345345')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(202);
+              done();
+            });
+        });
+    });
+
+    it('It should exports all documents', function(done){
+      request
+        .get(url + '/manage/export')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          done();
+        });
+    });
+
+    it('It should exports all documents from specific store', function(done){
+      request
+        .get(url + '/manage/export/Extras')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          done();
+        });
+    });
+
+  });
 
   describe('Get Process-Log-File:', function(){});
 

@@ -1,6 +1,7 @@
 'use strict';
 
 var request = require('superagent');
+var fs = require('fs');
 var chai = require('chai');
 var expect = chai.expect;
 
@@ -497,7 +498,7 @@ describe('Integration: Manage.', function(){
     });
   });
 
-  describe.only('Import documents:', function(){
+  describe('Import documents:', function(){
     beforeEach(function(done){
       request
         .del(url + '/stores/Scores/test_key_one')
@@ -511,7 +512,14 @@ describe('Integration: Manage.', function(){
             .accept('json')
             .end(function(res){
               res.status.should.be.equal(202);
-              done();
+              request
+                .del(url + '/stores/Scores/test_key_two')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .end(function(res){
+                  res.status.should.be.equal(202);
+                  done();
+                });
             });
         });
     });
@@ -529,28 +537,77 @@ describe('Integration: Manage.', function(){
             .accept('json')
             .end(function(res){
               res.status.should.be.equal(202);
-              done();
+              request
+                .del(url + '/stores/Scores/test_key_two')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .end(function(res){
+                  res.status.should.be.equal(202);
+                  done();
+                });
             });
         });
     });
 
-    it.skip('It should Import via JSON data file', function(done){
-      request
+    it('It should Import via JSON data file', function(done){
+      var stream = fs.createReadStream('./test/integration/fixtures/docs_for_import_store.json');
+      var req = request
         .post(url + '/manage/import')
         .set('X-Auth-Token', token)
+        .type('application/octed-stream')
         .accept('json')
-        .end(function(res){
-          res.status.should.be.equal(201);
-          res.body.should.have.property('message').that.be.equal('imported');
-          done();
+        .parse( function (res) {
+          res.on('data', function (chunk) {
+            var chunk = JSON.parse(chunk.toString());
+            chunk.should.have.property('message').that.be.equal('imported');
+            request
+              .get(url + '/stores/Scores/test_key_one')
+              .set('X-Auth-Token', token)
+              .accept('json')
+              .end(function(res){
+                res.status.should.be.equal(200);
+                request
+                  .get(url + '/stores/Extras/test_key_two')
+                  .set('X-Auth-Token', token)
+                  .accept('json')
+                  .end(function(res){
+                    res.status.should.be.equal(200);
+                    req.abort();
+                    done();
+                  });
+              });
+          });
         });
+      stream.pipe(req);
     });
 
     it('It should Import via JSON body', function(done){
       request
         .post(url + '/manage/import')
-        .send([{"key":"test_key_one","value":"test value",store:"Scores"},
-               {"key":"test_key_two","value":"test value",store:"Extras"}])
+        .send({"payload": [
+          {
+            "key": "test_key_one",
+            "value":{
+              "score": 500,
+              "playerName": "Karl",
+              "cheatMode": false,
+              "foo": "bar",
+              "typedField": 1
+            },
+            "store":"Scores"
+          },
+          {
+            "key": "test_key_two",
+            "value": {
+              "score": 100,
+              "playerName": "Berta",
+              "cheatMode": true,
+              "foo": "bar",
+              "typedField": 1
+            },
+            "store":"Extras"
+          }
+        ]})
         .set('X-Auth-Token', token)
         .accept('json')
         .end(function(res){
@@ -574,22 +631,71 @@ describe('Integration: Manage.', function(){
         });
     });
 
-    it.skip('It should Import via JSON data file to specific store', function(done){
-      request
+    it('It should Import via JSON data file to specific store', function(done){
+      var stream = fs.createReadStream('./test/integration/fixtures/docs_for_import.json');
+      var req = request
         .post(url + '/manage/import/Scores')
         .set('X-Auth-Token', token)
+        .type('application/octed-stream')
         .accept('json')
-        .end(function(res){
-          res.status.should.be.equal(201);
-          res.body.should.have.property('message').that.be.equal('imported');
-          done();
+        .parse( function (res) {
+          res.on('data', function (chunk) {
+            var chunk = JSON.parse(chunk.toString());
+            chunk.should.have.property('message').that.be.equal('imported');
+            request
+              .get(url + '/stores/Scores/test_key_one')
+              .set('X-Auth-Token', token)
+              .accept('json')
+              .end(function(res){
+                res.status.should.be.equal(200);
+                request
+                  .get(url + '/stores/Extras/test_key_two')
+                  .set('X-Auth-Token', token)
+                  .accept('json')
+                  .end(function(res){
+                    res.status.should.be.equal(400);
+                    req.abort();
+                    request
+                      .get(url + '/stores/Scores/test_key_two')
+                      .set('X-Auth-Token', token)
+                      .accept('json')
+                      .end(function(res){
+                        res.status.should.be.equal(200);
+                        req.abort();
+                        done();
+                      });
+                  });
+              });
+          });
         });
+      stream.pipe(req);
     });
 
     it('It should Import via JSON body to specific store', function(done){
       request
         .post(url + '/manage/import/Scores')
-        .send([{"key":"test_key_one","value":"test value"}])
+        .send({"payload": [
+          {
+            "key": "test_key_one",
+            "value": {
+              "score": 500,
+              "playerName": "Karl",
+              "cheatMode": false,
+              "foo": "bar",
+              "typedField": 1
+            }
+          },
+          {
+            "key": "test_key_two",
+            "value": {
+              "score": 100,
+              "playerName": "Berta",
+              "cheatMode": true,
+              "foo": "bar",
+              "typedField": 1
+            }
+          }
+        ]})
         .set('X-Auth-Token', token)
         .accept('json')
         .end(function(res){
@@ -601,7 +707,21 @@ describe('Integration: Manage.', function(){
             .accept('json')
             .end(function(res){
               res.status.should.be.equal(200);
-              done();
+              request
+                .get(url + '/stores/Extras/test_key_two')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .end(function(res){
+                  res.status.should.be.equal(400);
+                  request
+                    .get(url + '/stores/Scores/test_key_two')
+                    .set('X-Auth-Token', token)
+                    .accept('json')
+                    .end(function(res){
+                      res.status.should.be.equal(200);
+                      done();
+                    });
+                });
             });
         });
     });

@@ -185,19 +185,21 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	});		
 
 	server.post('/manage/import', function(req,res, next){
-		var payload = req.body;
+		var payload;
 
 		if(req.headers['content-type'] === 'application/octed-stream') {
 			try{
-				payload = JSON.parse(payload.toString());
+				payload = JSON.parse(req.body.toString());
 
 			}catch(error){
 				return res.send(400, new Error('Unsupported format.'));
 			}
-		}
+		} else {
+      payload = req.body.payload;
+    }
 		if(!payload) return res.send(400, new Error('Unsupported format.'));
 
-		storage.imports('', payload, function(error){
+    storage.imports('', payload, function(error){
 			if(error) return res.send(400, error);
 			res.send(201, { message: 'imported' });
 			next();
@@ -205,8 +207,19 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	});
 	server.post('/manage/import/:name', function(req,res, next){
 		var name = req.params.name;
-		var payload = req.body;
-		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+    if(!name) return res.send(400, new Error('Parameter `name` missing.'));
+
+		var payload;
+    if(req.headers['content-type'] === 'application/octed-stream') {
+      try{
+        payload = JSON.parse(req.body.toString());
+
+      }catch(error){
+        return res.send(400, new Error('Unsupported format.'));
+      }
+    } else {
+      payload = req.body.payload;
+    }
 		if(!payload) return res.send(400, new Error('Unsupported format.'));
 
 		storage.imports(name, payload, function(error){

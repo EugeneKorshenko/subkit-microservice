@@ -4,6 +4,8 @@ var request = require('superagent');
 var fs = require('fs');
 var chai = require('chai');
 var expect = chai.expect;
+var _ = require('underscore');
+var uuid = require('node-uuid');
 
 chai.should();
 chai.use(require('chai-things'));
@@ -387,9 +389,11 @@ describe('Integration: Manage.', function(){
   xdescribe('Update instance to latest version:', function(){});
 
   describe('Export documents:', function(){
+    var uid = uuid.v4();
+    var uid2 = uuid.v4();
     beforeEach(function(done){
       request
-        .post(url + '/stores/Scores/1c9f4c3e-86bb-11e4-b116-123b93f75cba12')
+        .post(url + '/stores/Scores/' + uid)
         .send({
           'score': 1876,
           'playerName': 'Karl in scores',
@@ -400,11 +404,11 @@ describe('Integration: Manage.', function(){
         .end(function(res){
           res.status.should.be.equal(201);
           request
-            .post(url + '/stores/Extras/1c9f4c3e-86bb-11e4-b116-123b93f75cba12345345')
+            .post(url + '/stores/Extras/' + uid2)
             .send({
-              'score': 1876,
+              'score': 2200,
               'playerName': 'Karl in extras',
-              'cheatMode': false
+              'cheatMode': true
             })
             .set('X-Auth-Token', token)
             .accept('json')
@@ -417,13 +421,13 @@ describe('Integration: Manage.', function(){
 
     afterEach(function(done){
       request
-        .del(url + '/stores/Scores/1c9f4c3e-86bb-11e4-b116-123b93f75cba12')
+        .del(url + '/stores/Scores/' + uid)
         .set('X-Auth-Token', token)
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(202);
           request
-            .del(url + '/stores/Extras/1c9f4c3e-86bb-11e4-b116-123b93f75cba12345345')
+            .del(url + '/stores/Extras/' + uid2)
             .set('X-Auth-Token', token)
             .accept('json')
             .end(function(res){
@@ -434,24 +438,47 @@ describe('Integration: Manage.', function(){
     });
 
     it('It should exports all documents', function(done){
+      var file = '';
       request
         .get(url + '/manage/export')
         .set('X-Auth-Token', token)
-        .accept('json')
+        .accept('application/octet-stream')
+        .parse(function (res) {
+          res.on('data', function (chunk) {
+            file += chunk;
+          });
+          res.on('end', function (chunk) {
+            file = JSON.parse(file.toString());
+            expect(_.findWhere(file, {"key": uid})).to.have.property('store').that.be.equal('Scores');
+            expect(_.findWhere(file, {"key": uid2})).to.have.property('store').that.be.equal('Extras');
+            done();
+          });
+        })
         .end(function(res){
           res.status.should.be.equal(200);
-          done();
         });
     });
 
     it('It should exports all documents from specific store', function(done){
+      var file = '';
       request
-        .get(url + '/manage/export/Extras')
+        .get(url + '/manage/export/Scores')
         .set('X-Auth-Token', token)
         .accept('json')
+        .accept('application/octet-stream')
+        .parse(function (res) {
+          res.on('data', function (chunk) {
+            file += chunk;
+          });
+          res.on('end', function (chunk) {
+            file = JSON.parse(file.toString());
+            expect(_.findWhere(file, {"key": uid})).not.to.be.undefined;
+            expect(_.findWhere(file, {"key": uid2})).to.be.undefined;
+            done();
+          });
+        })
         .end(function(res){
           res.status.should.be.equal(200);
-          done();
         });
     });
 

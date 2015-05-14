@@ -726,6 +726,26 @@ describe('Integration: Manage.', function(){
         });
     });
 
+    it('It should not Import all documents without api key', function(done){
+      request
+        .post(url + '/manage/import')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
+    it('It should not Import all documents from specific store without api key', function(done){
+      request
+        .post(url + '/manage/import/Extras')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          done();
+        });
+    });
+
   });
 
   describe('Get Process-Log-File:', function(){});

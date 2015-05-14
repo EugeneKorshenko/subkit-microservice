@@ -775,8 +775,99 @@ describe('Integration: Manage.', function(){
 
   });
 
-  describe('Get Process-Log-File:', function(){});
+  describe('Get Process-Log-File:', function(){
 
-  describe('Subscribe to Log-Stream:', function(){});
+    it('It should receive proc log', function(done){
+      request
+        .get(url + '/manage/log/proc')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          done();
+        });
+    });
+
+    it('It should receive out log', function(done){
+      request
+        .get(url + '/manage/log/out')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          done();
+        });
+    });
+
+    it('It should receive err log', function(done){
+      request
+        .get(url + '/manage/log/err')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          done();
+        });
+    });
+
+  });
+
+  describe('Subscribe to Log-Stream:', function(){
+
+    it('Should receive message from log stream by filter {"message": "authorized"}', function(done) {
+      var filter = {"message": "authorized"};
+
+      request
+        .del(url + '/stores/Scores/non_exist')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          var req = request
+            .get(url + '/events/log')
+            .query({where: JSON.stringify(filter)})
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .parse( function (res) {
+              res.on('data', function (chunk) {
+                var event = JSON.parse(chunk.toString());
+                event.should.be.an('array').and.have.length(1);
+                event[0].should.include.keys(['id', 'timestamp', 'message', 'params']);
+                event.should.have.deep.property('[0].message').to.be.an('string').and.be.equal('authorized');
+                event.should.have.deep.property('[0].params').to.be.an('object').and.have.property('apikey');
+                req.abort();
+                done();
+              });
+            })
+            .end();
+        });
+    });
+
+    it('Should receive two messages from log stream', function(done) {
+      request
+        .del(url + '/stores/Scores/non_exist')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res) {
+          res.status.should.be.equal(202);
+          var req = request
+            .get(url + '/events/log')
+            .query({size: 2})
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .parse( function (res) {
+              res.on('data', function (chunk) {
+                var event = JSON.parse(chunk.toString());
+                event.should.be.an('array').and.have.length(2);
+                event[0].should.include.keys(['id', 'timestamp', 'message']);
+                req.abort();
+                done();
+              });
+            })
+            .end();
+        });
+    });
+
+  });
 
 });

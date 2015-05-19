@@ -112,7 +112,6 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			applyConfiguration();
 			res.send(202, {message: 'update accepted'});
 			next();
-			// setTimeout(process.exit, 300);
 		});
 	});
 

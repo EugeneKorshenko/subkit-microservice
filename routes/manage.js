@@ -112,17 +112,17 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			applyConfiguration();
 			res.send(202, {message: 'update accepted'});
 			next();
-			setTimeout(process.exit, 300);
+			// setTimeout(process.exit, 300);
 		});
 	});
 
-	server.get('/manage/log/:name', function(req,res, next){
+	server.get('/manage/log/:name', function(req, res, next){
 		var name = req.params.name;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
 
 		var fullPath = path.join(process.cwd(),'files/logs', name +'.log.txt');
 		fs.readFile(fullPath, function(err, data){
-			if(err) return res.send(400, new Error('Log not found.'));
+			if(err) data = [];
 			res.send(200, data.toString());
 			next();
 		});

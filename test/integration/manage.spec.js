@@ -29,7 +29,7 @@ describe('Integration: Manage.', function(){
     context.storage.close();
     context.server.close();
     delete require.cache[server];
-    setTimeout(done, 1000);
+    setTimeout(done, 500);
   });
 
   describe('Login:', function(){
@@ -382,12 +382,6 @@ describe('Integration: Manage.', function(){
 
   });
 
-  xdescribe('Process and OS informations:', function(){});
-
-  xdescribe('Kill instance:', function(){});
-
-  xdescribe('Update instance to latest version:', function(){});
-
   describe('Export documents:', function(){
     var uid = uuid.v4();
     var uid2 = uuid.v4();
@@ -447,10 +441,10 @@ describe('Integration: Manage.', function(){
           res.on('data', function (chunk) {
             file += chunk;
           });
-          res.on('end', function (chunk) {
+          res.on('end', function () {
             file = JSON.parse(file.toString());
-            expect(_.findWhere(file, {"key": uid})).to.have.property('store').that.be.equal('Scores');
-            expect(_.findWhere(file, {"key": uid2})).to.have.property('store').that.be.equal('Extras');
+            expect(_.findWhere(file, {'key': uid})).to.have.property('store').that.be.equal('Scores');
+            expect(_.findWhere(file, {'key': uid2})).to.have.property('store').that.be.equal('Extras');
             done();
           });
         })
@@ -470,10 +464,10 @@ describe('Integration: Manage.', function(){
           res.on('data', function (chunk) {
             file += chunk;
           });
-          res.on('end', function (chunk) {
+          res.on('end', function () {
             file = JSON.parse(file.toString());
-            expect(_.findWhere(file, {"key": uid})).not.to.be.undefined;
-            expect(_.findWhere(file, {"key": uid2})).to.be.undefined;
+            expect(_.findWhere(file, {'key': uid})).not.to.be.undefined;
+            expect(_.findWhere(file, {'key': uid2})).to.be.undefined;
             done();
           });
         })
@@ -523,6 +517,7 @@ describe('Integration: Manage.', function(){
           done();
         });
     });
+
   });
 
   describe('Import documents:', function(){
@@ -585,8 +580,9 @@ describe('Integration: Manage.', function(){
         .accept('json')
         .parse( function (res) {
           res.on('data', function (chunk) {
-            var chunk = JSON.parse(chunk.toString());
-            chunk.should.have.property('message').that.be.equal('imported');
+            var event = JSON.parse(chunk.toString());
+            event.should.have.property('message').that.be.equal('imported');
+
             request
               .get(url + '/stores/Scores/test_key_one')
               .set('X-Auth-Token', token)
@@ -611,28 +607,28 @@ describe('Integration: Manage.', function(){
     it('It should Import via JSON body', function(done){
       request
         .post(url + '/manage/import')
-        .send({"payload": [
+        .send({'payload': [
           {
-            "key": "test_key_one",
-            "value":{
-              "score": 500,
-              "playerName": "Karl",
-              "cheatMode": false,
-              "foo": "bar",
-              "typedField": 1
+            'key': 'test_key_one',
+            'value':{
+              'score': 500,
+              'playerName': 'Karl',
+              'cheatMode': false,
+              'foo': 'bar',
+              'typedField': 1
             },
-            "store":"Scores"
+            'store':'Scores'
           },
           {
-            "key": "test_key_two",
-            "value": {
-              "score": 100,
-              "playerName": "Berta",
-              "cheatMode": true,
-              "foo": "bar",
-              "typedField": 1
+            'key': 'test_key_two',
+            'value': {
+              'score': 100,
+              'playerName': 'Berta',
+              'cheatMode': true,
+              'foo': 'bar',
+              'typedField': 1
             },
-            "store":"Extras"
+            'store':'Extras'
           }
         ]})
         .set('X-Auth-Token', token)
@@ -667,8 +663,9 @@ describe('Integration: Manage.', function(){
         .accept('json')
         .parse( function (res) {
           res.on('data', function (chunk) {
-            var chunk = JSON.parse(chunk.toString());
-            chunk.should.have.property('message').that.be.equal('imported');
+            var event = JSON.parse(chunk.toString());
+            event.should.have.property('message').that.be.equal('imported');
+
             request
               .get(url + '/stores/Scores/test_key_one')
               .set('X-Auth-Token', token)
@@ -701,25 +698,25 @@ describe('Integration: Manage.', function(){
     it('It should Import via JSON body to specific store', function(done){
       request
         .post(url + '/manage/import/Scores')
-        .send({"payload": [
+        .send({'payload': [
           {
-            "key": "test_key_one",
-            "value": {
-              "score": 500,
-              "playerName": "Karl",
-              "cheatMode": false,
-              "foo": "bar",
-              "typedField": 1
+            'key': 'test_key_one',
+            'value': {
+              'score': 500,
+              'playerName': 'Karl',
+              'cheatMode': false,
+              'foo': 'bar',
+              'typedField': 1
             }
           },
           {
-            "key": "test_key_two",
-            "value": {
-              "score": 100,
-              "playerName": "Berta",
-              "cheatMode": true,
-              "foo": "bar",
-              "typedField": 1
+            'key': 'test_key_two',
+            'value': {
+              'score': 100,
+              'playerName': 'Berta',
+              'cheatMode': true,
+              'foo': 'bar',
+              'typedField': 1
             }
           }
         ]})
@@ -814,58 +811,63 @@ describe('Integration: Manage.', function(){
 
   describe('Subscribe to Log-Stream:', function(){
 
-    it('Should receive message from log stream by filter {"message": "authorized"}', function(done) {
-      var filter = {"message": "authorized"};
+    it('Should receive message from log stream by filter {message: "authorized"}', function(done) {
+      var filter = {message: 'authorized'};
 
-      request
-        .del(url + '/stores/Scores/non_exist')
+      var req = request
+        .get(url + '/events/log')
+        .query({where: JSON.stringify(filter)})
         .set('X-Auth-Token', token)
         .accept('json')
-        .end(function(res){
-          res.status.should.be.equal(202);
-          var req = request
-            .get(url + '/events/log')
-            .query({where: JSON.stringify(filter)})
-            .set('X-Auth-Token', token)
-            .accept('json')
-            .parse( function (res) {
-              res.on('data', function (chunk) {
-                var event = JSON.parse(chunk.toString());
-                event.should.be.an('array').and.have.length(1);
-                event[0].should.include.keys(['id', 'timestamp', 'message', 'params']);
-                event.should.have.deep.property('[0].message').to.be.an('string').and.be.equal('authorized');
-                event.should.have.deep.property('[0].params').to.be.an('object').and.have.property('apikey');
-                req.abort();
-                done();
-              });
-            })
-            .end();
-        });
+        .parse( function (res) {
+          res.on('data', function (chunk) {
+            var event = JSON.parse(chunk.toString());
+            event.should.be.an('array').and.have.length(1);
+            event[0].should.include.keys(['id', 'timestamp', 'message', 'params']);
+            event.should.have.deep.property('[0].message').to.be.an('string').and.be.equal('authorized');
+            req.abort();
+            done();
+          });
+        })
+        .end();
     });
 
     it('Should receive two messages from log stream', function(done) {
-      request
-        .del(url + '/stores/Scores/non_exist')
+      var req = request
+        .get(url + '/events/log')
+        .query({size: 2})
         .set('X-Auth-Token', token)
         .accept('json')
-        .end(function(res) {
-          res.status.should.be.equal(202);
-          var req = request
-            .get(url + '/events/log')
-            .query({size: 2})
-            .set('X-Auth-Token', token)
-            .accept('json')
-            .parse( function (res) {
-              res.on('data', function (chunk) {
-                var event = JSON.parse(chunk.toString());
-                event.should.be.an('array').and.have.length(2);
-                event[0].should.include.keys(['id', 'timestamp', 'message']);
-                req.abort();
-                done();
-              });
-            })
-            .end();
+        .parse( function (res) {
+          var eventCount = 0;
+          res.on('data', function (chunk) {
+            eventCount++;
+            var event = JSON.parse(chunk.toString());
+            event[0].should.include.keys(['id', 'timestamp', 'message']);
+            if(eventCount === 2){
+              event.should.be.an('array').and.have.length(2);            
+              req.abort();
+              done();
+            }
+          });
+        })
+        .end();
+
+      //make two requests that produce local log messages
+      request
+        .get(url + '/manage/log/err')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
         });
+
+      request
+        .get(url + '/manage/log/err')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+        });        
+
     });
 
   });

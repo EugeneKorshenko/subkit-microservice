@@ -283,7 +283,7 @@ describe('Module: JSON Key/Value Storage', function(){
         data.$payload.test = 'new try_change_test_item 1 test';
 
         sut.tryUpdate('try_change_test_item', '1', oldVersion-1, data.$payload, function(error){
-          assert.equal(error.message, 'Version conflict.');
+          assert.equal(error.message, 'Version conflict');
           done();
         });
 
@@ -296,7 +296,7 @@ describe('Module: JSON Key/Value Storage', function(){
         var oldVersion = data.$version;
 
         sut.tryDel('try_change_test_item', '1', oldVersion-1, function(error){
-          assert.equal(error.message, 'Version conflict.');
+          assert.equal(error.message, 'Version conflict');
           done();
         });
 

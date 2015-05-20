@@ -183,19 +183,8 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		});
 	});		
 
-	server.post('/manage/import', function(req,res, next){
-		var payload;
-
-		if(req.headers['content-type'] === 'application/octed-stream') {
-			try{
-				payload = JSON.parse(req.body.toString());
-
-			}catch(error){
-				return res.send(400, new Error('Unsupported format.'));
-			}
-		} else {
-      payload = req.body.payload;
-    }
+	server.post('/manage/import', function(req, res, next){
+		var payload = req.body;
 		if(!payload) return res.send(400, new Error('Unsupported format.'));
 
     storage.imports('', payload, function(error){
@@ -204,21 +193,12 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-	server.post('/manage/import/:name', function(req,res, next){
+
+	server.post('/manage/import/:name', function(req, res, next){
 		var name = req.params.name;
+		var payload = req.body;
+
     if(!name) return res.send(400, new Error('Parameter `name` missing.'));
-
-		var payload;
-    if(req.headers['content-type'] === 'application/octed-stream') {
-      try{
-        payload = JSON.parse(req.body.toString());
-
-      }catch(error){
-        return res.send(400, new Error('Unsupported format.'));
-      }
-    } else {
-      payload = req.body.payload;
-    }
 		if(!payload) return res.send(400, new Error('Unsupported format.'));
 
 		storage.imports(name, payload, function(error){
@@ -227,6 +207,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
+
 	server.get('/manage/export', function(req,res, next){
 		storage.exports('', function(error, data){
 			if(error) return res.send(400, error);
@@ -304,9 +285,9 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 		filestream.pipe(res);
 	});
 	server.del('/manage/db/destroy', function(req,res, next){
-		storage.destroy(function(error, data){
-			if(error) { res.send(400, new Error('Destroy error')); return next(); }
-			res.send(202, data);
+		storage.destroy(function(error){
+			if(error) { res.send(400, new Error('Destroy DB error')); return next(); }
+			res.send(202, {message: 'Destroy DB accepted'});
 			return next();
 		});
 	});	
@@ -397,6 +378,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
+	//obsolete
 	server.post('/manage/permissions/:name', function(req, res, next){
 		var name = req.params.name;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -407,6 +389,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
+	//obsolete
 	server.del('/manage/permissions/:name', function(req, res, next){
 		var name = req.params.name;
 		if(!name) return res.send(400, new Error('Parameter `name` missing.'));
@@ -417,6 +400,7 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
+	//obsolete
 	server.put('/manage/permissions/revoke/:identity', function(req, res, next){
 		var identity = req.params.identity;
 		if(!identity) return res.send(400, new Error('Parameter `identity` missing.'));

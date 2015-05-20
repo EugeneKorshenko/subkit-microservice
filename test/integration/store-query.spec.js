@@ -264,7 +264,7 @@ describe('Integration Spec: Store  queries', function(){
     });
   });
 
-  describe('#Documents without payload', function(){
+  describe('Documents without payload', function(){
     var DocumentsInStore = 2;
     before(function(done){
       for (var i = 0; i < DocumentsInStore; i++)
@@ -340,7 +340,7 @@ describe('Integration Spec: Store  queries', function(){
     });
   });
 
-  describe('#Filter documents with JSON-Query', function() {
+  describe('Filter documents with JSON-Query', function() {
     before(function (done) {
       for (var i = 0; i < docs.length; i++)
         addDocs(docs[i]);
@@ -598,9 +598,9 @@ describe('Integration Spec: Store  queries', function(){
             done();
           });
       });
-      it.skip('#GET where={{"labels":{"$all":[1,2]}},{"playerName":"Martin"}} should response 200 with expected results', function (done) {
+      it('#GET where={{"labels":{"$all":[1,2]}},{"playerName":"Martin"}} should response 200 with expected results', function (done) {
         request
-          .get(url + '/stores/Scores?where={{"labels":{"$all":[1,2]}},{"playerName":"Martin"}}')
+          .get(url + '/stores/Scores?where={"$and":[{"labels":{"$all":[1,2]}},{"playerName":"Martin"}]}')
           .set('X-Auth-Token', token)
           .accept('json')
           .end(function (res) {
@@ -736,54 +736,6 @@ describe('Integration Spec: Store  queries', function(){
                 for (var i = 0; i < res.body[key].length; i++) {
                   res.body[key][i].should.be.an('object').and.include.keys('$name', '$store', '$key', '$version', '$timestamp', '$payload');
                   res.body[key][i].$payload.should.have.property('playerName').and.be.equal(key);
-                }
-              }
-            }
-            done();
-          });
-      });
-      it.skip('#GET groupby="test field name" (field "test field name" does not exists in all docs and includes spaces) should response 200 with expected results', function (done) {
-        request
-          .get(url + '/stores/Scores?groupby="test field name"')
-          .set('X-Auth-Token', token)
-          .accept('json')
-          .end(function (res) {
-            res.status.should.be.equal(200);
-            res.body.should.be.an('object');
-            var field_was_found = false;
-            for (var key in res.body) {
-              if (res.body.hasOwnProperty(key)) {
-                res.body[key].should.be.an('array');
-                for (var i = 0; i < res.body[key].length; i++) {
-                  res.body[key][i].should.be.an('object').and.include.keys('$name', '$store', '$key', '$version', '$timestamp', '$payload');
-                  if (key === 'undefined') {
-                    res.body[key][i].$payload.should.not.have.property('test field name');
-                  } else {
-                    field_was_found = true;
-                    res.body[key][i].$payload.should.have.property('test field name').and.be.equal(key);
-                  }
-                }
-              }
-            }
-            field_was_found.should.be.equal(true);
-            done();
-          });
-      });
-      it.skip('#GET groupby="labels" (field "labels" is array) should response 200 with expected results', function (done) {
-        request
-          .get(url + '/stores/Scores?groupby=labels')
-          .set('X-Auth-Token', token)
-          .accept('json')
-          .end(function (res) {
-            res.status.should.be.equal(200);
-            res.body.should.be.an('object');
-            console.log(res.body);
-            for (var key in res.body) {
-              if (res.body.hasOwnProperty(key)) {
-                res.body[key].should.be.an('array');
-                for (var i = 0; i < res.body[key].length; i++) {
-                  res.body[key][i].should.be.an('object').and.include.keys('$name', '$store', '$key', '$version', '$timestamp', '$payload');
-                  res.body[key][i].$payload.should.have.property('labels').and.include.members([key]);
                 }
               }
             }

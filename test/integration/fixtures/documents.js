@@ -1,8 +1,8 @@
 exports.testDocuments = [
   {
-  'score': 100,
-  'playerName': "Karl",
-  'cheatMode': false
+    'score': 100,
+    'playerName': "Karl",
+    'cheatMode': false
   },
   {
     'score': 500,
@@ -78,16 +78,5 @@ exports.testDocuments = [
     'cheatMode': false,
     'typedField': {'asd':12},
     'typedField1': {'asd':12}
-  }/*,
-  {
-    'score': 31500,
-    'playerName': "Karl",
-    'cheatMode': false,
-    'labels': [2,1,3,4,[7,8,9]]
-  }*//*,
-  {
-    'score': 14532,
-    'test field name': "Vasiliy ivanovich",
-    'cheatMode': false
-  }*/
+  }
 ]

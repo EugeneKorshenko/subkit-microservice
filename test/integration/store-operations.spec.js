@@ -652,7 +652,7 @@ describe('Integration Spec: Store commands', function(){
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(412);
-          res.body.should.have.property('message').and.be.equal('Version conflict.');
+          res.body.should.have.property('message').and.be.equal('Version conflict');
           done();
         });
     });
@@ -863,7 +863,7 @@ describe('Integration Spec: Store commands', function(){
           done();
         });
     });
-    it('#DELETE  with "If-Match" < document.$version, the document version should response 412-Version conflict.', function(done){
+    it('#DELETE  with "If-Match" < document.$version, the document version should response 412-Version conflict', function(done){
       request
         .del(url + '/stores/Scores/' + testDocKey)
         .set('X-Auth-Token', token)
@@ -871,7 +871,7 @@ describe('Integration Spec: Store commands', function(){
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(412);
-          res.body.should.have.property('message').and.be.equal('Version conflict.');          
+          res.body.should.have.property('message').and.be.equal('Version conflict');          
           done();
         });
     });

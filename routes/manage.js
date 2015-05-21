@@ -184,8 +184,14 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 	});		
 
 	server.post('/manage/import', function(req, res, next){
-		var payload = req.body;
-		if(!payload) return res.send(400, new Error('Unsupported format.'));
+		var payload;
+
+		try{
+			payload = JSON.parse(req.body);
+		} catch(e){
+			payload = req.body;
+		}
+		if(!payload) return res.send(400, new Error('Unsupported format'));
 
     storage.imports('', payload, function(error){
 			if(error) return res.send(400, error);
@@ -193,13 +199,18 @@ module.exports.init = function(configuration, applyConfiguration, server, applyS
 			next();
 		});
 	});
-
 	server.post('/manage/import/:name', function(req, res, next){
 		var name = req.params.name;
-		var payload = req.body;
+		var payload;
 
     if(!name) return res.send(400, new Error('Parameter `name` missing.'));
-		if(!payload) return res.send(400, new Error('Unsupported format.'));
+
+		try{
+			payload = JSON.parse(req.body);
+		} catch(e){
+			payload = req.body;
+		}
+		if(!payload) return res.send(400, new Error('Unsupported format'));
 
 		storage.imports(name, payload, function(error){
 			if(error) return res.send(400, error);

@@ -572,42 +572,39 @@ describe('Integration: Manage.', function(){
     });
 
     it('It should Import via JSON data file', function(done){
-      var stream = fs.createReadStream('./test/integration/fixtures/docs_for_import_store.json');
+      var docs = fs.readFileSync('./test/integration/fixtures/docs_for_import_store.json').toString();
       var req = request
         .post(url + '/manage/import')
         .set('X-Auth-Token', token)
-        .type('application/json')
         .accept('json')
-        .parse( function (res) {
-          res.on('data', function (chunk) {
-            var event = JSON.parse(chunk.toString());
-            event.should.have.property('message').that.be.equal('imported');
-
-            request
-              .get(url + '/stores/Scores/test_key_one')
-              .set('X-Auth-Token', token)
-              .accept('json')
-              .end(function(res){
-                res.status.should.be.equal(200);
-                request
-                  .get(url + '/stores/Extras/test_key_two')
-                  .set('X-Auth-Token', token)
-                  .accept('json')
-                  .end(function(res){
-                    res.status.should.be.equal(200);
-                    req.abort();
-                    done();
-                  });
-              });
-          });
+        .send(docs)
+        .end( function (res) {
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').that.be.equal('imported');          
+          request
+            .get(url + '/stores/Scores/test_key_one')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(200);
+              request
+                .get(url + '/stores/Extras/test_key_two')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .end(function(res){
+                  res.status.should.be.equal(200);
+                  done();
+                });
+            });
         });
-      stream.pipe(req);
     });
 
     it('It should Import via JSON body', function(done){
       request
         .post(url + '/manage/import')
-        .send([
+        .set('X-Auth-Token', token)
+        .accept('json')        
+        .send(JSON.stringify([
           {
             'key': 'test_key_one',
             'value':{
@@ -630,18 +627,18 @@ describe('Integration: Manage.', function(){
             },
             'store':'Extras'
           }
-        ])
-        .set('X-Auth-Token', token)
-        .accept('json')
+        ]))
         .end(function(res){
           res.status.should.be.equal(201);
           res.body.should.have.property('message').that.be.equal('imported');
+
           request
             .get(url + '/stores/Scores/test_key_one')
             .set('X-Auth-Token', token)
             .accept('json')
             .end(function(res){
               res.status.should.be.equal(200);
+
               request
                 .get(url + '/stores/Extras/test_key_two')
                 .set('X-Auth-Token', token)
@@ -654,51 +651,50 @@ describe('Integration: Manage.', function(){
         });
     });
 
-    it.skip('It should Import via JSON data file to specific store', function(done){
-      var stream = fs.createReadStream('./test/integration/fixtures/docs_for_import.json');
+    it('It should Import via JSON data file to specific store', function(done){
+      var docs = fs.readFileSync('./test/integration/fixtures/docs_for_import.json').toString();
+
       var req = request
         .post(url + '/manage/import/Scores')
         .set('X-Auth-Token', token)
-        .type('application/json')
         .accept('json')
-        .parse( function (res) {
-          res.on('data', function (chunk) {
-            var event = JSON.parse(chunk.toString());
-            event.should.have.property('message').that.be.equal('imported');
+        .send(docs)
+        .end(function(res){
+          res.status.should.be.equal(201);
+          res.body.should.have.property('message').that.be.equal('imported');
 
-            request
-              .get(url + '/stores/Scores/test_key_one')
-              .set('X-Auth-Token', token)
-              .accept('json')
-              .end(function(res){
-                res.status.should.be.equal(200);
-                request
-                  .get(url + '/stores/Extras/test_key_two')
-                  .set('X-Auth-Token', token)
-                  .accept('json')
-                  .end(function(res){
-                    res.status.should.be.equal(400);
-                    req.abort();
-                    request
-                      .get(url + '/stores/Scores/test_key_two')
-                      .set('X-Auth-Token', token)
-                      .accept('json')
-                      .end(function(res){
-                        res.status.should.be.equal(200);
-                        req.abort();
-                        done();
-                      });
-                  });
-              });
-          });
+          request
+            .get(url + '/stores/Scores/test_key_one')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(200);
+              request
+                .get(url + '/stores/Extras/test_key_two')
+                .set('X-Auth-Token', token)
+                .accept('json')
+                .end(function(res){
+                  res.status.should.be.equal(400);
+                  req.abort();
+                  request
+                    .get(url + '/stores/Scores/test_key_two')
+                    .set('X-Auth-Token', token)
+                    .accept('json')
+                    .end(function(res){
+                      res.status.should.be.equal(200);
+                      done();
+                    });
+                });
+            });
         });
-      stream.pipe(req);
     });
 
-    it.skip('It should Import via JSON body to specific store', function(done){
+    it('It should Import via JSON body to specific store', function(done){
       request
-        .post(url + '/manage/import/Scores')        
-        .send([
+        .post(url + '/manage/import/Scores')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send(JSON.stringify([
           {
             'key': 'test_key_one',
             'value': {
@@ -719,9 +715,7 @@ describe('Integration: Manage.', function(){
               'typedField': 1
             }
           }
-        ])
-        .set('X-Auth-Token', token)
-        .accept('json')
+        ]))
         .end(function(res){
           res.status.should.be.equal(201);
           res.body.should.have.property('message').that.be.equal('imported');

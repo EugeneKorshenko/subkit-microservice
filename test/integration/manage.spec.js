@@ -573,12 +573,12 @@ describe('Integration: Manage.', function(){
 
     it('It should Import via JSON data file', function(done){
       var docs = fs.readFileSync('./test/integration/fixtures/docs_for_import_store.json').toString();
-      var req = request
+      request
         .post(url + '/manage/import')
         .set('X-Auth-Token', token)
         .accept('json')
         .send(docs)
-        .end( function (res) {
+        .end(function (res) {
           res.status.should.be.equal(201);
           res.body.should.have.property('message').that.be.equal('imported');          
           request

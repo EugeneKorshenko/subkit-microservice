@@ -28,6 +28,7 @@
     "yargs": "1.3.3"
   },
   "devDependencies": {
+    "async": "^1.0.0",
     "chai": "^1.10.0",
     "chai-array": "0.0.2",
     "chai-things": "^0.2.0",

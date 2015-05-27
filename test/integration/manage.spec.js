@@ -476,6 +476,28 @@ describe('Integration: Manage.', function(){
         });
     });
 
+    it('It should not exports all documents from nonexistent store', function(done) {
+      var file = '';
+      request
+        .get(url + '/manage/export/nonexistentStore')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .accept('application/octet-stream')
+        .parse(function (res) {
+          res.on('data', function (chunk) {
+            file += chunk;
+          });
+          res.on('end', function () {
+            file = JSON.parse(file.toString());
+            file.should.have.length(0);
+            done();
+          });
+        })
+        .end(function(res){
+          res.status.should.be.equal(200);
+        });
+    });
+
     it('It should not exports all documents with wrong api key', function(done){
       request
         .get(url + '/manage/export')
@@ -483,6 +505,7 @@ describe('Integration: Manage.', function(){
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(401);
+          res.body.should.has.property('message').that.be.equal('Unauthorized');
           done();
         });
     });
@@ -494,6 +517,19 @@ describe('Integration: Manage.', function(){
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(401);
+          res.body.should.has.property('message').that.be.equal('Unauthorized');
+          done();
+        });
+    });
+
+    it('It should not exports all documents from nonexistent store with wrong api key', function(done){
+      request
+        .get(url + '/manage/export/nonexistentStore')
+        .set('X-Auth-Token', 'wrong')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          res.body.should.has.property('message').that.be.equal('Unauthorized');
           done();
         });
     });
@@ -504,6 +540,7 @@ describe('Integration: Manage.', function(){
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(401);
+          res.body.should.has.property('message').that.be.equal('Unauthorized');
           done();
         });
     });
@@ -514,6 +551,18 @@ describe('Integration: Manage.', function(){
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(401);
+          res.body.should.has.property('message').that.be.equal('Unauthorized');
+          done();
+        });
+    });
+
+    it('It should not exports all documents from nonexistent store without api key', function(done){
+      request
+        .get(url + '/manage/export/nonexistentStore')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          res.body.should.has.property('message').that.be.equal('Unauthorized');
           done();
         });
     });
@@ -599,6 +648,34 @@ describe('Integration: Manage.', function(){
         });
     });
 
+    it('It should not Import via JSON data file without store specified', function(done){
+      var docs = fs.readFileSync('./test/integration/fixtures/docs_for_import_without_store.json').toString();
+      request
+        .post(url + '/manage/import')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send(docs)
+        .end(function (res) {
+          res.status.should.be.equal(400);
+          res.body.should.have.property('message').that.be.equal('Resource not found');
+          done();
+        });
+    });
+
+    it('It should not Import invalid data via JSON file', function(done){
+      var docs = fs.readFileSync('./test/integration/fixtures/invalid_docs_for_import_store.json').toString();
+      request
+        .post(url + '/manage/import')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send(docs)
+        .end(function (res) {
+          res.status.should.be.equal(400);
+          res.body.should.have.property('message').that.be.equal('Unsupported format');
+          done();
+        });
+    });
+
     it('It should Import via JSON body', function(done){
       request
         .post(url + '/manage/import')
@@ -651,6 +728,53 @@ describe('Integration: Manage.', function(){
         });
     });
 
+    it('It should not Import via JSON body without store specified', function(done){
+      request
+        .post(url + '/manage/import')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send(JSON.stringify([
+          {
+            'key': 'test_key_one',
+            'value':{
+              'score': 500,
+              'playerName': 'Karl',
+              'cheatMode': false,
+              'foo': 'bar',
+              'typedField': 1
+            }
+          },
+          {
+            'key': 'test_key_two',
+            'value': {
+              'score': 100,
+              'playerName': 'Berta',
+              'cheatMode': true,
+              'foo': 'bar',
+              'typedField': 1
+            }
+          }
+        ]))
+        .end(function(res){
+          res.status.should.be.equal(400);
+          res.body.should.have.property('message').that.be.equal('Resource not found');
+          done();
+        });
+    });
+
+    it('It should not import invalid data via JSON body', function(done) {
+      request
+        .post(url + '/manage/import')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send('[{"key":"test_key_one"')
+        .end(function(res){
+          res.status.should.be.equal(400);
+          res.body.should.have.property('message').that.be.equal('Unsupported format');
+          done();
+        });
+    });
+
     it('It should Import via JSON data file to specific store', function(done){
       var docs = fs.readFileSync('./test/integration/fixtures/docs_for_import.json').toString();
 
@@ -686,6 +810,21 @@ describe('Integration: Manage.', function(){
                     });
                 });
             });
+        });
+    });
+
+    it('It should not Import invalid data via JSON file to specific store', function(done){
+      var docs = fs.readFileSync('./test/integration/fixtures/invalid_docs_for_import_store.json').toString();
+
+      request
+        .post(url + '/manage/import/Scores')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send(docs)
+        .end(function(res){
+          res.status.should.be.equal(400);
+          res.body.should.have.property('message').that.be.equal('Unsupported format');
+          done();
         });
     });
 
@@ -744,22 +883,37 @@ describe('Integration: Manage.', function(){
         });
     });
 
+    it('It should not Import invalid data via JSON body to specific store', function(done){
+      request
+        .post(url + '/manage/import/Scores')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .send('[{asd:11-*/')
+        .end(function(res){
+          res.status.should.be.equal(400);
+          res.body.should.have.property('message').that.be.equal('Unsupported format');
+          done();
+        });
+    });
+
     it('It should not Import all documents without api key', function(done){
       request
         .post(url + '/manage/import')
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(401);
+          res.body.should.have.property('message').that.be.equal('Unauthorized');
           done();
         });
     });
 
-    it('It should not Import all documents from specific store without api key', function(done){
+    it('It should not Import all documents to specific store without api key', function(done){
       request
         .post(url + '/manage/import/Extras')
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(401);
+          res.body.should.have.property('message').that.be.equal('Unauthorized');
           done();
         });
     });
@@ -797,6 +951,443 @@ describe('Integration: Manage.', function(){
         .accept('json')
         .end(function(res){
           res.status.should.be.equal(200);
+          done();
+        });
+    });
+
+    it('It should not receive nonexistent log', function(done){
+      request
+        .get(url + '/manage/log/nonexistent')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(405);
+          done();
+        });
+    });
+
+  });
+
+  describe('Backup:', function() {
+
+    it('It should create backup', function(done) {
+      request
+        .post(url + '/manage/backup')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(201);
+          res.body.should.be.not.empty();
+          done();
+        });
+    });
+
+    it('It should not create backup without api key', function(done) {
+      request
+        .post(url + '/manage/backup')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          res.body.should.have.property('message').that.be.equal('Unauthorized');
+          done();
+        });
+    });
+
+    it('It should not create backup with wrong api key', function(done) {
+      request
+        .post(url + '/manage/backup')
+        .set('X-Auth-Token', 'wrong token')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          res.body.should.have.property('message').that.be.equal('Unauthorized');
+          done();
+        });
+    });
+
+  });
+
+  describe('Restore:', function() {
+    it('It should restore from backup', function (done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.be.not.empty();
+          res.body.should.be.an('array');
+          var backupFileName = res.body[0];
+          request
+            .put(url + '/manage/restore/' + backupFileName)
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(202);
+              res.body.should.have.property('message').that.be.equal('Restore accepted');
+              done();
+            });
+        });
+    });
+
+    it('It should not restore from backup without api key', function (done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.be.not.empty();
+          res.body.should.be.an('array');
+          var backupFileName = res.body[0];
+          request
+            .put(url + '/manage/restore/' + backupFileName)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(401);
+              res.body.should.have.property('message').that.be.equal('Unauthorized');
+              done();
+            });
+        });
+    });
+
+    it('It should not restore from backup with wrong api key', function (done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.be.not.empty();
+          res.body.should.be.an('array');
+          var backupFileName = res.body[0];
+          request
+            .put(url + '/manage/restore/' + backupFileName)
+            .set('X-Auth-Token', 'wrong key')
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(401);
+              res.body.should.have.property('message').that.be.equal('Unauthorized');
+              done();
+            });
+        });
+    });
+
+    it('It should restore from file', function(done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.be.not.empty();
+          res.body.should.be.an('array');
+          var backupFileName = res.body[0];
+          var fileData = '';
+          request
+            .get(url + '/manage/savepoints/' + backupFileName)
+            .set('X-Auth-Token', token)
+            .accept('application/octet-stream')
+            .parse(function (res) {
+              res.on('data', function (chunk) {
+                fileData += chunk;
+              });
+              res.on('end', function () {
+                fileData.should.be.not.empty();
+                request
+                  .put(url + '/manage/restore/' + backupFileName)
+                  .set('X-Auth-Token', token)
+                  .accept('json')
+                  .send(fileData)
+                  .end(function (res) {
+                    res.status.should.be.equal(202);
+                    res.body.should.have.property('message').that.be.equal('Restore accepted');
+                    done();
+                  });
+              });
+            })
+            .end(function(res){
+              res.status.should.be.equal(200);
+            });
+        });
+    });
+
+    it('It should not restore from file without api key', function(done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.be.not.empty();
+          res.body.should.be.an('array');
+          var backupFileName = res.body[0];
+          var fileData = '';
+          request
+            .get(url + '/manage/savepoints/' + backupFileName)
+            .set('X-Auth-Token', token)
+            .accept('application/octet-stream')
+            .parse(function (res) {
+              res.on('data', function (chunk) {
+                fileData += chunk;
+              });
+              res.on('end', function () {
+                fileData.should.be.not.empty();
+                request
+                  .put(url + '/manage/restore/' + backupFileName)
+                  .accept('json')
+                  .send(fileData)
+                  .end(function (res) {
+                    res.status.should.be.equal(401);
+                    res.body.should.have.property('message').that.be.equal('Unauthorized');
+                    done();
+                  });
+              });
+            })
+            .end(function(res){
+              res.status.should.be.equal(200);
+            });
+        });
+    });
+
+    it('It should not restore from file with wrong api key', function(done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.be.not.empty();
+          res.body.should.be.an('array');
+          var backupFileName = res.body[0];
+          var fileData = '';
+          request
+            .get(url + '/manage/savepoints/' + backupFileName)
+            .set('X-Auth-Token', token)
+            .accept('application/octet-stream')
+            .parse(function (res) {
+              res.on('data', function (chunk) {
+                fileData += chunk;
+              });
+              res.on('end', function () {
+                fileData.should.be.not.empty();
+                request
+                  .put(url + '/manage/restore/' + backupFileName)
+                  .set('X-Auth-Token', 'wrong key')
+                  .accept('json')
+                  .send(fileData)
+                  .end(function (res) {
+                    res.status.should.be.equal(401);
+                    res.body.should.have.property('message').that.be.equal('Unauthorized');
+                    done();
+                  });
+              });
+            })
+            .end(function(res){
+              res.status.should.be.equal(200);
+            });
+        });
+    });
+
+  });
+
+  describe('List backups: ', function() {
+
+    it('It should response with backups list', function(done) {
+
+      request
+        .post(url + '/manage/backup')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(201);
+          res.body.should.be.not.empty();
+          var backupFileName = res.body;
+          request
+            .get(url + '/manage/savepoints')
+            .set('X-Auth-Token', token)
+            .accept('json')
+            .end(function(res){
+              res.status.should.be.equal(200);
+              res.body.should.be.not.empty();
+              res.body.should.be.an('array');
+              res.body.indexOf(backupFileName).should.be.not.equal(-1);
+              done();
+            });
+        });
+    });
+
+    it('It should not response with backups list without api key', function(done) {
+      request
+        .get(url + '/manage/savepoints')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          res.body.should.have.property('message').that.be.equal('Unauthorized');
+          done();
+        });
+    });
+
+    it('It should not response with backups list with wrong api key', function(done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', 'wrong key')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          res.body.should.have.property('message').that.be.equal('Unauthorized');
+          done();
+        });
+    });
+
+  });
+
+  describe('Download Backup File', function () {
+
+    it('It should download backup file', function(done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.be.not.empty();
+          res.body.should.be.an('array');
+          var backupFileName = res.body[0];
+          var fileData = '';
+          request
+            .get(url + '/manage/savepoints/' + backupFileName)
+            .set('X-Auth-Token', token)
+            .accept('application/octet-stream')
+            .parse(function (res) {
+              res.on('data', function (chunk) {
+                fileData += chunk;
+              });
+              res.on('end', function () {
+                fileData.should.be.not.empty();
+                done();
+              });
+            })
+            .end(function(res){
+              res.status.should.be.equal(200);
+            });
+        });
+    });
+
+    it('It should not download backup file without api key', function(done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.be.not.empty();
+          res.body.should.be.an('array');
+          var backupFileName = res.body[0];
+          var fileData = '';
+          request
+            .get(url + '/manage/savepoints/' + backupFileName)
+            .accept('application/octet-stream')
+            .parse(function (res) {
+              res.on('data', function (chunk) {
+                fileData += chunk;
+              });
+              res.on('end', function () {
+                fileData.should.be.equal('Error: Unauthorized');
+                done();
+              });
+            })
+            .end(function(res){
+              res.status.should.be.equal(401);
+            });
+        });
+    });
+
+    it('It should not download backup file with wrong api key', function(done) {
+      request
+        .get(url + '/manage/savepoints')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(200);
+          res.body.should.be.not.empty();
+          res.body.should.be.an('array');
+          var backupFileName = res.body[0];
+          var fileData = '';
+          request
+            .get(url + '/manage/savepoints/' + backupFileName)
+            .set('X-Auth-Token', 'wrong key')
+            .accept('application/octet-stream')
+            .parse(function (res) {
+              res.on('data', function (chunk) {
+                fileData += chunk;
+              });
+              res.on('end', function () {
+                fileData.should.be.equal('Error: Unauthorized');
+                done();
+              });
+            })
+            .end(function(res){
+              res.status.should.be.equal(401);
+            });
+        });
+    });
+
+    it('It should not download nonexistent backup', function(done) {
+      var fileData = '';
+      request
+        .get(url + '/manage/savepoints/nonexistentbackup.tar')
+        .set('X-Auth-Token', token)
+        .accept('application/octet-stream')
+        .parse(function (res) {
+          res.on('data', function (chunk) {
+            fileData += chunk;
+          });
+          res.on('end', function () {
+            fileData.should.be.empty();
+            done();
+          });
+        })
+        .end(function(res) {
+          res.status.should.be.equal(400);
+        });
+    });
+
+  });
+
+  describe('Delete DB:', function() {
+
+    it('It should not delete DB without api key', function(done) {
+      request
+        .del(url + '/manage/db/destroy')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          res.body.should.have.property('message').that.be.equal('Unauthorized');
+          done();
+        });
+    });
+
+    it('It should not delete DB with wrong api key', function(done) {
+      request
+        .del(url + '/manage/db/destroy')
+        .set('X-Auth-Token', 'wrong key')
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(401);
+          res.body.should.have.property('message').that.be.equal('Unauthorized');
+          done();
+        });
+    });
+
+    it('It should delete DB', function(done) {
+      request
+        .del(url + '/manage/db/destroy')
+        .set('X-Auth-Token', token)
+        .accept('json')
+        .end(function(res){
+          res.status.should.be.equal(202);
+          res.body.should.have.property('message').that.be.equal('Destroy DB accepted');
           done();
         });
     });
